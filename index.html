@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Operator Dashboard v4.3 — Canales Digitales</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:#0d1117;--card:#161b22;--border:#30363d;
+  --text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;
+  --green:#3fb950;--red:#f85149;--yellow:#d29922;
+  --purple:#a371f7;--orange:#fb8500;--teal:#2ea8cc;
+  --pill-active-bg:#1f6feb;--pill-bg:#21262d;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;}
+
+/* COMPANY SWITCHER */
+.co-bar{background:#0d1117;border-bottom:2px solid var(--border);padding:0 20px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:110;}
+.co-btn{padding:11px 28px;font-size:13px;font-weight:700;cursor:pointer;border:none;border-bottom:3px solid transparent;background:transparent;color:var(--muted);letter-spacing:.3px;transition:all .15s;white-space:nowrap;}
+.co-btn:hover{color:var(--text);}
+.co-btn.co-profar.active{color:var(--teal);border-bottom-color:var(--teal);}
+.co-btn.co-cmk.active{color:var(--green);border-bottom-color:var(--green);}
+.co-btn .co-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;}
+.co-btn.co-profar .co-dot{background:var(--teal);}
+.co-btn.co-cmk .co-dot{background:var(--green);}
+.co-badge{font-size:10px;padding:2px 7px;border-radius:10px;margin-left:6px;font-weight:600;}
+.co-badge.profar{background:rgba(46,168,204,.15);color:var(--teal);}
+.co-badge.cmk{background:rgba(63,185,80,.15);color:var(--green);}
+.co-sep{width:1px;height:28px;background:var(--border);margin:0 8px;}
+.co-meta{margin-left:auto;font-size:10px;color:var(--muted);background:#21262d;padding:3px 10px;border-radius:10px;border:1px solid var(--border);}
+
+/* FILTER BAR */
+.filter-bar{background:#0d1117;border-bottom:1px solid var(--border);padding:7px 20px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;position:sticky;top:42px;z-index:109;}
+.filter-label{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.5px;margin-right:2px;}
+.filter-sep{width:1px;height:18px;background:var(--border);margin:0 3px;}
+.pill{padding:3px 11px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--pill-bg);color:var(--muted);transition:all .15s;user-select:none;}
+.pill:hover{border-color:var(--accent);color:var(--accent);}
+.pill.active{background:var(--pill-active-bg);border-color:var(--pill-active-bg);color:#fff;}
+.pill.pill-year{background:#161b22;}
+.filter-status{margin-left:auto;font-size:10px;color:var(--muted);background:#21262d;padding:3px 10px;border-radius:10px;border:1px solid var(--border);}
+
+/* TABS */
+.tabs{display:flex;background:var(--card);border-bottom:1px solid var(--border);overflow-x:auto;padding:0 12px;position:sticky;top:83px;z-index:108;}
+.tab{padding:9px 13px;font-size:12px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);white-space:nowrap;transition:color .15s;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
+.tab-world{display:none;}
+.tab-world.active{display:flex;}
+
+/* CONTENT */
+.content{padding:14px 20px;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* GRIDS */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:9px;margin-bottom:13px;}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:12px;}
+.chart-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:12px;}
+.chart-full{grid-column:1/-1;}
+
+/* KPI */
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px 13px;}
+.kpi.kpi-profar{border-left:3px solid var(--teal);}
+.kpi.kpi-cmk{border-left:3px solid var(--green);}
+.kpi-label{font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px;}
+.kpi-value{font-size:20px;font-weight:700;color:var(--text);line-height:1;}
+.kpi-delta{font-size:11px;margin-top:3px;font-weight:600;}
+.kpi-delta.up{color:var(--green);}
+.kpi-delta.down{color:var(--red);}
+.kpi-delta.neutral{color:var(--muted);}
+.kpi-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+
+/* CHART CARD */
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:13px;}
+.chart-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:11px;display:flex;align-items:center;justify-content:space-between;}
+.chart-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;background:#21262d;color:var(--muted);border:1px solid var(--border);}
+.chart-wrap{position:relative;height:175px;}
+.chart-wrap-lg{position:relative;height:215px;}
+.chart-wrap-xl{position:relative;height:265px;}
+
+/* TABLES */
+.tbl-wrap{overflow-x:auto;margin-top:9px;}
+table{width:100%;border-collapse:collapse;font-size:11.5px;}
+th{background:#21262d;color:var(--muted);font-weight:600;padding:6px 9px;text-align:left;border-bottom:1px solid var(--border);letter-spacing:.3px;text-transform:uppercase;font-size:10px;}
+td{padding:6px 9px;border-bottom:1px solid #1c2128;color:var(--text);}
+tr:hover td{background:#1c2128;}
+.td-right{text-align:right;}
+.td-center{text-align:center;}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
+.badge-red{background:rgba(248,81,73,.15);color:var(--red);}
+.badge-yellow{background:rgba(210,153,34,.15);color:var(--yellow);}
+.badge-green{background:rgba(63,185,80,.15);color:var(--green);}
+.badge-blue{background:rgba(88,166,255,.15);color:var(--accent);}
+.badge-teal{background:rgba(46,168,204,.15);color:var(--teal);}
+.badge-orange{background:rgba(251,133,0,.15);color:var(--orange);}
+
+/* SECTION LABEL */
+.section-label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:13px 0 7px;border-left:3px solid var(--accent);padding-left:7px;}
+
+/* INFO BOX */
+.info-box{padding:9px 14px;border-radius:6px;margin:6px 0 12px;font-size:12px;line-height:1.5;}
+.info-box.teal{background:#0d2533;border-left:4px solid var(--teal);}
+.info-box.green{background:#0d2216;border-left:4px solid var(--green);}
+.info-box.red{background:#2a1216;border-left:4px solid var(--red);}
+.info-box.yellow{background:#2a2216;border-left:4px solid var(--yellow);}
+
+/* ALERT CONTROLS */
+.alert-controls{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px;}
+.a-btn{padding:3px 11px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--pill-bg);color:var(--muted);transition:all .15s;}
+.a-btn:hover,.a-btn.active{border-color:var(--accent);color:var(--accent);}
+#alertTable,#alertTableP{max-height:340px;overflow-y:auto;}
+
+/* SEMAFORO */
+.sem-v{color:var(--green);font-weight:700;}
+.sem-a{color:var(--yellow);font-weight:700;}
+.sem-r{color:var(--red);font-weight:700;}
+
+/* PROGRESS BAR */
+.bar-wrap{background:#21262d;border-radius:4px;height:8px;overflow:hidden;margin-top:3px;}
+.bar-fill{height:100%;border-radius:4px;transition:width .4s;}
+
+@media(max-width:768px){.chart-row,.chart-row-3{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     COMPANY SWITCHER
+══════════════════════════════════════════════════════ -->
+<div class="co-bar">
+  <button class="co-btn co-profar" onclick="setCompany('profar')" id="co-btn-profar">
+    <span class="co-dot"></span>PROFAR <span class="co-badge profar">B2C · Farmacia Acceso</span>
+  </button>
+  <div class="co-sep"></div>
+  <button class="co-btn co-cmk active" onclick="setCompany('cmk')" id="co-btn-cmk">
+    <span class="co-dot"></span>Clinical Market <span class="co-badge cmk">B2B · Farma + Retail</span>
+  </button>
+  <span class="co-meta" id="co-meta-bar">📊 v4.3 · Datos al 19-Mar-2026 · Motor reglas activo</span>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">📅 Período</span>
+  <div class="pill active" onclick="setFilter('q1_26')" id="pill-q1_26">Q1 2026</div>
+  <div class="pill" onclick="setFilter('ene_26')" id="pill-ene_26">Ene-26</div>
+  <div class="pill" onclick="setFilter('feb_26')" id="pill-feb_26">Feb-26</div>
+  <div class="pill" onclick="setFilter('mar_26')" id="pill-mar_26">Mar-26*</div>
+  <div class="filter-sep"></div>
+  <div class="pill pill-year" onclick="setFilter('q1_25')" id="pill-q1_25">Q1 2025</div>
+  <div class="pill pill-year" onclick="setFilter('full_25')" id="pill-full_25">Full 2025</div>
+  <span class="filter-status" id="filterStatus">Q1 2026 · Ene–Mar · vs Q1 2025</span>
+</div>
+
+<!-- TABS — PROFAR world -->
+<div class="tabs tab-world" id="tabs-profar">
+  <div class="tab active" onclick="showTab('p-resumen',this,'profar')">📊 Resumen</div>
+  <div class="tab" onclick="showTab('p-sellthrough',this,'profar')">📦 Sell-Through</div>
+  <div class="tab" onclick="showTab('p-estratificacion',this,'profar')">🎯 Estratificación</div>
+  <div class="tab" onclick="showTab('p-laboratorios',this,'profar')">🧪 Laboratorios</div>
+  <div class="tab" onclick="showTab('p-skus',this,'profar')">💊 SKUs Top</div>
+  <div class="tab" onclick="showTab('p-zonas',this,'profar')">🗺️ Zonas</div>
+  <div class="tab" onclick="showTab('p-alertas',this,'profar')">🚨 Alertas</div>
+  <div class="tab" onclick="showTab('p-competencia',this,'profar')">🏪 Competencia</div>
+</div>
+
+<!-- TABS — CMK world -->
+<div class="tabs tab-world active" id="tabs-cmk">
+  <div class="tab active" onclick="showTab('c-resumen',this,'cmk')">📊 Resumen</div>
+  <div class="tab" onclick="showTab('c-farma',this,'cmk')">💊 Farma</div>
+  <div class="tab" onclick="showTab('c-retail',this,'cmk')">👥 Retail</div>
+  <div class="tab" onclick="showTab('c-alertas',this,'cmk')">🚨 Alertas Tier A</div>
+  <div class="tab" onclick="showTab('c-forecast',this,'cmk')">🔮 Forecast Q2</div>
+  <div class="tab" onclick="showTab('c-labs',this,'cmk')">🧪 Laboratorios</div>
+  <div class="tab" onclick="showTab('c-yoy',this,'cmk')">📈 YoY</div>
+  <div class="tab" onclick="showTab('c-panorama',this,'cmk')">👤 Panorama</div>
+  <div class="tab" onclick="showTab('c-rotacion',this,'cmk')">🔄 Rotación</div>
+  <div class="tab" onclick="showTab('c-cartera',this,'cmk')">💼 Cartera</div>
+</div>
+
+<div class="content">
+
+<!-- ══════════════════════════════════════════════════════
+     PROFAR WORLD
+══════════════════════════════════════════════════════ -->
+<div id="world-profar" style="display:none">
+
+<!-- P: RESUMEN -->
+<div class="tab-pane active" id="tab-p-resumen">
+  <div class="info-box teal">🏥 <strong>PROFAR — Farmacia Acceso S.A.</strong> · Canal mayorista cautivo B2C · Gestión: Anne Mery Astorga · 1 cliente · Sell-through hacia farmacias retail y pacientes</div>
+  <div class="kpi-row">
+    <div class="kpi kpi-profar"><div class="kpi-label">Venta Q1-2026</div><div class="kpi-value" style="color:var(--teal)">$8.944B</div><div class="kpi-delta up">▲ +2.1% vs Q1-2025</div><div class="kpi-sub">$12.906B sell-in acumulado</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Margen Q1-2026</div><div class="kpi-value">16.6%</div><div class="kpi-delta down">▼ -0.9pp vs Q1-2025</div><div class="kpi-sub">$1.486B margen bruto</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">SKUs Activos</div><div class="kpi-value">1.118</div><div class="kpi-delta up">▲ +43 vs Q4-2025</div><div class="kpi-sub">Q1-2026 únicos facturados</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Laboratorios</div><div class="kpi-value">117</div><div class="kpi-delta up">▲ +3 activos vs Feb</div><div class="kpi-sub">Labs con factura en Mar-26</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Mejor Mes</div><div class="kpi-value">Feb-26</div><div class="kpi-delta up">$3.052B · margen 16.1%</div><div class="kpi-sub">Mar parcial (19 días)</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card chart-full">
+      <div class="chart-title">PROFAR — Venta Mensual vs Margen % <span class="chart-badge">Q1-2026</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartPMensual"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Mix por Segmento <span class="chart-badge">Venta $M</span></div>
+      <div class="chart-wrap"><canvas id="chartPEstDonut"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Margen % por Segmento</div>
+      <div class="chart-wrap"><canvas id="chartPEstMg"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- P: SELL-THROUGH -->
+<div class="tab-pane" id="tab-p-sellthrough">
+  <div class="kpi-row">
+    <div class="kpi kpi-profar"><div class="kpi-label">Ene-26</div><div class="kpi-value">$2.973B</div><div class="kpi-delta neutral">$189M/día promedio</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Feb-26</div><div class="kpi-value">$3.052B</div><div class="kpi-delta up">▲ +2.7% vs Ene</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Mar-26 (19d)</div><div class="kpi-value">$2.919B</div><div class="kpi-delta neutral">$148M/día · ↓ tendencia</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Proyección Mar completo</div><div class="kpi-value">$4.769B</div><div class="kpi-delta neutral">Si mantiene tasa diaria</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Tasa diaria Q1</div><div class="kpi-value">$162M</div><div class="kpi-delta down">▼ -21.9% vs Q4-2025</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card chart-full">
+      <div class="chart-title">Venta Diaria Normalizada — PROFAR <span class="chart-badge">M CLP por día</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartPDiario"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Detalle Mensual Q1-2026</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Mes</th><th class="td-right">Venta $M</th><th class="td-right">Días</th><th class="td-right">Tasa Diaria</th><th class="td-right">Margen $M</th><th class="td-right">Margen %</th><th class="td-right">SKUs</th><th class="td-right">Labs</th></tr></thead>
+      <tbody>
+        <tr><td>Enero 2026</td><td class="td-right">2.973</td><td class="td-right">31</td><td class="td-right">$95.9M</td><td class="td-right">$476M</td><td class="td-right">16.0%</td><td class="td-right">~900</td><td class="td-right">114</td></tr>
+        <tr><td>Febrero 2026</td><td class="td-right">3.052</td><td class="td-right">28</td><td class="td-right">$109M</td><td class="td-right">$490M</td><td class="td-right">16.1%</td><td class="td-right">~920</td><td class="td-right">115</td></tr>
+        <tr><td>Marzo 2026 <span class="badge badge-yellow">19d</span></td><td class="td-right">2.919</td><td class="td-right">19</td><td class="td-right">$154M</td><td class="td-right">$520M</td><td class="td-right">17.8%</td><td class="td-right">~940</td><td class="td-right">117</td></tr>
+        <tr style="font-weight:700;background:#1c2128"><td>Q1 TOTAL</td><td class="td-right">8.944</td><td class="td-right">78</td><td class="td-right">$115M avg</td><td class="td-right">$1.486B</td><td class="td-right">16.6%</td><td class="td-right">1.118</td><td class="td-right">117</td></tr>
+      </tbody>
+    </table></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:5px">* Marzo con 19 días de datos. Tasa diaria usada para forecast Q2.</div>
+  </div>
+</div>
+
+<!-- P: ESTRATIFICACION -->
+<div class="tab-pane" id="tab-p-estratificacion">
+  <div class="kpi-row">
+    <div class="kpi kpi-profar"><div class="kpi-label">Top Segmento</div><div class="kpi-value" style="font-size:14px">ISAPRES</div><div class="kpi-delta neutral">$4.670B · 52.2% participación</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Mayor Margen</div><div class="kpi-value" style="font-size:14px">QUIMIOTERAPIAS</div><div class="kpi-delta up">25.6% margen bruto</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Segmentos Activos</div><div class="kpi-value">7</div><div class="kpi-delta neutral">Q1-2026</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Segmento Alerta</div><div class="kpi-value" style="font-size:14px;color:var(--yellow)">FUNCIONARIO</div><div class="kpi-delta down">$14.7M · 10.6% margen mínimo</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Distribución Venta por Segmento <span class="chart-badge">Q1-2026</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartPEstBar"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Margen % por Segmento</div>
+      <div class="chart-wrap-lg"><canvas id="chartPEstMg2"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Tabla Estratificación — Sell-Through PROFAR Q1-2026</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th>Segmento</th><th class="td-right">Venta $M</th><th class="td-right">Part. %</th><th class="td-right">Margen %</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>ISAPRES</td><td class="td-right">4.670</td><td class="td-right">52.2%</td><td class="td-right">11.8%</td><td><span class="badge badge-green">✅ Principal</span></td></tr>
+        <tr><td>2</td><td>QUIMIOTERAPIAS</td><td class="td-right">2.774</td><td class="td-right">31.0%</td><td class="td-right">25.6%</td><td><span class="badge badge-green">✅ Alto margen</span></td></tr>
+        <tr><td>3</td><td>VENTA TELEFÓNICA</td><td class="td-right">761</td><td class="td-right">8.5%</td><td class="td-right">13.0%</td><td><span class="badge badge-teal">🔵 Estable</span></td></tr>
+        <tr><td>4</td><td>PARTICULAR</td><td class="td-right">366</td><td class="td-right">4.1%</td><td class="td-right">15.7%</td><td><span class="badge badge-teal">🔵 Estable</span></td></tr>
+        <tr><td>5</td><td>E-COMMERCE</td><td class="td-right">196</td><td class="td-right">2.2%</td><td class="td-right">14.2%</td><td><span class="badge badge-blue">📈 Creciendo</span></td></tr>
+        <tr><td>6</td><td>EC SANOFI</td><td class="td-right">156</td><td class="td-right">1.7%</td><td class="td-right">22.8%</td><td><span class="badge badge-green">✅ Alto margen</span></td></tr>
+        <tr><td>7</td><td>FUNCIONARIO</td><td class="td-right">15</td><td class="td-right">0.2%</td><td class="td-right">10.6%</td><td><span class="badge badge-yellow">⚠️ Mg mínimo</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- P: LABORATORIOS -->
+<div class="tab-pane" id="tab-p-laboratorios">
+  <div class="kpi-row">
+    <div class="kpi kpi-profar"><div class="kpi-label">Labs activos Mar-26</div><div class="kpi-value">117</div><div class="kpi-delta up">▲ +3 vs Feb-26</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Top Lab</div><div class="kpi-value" style="font-size:14px">PFIZER</div><div class="kpi-delta neutral">$1.297B Q1-2026</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">2° Lab</div><div class="kpi-value" style="font-size:14px">ASTRAZENECA</div><div class="kpi-delta neutral">$935M Q1-2026</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Labs rezagados</div><div class="kpi-value" style="color:var(--yellow)">3</div><div class="kpi-delta down">Sin factura en Mar-26</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card chart-full">
+      <div class="chart-title">Top 8 Laboratorios PROFAR — Venta Q1-2026 ($M CLP)</div>
+      <div class="chart-wrap-lg"><canvas id="chartPLabs"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Ranking Laboratorios PROFAR</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th>Laboratorio</th><th class="td-right">Venta Q1 $M</th><th class="td-right">Part. %</th><th>Tendencia</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>PFIZER</td><td class="td-right">1.297</td><td class="td-right">14.5%</td><td><span class="badge badge-teal">Estable</span></td></tr>
+        <tr><td>2</td><td>ASTRAZENECA</td><td class="td-right">935</td><td class="td-right">10.5%</td><td><span class="badge badge-green">▲ Alza</span></td></tr>
+        <tr><td>3</td><td>SCIENZA CHILE</td><td class="td-right">888</td><td class="td-right">9.9%</td><td><span class="badge badge-teal">Estable</span></td></tr>
+        <tr><td>4</td><td>ROCHE</td><td class="td-right">723</td><td class="td-right">8.1%</td><td><span class="badge badge-teal">Estable</span></td></tr>
+        <tr><td>5</td><td>MERCK</td><td class="td-right">71</td><td class="td-right">0.8%</td><td><span class="badge badge-blue">Nuevo</span></td></tr>
+        <tr><td>6</td><td>SANDOZ</td><td class="td-right">68</td><td class="td-right">0.8%</td><td><span class="badge badge-yellow">⚠️ Baja</span></td></tr>
+        <tr><td>7</td><td>GSK</td><td class="td-right">56</td><td class="td-right">0.6%</td><td><span class="badge badge-green">▲ Alza</span></td></tr>
+        <tr><td>8</td><td>GALENICUM</td><td class="td-right">55</td><td class="td-right">0.6%</td><td><span class="badge badge-teal">Estable</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- P: SKUs TOP -->
+<div class="tab-pane" id="tab-p-skus">
+  <div class="info-box teal">💊 Top SKUs por revenue en canal PROFAR (B2C / e-commerce / venta telefónica). Incluye productos de alta especialidad y oncología.</div>
+  <div class="kpi-row">
+    <div class="kpi kpi-profar"><div class="kpi-label">Top SKU</div><div class="kpi-value" style="font-size:13px">NURTEC 75MG</div><div class="kpi-delta up">$88.7M Q1 · 35.2% share</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">SKUs eCommerce</div><div class="kpi-value">142</div><div class="kpi-delta up">▲ +28 activos vs Q4-2025</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Revenue eCommerce</div><div class="kpi-value">$376M</div><div class="kpi-delta up">▲ +47% vs Q1-2025</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Órdenes Q1</div><div class="kpi-value">1.892</div><div class="kpi-delta up">▲ +38% vs Q1-2025</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Top 10 SKUs por Revenue — eCommerce PROFAR <span class="chart-badge">$M CLP</span></div>
+      <div class="chart-wrap-xl"><canvas id="chartPSkus"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Revenue eCommerce Mensual</div>
+      <div class="chart-wrap-xl"><canvas id="chartPEcom"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- P: ZONAS -->
+<div class="tab-pane" id="tab-p-zonas">
+  <div class="kpi-row">
+    <div class="kpi kpi-profar"><div class="kpi-label">RM + Valparaíso</div><div class="kpi-value">$7.953B</div><div class="kpi-delta neutral">88.9% del total</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Zona Sur</div><div class="kpi-value">$800M</div><div class="kpi-delta neutral">8 regiones · 8.9%</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Zona Norte</div><div class="kpi-value">$190M</div><div class="kpi-delta neutral">5 regiones · 2.1%</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Cobertura</div><div class="kpi-value">16 reg.</div><div class="kpi-delta neutral">Todo Chile continental</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Distribución por Zona PROFAR</div>
+      <div class="chart-wrap-lg"><canvas id="chartPZonas"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Oportunidad Regiones No-RM <span class="chart-badge">Potencial</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartPZonasBar"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- P: ALERTAS PROFAR -->
+<div class="tab-pane" id="tab-p-alertas">
+  <div class="info-box red">🚨 <strong>Alertas activas PROFAR</strong> — SKUs sin movimiento, labs rezagados y tendencias de caída en sell-through.</div>
+  <div class="kpi-row">
+    <div class="kpi kpi-profar"><div class="kpi-label">Tasa diaria Mar vs Feb</div><div class="kpi-value" style="color:var(--red)">-21.9%</div><div class="kpi-delta down">Caída en velocidad de compra</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Labs rezagados</div><div class="kpi-value" style="color:var(--yellow)">3</div><div class="kpi-delta down">Sin factura en últimos 30d</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">SKUs sin rotación</div><div class="kpi-value" style="color:var(--yellow)">178</div><div class="kpi-delta down">Inactivos >60 días</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Segmento en riesgo</div><div class="kpi-value" style="font-size:14px;color:var(--yellow)">FUNCIONARIO</div><div class="kpi-delta down">Margen 10.6% — umbral mínimo</div></div>
+  </div>
+  <div class="chart-card" style="border-left:3px solid var(--red)">
+    <div class="chart-title">🚨 Alertas PROFAR Activas</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Tipo</th><th>Descripción</th><th class="td-right">Valor</th><th>Prioridad</th><th>Acción</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-red">Tendencia</span></td><td>Tasa diaria PROFAR cayó -21.9% en Mar vs tasa Q4-2025</td><td class="td-right">$148M/día</td><td><span class="badge badge-red">ALTA</span></td><td>Revisar pipeline de compras</td></tr>
+        <tr><td><span class="badge badge-yellow">Labs rezag.</span></td><td>SANDOZ sin factura en marzo 2026</td><td class="td-right">$68M Q1</td><td><span class="badge badge-yellow">MEDIA</span></td><td>Contactar account SANDOZ</td></tr>
+        <tr><td><span class="badge badge-yellow">Labs rezag.</span></td><td>GALENICUM sin movimiento últimos 35 días</td><td class="td-right">$55M Q1</td><td><span class="badge badge-yellow">MEDIA</span></td><td>Revisar contrato GALENICUM</td></tr>
+        <tr><td><span class="badge badge-yellow">SKU inactivo</span></td><td>178 SKUs sin venta en últimos 60 días</td><td class="td-right">Varios</td><td><span class="badge badge-yellow">MEDIA</span></td><td>Purga catálogo / reactivar</td></tr>
+        <tr><td><span class="badge badge-teal">Margen</span></td><td>Segmento FUNCIONARIO en margen mínimo 10.6%</td><td class="td-right">$14.7M</td><td><span class="badge badge-teal">BAJA</span></td><td>Evaluar tarifas</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+
+<!-- ══ PROFAR: COMPETENCIA FARMACIAS ══ -->
+<div class="tab-pane" id="tab-p-competencia">
+  <div class="info-box teal">🏪 <strong>Paralelo Farmacias</strong> — Comparativo de precios PROFAR vs cadenas: Cofar, Salcobrand, Ahumada, Cruz Verde, SuperZoo, EcoFarmacias. Datos al 19-Mar-2026 · SKU Maestra: 2.038</div>
+  <div class="kpi-row">
+    <div class="kpi kpi-profar"><div class="kpi-label">SKU Maestra PROFAR</div><div class="kpi-value" style="color:var(--teal)">2.038</div><div class="kpi-delta neutral">Catálogo total disponible</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Cobertura cruzada</div><div class="kpi-value">77.97%</div><div class="kpi-delta neutral">1.589 SKUs con precio en cadena</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Mayor cobertura</div><div class="kpi-value" style="font-size:14px">Cruz Verde</div><div class="kpi-delta up">944 SKUs cruzados</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">PROFAR precio bajo</div><div class="kpi-value" style="color:var(--green)">63%</div><div class="kpi-delta up">de SKUs cruzados más barato que Ahumada</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Precio mayor margen</div><div class="kpi-value" style="font-size:14px">Salcobrand</div><div class="kpi-delta down">Promedio 62.9% sobre costo</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">SKUs cruzados por cadena <span class="chart-badge">de 2.038 SKU Maestra</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartCompCobertura"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Margen promedio por cadena <span class="chart-badge">% sobre costo</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartCompMargen"></canvas></div>
+    </div>
+  </div>
+  <div class="section-label">Top SKUs — Paralelo de precios vs cadenas (CLP)</div>
+  <div class="chart-card" style="padding:0">
+    <div style="padding:10px 13px;font-size:11px;color:var(--muted)">🟢 PROFAR más barato · 🔴 PROFAR más caro · 🟡 Par</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>SKU</th><th>Descripción</th><th>Lab</th><th class="td-right">Costo</th><th class="td-right">PROFAR Neto</th><th class="td-right">Cofar</th><th class="td-right">Salcobrand</th><th class="td-right">Ahumada</th><th class="td-right">Cruz Verde</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>110816</td><td>NURTEC 75MG x 8 TAB.</td><td>Pfizer</td><td class="td-right">134.638</td><td class="td-right"><strong>148.820</strong></td><td class="td-right">—</td><td class="td-right">186.302</td><td class="td-right">149.040</td><td class="td-right">151.200</td><td><span class="badge badge-green">🟢 Más barato</span></td></tr>
+        <tr><td>105974</td><td>AVASTIN 100mg x 4ml</td><td>Roche</td><td class="td-right">253.511</td><td class="td-right"><strong>354.613</strong></td><td class="td-right">352.933</td><td class="td-right">—</td><td class="td-right">—</td><td class="td-right">—</td><td><span class="badge badge-yellow">🟡 Par Cofar</span></td></tr>
+        <tr><td>100086</td><td>GENOTROPIN 36UI x 1V</td><td>Pfizer</td><td class="td-right">66.500</td><td class="td-right"><strong>77.227</strong></td><td class="td-right">—</td><td class="td-right">82.500</td><td class="td-right">79.900</td><td class="td-right">80.100</td><td><span class="badge badge-green">🟢 Más barato</span></td></tr>
+        <tr><td>112758</td><td>COMPRESA GASA 45×45</td><td>Reutter</td><td class="td-right">1.200</td><td class="td-right"><strong>2.176</strong></td><td class="td-right">—</td><td class="td-right">3.529</td><td class="td-right">—</td><td class="td-right">—</td><td><span class="badge badge-green">🟢 Más barato</span></td></tr>
+        <tr><td>110706</td><td>TRIKAFTA-S 100/50/75</td><td>Scienza</td><td class="td-right">485.000</td><td class="td-right"><strong>719.735</strong></td><td class="td-right">725.000</td><td class="td-right">—</td><td class="td-right">—</td><td class="td-right">—</td><td><span class="badge badge-green">🟢 Más barato</span></td></tr>
+        <tr><td>100266</td><td>VISCOZYME 2.5mg</td><td>Roche</td><td class="td-right">290.000</td><td class="td-right"><strong>345.000</strong></td><td class="td-right">348.000</td><td class="td-right">352.000</td><td class="td-right">351.000</td><td class="td-right">349.000</td><td><span class="badge badge-green">🟢 Más barato</span></td></tr>
+        <tr><td>108133</td><td>LEUCOVORINA 50mg/5ml</td><td>BPH S.A.</td><td class="td-right">4.000</td><td class="td-right"><strong>4.500</strong></td><td class="td-right">—</td><td class="td-right">—</td><td class="td-right">—</td><td class="td-right">—</td><td><span class="badge badge-teal">Solo PROFAR</span></td></tr>
+        <tr><td>112829</td><td>KEYTRUDA 100mg</td><td>MSD</td><td class="td-right">381.000</td><td class="td-right"><strong>497.372</strong></td><td class="td-right">502.000</td><td class="td-right">—</td><td class="td-right">—</td><td class="td-right">—</td><td><span class="badge badge-green">🟢 Más barato</span></td></tr>
+        <tr><td>108558</td><td>VYONDYS 53 100mg</td><td>Specialty</td><td class="td-right">158.000</td><td class="td-right"><strong>341.917</strong></td><td class="td-right">—</td><td class="td-right">—</td><td class="td-right">—</td><td class="td-right">—</td><td><span class="badge badge-teal">Solo PROFAR</span></td></tr>
+        <tr><td>100277</td><td>ZARZIO 0.3mg/0.5ml</td><td>Sandoz</td><td class="td-right">16.000</td><td class="td-right"><strong>47.050</strong></td><td class="td-right">—</td><td class="td-right">—</td><td class="td-right">48.731</td><td class="td-right">—</td><td><span class="badge badge-green">🟢 Más barato</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Precio Histórico por Cadena — Seleccione SKU <span class="chart-badge">Ene-Mar 2026</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartCompHistorico"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Diferencial PROFAR vs Competencia <span class="chart-badge">% sobre precio PROFAR</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartCompDif"></canvas></div>
+    </div>
+  </div>
+  <div class="info-box yellow" style="margin-top:10px">💡 <strong>Predicción:</strong> Con base en precios cruzados, PROFAR mantiene ventaja competitiva en especialidad oncológica (único distribuidor en 62% de SKUs). Oportunidad de mejora en bioequivalentes donde Cofar compite directamente en 891 SKUs.</div>
+</div>
+
+</div><!-- /world-profar -->
+
+<!-- ══════════════════════════════════════════════════════
+     CLINICAL MARKET WORLD
+══════════════════════════════════════════════════════ -->
+<div id="world-cmk" style="display:block">
+
+<!-- C: RESUMEN CMK -->
+<div class="tab-pane active" id="tab-c-resumen">
+  <div class="info-box green">💊 <strong>Clinical Market S.A.</strong> — Distribución B2B directa · Áreas: Farma (Clínicas, CENABAST, Grandes Convenios) + Retail (farmacias individuales y cadenas)</div>
+  <div class="kpi-row">
+    <div class="kpi kpi-cmk"><div class="kpi-label">Venta CMK Q1-2026</div><div class="kpi-value" style="color:var(--green)">$20.677B</div><div class="kpi-delta up">▲ +28.4% vs Q1-2025</div><div class="kpi-sub">Ex-PROFAR · venta directa</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Margen Promedio</div><div class="kpi-value">16.6%</div><div class="kpi-delta up">▲ +1.3pp vs Q1-2025</div><div class="kpi-sub">Ponderado Farma + Retail</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Vendedores Activos</div><div class="kpi-value">24</div><div class="kpi-delta neutral">9 Farma · 15 Retail</div></div>
+    <div class="kpi kpi-cmk" style="cursor:pointer" onclick="showTab('c-alertas',document.querySelector('#tabs-cmk .tab:nth-child(4)'),'cmk')">
+      <div class="kpi-label">🚨 Alertas Tier A</div><div class="kpi-value" style="color:var(--red)">31</div><div class="kpi-delta down">$1.182B en riesgo · ver →</div>
+    </div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Forecast Q2 Base</div><div class="kpi-value">$41.303B</div><div class="kpi-delta neutral">Escenario base consolidado</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card chart-full">
+      <div class="chart-title">Ventas Mensuales CMK — 2025 vs 2026 <span class="chart-badge">Barras 2025 · Línea 2026</span></div>
+      <div class="chart-wrap-xl"><canvas id="chartCOverlay"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Mix de Canales CMK <span class="chart-badge" id="cMixBadge">Q1-2026</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartCCanalDonut"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Tendencia Diaria Normalizada por Canal</div>
+      <div class="chart-wrap-lg"><canvas id="chartCTendencia"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- C: FARMA -->
+<div class="tab-pane" id="tab-c-farma">
+  <div class="info-box green">💊 <strong>Área Farma</strong> — Clínicas y Hospitales · Grandes Convenios · CENABAST · Estudios Clínicos · $16.267B Q1-2026 · Margen 18.3%</div>
+  <div class="kpi-row">
+    <div class="kpi kpi-cmk"><div class="kpi-label">Venta Farma Q1</div><div class="kpi-value" style="color:var(--green)">$16.267B</div><div class="kpi-delta up">▲ +22.1% vs Q1-2025</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Margen Farma</div><div class="kpi-value">18.3%</div><div class="kpi-delta up">▲ +1.8pp YoY</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">🥇 Top Vendedor</div><div class="kpi-value" style="font-size:14px">EDWARD AVALOS</div><div class="kpi-delta up">$6.960B · Clínicas</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Mejor Margen</div><div class="kpi-value" style="font-size:14px">MARCELA P.</div><div class="kpi-delta up">29.5% · Gdes. Convenios</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Canal Top</div><div class="kpi-value" style="font-size:14px">CLÍNICAS</div><div class="kpi-delta neutral">$10.681B · 15.4% margen</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card chart-full">
+      <div class="chart-title">Área Farma — Revenue Q1 por Vendedor (M CLP)</div>
+      <div class="chart-wrap-lg"><canvas id="chartFarmaVend"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Margen % por Vendedor Farma</div>
+      <div class="chart-wrap"><canvas id="chartFarmaMg"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Mix Canales Farma</div>
+      <div class="chart-wrap"><canvas id="chartFarmaCanal"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Ranking Vendedores — Área Farma Q1-2026</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th>Vendedor</th><th>Canal Principal</th><th class="td-right">Venta Q1 $M</th><th class="td-right">Margen %</th><th class="td-right">Clientes</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>Edward Avalos</strong></td><td>Clínicas/Hospitales</td><td class="td-right">6.960</td><td class="td-right">14.0%</td><td class="td-right">87</td><td><span class="sem-v">🟢 Verde</span></td></tr>
+        <tr><td>2</td><td>Marcela Perinetti</td><td>Grandes Convenios</td><td class="td-right">2.302</td><td class="td-right">29.5%</td><td class="td-right">3</td><td><span class="sem-v">🟢 Verde</span></td></tr>
+        <tr><td>3</td><td>Ilse Arriagada</td><td>CENABAST</td><td class="td-right">1.925</td><td class="td-right">24.0%</td><td class="td-right">43</td><td><span class="sem-a">🟡 Amarillo</span></td></tr>
+        <tr><td>4</td><td>Cristian Díaz</td><td>Clínicas/Hospitales</td><td class="td-right">1.768</td><td class="td-right">17.5%</td><td class="td-right">32</td><td><span class="sem-v">🟢 Verde</span></td></tr>
+        <tr><td>5</td><td>Esteban Zenteno</td><td>Clínicas/Hospitales</td><td class="td-right">1.174</td><td class="td-right">20.1%</td><td class="td-right">28</td><td><span class="sem-a">🟡 Amarillo</span></td></tr>
+        <tr><td>6</td><td>Paola Zapata</td><td>Clínicas/Hospitales</td><td class="td-right">712</td><td class="td-right">19.2%</td><td class="td-right">24</td><td><span class="sem-v">🟢 Verde</span></td></tr>
+        <tr><td>7</td><td>Gustavo Fernández</td><td>Retail (adscrito Farma)</td><td class="td-right">638</td><td class="td-right">13.2%</td><td class="td-right">41</td><td><span class="sem-v">🟢 Verde</span></td></tr>
+        <tr><td>8</td><td>Vanessa Sepúlveda</td><td>Clínicas/Hospitales</td><td class="td-right">546</td><td class="td-right">19.9%</td><td class="td-right">19</td><td><span class="sem-v">🟢 Verde</span></td></tr>
+        <tr><td>9</td><td>Waldo Pozo</td><td>Clínicas/Hospitales</td><td class="td-right">406</td><td class="td-right">16.0%</td><td class="td-right">22</td><td><span class="sem-a">🟡 Amarillo</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- C: RETAIL -->
+<div class="tab-pane" id="tab-c-retail">
+  <div class="info-box green">👥 <strong>Área Retail</strong> — Farmacias individuales, cadenas regionales · 15 vendedores activos · $4.802B Q1-2026 · Margen 12.4%</div>
+  <div class="kpi-row">
+    <div class="kpi kpi-cmk"><div class="kpi-label">Venta Retail Q1</div><div class="kpi-value" style="color:var(--green)">$4.802B</div><div class="kpi-delta up">▲ +58.9% vs Q1-2025</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Margen Retail</div><div class="kpi-value">12.4%</div><div class="kpi-delta neutral">= Q1-2025</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Vendedores</div><div class="kpi-value">15</div><div class="kpi-delta neutral">Activos Q1-2026</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Tasa diaria Mar</div><div class="kpi-value" style="color:var(--green)">$175M/día</div><div class="kpi-delta up">▲ +13.2% vs tasa Feb</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">⚠️ Margen crítico</div><div class="kpi-value" style="color:var(--red);font-size:14px">César Reyes</div><div class="kpi-delta down">9.9% — bajo umbral 10%</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card chart-full">
+      <div class="chart-title">Retail — Revenue por Vendedor Q1-2025 vs Q1-2026</div>
+      <div class="chart-wrap-lg"><canvas id="chartRetailComp"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Margen % por Vendedor Retail</div>
+      <div class="chart-wrap"><canvas id="chartRetailMg"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Evolución Mensual — Top 5 Retail</div>
+      <div class="chart-wrap"><canvas id="chartRetailMes"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Ranking Vendedores — Área Retail Q1-2026</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th>Vendedor</th><th class="td-right">Ene $M</th><th class="td-right">Feb $M</th><th class="td-right">Mar $M</th><th class="td-right">Q1 Total</th><th class="td-right">Margen %</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Gustavo Fernández</td><td class="td-right">220</td><td class="td-right">230</td><td class="td-right">188</td><td class="td-right">638</td><td class="td-right">13.2%</td><td><span class="sem-v">🟢 Verde</span></td></tr>
+        <tr><td>2</td><td>Leonardo Bardi</td><td class="td-right">185</td><td class="td-right">192</td><td class="td-right">151</td><td class="td-right">528</td><td class="td-right">12.8%</td><td><span class="sem-v">🟢 Verde</span></td></tr>
+        <tr><td>3</td><td>Leonardo Hernández</td><td class="td-right">135</td><td class="td-right">138</td><td class="td-right">110</td><td class="td-right">383</td><td class="td-right">11.9%</td><td><span class="sem-a">🟡 Amarillo</span></td></tr>
+        <tr><td>4</td><td>César Reyes</td><td class="td-right">128</td><td class="td-right">130</td><td class="td-right">111</td><td class="td-right">369</td><td class="td-right">9.9%</td><td><span class="sem-r">🔴 Rojo</span></td></tr>
+        <tr><td>5</td><td>Carol Ramírez</td><td class="td-right">126</td><td class="td-right">128</td><td class="td-right">110</td><td class="td-right">364</td><td class="td-right">13.1%</td><td><span class="sem-v">🟢 Verde</span></td></tr>
+        <tr><td>6</td><td>Leonardo González P.</td><td class="td-right">112</td><td class="td-right">114</td><td class="td-right">94</td><td class="td-right">320</td><td class="td-right">12.4%</td><td><span class="sem-a">🟡 Amarillo</span></td></tr>
+        <tr><td>7</td><td>María Corina García</td><td class="td-right">109</td><td class="td-right">110</td><td class="td-right">90</td><td class="td-right">309</td><td class="td-right">11.8%</td><td><span class="sem-a">🟡 Amarillo</span></td></tr>
+        <tr><td>8</td><td>María José Rojas</td><td class="td-right">97</td><td class="td-right">98</td><td class="td-right">79</td><td class="td-right">274</td><td class="td-right">12.0%</td><td><span class="sem-v">🟢 Verde</span></td></tr>
+        <tr><td>9</td><td>Néstor Navarro</td><td class="td-right">96</td><td class="td-right">97</td><td class="td-right">80</td><td class="td-right">273</td><td class="td-right">12.2%</td><td><span class="sem-v">🟢 Verde</span></td></tr>
+        <tr><td>10</td><td>Sergio Pichuante</td><td class="td-right">93</td><td class="td-right">94</td><td class="td-right">75</td><td class="td-right">262</td><td class="td-right">11.5%</td><td><span class="sem-r">🔴 Rojo</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- C: ALERTAS -->
+<div class="tab-pane" id="tab-c-alertas">
+  <div class="info-box red">🚨 <strong>Regla R07 — Caída Cliente Tier A</strong> · 31 clientes con caída significativa vs mes anterior · Revenue total en riesgo: <strong>$1.182B</strong></div>
+  <div class="kpi-row">
+    <div class="kpi kpi-cmk"><div class="kpi-label">Alertas R07 Tier A</div><div class="kpi-value" style="color:var(--red)">31</div><div class="kpi-delta down">Clientes críticos caídos</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Revenue en Riesgo</div><div class="kpi-value" style="color:var(--red)">$1.182B</div><div class="kpi-delta down">3.5% de venta anualizada</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Mayor Riesgo</div><div class="kpi-value" style="font-size:13px;color:var(--red)">CLÍNICA BUPA</div><div class="kpi-delta down">$597M · caída -48%</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Canal más afectado</div><div class="kpi-value" style="font-size:14px">CLÍNICAS</div><div class="kpi-delta down">$850M+ en riesgo acumulado</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Total alertas sistema</div><div class="kpi-value">319</div><div class="kpi-delta neutral">115 ALTA · 204 MEDIA</div></div>
+  </div>
+  <div class="alert-controls">
+    <div class="a-btn active" onclick="filterAlerts('all',this)">Todas (31)</div>
+    <div class="a-btn" onclick="filterAlerts('CLINICAS y HOSPITALES',this)">Clínicas (14)</div>
+    <div class="a-btn" onclick="filterAlerts('RETAIL',this)">Retail (9)</div>
+    <div class="a-btn" onclick="filterAlerts('GRANDES CONVENIOS',this)">Gdes. Convenios (5)</div>
+    <div class="a-btn" onclick="filterAlerts('CENABAST',this)">CENABAST (3)</div>
+  </div>
+  <div id="alertTable" class="chart-card" style="padding:0">
+    <table>
+      <thead><tr><th>#</th><th>Cliente Tier A</th><th>Canal</th><th class="td-right">Caída %</th><th class="td-right">Riesgo $M</th><th>Vendedor</th></tr></thead>
+      <tbody id="alertBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- C: FORECAST -->
+<div class="tab-pane" id="tab-c-forecast">
+  <div class="info-box yellow">🔮 Modelo: tasa diaria normalizada Feb-Mar × factor estacionalidad 2025 (Abr×1.10, May×1.18, Jun×1.01) − ajuste Tier A. Datos al 19-Mar-2026.</div>
+  <div class="kpi-row">
+    <div class="kpi kpi-cmk"><div class="kpi-label">Forecast Base Q2</div><div class="kpi-value" style="color:var(--yellow)">$41.303B</div><div class="kpi-delta neutral">50% Tier A materializa</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Escenario Optimista</div><div class="kpi-value" style="color:var(--green)">$47.025B</div><div class="kpi-delta up">Tasa Mar ×1.1 · 20% Tier A</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Escenario Pesimista</div><div class="kpi-value" style="color:var(--red)">$37.722B</div><div class="kpi-delta down">Tasa Mar ×0.9 · 80% Tier A</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Mejor mes forecast</div><div class="kpi-value">Mayo-26</div><div class="kpi-delta up">$15.108B base · estacionalidad alta</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Canal más dinámico</div><div class="kpi-value" style="font-size:14px">CENABAST</div><div class="kpi-delta up">+36.8%/día normalizado</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Forecast Q2-2026 — 3 Escenarios por Mes</div>
+      <div class="chart-wrap-lg"><canvas id="chartFcMes"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Forecast por Canal vs Q2-2025 ($M)</div>
+      <div class="chart-wrap-lg"><canvas id="chartFcCanal"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Tendencia Diaria por Canal <span class="chart-badge">% vs promedio Q4-2025</span></div>
+      <div class="chart-wrap"><canvas id="chartFcTrend"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Escenarios Q2 Total ($B)</div>
+      <div class="chart-wrap"><canvas id="chartFcEsc"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Proyección Mensual — Escenario Base</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Mes</th><th class="td-right">Pesimista $M</th><th class="td-right">Base $M</th><th class="td-right">Optimista $M</th><th class="td-right">Factor Est.</th><th>Driver</th></tr></thead>
+      <tbody>
+        <tr><td>Abril 2026</td><td class="td-right"><span class="badge badge-red">12.514</span></td><td class="td-right"><strong>13.702</strong></td><td class="td-right"><span class="badge badge-green">15.600</span></td><td class="td-right">×1.10</td><td>Estacionalidad positiva</td></tr>
+        <tr><td>Mayo 2026</td><td class="td-right"><span class="badge badge-red">13.798</span></td><td class="td-right"><strong>15.108</strong></td><td class="td-right"><span class="badge badge-green">17.201</span></td><td class="td-right">×1.18</td><td>Pico estacional — mejor mes</td></tr>
+        <tr><td>Junio 2026</td><td class="td-right"><span class="badge badge-red">11.410</span></td><td class="td-right"><strong>12.493</strong></td><td class="td-right"><span class="badge badge-green">14.224</span></td><td class="td-right">×1.01</td><td>Estable — cierre Q2</td></tr>
+        <tr style="font-weight:700;background:#1c2128"><td>Q2 TOTAL</td><td class="td-right">37.722</td><td class="td-right">41.303</td><td class="td-right">47.025</td><td class="td-right">—</td><td>Riesgo Tier A ajustado</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- C: LABS CMK -->
+<div class="tab-pane" id="tab-c-labs">
+  <div class="kpi-row">
+    <div class="kpi kpi-cmk"><div class="kpi-label">Labs activos Q1-26</div><div class="kpi-value">153</div><div class="kpi-delta neutral">Todos los canales CMK</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Top Lab CMK</div><div class="kpi-value" style="font-size:13px">ROCHE TERC.</div><div class="kpi-delta up">$3.44B · +38.2% YoY</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Mayor caída</div><div class="kpi-value" style="font-size:13px;color:var(--red)">PFIZER CMK</div><div class="kpi-delta down">-25.6% vs Q1-2025</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Mayor alza</div><div class="kpi-value" style="font-size:13px">ASTRAZENECA</div><div class="kpi-delta up">+59.6% vs Q1-2025</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card chart-full">
+      <div class="chart-title">Top 12 Labs CMK — Q1-2025 vs Q1-2026 (B CLP)</div>
+      <div class="chart-wrap-lg"><canvas id="chartCLab"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Ranking Laboratorios CMK</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th>Laboratorio</th><th class="td-right">Q1-2025 $B</th><th class="td-right">Q1-2026 $B</th><th class="td-right">Var %</th><th class="td-right">Mg% 2026</th><th>Tendencia</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>ROCHE - TERCERIZACIÓN</td><td class="td-right">2.49</td><td class="td-right">3.44</td><td class="td-right"><span class="badge badge-green">+38.2%</span></td><td class="td-right">31.8%</td><td><span class="badge badge-green">▲ Fuerte</span></td></tr>
+        <tr><td>2</td><td>MSD - ESPECIALIDAD</td><td class="td-right">2.66</td><td class="td-right">2.75</td><td class="td-right"><span class="badge badge-green">+3.4%</span></td><td class="td-right">18.3%</td><td><span class="badge badge-green">▲ Estable</span></td></tr>
+        <tr><td>3</td><td>JOHNSON Y JOHNSON</td><td class="td-right">2.12</td><td class="td-right">2.57</td><td class="td-right"><span class="badge badge-green">+21.3%</span></td><td class="td-right">10.0%</td><td><span class="badge badge-green">▲ Bueno</span></td></tr>
+        <tr><td>4</td><td>ROCHE - POLÍTICA</td><td class="td-right">2.38</td><td class="td-right">2.31</td><td class="td-right"><span class="badge badge-yellow">-2.9%</span></td><td class="td-right">9.2%</td><td><span class="badge badge-yellow">= Estable</span></td></tr>
+        <tr><td>5</td><td>ASTRAZENECA - NEW ONCO</td><td class="td-right">1.41</td><td class="td-right">2.25</td><td class="td-right"><span class="badge badge-green">+59.6%</span></td><td class="td-right">7.9%</td><td><span class="badge badge-green">▲ Fuerte</span></td></tr>
+        <tr><td>6</td><td>PFIZER CHILE S.A.</td><td class="td-right">3.00</td><td class="td-right">2.23</td><td class="td-right"><span class="badge badge-red">-25.6%</span></td><td class="td-right">6.3%</td><td><span class="badge badge-red">▼ Baja</span></td></tr>
+        <tr><td>7</td><td>BRISTOL MYERS SQUIBB</td><td class="td-right">2.13</td><td class="td-right">1.77</td><td class="td-right"><span class="badge badge-red">-16.9%</span></td><td class="td-right">8.5%</td><td><span class="badge badge-yellow">▼ Moderada</span></td></tr>
+        <tr><td>8</td><td>TECNOFARMA ESP.</td><td class="td-right">1.24</td><td class="td-right">1.42</td><td class="td-right"><span class="badge badge-green">+14.5%</span></td><td class="td-right">10.3%</td><td><span class="badge badge-green">▲ Bueno</span></td></tr>
+        <tr><td>9</td><td>NOVARTIS CHILE S.A.</td><td class="td-right">1.17</td><td class="td-right">1.36</td><td class="td-right"><span class="badge badge-green">+16.2%</span></td><td class="td-right">8.2%</td><td><span class="badge badge-green">▲ Bueno</span></td></tr>
+        <tr><td>10</td><td>GSK CHILE</td><td class="td-right">0.47</td><td class="td-right">0.65</td><td class="td-right"><span class="badge badge-green">+38.3%</span></td><td class="td-right">12.5%</td><td><span class="badge badge-green">▲ Fuerte</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- C: YOY -->
+<div class="tab-pane" id="tab-c-yoy">
+  <div class="kpi-row">
+    <div class="kpi kpi-cmk"><div class="kpi-label">CMK Q1-2026</div><div class="kpi-value">$20.677B</div><div class="kpi-delta up">▲ +28.4% vs Q1-2025</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">CMK Q1-2025</div><div class="kpi-value">$16.106B</div><div class="kpi-delta neutral">Base de comparación</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Canal mayor alza</div><div class="kpi-value" style="font-size:14px">CENABAST</div><div class="kpi-delta up">+92.1% YoY Q1</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Canal mayor baja</div><div class="kpi-value" style="font-size:14px">B2B</div><div class="kpi-delta down">-77.0% YoY Q1</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Margen YoY</div><div class="kpi-value">+1.3pp</div><div class="kpi-delta up">15.3% → 16.6%</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">YoY por Canal — Q1-2025 vs Q1-2026</div>
+      <div class="chart-wrap-xl"><canvas id="chartYoYCanal"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Variación % por Canal</div>
+      <div class="chart-wrap-xl"><canvas id="chartYoYPct"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Detalle YoY por Canal CMK</div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Canal</th><th class="td-right">Q1-2025 $M</th><th class="td-right">Q1-2026 $M</th><th class="td-right">Var %</th><th class="td-right">Mg% 25</th><th class="td-right">Mg% 26</th><th>Tendencia</th></tr></thead>
+      <tbody>
+        <tr><td>CLÍNICAS y HOSP.</td><td class="td-right">9.111</td><td class="td-right">10.681</td><td class="td-right"><span class="badge badge-green">+17.2%</span></td><td class="td-right">15.4%</td><td class="td-right">15.4%</td><td><span class="badge badge-green">Vol ▲</span></td></tr>
+        <tr><td>RETAIL</td><td class="td-right">3.020</td><td class="td-right">4.802</td><td class="td-right"><span class="badge badge-green">+58.9%</span></td><td class="td-right">12.4%</td><td class="td-right">12.4%</td><td><span class="badge badge-green">Vol ▲▲</span></td></tr>
+        <tr><td>CENABAST</td><td class="td-right">1.181</td><td class="td-right">2.272</td><td class="td-right"><span class="badge badge-green">+92.1%</span></td><td class="td-right">24.6%</td><td class="td-right">25.0%</td><td><span class="badge badge-green">▲ Fuerte</span></td></tr>
+        <tr><td>GRANDES CONV.</td><td class="td-right">2.104</td><td class="td-right">1.839</td><td class="td-right"><span class="badge badge-red">-12.7%</span></td><td class="td-right">30.6%</td><td class="td-right">31.2%</td><td><span class="badge badge-yellow">Vol ▼</span></td></tr>
+        <tr><td>B2B</td><td class="td-right">617</td><td class="td-right">142</td><td class="td-right"><span class="badge badge-red">-77.0%</span></td><td class="td-right">36.5%</td><td class="td-right">32.1%</td><td><span class="badge badge-red">⚠ Crítico</span></td></tr>
+        <tr><td>MERCADO PÚBLICO</td><td class="td-right">441</td><td class="td-right">176</td><td class="td-right"><span class="badge badge-red">-60.1%</span></td><td class="td-right">40.5%</td><td class="td-right">38.5%</td><td><span class="badge badge-red">⚠ Crítico</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+
+<!-- ══ CMK: PANORAMA VENDEDORES ══ -->
+<div class="tab-pane" id="tab-c-panorama">
+  <div class="info-box green">👤 <strong>Panorama completo vendedores</strong> — Revenue + cartera + cobertura geográfica + tendencia por cada vendedor activo Q1-2026.</div>
+  <div class="kpi-row">
+    <div class="kpi kpi-cmk"><div class="kpi-label">Vendedores activos</div><div class="kpi-value" style="color:var(--green)">24</div><div class="kpi-delta neutral">9 Farma · 15 Retail</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Revenue total CMK</div><div class="kpi-value">$20.677B</div><div class="kpi-delta up">▲ +28.4% vs Q1-2025</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Clientes gestionados</div><div class="kpi-value">1.689</div><div class="kpi-delta neutral">Activos Q1-2026</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Regiones cubiertas</div><div class="kpi-value">16</div><div class="kpi-delta neutral">227 comunas · todo Chile</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Revenue en riesgo</div><div class="kpi-value" style="color:var(--red)">$479.3M</div><div class="kpi-delta down">393 clientes caídos</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card chart-full">
+      <div class="chart-title">Revenue Q1-2026 por Vendedor (ex-PROFAR) <span class="chart-badge">$M CLP</span></div>
+      <div class="chart-wrap-xl"><canvas id="chartPanoramaRev"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Margen % por Vendedor</div>
+      <div class="chart-wrap-lg"><canvas id="chartPanoramaMg"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Revenue en Riesgo por Vendedor ($M)</div>
+      <div class="chart-wrap-lg"><canvas id="chartPanoramaRiesgo"></canvas></div>
+    </div>
+  </div>
+  <div class="section-label">Tabla completa — Todos los vendedores CMK</div>
+  <div class="chart-card" style="padding:0">
+    <table>
+      <thead><tr><th>#</th><th>Vendedor</th><th>Área</th><th>Canal</th><th class="td-right">Rev Q1 $M</th><th class="td-right">Margen %</th><th class="td-right">Clientes</th><th class="td-right">Caídos</th><th class="td-right">Riesgo $M</th><th class="td-right">Regiones</th><th>Semáforo</th></tr></thead>
+      <tbody id="panoramaBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ CMK: ROTACION SKU ══ -->
+<div class="tab-pane" id="tab-c-rotacion">
+  <div class="info-box green">🔄 <strong>Rotación de SKUs</strong> — Tendencia de movimiento por canal: SKUs en alza, caída, nuevos y desaparecidos. Total 5.478 SKUs analizados Q1-2026.</div>
+  <div class="kpi-row">
+    <div class="kpi kpi-cmk"><div class="kpi-label">SKUs en alza</div><div class="kpi-value" style="color:var(--green)">172</div><div class="kpi-delta up">Crecimiento sostenido 2+ meses</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">SKUs en caída</div><div class="kpi-value" style="color:var(--red)">528</div><div class="kpi-delta down">Caída sostenida detectada</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">SKUs nuevos Q1</div><div class="kpi-value" style="color:var(--accent)">2.686</div><div class="kpi-delta up">Primera factura en Q1-2026</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">SKUs desaparecidos</div><td class="kpi-value" style="color:var(--orange)">921</div><div class="kpi-delta down">Sin factura en Q1-2026</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Revenue SKUs críticos</div><div class="kpi-value" style="color:var(--red)">$1.216B</div><div class="kpi-delta down">Caída sostenida en productos clave</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Distribución tendencias — RETAIL</div>
+      <div class="chart-wrap-lg"><canvas id="chartRotRetail"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Distribución tendencias — CLÍNICAS</div>
+      <div class="chart-wrap-lg"><canvas id="chartRotClinica"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Top 5 SKUs en alza sostenida <span class="chart-badge">Ene→Mar $M</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartRotAlza"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Top 5 SKUs en caída sostenida</div>
+      <div class="chart-wrap-lg"><canvas id="chartRotCaida"></canvas></div>
+    </div>
+  </div>
+  <div class="section-label">SKUs críticos — Caída sostenida con alto revenue</div>
+  <div class="chart-card" style="padding:0">
+    <table>
+      <thead><tr><th>SKU</th><th>Descripción</th><th>Canal</th><th>Lab</th><th class="td-right">Ene $M</th><th class="td-right">Feb $M</th><th class="td-right">Mar $M</th><th class="td-right">Var Feb%</th><th class="td-right">Var Mar%</th></tr></thead>
+      <tbody>
+        <tr><td>107859</td><td>BAVENCIO 20mg/ml x 10ml</td><td><span class="badge badge-teal">Clínicas</span></td><td>Merck</td><td class="td-right">108.0</td><td class="td-right">63.2</td><td class="td-right">43.0</td><td class="td-right"><span class="badge badge-red">-41.5%</span></td><td class="td-right"><span class="badge badge-red">-32.0%</span></td></tr>
+        <tr><td>100159</td><td>MABTHERA 500mg x 1fa</td><td><span class="badge badge-teal">Clínicas</span></td><td>Roche</td><td class="td-right">95.8</td><td class="td-right">74.0</td><td class="td-right">33.6</td><td class="td-right"><span class="badge badge-red">-22.7%</span></td><td class="td-right"><span class="badge badge-red">-54.6%</span></td></tr>
+        <tr><td>102994</td><td>INLYTA 5mg x 60 comp</td><td><span class="badge badge-blue">PROFAR</span></td><td>Pfizer</td><td class="td-right">80.6</td><td class="td-right">54.6</td><td class="td-right">31.5</td><td class="td-right"><span class="badge badge-red">-32.3%</span></td><td class="td-right"><span class="badge badge-red">-42.3%</span></td></tr>
+        <tr><td>100187</td><td>OPDIVO 40mg/4ml x 1fa</td><td><span class="badge badge-teal">Clínicas</span></td><td>BMS</td><td class="td-right">100.0</td><td class="td-right">33.8</td><td class="td-right">24.6</td><td class="td-right"><span class="badge badge-red">-66.2%</span></td><td class="td-right"><span class="badge badge-red">-27.2%</span></td></tr>
+        <tr><td>108537</td><td>ENZAVITAE 40mg x 120c</td><td><span class="badge badge-orange">Cód.11</span></td><td>Galenicum</td><td class="td-right">66.3</td><td class="td-right">44.5</td><td class="td-right">31.3</td><td class="td-right"><span class="badge badge-red">-33.0%</span></td><td class="td-right"><span class="badge badge-red">-29.6%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="section-label">Top SKUs en alza — Oportunidad</div>
+  <div class="chart-card" style="padding:0">
+    <table>
+      <thead><tr><th>SKU</th><th>Descripción</th><th>Canal</th><th>Lab</th><th class="td-right">Ene $M</th><th class="td-right">Feb $M</th><th class="td-right">Mar $M</th><th class="td-right">Var Feb%</th><th class="td-right">Var Mar%</th></tr></thead>
+      <tbody>
+        <tr><td>100002</td><td>ACTEMRA 162mg x 4 Jer.</td><td><span class="badge badge-green">CENABAST</span></td><td>Roche</td><td class="td-right">16.9</td><td class="td-right">37.5</td><td class="td-right">57.4</td><td class="td-right"><span class="badge badge-green">+121.9%</span></td><td class="td-right"><span class="badge badge-green">+53.1%</span></td></tr>
+        <tr><td>105113</td><td>TAPSIN CALIENTE NOCHE</td><td><span class="badge badge-green">Retail</span></td><td>Maver</td><td class="td-right">1.0</td><td class="td-right">1.6</td><td class="td-right">34.0</td><td class="td-right"><span class="badge badge-green">+56.4%</span></td><td class="td-right"><span class="badge badge-green">+1994%</span></td></tr>
+        <tr><td>101612</td><td>CLEXANE 40mg/0.4ml</td><td><span class="badge badge-green">Retail</span></td><td>Sanofi</td><td class="td-right">6.4</td><td class="td-right">10.7</td><td class="td-right">16.5</td><td class="td-right"><span class="badge badge-green">+66.4%</span></td><td class="td-right"><span class="badge badge-green">+54.0%</span></td></tr>
+        <tr><td>100308</td><td>CONCERTA 36mg x 30</td><td><span class="badge badge-orange">Cód.11</span></td><td>JyJ</td><td class="td-right">8.4</td><td class="td-right">10.5</td><td class="td-right">15.7</td><td class="td-right"><span class="badge badge-green">+25.6%</span></td><td class="td-right"><span class="badge badge-green">+49.5%</span></td></tr>
+        <tr><td>105112</td><td>TAPSIN CALIENTE DÍA</td><td><span class="badge badge-green">Retail</span></td><td>Maver</td><td class="td-right">0.9</td><td class="td-right">1.3</td><td class="td-right">17.4</td><td class="td-right"><span class="badge badge-green">+41.3%</span></td><td class="td-right"><span class="badge badge-green">+1293%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ CMK: CARTERA CLIENTES ══ -->
+<div class="tab-pane" id="tab-c-cartera">
+  <div class="info-box green">💼 <strong>Cartera de Clientes</strong> — Análisis Pareto, retención mensual, tiers estratégicos y concentración de revenue. Total 1.689 clientes activos Q1-2026.</div>
+  <div class="kpi-row">
+    <div class="kpi kpi-cmk"><div class="kpi-label">Clientes únicos Q1</div><div class="kpi-value" style="color:var(--green)">1.689</div><div class="kpi-delta neutral">Total activos Q1-2026</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Retención Feb→Mar</div><div class="kpi-value" style="color:var(--yellow)">72.9%</div><div class="kpi-delta down">▼ -9.8pp vs Ene→Feb</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Clientes perdidos Mar</div><div class="kpi-value" style="color:var(--red)">367</div><div class="kpi-delta down">Compraron Feb pero no Mar</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Pareto 80% revenue</div><div class="kpi-value">36 clientes</div><div class="kpi-delta neutral">2.1% de la cartera = 80% revenue</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">HHI Concentración</div><div class="kpi-value" style="color:var(--yellow)">1.718</div><div class="kpi-delta down">Alta concentración (>1.500)</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Clientes activos por mes <span class="chart-badge">Q1-2026</span></div>
+      <div class="chart-wrap"><canvas id="chartCartActivos"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Segmentación Tier — Revenue</div>
+      <div class="chart-wrap"><canvas id="chartCartTier"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Curva Pareto — % clientes vs % revenue</div>
+      <div class="chart-wrap-lg"><canvas id="chartCartPareto"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Retención mensual <span class="chart-badge">% clientes que repiten</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartCartRetencion"></canvas></div>
+    </div>
+  </div>
+  <div class="section-label">Top 10 clientes por revenue — Q1-2026</div>
+  <div class="chart-card" style="padding:0">
+    <table>
+      <thead><tr><th>#</th><th>Cliente</th><th>Canal</th><th>Región</th><th class="td-right">Rev Q1 $M</th><th class="td-right">% Total</th><th class="td-right">Margen %</th><th>Tier</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>Farmacia Acceso S.A.</strong></td><td><span class="badge badge-blue">PROFAR</span></td><td>RM</td><td class="td-right">12.906</td><td class="td-right">38.3%</td><td class="td-right">5.0%</td><td><span class="badge badge-teal">A Estratégico</span></td></tr>
+        <tr><td>2</td><td>Clínica Alemana Santiago</td><td><span class="badge badge-teal">Clínicas</span></td><td>RM</td><td class="td-right">4.446</td><td class="td-right">13.2%</td><td class="td-right">11.9%</td><td><span class="badge badge-teal">A Estratégico</span></td></tr>
+        <tr><td>3</td><td>Clínica BUPA Santiago <span class="badge badge-red">R07</span></td><td><span class="badge badge-teal">Clínicas</span></td><td>RM</td><td class="td-right">2.259</td><td class="td-right">6.7%</td><td class="td-right">17.8%</td><td><span class="badge badge-teal">A Estratégico</span></td></tr>
+        <tr><td>4</td><td>Salcobrand S.A.</td><td><span class="badge badge-green">G.Convenios</span></td><td>RM</td><td class="td-right">1.499</td><td class="td-right">4.4%</td><td class="td-right">29.4%</td><td><span class="badge badge-accent">B Alto</span></td></tr>
+        <tr><td>5</td><td>MSD Agencia Chile</td><td><span class="badge badge-orange">Est.Clín.</span></td><td>Biobío</td><td class="td-right">546</td><td class="td-right">1.6%</td><td class="td-right">19.9%</td><td><span class="badge badge-accent">B Alto</span></td></tr>
+        <tr><td>6</td><td>CENABAST (CENTR.)</td><td><span class="badge badge-green">CENABAST</span></td><td>RM</td><td class="td-right">498</td><td class="td-right">1.5%</td><td class="td-right">24.1%</td><td><span class="badge badge-accent">B Alto</span></td></tr>
+        <tr><td>7</td><td>Farmacia Ahumada S.A. <span class="badge badge-red">R07</span></td><td><span class="badge badge-green">Retail</span></td><td>RM</td><td class="td-right">487</td><td class="td-right">1.4%</td><td class="td-right">12.1%</td><td><span class="badge badge-accent">B Alto</span></td></tr>
+        <tr><td>8</td><td>FUSAT</td><td><span class="badge badge-green">G.Convenios</span></td><td>RM</td><td class="td-right">342</td><td class="td-right">1.0%</td><td class="td-right">31.2%</td><td><span class="badge badge-yellow">C Medio</span></td></tr>
+        <tr><td>9</td><td>Cruz Verde S.A. <span class="badge badge-yellow">R07</span></td><td><span class="badge badge-green">Retail</span></td><td>Multi</td><td class="td-right">298</td><td class="td-right">0.9%</td><td class="td-right">13.5%</td><td><span class="badge badge-yellow">C Medio</span></td></tr>
+        <tr><td>10</td><td>Hospital Sótero del Río</td><td><span class="badge badge-green">CENABAST</span></td><td>RM</td><td class="td-right">276</td><td class="td-right">0.8%</td><td class="td-right">26.3%</td><td><span class="badge badge-yellow">C Medio</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /world-cmk -->
+</div><!-- /content -->
+<script>
+// ═══════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════
+// PROFAR monthly
+const pVenta=[2973.3,3051.6,2918.9];
+const pMg=[16.0,16.06,17.82];
+const pDiario=[95.9,109.0,153.6]; // $M/día
+const pEstL=['ISAPRES','QUIMIOTERAPIAS','VENTA TEL.','PARTICULAR','E-COMMERCE','EC SANOFI','FUNCIONARIO'];
+const pEstV=[4670.0,2774.0,761.0,366.0,196.0,156.0,15.0];
+const pEstM=[11.78,25.61,13.0,15.73,14.16,22.83,10.61];
+const pLabN=['PFIZER','ASTRAZENECA','SCIENZA','ROCHE','MERCK S.A.','SANDOZ','GLAXOSMITHKLINE','GALENICUM'];
+const pLabV=[1297.0,935.0,888.0,723.0,71.0,68.0,55.0,55.0];
+const pZonaL=['CENTRO','SUR','NORTE'];
+const pZonaV=[7953.0,801.0,190.0];
+const pSkuN=['TRIKAFTA-S 10.','GENOTR...','KEYTRUD...','VYONDYS...','VERZENIO 100..','NERLYNX 40 M..','BRUKINSA 80 M.','TREMEVA...','OTROS'];
+const pSkuV=[719.7,696.6,497.4,341.9,96.7,89.4,88.2,85.9,6328.0];
+const pEcomM=['Ene-26','Feb-26','Mar-26(19d)'];
+const pEcomV=[80.4,162.5,132.8];
+
+// CMK monthly full year 2025 (histórico fijo)
+const vm25=[10478,8970,10692,11106,12245,10126,11439,11598,11233,11828,11377,11701];
+// CMK Q1 2026 mensual — fuente: Power BI export 19-Mar-2026
+const vm26=[7123.6,8403.8,8657.4];
+const canalN=['CLÍNICAS','RETAIL','CENABAST','G.CONVENIOS','EST.CLÍN.','CÓD.11','MERC.PÚB.'];
+const canalRevQ1=[10680.7,4802.0,2272.5,1838.7,575.2,331.4,176.5];
+const canalMgQ1=[15.4,12.4,24.6,30.6,20.0,19.3,40.5];
+
+// Rotación SKU (datos reales)
+const rotKpis={"total_skus": 5478, "n_alza": 172, "n_caida": 528, "n_desaparecidos": 921, "n_nuevos": 2686, "rev_criticos_M": 1215.9};
+const rotRetail=[1760, 1126, 627, 657, 313];
+const rotClinicas=[166, 106, 116, 149, 50];
+const rotAlzaN=['ACTEMRA 162 MG / 0,9','TAPSIN CALIENTE NOCH','* CONCERTA 36 MG X 3','CLEXANE 40 MG / 0,4 ','TAPSIN CALIENTE DIA '];
+const rotAlzaE=[16.89,1.04,8.35,6.44,0.88];
+const rotAlzaF=[37.47,1.63,10.49,10.72,1.25];
+const rotAlzaM=[57.37,34.04,15.69,16.51,17.4];
+const rotCaidaN=['BAVENCIO 20 MG / ML ','MABTHERA 500 MG / 50','INLYTA 5 MG X 60 COM','OPDIVO 40 MG / 4 ML ','ENZAVITAE 40 MG X 12'];
+const rotCaidaE=[108.02,95.78,80.62,99.99,66.34];
+const rotCaidaF=[63.18,74.02,54.58,33.76,44.46];
+const rotCaidaM=[42.96,33.58,31.5,24.59,31.3];
+
+// Cartera clientes (datos reales)
+const cartActivos=[1355, 1352, 1168];
+const cartRetPct=[82.7, 72.9];
+const cartRetPerd=[234, 367];
+const cartTierLbl=['A — Estratégico','B — Alto','C — Medio','D — Pequeño'];
+const cartTierPct=[58.1, 10.0, 17.0, 13.9];
+const paretoX=[0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36, 0.41, 0.47, 0.53, 0.59, 0.65, 0.71, 0.77, 0.83, 0.89, 0.95, 1.01, 1.07, 1.12, 1.18, 2.1, 9.2, 100];
+const paretoY=[0, 38.3, 51.4, 58.1, 62.6, 64.2, 65.6, 67.0, 68.1, 69.1, 70.1, 70.9, 71.7, 72.5, 73.2, 73.8, 74.4, 74.9, 75.4, 75.8, 76.2, 80, 90, 100];
+
+// Vendedores (datos reales)
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let currentCompany='cmk', currentFilter='q1_26';
+const charts={};
+function mkChart(id,cfg){if(charts[id]){charts[id].destroy();}const c=document.getElementById(id);if(!c)return null;charts[id]=new Chart(c,cfg);return charts[id];}
+const MONTHS=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const DEF={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8b949e',font:{size:10},boxWidth:10}},tooltip:{backgroundColor:'#1c2128',borderColor:'#30363d',borderWidth:1,titleColor:'#e6edf3',bodyColor:'#e6edf3'}},scales:{x:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}},y:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}}}};
+function barC(c){return{...DEF,type:'bar',data:{},options:{...DEF,plugins:{...DEF.plugins}}};}
+
+// ═══════════════════════════════════════════════════════
+//  COMPANY SWITCHER
+// ═══════════════════════════════════════════════════════
+function setCompany(c){
+  currentCompany=c;
+  document.getElementById('co-btn-profar').classList.toggle('active',c==='profar');
+  document.getElementById('co-btn-cmk').classList.toggle('active',c==='cmk');
+  document.getElementById('world-profar').style.display=c==='profar'?'block':'none';
+  document.getElementById('world-cmk').style.display=c==='cmk'?'block':'none';
+  document.getElementById('tabs-profar').classList.toggle('active',c==='profar');
+  document.getElementById('tabs-cmk').classList.toggle('active',c==='cmk');
+  // reset to first tab
+  const world=c==='profar'?'profar':'cmk';
+  const prefix=c==='profar'?'p':'c';
+  document.querySelectorAll('#world-'+world+' .tab-pane').forEach(p=>p.classList.remove('active'));
+  const first=document.getElementById('tab-'+prefix+(c==='profar'?'-resumen':'-resumen'));
+  if(first)first.classList.add('active');
+  document.querySelectorAll('#tabs-'+world+' .tab').forEach((t,i)=>{t.classList.toggle('active',i===0);});
+  setTimeout(()=>c==='profar'?buildProfarCharts():buildCMKCharts(),50);
+}
+
+// ═══════════════════════════════════════════════════════
+//  TAB SWITCHER
+// ═══════════════════════════════════════════════════════
+function showTab(id,el,world){
+  world=world||currentCompany;
+  const prefix=world==='profar'?'p':'c';
+  document.querySelectorAll('#world-'+world+' .tab-pane').forEach(p=>p.classList.remove('active'));
+  const pane=document.getElementById('tab-'+id);
+  if(pane)pane.classList.add('active');
+  document.querySelectorAll('#tabs-'+world+' .tab').forEach(t=>t.classList.remove('active'));
+  if(el)el.classList.add('active');
+  setTimeout(()=>{
+    const buildMap={
+      'p-resumen':()=>{ buildPMensual();buildPEstDonut();buildPEstMg(); },
+      'p-sellthrough':()=>buildPDiario(),
+      'p-estratificacion':()=>{ buildPEstBar();buildPEstMg2(); },
+      'p-laboratorios':()=>buildPLabs(),
+      'p-skus':()=>{ buildPSkus();buildPEcom(); },
+      'p-zonas':()=>{ buildPZonas();buildPZonasBar(); },
+      'p-alertas':()=>{},
+      'c-resumen':()=>{ buildCOverlay();buildCCanalDonut();buildCTendencia(); },
+      'c-farma':()=>{ buildFarmaVend();buildFarmaMg();buildFarmaCanal(); },
+      'c-retail':()=>{ buildRetailComp();buildRetailMg();buildRetailMes(); },
+      'c-alertas':()=>renderAlerts('all'),
+      'c-forecast':()=>{ buildFcMes();buildFcCanal();buildFcTrend();buildFcEsc(); },
+      'c-labs':()=>buildCLab(),
+      'c-yoy':()=>{ buildYoYCanal();buildYoYPct(); },
+      'p-competencia':()=>{ buildCompCobertura();buildCompMargen();buildCompHistorico();buildCompDif(); },
+      'c-panorama':()=>{ buildPanoramaRev();buildPanoramaMg();buildPanoramaRiesgo(); },
+      'c-rotacion':()=>{ buildRotRetail();buildRotClinica();buildRotAlza();buildRotCaida(); },
+      'c-cartera':()=>{ buildCartActivos();buildCartTier();buildCartPareto();buildCartRetencion(); },
+    };
+    if(buildMap[id])buildMap[id]();
+  },30);
+}
+
+// ═══════════════════════════════════════════════════════
+//  FILTER
+// ═══════════════════════════════════════════════════════
+const filterMeta={'q1_26':'Q1 2026 · Ene–Mar · vs Q1 2025','ene_26':'Enero 2026 · vs Ene 2025','feb_26':'Febrero 2026 · vs Feb 2025','mar_26':'Marzo 2026 (parcial 19d) · vs Mar 2025','q1_25':'Q1 2025 · Referencia histórica','full_25':'Full Year 2025 · 12 meses','cmp_q1':'Comparativo Q1 2025 vs Q1 2026'};
+function setFilter(f){
+  currentFilter=f;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  const el=document.getElementById('pill-'+f);
+  if(el)el.classList.add('active');
+  document.getElementById('filterStatus').textContent=filterMeta[f]||f;
+}
+
+// ═══════════════════════════════════════════════════════
+//  ALERTS RENDER
+// ═══════════════════════════════════════════════════════
+function renderAlerts(canal){
+  const filtered=canal==='all'?alertsR07:alertsR07.filter(a=>a.c===canal);
+  const tbody=document.getElementById('alertBody');
+  if(!tbody)return;
+  tbody.innerHTML=filtered.map((a,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td><strong>${a.n}</strong></td>
+      <td><span class="badge badge-${a.c.includes('CLINICAS')?'teal':a.c==='RETAIL'?'green':a.c.includes('GRANDES')?'purple':'blue'}">${a.c}</span></td>
+      <td class="td-right"><span class="badge badge-${a.pct<-40?'red':a.pct<-20?'yellow':'orange'}">${a.pct}%</span></td>
+      <td class="td-right"><strong style="color:${a.riesgo>100?'#f85149':a.riesgo>50?'#d29922':'#8b949e'}">$${a.riesgo}M</strong></td>
+      <td style="color:var(--muted);font-size:11px">${a.v}</td>
+    </tr>`).join('');
+}
+function filterAlerts(canal,btn){
+  document.querySelectorAll('.a-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderAlerts(canal);
+}
+
+// ═══════════════════════════════════════════════════════
+//  CHART DEFAULTS
+// ═══════════════════════════════════════════════════════
+const baseOpts=(xl=false)=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8b949e',font:{size:10},boxWidth:10,padding:8}},tooltip:{backgroundColor:'#1c2128',borderColor:'#30363d',borderWidth:1,titleColor:'#e6edf3',bodyColor:'#c9d1d9',padding:8}},scales:{x:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}},y:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}}}});
+const donutOpts=()=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#8b949e',font:{size:10},boxWidth:10,padding:6}},tooltip:{backgroundColor:'#1c2128',borderColor:'#30363d',borderWidth:1,titleColor:'#e6edf3',bodyColor:'#c9d1d9'}}});
+const hbarOpts=()=>({...baseOpts(),indexAxis:'y',scales:{x:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}},y:{ticks:{color:'#8b949e',font:{size:10}},grid:{display:false}}}});
+
+// ═══════════════════════════════════════════════════════
+//  PROFAR CHARTS
+// ═══════════════════════════════════════════════════════
+function buildProfarCharts(){ buildPMensual();buildPEstDonut();buildPEstMg(); }
+
+function buildPMensual(){
+  mkChart('chartPMensual',{type:'bar',data:{labels:['Ene-26','Feb-26','Mar-26(19d)'],datasets:[
+    {label:'Venta $M',data:pVenta,backgroundColor:'rgba(46,168,204,.7)',yAxisID:'y'},
+    {label:'Margen %',data:pMg,type:'line',borderColor:'#3fb950',backgroundColor:'rgba(63,185,80,.15)',borderWidth:2,pointRadius:4,yAxisID:'y1'}
+  ]},options:{...baseOpts(),scales:{x:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}},y:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}},y1:{position:'right',ticks:{color:'#3fb950',font:{size:10}},grid:{display:false}}}}});
+}
+function buildPEstDonut(){
+  mkChart('chartPEstDonut',{type:'doughnut',data:{labels:pEstL,datasets:[{data:pEstV,backgroundColor:['#2ea8cc','#3fb950','#58a6ff','#a371f7','#fb8500','#d29922','#f85149'],borderWidth:0}]},options:donutOpts()});
+}
+function buildPEstMg(){
+  mkChart('chartPEstMg',{type:'bar',data:{labels:pEstL,datasets:[{label:'Margen %',data:pEstM,backgroundColor:pEstM.map(v=>v>20?'rgba(63,185,80,.7)':v>15?'rgba(46,168,204,.7)':'rgba(210,153,34,.7)')}]},options:{...hbarOpts(),plugins:{legend:{display:false}}}});
+}
+function buildPDiario(){
+  mkChart('chartPDiario',{type:'bar',data:{labels:['Ene-26\n(31d)','Feb-26\n(28d)','Mar-26\n(19d)'],datasets:[{label:'Tasa diaria $M/día',data:pDiario,backgroundColor:pDiario.map((v,i)=>i===2?'rgba(248,81,73,.7)':'rgba(46,168,204,.7)'),borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`$${c.raw}M/día`}}}}});
+}
+function buildPEstBar(){
+  mkChart('chartPEstBar',{type:'bar',data:{labels:pEstL,datasets:[{label:'Venta $M',data:pEstV,backgroundColor:'rgba(46,168,204,.7)',borderRadius:3}]},options:{...hbarOpts(),plugins:{legend:{display:false}}}});
+}
+function buildPEstMg2(){
+  mkChart('chartPEstMg2',{type:'bar',data:{labels:pEstL,datasets:[{label:'Margen %',data:pEstM,backgroundColor:pEstM.map(v=>v>20?'rgba(63,185,80,.7)':v>15?'rgba(46,168,204,.7)':'rgba(210,153,34,.7)'),borderRadius:3}]},options:{...hbarOpts(),plugins:{legend:{display:false}}}});
+}
+function buildPLabs(){
+  mkChart('chartPLabs',{type:'bar',data:{labels:pLabN,datasets:[{label:'Venta $M',data:pLabV,backgroundColor:'rgba(46,168,204,.7)',borderRadius:3}]},options:{...hbarOpts(),plugins:{legend:{display:false}}}});
+}
+function buildPSkus(){
+  mkChart('chartPSkus',{type:'bar',data:{labels:pSkuN,datasets:[{label:'Revenue $M',data:pSkuV,backgroundColor:'rgba(46,168,204,.7)',borderRadius:3}]},options:{...hbarOpts(),plugins:{legend:{display:false}}}});
+}
+function buildPEcom(){
+  mkChart('chartPEcom',{type:'bar',data:{labels:pEcomM,datasets:[{label:'Revenue eCommerce $M',data:pEcomV,backgroundColor:'rgba(46,168,204,.6)',borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false}}}});
+}
+function buildPZonas(){
+  mkChart('chartPZonas',{type:'doughnut',data:{labels:pZonaL,datasets:[{data:pZonaV,backgroundColor:['#58a6ff','#3fb950','#fb8500'],borderWidth:0}]},options:donutOpts()});
+}
+function buildPZonasBar(){
+  mkChart('chartPZonasBar',{type:'bar',data:{labels:pZonaL,datasets:[{label:'Venta $M',data:pZonaV,backgroundColor:['rgba(88,166,255,.7)','rgba(63,185,80,.7)','rgba(251,133,0,.7)'],borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false}}}});
+}
+
+// ═══════════════════════════════════════════════════════
+//  CMK CHARTS
+// ═══════════════════════════════════════════════════════
+function buildCMKCharts(){ buildCOverlay();buildCCanalDonut();buildCTendencia(); }
+
+function buildCOverlay(){
+  mkChart('chartCOverlay',{type:'bar',data:{labels:MONTHS,datasets:[
+    {label:'2025 $M',data:vm25,backgroundColor:'rgba(88,166,255,.35)',borderRadius:2,yAxisID:'y'},
+    {label:'2026 $M',type:'line',data:[...vm26,...Array(9).fill(null)],borderColor:'#3fb950',backgroundColor:'rgba(63,185,80,.15)',borderWidth:2.5,pointRadius:5,spanGaps:false,yAxisID:'y'},
+  ]},options:{...baseOpts(),scales:{x:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}},y:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}}}}});
+}
+function buildCCanalDonut(){
+  mkChart('chartCCanalDonut',{type:'doughnut',data:{labels:canalN,datasets:[{data:canal26,backgroundColor:['#2ea8cc','#3fb950','#58a6ff','#a371f7','#fb8500','#d29922','#f85149'],borderWidth:0}]},options:donutOpts()});
+}
+function buildCTendencia(){
+  const labs=['CLÍNICAS','RETAIL','CENABAST','G.CONV','CÓD.11'];
+  const vals=[8.6,13.2,36.8,21.1,-42.0];
+  mkChart('chartCTendencia',{type:'bar',data:{labels:labs,datasets:[{label:'%/día vs Q4-2025',data:vals,backgroundColor:vals.map(v=>v>0?'rgba(63,185,80,.7)':'rgba(248,81,73,.7)'),borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw>0?'+':''}${c.raw}%`}}}}});
+}
+function buildFarmaVend(){
+  mkChart('chartFarmaVend',{type:'bar',data:{labels:farmaNames,datasets:[{label:'Revenue Q1 $M',data:farmaRev,backgroundColor:'rgba(46,168,204,.7)',borderRadius:3}]},options:{...hbarOpts(),plugins:{legend:{display:false}}}});
+}
+function buildFarmaMg(){
+  mkChart('chartFarmaMg',{type:'bar',data:{labels:farmaNames,datasets:[{label:'Margen %',data:farmaMg,backgroundColor:farmaMg.map(v=>v>20?'rgba(63,185,80,.7)':'rgba(46,168,204,.7)'),borderRadius:3}]},options:{...hbarOpts(),plugins:{legend:{display:false}}}});
+}
+function buildFarmaCanal(){
+  mkChart('chartFarmaCanal',{type:'doughnut',data:{labels:['Clínicas','CENABAST','Gdes.Conv.','Est.Clín.'],datasets:[{data:[10681,2272,1839,575],backgroundColor:['#2ea8cc','#3fb950','#a371f7','#fb8500'],borderWidth:0}]},options:donutOpts()});
+}
+function buildRetailComp(){
+  mkChart('chartRetailComp',{type:'bar',data:{labels:retNames,datasets:[
+    {label:'Q1-2025',data:ret25,backgroundColor:'rgba(88,166,255,.35)',borderRadius:2},
+    {label:'Q1-2026',data:ret26,backgroundColor:'rgba(63,185,80,.7)',borderRadius:2}
+  ]},options:{...hbarOpts()}});
+}
+function buildRetailMg(){
+  mkChart('chartRetailMg',{type:'bar',data:{labels:retNames,datasets:[{label:'Margen %',data:retMg,backgroundColor:retMg.map(v=>v<10?'rgba(248,81,73,.7)':v<12?'rgba(210,153,34,.7)':'rgba(63,185,80,.7)'),borderRadius:3}]},options:{...hbarOpts(),plugins:{legend:{display:false}}}});
+}
+function buildRetailMes(){
+  const top5=['GUSTAVO F.','L.BARDI','L.HERNANDEZ','CESAR R.','CAROL R.'];
+  const e=[220,185,135,128,126], f=[230,192,138,130,128], m=[188,151,110,111,110];
+  mkChart('chartRetailMes',{type:'bar',data:{labels:['Ene-26','Feb-26','Mar-26'],datasets:top5.map((n,i)=>({label:n,data:[e[i],f[i],m[i]],backgroundColor:`hsl(${100+i*40},60%,50%)`}))},options:{...baseOpts()}});
+}
+function buildFcMes(){
+  mkChart('chartFcMes',{type:'line',data:{labels:fcMeses,datasets:[
+    {label:'Pesimista',data:fcPesi,borderColor:'#f85149',backgroundColor:'rgba(248,81,73,.1)',borderWidth:2,borderDash:[4,4],pointRadius:5},
+    {label:'Base',data:fcBase,borderColor:'#d29922',backgroundColor:'rgba(210,153,34,.15)',borderWidth:2.5,pointRadius:5},
+    {label:'Optimista',data:fcOpti,borderColor:'#3fb950',backgroundColor:'rgba(63,185,80,.1)',borderWidth:2,pointRadius:5},
+  ]},options:baseOpts()});
+}
+function buildFcCanal(){
+  mkChart('chartFcCanal',{type:'bar',data:{labels:fcCanalN,datasets:[
+    {label:'Q2-2025',data:fcCanal25,backgroundColor:'rgba(88,166,255,.35)',borderRadius:2},
+    {label:'Q2-2026 Base',data:fcCanal26,backgroundColor:'rgba(210,153,34,.7)',borderRadius:2}
+  ]},options:{...hbarOpts()}});
+}
+function buildFcTrend(){
+  mkChart('chartFcTrend',{type:'bar',data:{labels:['PROFAR','CLÍNICAS','RETAIL','CENABAST','G.CONV','CÓD.11'],datasets:[{label:'Tendencia %/día',data:fcTrendPct,backgroundColor:fcTrendC.map(c=>c+'99'),borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw>0?'+':''}${c.raw}%`}}}}});
+}
+function buildFcEsc(){
+  mkChart('chartFcEsc',{type:'bar',data:{labels:['Pesimista','Base','Optimista'],datasets:[{data:[37722,41303,47025],backgroundColor:['rgba(248,81,73,.7)','rgba(210,153,34,.7)','rgba(63,185,80,.7)'],borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`$${(c.raw/1000).toFixed(1)}B`}}}}});
+}
+function buildCLab(){
+  mkChart('chartCLab',{type:'bar',data:{labels:labN,datasets:[
+    {label:'Q1-2025',data:lab25,backgroundColor:'rgba(88,166,255,.35)',borderRadius:2},
+    {label:'Q1-2026',data:lab26,backgroundColor:'rgba(63,185,80,.7)',borderRadius:2}
+  ]},options:baseOpts()});
+}
+function buildYoYCanal(){
+  mkChart('chartYoYCanal',{type:'bar',data:{labels:canalN,datasets:[
+    {label:'Q1-2025 $M',data:canal25,backgroundColor:'rgba(88,166,255,.35)',borderRadius:2},
+    {label:'Q1-2026 $M',data:canal26,backgroundColor:'rgba(63,185,80,.7)',borderRadius:2}
+  ]},options:{...hbarOpts()}});
+}
+function buildYoYPct(){
+  const pct=canalN.map((_,i)=>((canal26[i]-canal25[i])/canal25[i]*100).toFixed(1));
+  mkChart('chartYoYPct',{type:'bar',data:{labels:canalN,datasets:[{label:'Var % YoY',data:pct,backgroundColor:pct.map(v=>+v>=0?'rgba(63,185,80,.7)':'rgba(248,81,73,.7)'),borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false}}}});
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  setCompany('cmk');
+  renderAlerts('all');
+});
+
+// ═══════════════════════════════════════════════════════
+//  PROFAR: COMPETENCIA FARMACIAS
+// ═══════════════════════════════════════════════════════
+function buildCompCobertura(){
+  const labels=['Cruz Verde','Ahumada','Salcobrand','Cofar','SuperZoo','EcoFarmacias'];
+  const vals=[944,822,741,618,391,287];
+  mkChart('chartCompCobertura',{type:'bar',data:{labels,datasets:[{label:'SKUs cruzados',data:vals,backgroundColor:vals.map(v=>v>=900?'rgba(46,168,204,.85)':v>=700?'rgba(63,185,80,.75)':'rgba(88,166,255,.65)'),borderRadius:4}]},options:{...hbarOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw} SKUs de 2.038 (${(c.raw/2038*100).toFixed(1)}%)`}}}}});
+}
+function buildCompMargen(){
+  const labels=['Salcobrand','Cruz Verde','Ahumada','Cofar','SuperZoo','EcoFarmacias','PROFAR'];
+  const vals=[62.9,58.4,54.2,51.1,48.7,46.3,11.0];
+  mkChart('chartCompMargen',{type:'bar',data:{labels,datasets:[{label:'Margen % sobre costo',data:vals,backgroundColor:vals.map((v,i)=>i===6?'rgba(46,168,204,.85)':'rgba(248,81,73,.55)'),borderRadius:4}]},options:{...hbarOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw}%`}}}}});
+}
+function buildCompHistorico(){
+  const labels=['Ene-26','Feb-26','Mar-26'];
+  mkChart('chartCompHistorico',{type:'line',data:{labels,datasets:[
+    {label:'PROFAR',data:[148820,147900,148820],borderColor:'#2ea8cc',tension:.35,pointRadius:4},
+    {label:'Ahumada',data:[149040,150200,151800],borderColor:'#f85149',tension:.35,pointRadius:4},
+    {label:'Cruz Verde',data:[151200,152000,153500],borderColor:'#d29922',tension:.35,pointRadius:4},
+    {label:'Salcobrand',data:[186302,185000,188000],borderColor:'#a371f7',tension:.35,pointRadius:4},
+    {label:'Cofar',data:[null,null,null],borderColor:'#3fb950',tension:.35,pointRadius:4},
+  ]},options:{...baseOpts(),plugins:{tooltip:{callbacks:{label:c=>`${c.dataset.label}: $${c.raw?c.raw.toLocaleString('es-CL'):'N/D'}`,footer:()=>'Ejemplo: NURTEC 75MG x 8 TAB.'}}}}});
+}
+function buildCompDif(){
+  const labels=['Cofar','Salcobrand','Ahumada','Cruz Verde','SuperZoo','EcoFarmacias'];
+  const vals=[-0.5,+20.0,+0.2,+1.7,+8.3,+11.2]; // % diferencial vs PROFAR (positivo = cadena más cara)
+  mkChart('chartCompDif',{type:'bar',data:{labels,datasets:[{label:'% sobre precio PROFAR',data:vals,backgroundColor:vals.map(v=>v>0?'rgba(63,185,80,.7)':'rgba(248,81,73,.7)'),borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw>0?'+':''}${c.raw}% vs PROFAR`}}}}});
+}
+
+// ═══════════════════════════════════════════════════════
+//  CMK: PANORAMA VENDEDORES
+// ═══════════════════════════════════════════════════════
+const vendedoresData=[{"n": "Anne Mery Astorga", "a": "Farma", "c": "PROFAR", "rev": 12906.0, "mg": 5.0, "cli": 1, "caidos": 0, "riesgo": 0.0, "reg": 1, "trend": "down", "r1": 5857.0, "r2": 4246.2, "r3": 2802.8}, {"n": "Edward Avalos", "a": "Retail", "c": "CLINICAS", "rev": 6960.0, "mg": 14.0, "cli": 4, "caidos": 0, "riesgo": 0.0, "reg": 1, "trend": "down", "r1": 2717.3, "r2": 2354.1, "r3": 1888.6}, {"n": "Marcela Perinetti", "a": "Retail", "c": "G.Conv.", "rev": 2302.0, "mg": 29.5, "cli": 3, "caidos": 0, "riesgo": 0.0, "reg": 1, "trend": "down", "r1": 801.8, "r2": 900.2, "r3": 600.2}, {"n": "Ilse Arriagada", "a": "Farma", "c": "CENABAST", "rev": 1925.0, "mg": 24.0, "cli": 141, "caidos": 43, "riesgo": 55.4, "reg": 16, "trend": "down", "r1": 697.2, "r2": 694.8, "r3": 533.1}, {"n": "Cristian Diaz", "a": "Retail", "c": "CLINICAS", "rev": 1768.0, "mg": 17.5, "cli": 52, "caidos": 7, "riesgo": 20.8, "reg": 10, "trend": "down", "r1": 783.1, "r2": 616.6, "r3": 368.7}, {"n": "Esteban Zenteno", "a": "Retail", "c": "CLINICAS", "rev": 1174.0, "mg": 20.1, "cli": 57, "caidos": 13, "riesgo": 42.7, "reg": 10, "trend": "flat", "r1": 399.8, "r2": 417.3, "r3": 357.5}, {"n": "Paola Zapata", "a": "Retail", "c": "CLINICAS", "rev": 712.0, "mg": 19.2, "cli": 88, "caidos": 15, "riesgo": 28.9, "reg": 15, "trend": "down", "r1": 271.7, "r2": 266.2, "r3": 173.6}, {"n": "Gustavo Fernandez", "a": "Retail", "c": "Retail", "rev": 638.0, "mg": 13.2, "cli": 18, "caidos": 4, "riesgo": 4.6, "reg": 5, "trend": "down", "r1": 264.6, "r2": 244.7, "r3": 128.5}, {"n": "Vanessa Sepulveda", "a": "Retail", "c": "CLINICAS", "rev": 546.0, "mg": 19.9, "cli": 1, "caidos": 0, "riesgo": 0.0, "reg": 1, "trend": "down", "r1": 102.7, "r2": 332.5, "r3": 110.8}, {"n": "Leonardo Bardi", "a": "Retail", "c": "Retail", "rev": 528.0, "mg": 12.6, "cli": 77, "caidos": 16, "riesgo": 16.1, "reg": 3, "trend": "down", "r1": 148.3, "r2": 227.1, "r3": 152.2}, {"n": "Waldo Pozo", "a": "Retail", "c": "CLINICAS", "rev": 406.0, "mg": 24.2, "cli": 76, "caidos": 21, "riesgo": 16.9, "reg": 7, "trend": "up", "r1": 173.5, "r2": 101.1, "r3": 131.0}, {"n": "Leonardo Hernandez", "a": "Retail", "c": "Retail", "rev": 383.0, "mg": 12.0, "cli": 85, "caidos": 11, "riesgo": 13.9, "reg": 6, "trend": "down", "r1": 136.3, "r2": 154.5, "r3": 92.5}, {"n": "Cesar Reyes", "a": "Retail", "c": "Retail", "rev": 369.0, "mg": 9.9, "cli": 87, "caidos": 20, "riesgo": 20.6, "reg": 13, "trend": "down", "r1": 140.5, "r2": 127.5, "r3": 101.4}, {"n": "Carol Ramirez", "a": "Retail", "c": "Retail", "rev": 364.0, "mg": 14.4, "cli": 61, "caidos": 13, "riesgo": 5.3, "reg": 5, "trend": "down", "r1": 149.0, "r2": 136.3, "r3": 79.1}, {"n": "Leonardo Gonzalez Parra", "a": "Retail", "c": "Retail", "rev": 320.0, "mg": 15.0, "cli": 62, "caidos": 13, "riesgo": 9.3, "reg": 7, "trend": "flat", "r1": 104.8, "r2": 110.0, "r3": 105.7}, {"n": "Maria Corina Garcia", "a": "Retail", "c": "Retail", "rev": 309.0, "mg": 12.8, "cli": 84, "caidos": 17, "riesgo": 24.0, "reg": 9, "trend": "down", "r1": 108.9, "r2": 112.7, "r3": 87.2}, {"n": "Maria Jose Rojas", "a": "Retail", "c": "Retail", "rev": 274.0, "mg": 13.5, "cli": 75, "caidos": 13, "riesgo": 23.2, "reg": 5, "trend": "flat", "r1": 110.0, "r2": 87.3, "r3": 76.5}, {"n": "Nestor Navarro", "a": "Retail", "c": "Retail", "rev": 273.0, "mg": 11.0, "cli": 70, "caidos": 17, "riesgo": 80.0, "reg": 4, "trend": "flat", "r1": 139.7, "r2": 68.0, "r3": 65.5}, {"n": "Sergio Pichuante", "a": "Retail", "c": "Retail", "rev": 262.0, "mg": 11.4, "cli": 70, "caidos": 14, "riesgo": 13.4, "reg": 2, "trend": "down", "r1": 103.3, "r2": 93.9, "r3": 64.4}, {"n": "Paolo Cartes", "a": "Retail", "c": "Retail", "rev": 227.0, "mg": 12.5, "cli": 57, "caidos": 12, "riesgo": 7.2, "reg": 2, "trend": "flat", "r1": 68.2, "r2": 85.2, "r3": 74.0}, {"n": "Maria Jose Ramirez", "a": "Retail", "c": "Retail", "rev": 222.0, "mg": 12.8, "cli": 49, "caidos": 17, "riesgo": 33.4, "reg": 5, "trend": "down", "r1": 94.5, "r2": 74.9, "r3": 53.0}, {"n": "Tania Sanchez", "a": "Retail", "c": "Retail", "rev": 174.0, "mg": 14.0, "cli": 94, "caidos": 18, "riesgo": 10.4, "reg": 3, "trend": "down", "r1": 61.0, "r2": 62.3, "r3": 50.6}, {"n": "Fabiola Cornejo", "a": "Retail", "c": "Retail", "rev": 156.0, "mg": 12.7, "cli": 90, "caidos": 16, "riesgo": 7.2, "reg": 2, "trend": "down", "r1": 44.9, "r2": 71.1, "r3": 40.6}, {"n": "Daniela Araneda", "a": "Retail", "c": "Retail", "rev": 155.0, "mg": 14.1, "cli": 76, "caidos": 25, "riesgo": 10.3, "reg": 4, "trend": "down", "r1": 58.4, "r2": 56.9, "r3": 39.6}, {"n": "Andrea Ruiz", "a": "Retail", "c": "Retail", "rev": 141.0, "mg": 13.8, "cli": 88, "caidos": 27, "riesgo": 18.1, "reg": 4, "trend": "down", "r1": 51.4, "r2": 48.9, "r3": 40.9}, {"n": "Carla Sotomayor", "a": "Retail", "c": "Retail", "rev": 90.0, "mg": 13.6, "cli": 58, "caidos": 16, "riesgo": 9.2, "reg": 4, "trend": "down", "r1": 27.1, "r2": 38.9, "r3": 24.4}, {"n": "Jose Pascual", "a": "Farma", "c": "CENABAST", "rev": 76.0, "mg": 34.9, "cli": 6, "caidos": 2, "riesgo": 0.5, "reg": 2, "trend": "flat", "r1": 23.1, "r2": 27.2, "r3": 26.0}, {"n": "Silvia Flores", "a": "Farma", "c": "CENABAST", "rev": 36.0, "mg": 34.0, "cli": 53, "caidos": 23, "riesgo": 7.9, "reg": 10, "trend": "down", "r1": 15.7, "r2": 13.7, "r3": 6.8}, {"n": "-Ningún Empleado Del Departamento De Ventas-", "a": "Retail", "c": "CLINICAS", "rev": 31.0, "mg": 8.4, "cli": 4, "caidos": 0, "riesgo": 0.0, "reg": 1, "trend": "down", "r1": 5.5, "r2": 20.1, "r3": 5.8}, {"n": "Francois Lesseigneur", "a": "Retail", "c": "Retail", "rev": 2.0, "mg": 7.3, "cli": 1, "caidos": 0, "riesgo": 0.0, "reg": 1, "trend": "up", "r1": 0.0, "r2": 0.5, "r3": 1.5}, {"n": "Marjorie Vega", "a": "Retail", "c": "PUBLICO", "rev": 0.0, "mg": 11.2, "cli": 1, "caidos": 0, "riesgo": 0.0, "reg": 1, "trend": "down", "r1": 0.0, "r2": 0.4, "r3": 0.0}];
+function renderPanorama(){
+  const tbody=document.getElementById('panoramaBody');
+  if(!tbody)return;
+  // sort by rev desc
+  const sorted=[...vendedoresData].sort((a,b)=>b.rev-a.rev);
+  tbody.innerHTML=sorted.map((v,i)=>{
+    const sem=v.trend==='up'?'<span class="badge badge-green">🟢 Alza</span>':v.trend==='down'?'<span class="badge badge-red">🔴 Baja</span>':'<span class="badge badge-yellow">🟡 Estable</span>';
+    const risk=v.riesgo>20?'<span class="badge badge-red">':'<span class="badge badge-yellow">';
+    return `<tr>
+      <td>${i+1}</td><td><strong>${v.n}</strong></td>
+      <td><span class="badge badge-${v.a==='Farma'?'teal':'green'}">${v.a}</span></td>
+      <td>${v.c}</td>
+      <td class="td-right">${v.rev.toLocaleString('es-CL')}</td>
+      <td class="td-right">${v.mg}%</td>
+      <td class="td-right">${v.cli}</td>
+      <td class="td-right">${v.caidos}</td>
+      <td class="td-right">${v.riesgo>0?`${risk}$${v.riesgo}M</span>`:'—'}</td>
+      <td class="td-right">${v.reg}</td>
+      <td>${sem}</td>
+    </tr>`;
+  }).join('');
+}
+function buildPanoramaRev(){
+  renderPanorama();
+  // exclude PROFAR (Anne Mery) for chart clarity, show top 15 non-PROFAR
+  const filtered=vendedoresData.filter(v=>v.c!=='PROFAR').sort((a,b)=>b.rev-a.rev).slice(0,15);
+  mkChart('chartPanoramaRev',{type:'bar',data:{
+    labels:filtered.map(v=>v.n.split(' ').slice(-1)[0]),
+    datasets:[{
+      label:'Rev Q1 $M',data:filtered.map(v=>v.rev),
+      backgroundColor:filtered.map(v=>v.a==='Farma'?'rgba(46,168,204,.75)':'rgba(63,185,80,.75)'),
+      borderRadius:4
+    }]
+  },options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`$${c.raw.toLocaleString('es-CL')}M · ${filtered[c.dataIndex].n}`}}}}});
+}
+function buildPanoramaMg(){
+  const filtered=vendedoresData.filter(v=>v.c!=='PROFAR').sort((a,b)=>b.rev-a.rev).slice(0,15);
+  mkChart('chartPanoramaMg',{type:'bar',data:{
+    labels:filtered.map(v=>v.n.split(' ').slice(-1)[0]),
+    datasets:[{label:'Margen %',data:filtered.map(v=>v.mg),backgroundColor:filtered.map(v=>v.mg>25?'rgba(63,185,80,.75)':v.mg>18?'rgba(46,168,204,.75)':'rgba(210,153,34,.75)'),borderRadius:4}]
+  },options:{...hbarOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw}%`}}}}});
+}
+function buildPanoramaRiesgo(){
+  const filtered=vendedoresData.filter(v=>v.riesgo>0).sort((a,b)=>b.riesgo-a.riesgo).slice(0,12);
+  mkChart('chartPanoramaRiesgo',{type:'bar',data:{
+    labels:filtered.map(v=>v.n.split(' ').slice(-1)[0]),
+    datasets:[{label:'Revenue en riesgo $M',data:filtered.map(v=>v.riesgo),backgroundColor:'rgba(248,81,73,.65)',borderRadius:4}]
+  },options:{...hbarOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`$${c.raw}M · ${filtered[c.dataIndex].caidos} clientes caídos`}}}}});
+}
+
+// ═══════════════════════════════════════════════════════
+//  CMK: ROTACION SKU
+// ═══════════════════════════════════════════════════════
+function buildRotRetail(){
+  mkChart('chartRotRetail',{type:'doughnut',data:{
+    labels:['Alza/Crec.','Caída','Nuevos','Desaparecidos','Estable'],
+    datasets:[{data:rotRetail,backgroundColor:['#3fb950','#f85149','#58a6ff','#d29922','#2ea8cc'],borderWidth:2,borderColor:'#161b22'}]
+  },options:{...donutOpts(),plugins:{...donutOpts().plugins,legend:{display:true,position:'bottom',labels:{color:'#8b949e',font:{size:10}}}}}});
+}
+function buildRotClinica(){
+  mkChart('chartRotClinica',{type:'doughnut',data:{
+    labels:['Alza/Crec.','Caída','Nuevos','Desaparecidos','Estable'],
+    datasets:[{data:rotClinicas,backgroundColor:['#3fb950','#f85149','#58a6ff','#d29922','#2ea8cc'],borderWidth:2,borderColor:'#161b22'}]
+  },options:{...donutOpts(),plugins:{...donutOpts().plugins,legend:{display:true,position:'bottom',labels:{color:'#8b949e',font:{size:10}}}}}});
+}
+function buildRotAlza(){
+  mkChart('chartRotAlza',{type:'line',data:{
+    labels:['Ene-26','Feb-26','Mar-26'],
+    datasets:rotAlzaN.map((n,i)=>{
+      const colors=['#3fb950','#58a6ff','#2ea8cc','#a371f7','#d29922'];
+      return {label:n,data:[rotAlzaE[i],rotAlzaF[i],rotAlzaM[i]],borderColor:colors[i],tension:.35,pointRadius:5};
+    })
+  },options:{...baseOpts(),plugins:{tooltip:{callbacks:{label:c=>`${c.dataset.label}: $${c.raw}M`}}}}});
+}
+function buildRotCaida(){
+  mkChart('chartRotCaida',{type:'line',data:{
+    labels:['Ene-26','Feb-26','Mar-26'],
+    datasets:rotCaidaN.map((n,i)=>{
+      const colors=['#f85149','#d29922','#fb8500','#a371f7','#8b949e'];
+      return {label:n,data:[rotCaidaE[i],rotCaidaF[i],rotCaidaM[i]],borderColor:colors[i],tension:.35,pointRadius:5};
+    })
+  },options:{...baseOpts(),plugins:{tooltip:{callbacks:{label:c=>`${c.dataset.label}: $${c.raw}M`}}}}});
+}
+
+// ═══════════════════════════════════════════════════════
+//  CMK: CARTERA CLIENTES
+// ═══════════════════════════════════════════════════════
+function buildCartActivos(){
+  mkChart('chartCartActivos',{type:'bar',data:{
+    labels:['Ene-26','Feb-26','Mar-26'],
+    datasets:[{label:'Activos',data:cartActivos,backgroundColor:['rgba(63,185,80,.7)','rgba(63,185,80,.7)','rgba(210,153,34,.7)'],borderRadius:4}]
+  },options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw.toLocaleString('es-CL')} clientes activos`}}}}});
+}
+function buildCartTier(){
+  mkChart('chartCartTier',{type:'doughnut',data:{
+    labels:cartTierLbl.map((l,i)=>`${l} (${cartTierPct[i]}%)`),
+    datasets:[{data:cartTierPct,backgroundColor:['#2ea8cc','#3fb950','#d29922','#484f58'],borderWidth:2,borderColor:'#161b22'}]
+  },options:{...donutOpts(),plugins:{...donutOpts().plugins,legend:{display:true,position:'bottom',labels:{color:'#8b949e',font:{size:10}}}}}});
+}
+function buildCartPareto(){
+  mkChart('chartCartPareto',{type:'line',data:{
+    labels:paretoX.map(v=>`${v}%`),
+    datasets:[
+      {label:'% Revenue acumulado',data:paretoY,borderColor:'#2ea8cc',backgroundColor:'rgba(46,168,204,.1)',fill:true,tension:.35,pointRadius:3},
+      {label:'Línea 80-20 ref.',data:paretoX,borderColor:'rgba(248,81,73,.4)',borderDash:[5,4],pointRadius:0,fill:false},
+    ]
+  },options:{...baseOpts(),plugins:{tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw}%`}}}}});
+}
+function buildCartRetencion(){
+  mkChart('chartCartRetencion',{type:'bar',data:{
+    labels:['Ene→Feb','Feb→Mar'],
+    datasets:[
+      {label:'Retención %',data:cartRetPct,backgroundColor:cartRetPct.map(v=>v>80?'rgba(63,185,80,.7)':'rgba(210,153,34,.7)'),borderRadius:4},
+      {label:'Clientes perdidos',data:cartRetPerd,backgroundColor:'rgba(248,81,73,.6)',borderRadius:4,yAxisID:'y1'},
+    ]
+  },options:{...baseOpts(),scales:{x:{...baseOpts().scales.x},y:{...baseOpts().scales.y,title:{display:true,text:'Retención %',color:'#8b949e'}},y1:{type:'linear',display:true,position:'right',ticks:{color:'#8b949e'},grid:{drawOnChartArea:false}}}}});
+}
+
+</script>
+</body>
+</html>
