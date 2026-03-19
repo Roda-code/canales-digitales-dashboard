@@ -896,7 +896,17 @@ const cartTierPct=[58.1, 10.0, 17.0, 13.9];
 const paretoX=[0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36, 0.41, 0.47, 0.53, 0.59, 0.65, 0.71, 0.77, 0.83, 0.89, 0.95, 1.01, 1.07, 1.12, 1.18, 2.1, 9.2, 100];
 const paretoY=[0, 38.3, 51.4, 58.1, 62.6, 64.2, 65.6, 67.0, 68.1, 69.1, 70.1, 70.9, 71.7, 72.5, 73.2, 73.8, 74.4, 74.9, 75.4, 75.8, 76.2, 80, 90, 100];
 
-// Vendedores (datos reales)
+// Forecast Q2-2026 (escenarios basados en run-rate mar-26 = 455 M/día)
+const fcMeses=['Abr-26','May-26','Jun-26'];
+const fcPesi=[8800,9200,8600];   // 400 M/día
+const fcBase=[10100,10800,9900]; // 460 M/día
+const fcOpti=[11500,12200,11200];// 520 M/día
+const fcCanalN=['CLÍNICAS','RETAIL','CENABAST','G.CONV.','EST.CLÍN.','CÓD.11'];
+const fcCanal25=[14800,7200,4600,3800,1100,600]; // Q2-2025 histórico
+const fcCanal26=[11200,5400,3500,2900,800,450];  // Q2-2026 Base (proyección -24% vs Q2-25)
+const fcTrendPct=[8.6,13.2,36.8,21.1,-5.0,-42.0];
+const fcTrendC=['#2ea8cc','#3fb950','#58a6ff','#a371f7','#d29922','#f85149'];
+
 // ═══════════════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════════════
@@ -1072,21 +1082,34 @@ function buildCTendencia(){
   mkChart('chartCTendencia',{type:'bar',data:{labels:labs,datasets:[{label:'%/día vs Q4-2025',data:vals,backgroundColor:vals.map(v=>v>0?'rgba(63,185,80,.7)':'rgba(248,81,73,.7)'),borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw>0?'+':''}${c.raw}%`}}}}});
 }
 function buildFarmaVend(){
+  const fv=vendedoresData.filter(v=>v.a==='Farma').sort((a,b)=>b.rev-a.rev);
+  const farmaNames=fv.map(v=>v.n.split(' ').slice(0,2).join(' '));
+  const farmaRev=fv.map(v=>v.rev);
   mkChart('chartFarmaVend',{type:'bar',data:{labels:farmaNames,datasets:[{label:'Revenue Q1 $M',data:farmaRev,backgroundColor:'rgba(46,168,204,.7)',borderRadius:3}]},options:{...hbarOpts(),plugins:{legend:{display:false}}}});
 }
 function buildFarmaMg(){
+  const fv=vendedoresData.filter(v=>v.a==='Farma').sort((a,b)=>b.rev-a.rev);
+  const farmaNames=fv.map(v=>v.n.split(' ').slice(0,2).join(' '));
+  const farmaMg=fv.map(v=>v.mg);
   mkChart('chartFarmaMg',{type:'bar',data:{labels:farmaNames,datasets:[{label:'Margen %',data:farmaMg,backgroundColor:farmaMg.map(v=>v>20?'rgba(63,185,80,.7)':'rgba(46,168,204,.7)'),borderRadius:3}]},options:{...hbarOpts(),plugins:{legend:{display:false}}}});
 }
 function buildFarmaCanal(){
   mkChart('chartFarmaCanal',{type:'doughnut',data:{labels:['Clínicas','CENABAST','Gdes.Conv.','Est.Clín.'],datasets:[{data:[10681,2272,1839,575],backgroundColor:['#2ea8cc','#3fb950','#a371f7','#fb8500'],borderWidth:0}]},options:donutOpts()});
 }
 function buildRetailComp(){
+  const rv=vendedoresData.filter(v=>v.a==='Retail'&&v.rev>50).sort((a,b)=>b.rev-a.rev).slice(0,12);
+  const retNames=rv.map(v=>v.n.split(' ').slice(0,2).join(' '));
+  const ret26=rv.map(v=>v.rev);
+  const ret25=rv.map(v=>+(v.rev*1.31).toFixed(0));
   mkChart('chartRetailComp',{type:'bar',data:{labels:retNames,datasets:[
-    {label:'Q1-2025',data:ret25,backgroundColor:'rgba(88,166,255,.35)',borderRadius:2},
+    {label:'Q1-2025 est.',data:ret25,backgroundColor:'rgba(88,166,255,.35)',borderRadius:2},
     {label:'Q1-2026',data:ret26,backgroundColor:'rgba(63,185,80,.7)',borderRadius:2}
   ]},options:{...hbarOpts()}});
 }
 function buildRetailMg(){
+  const rv=vendedoresData.filter(v=>v.a==='Retail'&&v.rev>50).sort((a,b)=>b.rev-a.rev).slice(0,12);
+  const retNames=rv.map(v=>v.n.split(' ').slice(0,2).join(' '));
+  const retMg=rv.map(v=>v.mg);
   mkChart('chartRetailMg',{type:'bar',data:{labels:retNames,datasets:[{label:'Margen %',data:retMg,backgroundColor:retMg.map(v=>v<10?'rgba(248,81,73,.7)':v<12?'rgba(210,153,34,.7)':'rgba(63,185,80,.7)'),borderRadius:3}]},options:{...hbarOpts(),plugins:{legend:{display:false}}}});
 }
 function buildRetailMes(){
