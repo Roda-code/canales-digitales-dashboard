@@ -740,7 +740,7 @@ tr:hover td{background:#1c2128;}
     <div class="kpi kpi-cmk"><div class="kpi-label">SKUs en alza</div><div class="kpi-value" style="color:var(--green)">172</div><div class="kpi-delta up">Crecimiento sostenido 2+ meses</div></div>
     <div class="kpi kpi-cmk"><div class="kpi-label">SKUs en caída</div><div class="kpi-value" style="color:var(--red)">528</div><div class="kpi-delta down">Caída sostenida detectada</div></div>
     <div class="kpi kpi-cmk"><div class="kpi-label">SKUs nuevos Q1</div><div class="kpi-value" style="color:var(--accent)">2.686</div><div class="kpi-delta up">Primera factura en Q1-2026</div></div>
-    <div class="kpi kpi-cmk"><div class="kpi-label">SKUs desaparecidos</div><td class="kpi-value" style="color:var(--orange)">921</div><div class="kpi-delta down">Sin factura en Q1-2026</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">SKUs desaparecidos</div><div class="kpi-value" style="color:var(--orange)">921</div><div class="kpi-delta down">Sin factura en Q1-2026</div></div>
     <div class="kpi kpi-cmk"><div class="kpi-label">Revenue SKUs críticos</div><div class="kpi-value" style="color:var(--red)">$1.216B</div><div class="kpi-delta down">Caída sostenida en productos clave</div></div>
   </div>
   <div class="chart-row">
@@ -922,7 +922,7 @@ function setCompany(c){
   const first=document.getElementById('tab-'+prefix+(c==='profar'?'-resumen':'-resumen'));
   if(first)first.classList.add('active');
   document.querySelectorAll('#tabs-'+world+' .tab').forEach((t,i)=>{t.classList.toggle('active',i===0);});
-  setTimeout(()=>c==='profar'?buildProfarCharts():buildCMKCharts(),50);
+  setTimeout(()=>{ c==='profar'?buildProfarCharts():buildCMKCharts(); setTimeout(()=>{ Object.values(charts).forEach(ch=>{if(ch&&ch.resize)ch.resize();}); },80); },120);
 }
 
 // ═══════════════════════════════════════════════════════
@@ -957,8 +957,12 @@ function showTab(id,el,world){
       'c-rotacion':()=>{ buildRotRetail();buildRotClinica();buildRotAlza();buildRotCaida(); },
       'c-cartera':()=>{ buildCartActivos();buildCartTier();buildCartPareto();buildCartRetencion(); },
     };
-    if(buildMap[id])buildMap[id]();
-  },30);
+    if(buildMap[id]){
+      buildMap[id]();
+      // Force resize after initial render so responsive charts fill container correctly
+      setTimeout(()=>{ Object.values(charts).forEach(ch=>{if(ch&&ch.resize)ch.resize();}); }, 80);
+    }
+  },120);
 }
 
 // ═══════════════════════════════════════════════════════
