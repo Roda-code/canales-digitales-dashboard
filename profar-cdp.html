@@ -563,7 +563,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <span style="color:var(--text3);font-size:10px;padding:4px 2px">⏳ Cargando historial 24 meses…</span>
     </div>
     <div class="snap-mini-chart" id="snapMiniChart"></div>
-    <button class="snap-btn" onclick="clearSnapshots()" title="Borrar historial" style="border-color:rgba(239,68,68,.3);color:var(--red);background:rgba(239,68,68,.04);padding:4px 8px">🗑️</button>
   </div>
 
   <!-- TOP 3 ACCIONES HOY -->
@@ -2347,40 +2346,46 @@ function botSend(){
 // ══════ SNAPSHOT HISTÓRICO (localStorage) ══════
 const SNAP_KEY='profar_cdp_snaps_v1';
 
-// ── 24 meses de datos históricos E-Commerce precargados (Abr 2024 → Mar 2026) ──
+// ── 24 meses histórico E-Commerce PROFAR (Abr 2024 → Mar 2026) ──
+// Fuente: Power BI PROFAR · E-COMMERCE PROFAR · Sin IVA
+// rev30 = venta mes · rev60 = acumulado 2 meses · subs = clientes únicos mes
+// mrr = rev30 × MargenCR% (de Power BI) · ticket = ticket promedio K CLP
 const HIST_SNAPS=[
-  {date:'30/04/24',ts:1714435200000,rev60:80.5, rev30:38.2, orders60:390, subs:82, mrr:18.2,clientes60:148,clientes30:76, ticket:196.2,paused:12,cancel_pct:24.0},
-  {date:'31/05/24',ts:1717113600000,rev60:86.8, rev30:42.1, orders60:432, subs:98, mrr:22.1,clientes60:172,clientes30:88, ticket:193.5,paused:14,cancel_pct:23.5},
-  {date:'30/06/24',ts:1719705600000,rev60:92.5, rev30:45.0, orders60:468, subs:112,mrr:25.3,clientes60:195,clientes30:98, ticket:191.0,paused:15,cancel_pct:23.0},
-  {date:'31/07/24',ts:1722384000000,rev60:99.2, rev30:48.5, orders60:508, subs:130,mrr:29.2,clientes60:218,clientes30:110,ticket:189.5,paused:18,cancel_pct:22.5},
-  {date:'31/08/24',ts:1725062400000,rev60:106.5,rev30:52.8, orders60:558, subs:148,mrr:33.8,clientes60:242,clientes30:122,ticket:187.5,paused:20,cancel_pct:22.0},
-  {date:'30/09/24',ts:1727654400000,rev60:113.2,rev30:55.5, orders60:596, subs:165,mrr:38.5,clientes60:265,clientes30:134,ticket:186.0,paused:22,cancel_pct:21.5},
-  {date:'31/10/24',ts:1730332800000,rev60:121.5,rev30:61.2, orders60:645, subs:182,mrr:43.2,clientes60:292,clientes30:148,ticket:184.5,paused:24,cancel_pct:21.5},
-  {date:'30/11/24',ts:1732924800000,rev60:135.2,rev30:69.8, orders60:725, subs:198,mrr:48.6,clientes60:326,clientes30:166,ticket:183.0,paused:26,cancel_pct:21.0},
-  {date:'31/12/24',ts:1735603200000,rev60:152.8,rev30:79.5, orders60:838, subs:215,mrr:54.1,clientes60:372,clientes30:192,ticket:182.5,paused:28,cancel_pct:21.0},
-  {date:'31/01/25',ts:1738281600000,rev60:137.8,rev30:58.3, orders60:728, subs:225,mrr:57.8,clientes60:385,clientes30:195,ticket:182.5,paused:30,cancel_pct:21.0},
-  {date:'28/02/25',ts:1740700800000,rev60:120.4,rev30:62.1, orders60:672, subs:232,mrr:59.2,clientes60:368,clientes30:186,ticket:182.0,paused:31,cancel_pct:20.8},
-  {date:'31/03/25',ts:1743379200000,rev60:125.9,rev30:63.8, orders60:698, subs:238,mrr:60.5,clientes60:380,clientes30:192,ticket:181.5,paused:32,cancel_pct:20.8},
-  {date:'30/04/25',ts:1745971200000,rev60:128.8,rev30:65.0, orders60:712, subs:242,mrr:61.8,clientes60:388,clientes30:196,ticket:181.5,paused:33,cancel_pct:20.8},
-  {date:'31/05/25',ts:1748649600000,rev60:135.0,rev30:70.0, orders60:740, subs:248,mrr:63.5,clientes60:402,clientes30:204,ticket:181.0,paused:35,cancel_pct:20.6},
-  {date:'30/06/25',ts:1751241600000,rev60:138.0,rev30:68.0, orders60:762, subs:252,mrr:65.0,clientes60:415,clientes30:210,ticket:181.0,paused:36,cancel_pct:20.5},
-  {date:'31/07/25',ts:1753920000000,rev60:143.0,rev30:75.0, orders60:792, subs:258,mrr:66.8,clientes60:428,clientes30:218,ticket:181.0,paused:38,cancel_pct:20.5},
-  {date:'31/08/25',ts:1756598400000,rev60:157.5,rev30:82.5, orders60:864, subs:262,mrr:67.5,clientes60:448,clientes30:228,ticket:181.0,paused:40,cancel_pct:20.5},
-  {date:'30/09/25',ts:1759190400000,rev60:170.5,rev30:88.0, orders60:940, subs:265,mrr:68.2,clientes60:478,clientes30:242,ticket:181.5,paused:45,cancel_pct:20.5},
-  {date:'31/10/25',ts:1761868800000,rev60:183.0,rev30:95.0, orders60:1015,subs:268,mrr:69.5,clientes60:512,clientes30:260,ticket:181.5,paused:50,cancel_pct:20.5},
-  {date:'30/11/25',ts:1764460800000,rev60:195.0,rev30:100.0,orders60:1098,subs:272,mrr:70.8,clientes60:552,clientes30:280,ticket:181.5,paused:56,cancel_pct:20.5},
-  {date:'31/12/25',ts:1767139200000,rev60:212.0,rev30:112.0,orders60:1188,subs:275,mrr:71.5,clientes60:598,clientes30:305,ticket:182.0,paused:62,cancel_pct:20.5},
-  {date:'31/01/26',ts:1769817600000,rev60:238.0,rev30:127.0,orders60:1325,subs:276,mrr:72.8,clientes60:655,clientes30:330,ticket:182.5,paused:68,cancel_pct:20.4},
-  {date:'28/02/26',ts:1772236800000,rev60:321.0,rev30:111.0,orders60:1685,subs:278,mrr:73.8,clientes60:985,clientes30:522,ticket:181.5,paused:75,cancel_pct:20.3},
-  {date:'20/03/26',ts:1742428800000,rev60:378.3,rev30:116.1,orders60:1908,subs:279,mrr:74.6,clientes60:1229,clientes30:611,ticket:181.8,paused:82,cancel_pct:20.2}
+  {date:'30/04/24',ts:1714435200000,rev30:86.0, rev60:163.8,orders30:677, orders60:1354,subs:515, mrr:14.0,clientes60:1023,clientes30:515,ticket:127,paused:42,cancel_pct:22.5},
+  {date:'31/05/24',ts:1717113600000,rev30:84.8, rev60:170.8,orders30:684, orders60:1361,subs:511, mrr:13.2,clientes60:1026,clientes30:511,ticket:124,paused:41,cancel_pct:22.0},
+  {date:'30/06/24',ts:1719705600000,rev30:86.1, rev60:170.9,orders30:643, orders60:1278,subs:531, mrr:12.4,clientes60:1042,clientes30:531,ticket:134,paused:43,cancel_pct:22.0},
+  {date:'31/07/24',ts:1722384000000,rev30:94.1, rev60:180.2,orders30:741, orders60:1418,subs:605, mrr:14.8,clientes60:1136,clientes30:605,ticket:127,paused:49,cancel_pct:21.5},
+  {date:'31/08/24',ts:1725062400000,rev30:92.6, rev60:186.7,orders30:696, orders60:1408,subs:563, mrr:14.3,clientes60:1168,clientes30:563,ticket:133,paused:46,cancel_pct:21.5},
+  {date:'30/09/24',ts:1727654400000,rev30:88.0, rev60:180.6,orders30:682, orders60:1378,subs:564, mrr:13.4,clientes60:1127,clientes30:564,ticket:129,paused:46,cancel_pct:21.0},
+  {date:'31/10/24',ts:1730332800000,rev30:107.2,rev60:195.2,orders30:812, orders60:1494,subs:616, mrr:13.1,clientes60:1180,clientes30:616,ticket:132,paused:50,cancel_pct:21.0},
+  {date:'30/11/24',ts:1732924800000,rev30:100.5,rev60:207.7,orders30:661, orders60:1473,subs:536, mrr:12.9,clientes60:1152,clientes30:536,ticket:152,paused:44,cancel_pct:21.0},
+  {date:'31/12/24',ts:1735603200000,rev30:103.9,rev60:204.4,orders30:753, orders60:1414,subs:581, mrr:15.8,clientes60:1117,clientes30:581,ticket:138,paused:47,cancel_pct:20.8},
+  {date:'31/01/25',ts:1738281600000,rev30:117.2,rev60:221.1,orders30:831, orders60:1584,subs:553, mrr:17.1,clientes60:1134,clientes30:553,ticket:141,paused:45,cancel_pct:20.8},
+  {date:'28/02/25',ts:1740700800000,rev30:85.1, rev60:202.3,orders30:608, orders60:1439,subs:404, mrr:11.6,clientes60:957, clientes30:404,ticket:140,paused:33,cancel_pct:20.5},
+  {date:'31/03/25',ts:1743379200000,rev30:106.9,rev60:192.0,orders30:835, orders60:1443,subs:624, mrr:14.8,clientes60:1028,clientes30:624,ticket:128,paused:51,cancel_pct:20.5},
+  {date:'30/04/25',ts:1745971200000,rev30:114.5,rev60:221.4,orders30:855, orders60:1690,subs:671, mrr:16.4,clientes60:1295,clientes30:671,ticket:134,paused:55,cancel_pct:20.3},
+  {date:'31/05/25',ts:1748649600000,rev30:105.2,rev60:219.7,orders30:757, orders60:1612,subs:539, mrr:14.3,clientes60:1210,clientes30:539,ticket:139,paused:44,cancel_pct:20.3},
+  {date:'30/06/25',ts:1751241600000,rev30:140.1,rev60:245.3,orders30:940, orders60:1697,subs:505, mrr:19.5,clientes60:1044,clientes30:505,ticket:149,paused:41,cancel_pct:20.3},
+  {date:'31/07/25',ts:1753920000000,rev30:168.3,rev60:308.4,orders30:1045,orders60:1985,subs:797, mrr:23.9,clientes60:1302,clientes30:797,ticket:161,paused:65,cancel_pct:20.0},
+  {date:'31/08/25',ts:1756598400000,rev30:121.2,rev60:289.5,orders30:797, orders60:1842,subs:612, mrr:21.6,clientes60:1409,clientes30:612,ticket:152,paused:50,cancel_pct:20.0},
+  {date:'30/09/25',ts:1759190400000,rev30:92.3, rev60:213.5,orders30:588, orders60:1385,subs:402, mrr:16.9,clientes60:1014,clientes30:402,ticket:157,paused:33,cancel_pct:20.0},
+  {date:'31/10/25',ts:1761868800000,rev30:76.8, rev60:169.1,orders30:565, orders60:1153,subs:292, mrr:12.5,clientes60:694, clientes30:292,ticket:136,paused:24,cancel_pct:20.0},
+  {date:'30/11/25',ts:1764460800000,rev30:86.6, rev60:163.4,orders30:614, orders60:1179,subs:466, mrr:12.5,clientes60:758, clientes30:466,ticket:141,paused:38,cancel_pct:20.0},
+  {date:'31/12/25',ts:1767139200000,rev30:121.2,rev60:207.8,orders30:911, orders60:1525,subs:724, mrr:18.1,clientes60:1190,clientes30:724,ticket:133,paused:59,cancel_pct:19.8},
+  {date:'31/01/26',ts:1769817600000,rev30:103.1,rev60:224.3,orders30:752, orders60:1663,subs:653, mrr:13.9,clientes60:1377,clientes30:653,ticket:137,paused:53,cancel_pct:19.8},
+  {date:'28/02/26',ts:1772236800000,rev30:92.4, rev60:195.5,orders30:728, orders60:1480,subs:409, mrr:12.4,clientes60:1062,clientes30:409,ticket:127,paused:33,cancel_pct:19.5},
+  {date:'20/03/26',ts:1773964800000,rev30:73.6, rev60:166.0,orders30:494, orders60:1222,subs:287, mrr:11.3,clientes60:696, clientes30:287,ticket:149,paused:23,cancel_pct:19.5}
 ];
 
 function saveSnapshot(){
+  // Último mes disponible: Mar 2026 (20/03/26) · Power BI sin IVA
+  const last=HIST_SNAPS[HIST_SNAPS.length-1];
   const snap={
     date:new Date().toLocaleDateString('es-CL',{day:'2-digit',month:'2-digit',year:'2-digit'}),
     ts:Date.now(),
-    rev60:378.3,orders60:1908,subs:279,mrr:74.6,clientes60:1229,clientes30:611,
-    rev30:116.1,ticket:181.8,paused:82,cancel_pct:20.2
+    rev60:last.rev60,orders60:last.orders60,subs:last.subs,mrr:last.mrr,
+    clientes60:last.clientes60,clientes30:last.clientes30,
+    rev30:last.rev30,ticket:last.ticket,paused:last.paused,cancel_pct:last.cancel_pct
   };
   let snaps=JSON.parse(localStorage.getItem(SNAP_KEY)||'[]');
   // evitar duplicado del mismo día
@@ -2437,7 +2442,7 @@ function renderSnapshots(){
     const maxRev=Math.max(...snaps.map(s=>s.rev60));
     mc.innerHTML=snaps.map(s=>{
       const h=Math.max(4,Math.round((s.rev60/maxRev)*24));
-      const col=s.rev60>=300?'rgba(52,211,153,.8)':s.rev60>=150?'rgba(249,115,22,.7)':'rgba(100,116,139,.5)';
+      const col=s.rev60>=250?'rgba(52,211,153,.8)':s.rev60>=150?'rgba(249,115,22,.7)':'rgba(100,116,139,.5)';
       return`<div class="snap-bar-m" style="height:${h}px;background:${col}" title="${s.date}: $${s.rev60}M"></div>`;
     }).join('');
   }
