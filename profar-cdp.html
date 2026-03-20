@@ -506,7 +506,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <button class="cf-btn active ec" onclick="setCh('ec',this)">🛒 E-Commerce (Magento) <span style="font-size:9px;padding:1px 5px;border-radius:4px;background:rgba(20,184,166,.15);color:var(--teal);margin-left:4px">LIVE</span></button>
   <button class="cf-btn sl" onclick="setCh('sl',this)" style="display:none">🏪 Sala de Venta</button>
   <button class="cf-btn tl" onclick="setCh('tl',this)" style="display:none">📞 Venta Telefónica</button>
-  <span style="font-size:10px;color:var(--text3);padding:5px 8px;border:1px solid var(--border);border-radius:6px;align-self:center">Sala · Telefónica → <a href="profar.html" style="color:var(--accent);text-decoration:none">PROFAR Analytics ↗</a></span>
 </div>
 
 <!-- TABS -->
@@ -718,26 +717,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </table>
   </div>
 
-  <!-- Revenue por Colección B2C -->
-  <div class="sh"><div class="sh-t">📦 Revenue por Colección (Fuente Precio B2C) <span class="sh-b">Real Magento 60d</span></div></div>
-  <div class="card mb">
-    <div class="ch-wrap-lg"><canvas id="cColeccion"></canvas></div>
-  </div>
-  <div class="card mb">
-    <table class="tbl">
-      <thead><tr><th>Colección / Convenio</th><th>Revenue 60d</th><th>% Share</th><th>Unidades</th><th>Ticket Implícito</th><th>Tendencia</th><th>Estado</th></tr></thead>
-      <tbody>
-        <tr><td><b>ALTO COSTO</b></td><td><b>$196.7M</b></td><td><span class="chip cb">66.3%</span></td><td>1.484 u.</td><td>~$132K</td><td class="up">↑ Dominante</td><td><span class="chip cg">Motor principal</span></td></tr>
-        <tr><td>CONVENIOS</td><td>$49.0M</td><td><span class="chip cb">16.5%</span></td><td>586 u.</td><td>~$84K</td><td class="up">↑ Creciendo</td><td><span class="chip cg">Estable</span></td></tr>
-        <tr><td>ONCOLOGÍA+CONVENIOS</td><td>$9.5M</td><td>3.2%</td><td>169 u.</td><td>~$56K</td><td class="nt">→ Estable</td><td><span class="chip cy">Monitorear</span></td></tr>
-        <tr><td>MIGRAÑA+CONVENIOS</td><td>$5.3M</td><td>1.8%</td><td>31 u.</td><td>~$171K</td><td class="up">↑ Creciendo</td><td><span class="chip cr">Stock 0 ⚠️</span></td></tr>
-        <tr><td>DESTACADOS+CONVENIOS</td><td>$4.9M</td><td>1.6%</td><td>286 u.</td><td>~$17K</td><td class="nt">→ Estable</td><td><span class="chip cg">OK</span></td></tr>
-        <tr><td>CONTROL PESO</td><td>$3.6M</td><td>1.2%</td><td>15 u.</td><td>~$241K</td><td class="up">↑ Ozempic en alza</td><td><span class="chip cy">Stock bajo</span></td></tr>
-        <tr><td>VETERINARIA</td><td>$0.9M</td><td>0.3%</td><td>64 u.</td><td>~$14K</td><td class="nt">→ Estable</td><td><span class="chip cy">Sin foco</span></td></tr>
-        <tr><td>VACUNAS</td><td>$0.07M</td><td>—</td><td>1 u.</td><td>$65K</td><td class="up">↑ Shingrix creciendo</td><td><span class="chip cr">Stock bajo</span></td></tr>
-      </tbody>
-    </table>
-  </div>
 
   <!-- Estrategia NOT LOGGED IN -->
   <div class="sh"><div class="sh-t">🔓 Estrategia NOT LOGGED IN — $75M en compras anónimas</div></div>
@@ -1290,6 +1269,28 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       Cada campaña nace de un <b>insight automático de los datos Magento + RFM</b>: si hay 82 suscripciones pausadas, el sistema genera una campaña de reactivación; si hay stock=0 con 45 subs activas, genera alerta de retención; si el 97.76% nunca compró, propone activación.
       Cada campaña incluye: <b>segmento exacto</b> (con número real de personas) + <b>canal recomendado</b> + <b>mensaje sugerido</b> + <b>ROI estimado</b>. Las campañas se ordenan por urgencia e impacto financiero.
     </div>
+  </div>
+
+  
+  <!-- Revenue por Colección B2C — movido desde Convenios -->
+  <div class="sh"><div class="sh-t">📦 Revenue por Colección (Fuente Precio B2C) <span class="sh-b">Real Magento 60d</span></div></div>
+  <div class="card mb">
+    <div class="ch-wrap-lg"><canvas id="cColeccion"></canvas></div>
+  </div>
+  <div class="card mb">
+    <table class="tbl">
+      <thead><tr><th>Colección / Convenio</th><th>Revenue 60d</th><th>% Share</th><th>Unidades</th><th>Ticket Implícito</th><th>Tendencia</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td><b>ALTO COSTO</b></td><td><b>$196.7M</b></td><td><span class="chip cb">66.3%</span></td><td>1.484 u.</td><td>~$132K</td><td class="up">↑ Dominante</td><td><span class="chip cg">Motor principal</span></td></tr>
+        <tr><td>CONVENIOS</td><td>$49.0M</td><td><span class="chip cb">16.5%</span></td><td>586 u.</td><td>~$84K</td><td class="up">↑ Creciendo</td><td><span class="chip cg">Estable</span></td></tr>
+        <tr><td>ONCOLOGÍA+CONVENIOS</td><td>$9.5M</td><td>3.2%</td><td>169 u.</td><td>~$56K</td><td class="nt">→ Estable</td><td><span class="chip cy">Monitorear</span></td></tr>
+        <tr><td>MIGRAÑA+CONVENIOS</td><td>$5.3M</td><td>1.8%</td><td>31 u.</td><td>~$171K</td><td class="up">↑ Creciendo</td><td><span class="chip cr">Stock 0 ⚠️</span></td></tr>
+        <tr><td>DESTACADOS+CONVENIOS</td><td>$4.9M</td><td>1.6%</td><td>286 u.</td><td>~$17K</td><td class="nt">→ Estable</td><td><span class="chip cg">OK</span></td></tr>
+        <tr><td>CONTROL PESO</td><td>$3.6M</td><td>1.2%</td><td>15 u.</td><td>~$241K</td><td class="up">↑ Ozempic en alza</td><td><span class="chip cy">Stock bajo</span></td></tr>
+        <tr><td>VETERINARIA</td><td>$0.9M</td><td>0.3%</td><td>64 u.</td><td>~$14K</td><td class="nt">→ Estable</td><td><span class="chip cy">Sin foco</span></td></tr>
+        <tr><td>VACUNAS</td><td>$0.07M</td><td>—</td><td>1 u.</td><td>$65K</td><td class="up">↑ Shingrix creciendo</td><td><span class="chip cr">Stock bajo</span></td></tr>
+      </tbody>
+    </table>
   </div>
 
   <div class="kg4 mb">
@@ -2559,19 +2560,17 @@ const INV_ITEMS=[
 ];
 const CH_COLOR={'E-Com':'ch-b','Sala':'ch-g','Tel.':'ch-p','Todos':'ch-c'};
 // ══ CONVENIOS DATA ══
+// CONV_DATA — Grupos de cliente Magento reales (export customers.csv 20-Mar-2026)
+// Revenue/órdenes pendientes: exportar orders Magento con customer_group para cruzar
 const CONV_DATA=[
-  {id:1,n:'Mutual de Seguridad CChC',rut:'70.285.100-9',tipo:'mutual',cli:22840,ord:62,rev:14200000,tick:229032,tend:'up',est:'Activo',acc:'Potenciar alta especialidad'},
-  {id:2,n:'ACHS — Inst. Seguridad Laboral',rut:'70.101.240-1',tipo:'mutual',cli:18500,ord:28,rev:6900000,tick:246428,tend:'up',est:'Activo',acc:'Proponer suscripción crónico'},
-  {id:3,n:'Mutual CCHC General',rut:'93.697.000-0',tipo:'mutual',cli:15200,ord:18,rev:1850000,tick:102777,tend:'nt',est:'Activo',acc:'Activar base inactiva'},
-  {id:4,n:'Carabineros de Chile',rut:'61.978.000-0',tipo:'inst',cli:8900,ord:8,rev:980000,tick:122500,tend:'nt',est:'Activo',acc:'Campaña medicamentos crónicos'},
-  {id:5,n:'Armada de Chile',rut:'61.951.000-3',tipo:'inst',cli:4200,ord:5,rev:720000,tick:144000,tend:'nt',est:'Activo',acc:'Revisar catálogo disponible'},
-  {id:6,n:'Ejército de Chile',rut:'61.952.000-K',tipo:'inst',cli:6100,ord:0,rev:0,tick:0,tend:'dn',est:'Inactivo',acc:'⚠️ Reactivar — sin compras 60d'},
-  {id:7,n:'Banmédica Empresas',rut:'76.354.771-K',tipo:'empresa',cli:3800,ord:4,rev:245000,tick:61250,tend:'nt',est:'Activo',acc:'Expandir catálogo OTC'},
-  {id:8,n:'Consalud Convenio',rut:'76.645.030-K',tipo:'empresa',cli:2100,ord:2,rev:180000,tick:90000,tend:'nt',est:'Activo',acc:'Proponer acceso web dedicado'},
-  {id:9,n:'Club Beneficios PROFAR',rut:'76.XXX.XXX-X',tipo:'empresa',cli:579,ord:12,rev:1799717,tick:149976,tend:'up',est:'Activo',acc:'Aumentar beneficio suscriptores'},
-  {id:10,n:'Empleados PROFAR',rut:'76.XXX.XXX-X',tipo:'inst',cli:826,ord:6,rev:163832,tick:27305,tend:'nt',est:'Activo',acc:'Beneficio empleados — mantener'},
-  {id:11,n:'FONASA Convenio Especial',rut:'61.602.000-8',tipo:'inst',cli:0,ord:0,rev:0,tick:0,tend:'dn',est:'Inactivo',acc:'⚠️ No activado aún'},
-  {id:12,n:'Isapre Cruz Blanca',rut:'76.101.870-K',tipo:'empresa',cli:0,ord:0,rev:0,tick:0,tend:'dn',est:'Inactivo',acc:'⚠️ En negociación — pendiente firma'},
+  {id:1,n:'Mutual',rut:'—',tipo:'mutual',cli:142874,ord:null,rev:null,tick:null,tend:'up',est:'Activo',acc:'Grupo más grande — pendiente cruce órdenes Magento'},
+  {id:2,n:'Empleados PROFAR',rut:'76.XXX.XXX-X',tipo:'inst',cli:826,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'Beneficio empleados — pendiente cruce órdenes'},
+  {id:3,n:'Club de Polo',rut:'—',tipo:'empresa',cli:219,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'Pendiente cruce órdenes Magento'},
+  {id:4,n:'Subsecretaría de Guerra',rut:'61.XXX.XXX-X',tipo:'inst',cli:74,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'Pendiente cruce órdenes Magento'},
+  {id:5,n:'MED',rut:'—',tipo:'empresa',cli:10,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'Grupo pequeño — validar si activo'},
+  {id:6,n:'GO Integro',rut:'—',tipo:'empresa',cli:2,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'En inicio — validar contrato'},
+  {id:7,n:'SUBTEL',rut:'61.XXX.XXX-X',tipo:'inst',cli:1,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'1 cliente — verificar estado'},
+  {id:8,n:'Conv. Tarjeta Vecino Las Condes',rut:'69.070.800-6',tipo:'inst',cli:null,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'Catálogo -5% cargado. Pendiente grupo Magento'},
 ];
 // ══ COMPETENCIA SKU DATA ══
 const COMP_SKUS=[
@@ -2673,7 +2672,7 @@ function renderConv(filter='all'){
   const d=filter==='all'?CONV_DATA:filter==='inactivo'?CONV_DATA.filter(r=>r.est==='Inactivo'):CONV_DATA.filter(r=>r.tipo===filter&&r.est!=='Inactivo');
   const total=CONV_DATA.filter(r=>r.est==='Activo').reduce((s,r)=>s+r.rev,0);
   el.innerHTML=d.map(r=>{
-    const pct=total>0?(r.rev/total*100).toFixed(1):0;
+    const pct=total>0&&r.rev?(r.rev/total*100).toFixed(1):'—';
     const tendIco=r.tend==='up'?'<span style="color:#10b981">▲</span>':r.tend==='dn'?'<span style="color:#ef4444">▼</span>':'<span style="color:#94a3b8">—</span>';
     const estChip=r.est==='Activo'?'<span class="chip ch-g">Activo</span>':'<span class="chip ch-r">Inactivo</span>';
     return `<tr>
@@ -2682,9 +2681,9 @@ function renderConv(filter='all'){
       <td style="color:var(--text2);font-size:11px">${r.rut}</td>
       <td><span class="chip ch-b">${r.tipo==='mutual'?'Mutual':r.tipo==='inst'?'Institución':'Empresa'}</span></td>
       <td style="text-align:right">${r.cli.toLocaleString()}</td>
-      <td style="text-align:right">${r.ord}</td>
-      <td style="text-align:right;color:var(--green)">${fmtCLP(r.rev)}</td>
-      <td style="text-align:right;color:var(--text2)">${pct}%</td>
+      <td style="text-align:right">${r.ord!=null?r.ord:'<span style=\"color:#64748b;font-size:10px\">pend.</span>'}</td>
+      <td style="text-align:right;color:var(--green)">${r.rev?fmtCLP(r.rev):'<span style=\"color:#64748b;font-size:10px\">pend. export</span>'}</td>
+      <td style="text-align:right;color:var(--text2)">${pct==='—'?'—':pct+'%'}</td>
       <td style="text-align:right">${r.tick?fmtCLP(r.tick):'—'}</td>
       <td style="text-align:center">${tendIco}</td>
       <td>${estChip}</td>
