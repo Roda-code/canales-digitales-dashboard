@@ -215,14 +215,22 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <!-- ══════ RESUMEN ══════ -->
 <div class="tp active" id="tp-resumen">
 
-  <!-- KPIs Magento reales -->
-  <div class="sh"><div class="sh-t">📊 KPIs Reales E-Commerce <span class="sh-b">Magento · 60 días</span></div></div>
+  <!-- KPIs doble panel: 60d histórico + últimos 30d -->
+  <div class="sh"><div class="sh-t">📊 KPIs E-Commerce <span class="sh-b">Magento Real · 60d acumulado + últimos 30d</span></div></div>
   <div class="kg5 mb">
     <div class="kpi bl"><div class="kl">Órdenes (60d)</div><div class="kv" style="color:#60a5fa">1.908</div><div class="ks">Ene-Mar 2026</div><div class="kd up">+39% vs 2025</div></div>
     <div class="kpi gr"><div class="kl">Revenue (60d)</div><div class="kv" style="color:#34d399;font-size:17px">$378.3M</div><div class="ks">E-Commerce total</div><div class="kd up">Real Magento</div></div>
-    <div class="kpi tl"><div class="kl">Ticket Promedio</div><div class="kv" style="color:var(--teal)">$198K</div><div class="ks">Prom. por orden</div><div class="kd up">↑ vs $143K 2025</div></div>
-    <div class="kpi pu"><div class="kl">Clientes Únicos</div><div class="kv" style="color:#a78bfa">1.229</div><div class="ks">Compraron en 60d</div><div class="kd nt">1.908 órdenes</div></div>
-    <div class="kpi yw"><div class="kl">Cancelación</div><div class="kv" style="color:var(--yellow);font-size:18px">20.2%</div><div class="ks">385 órdenes</div><div class="kd wa">Reducir a 15%</div></div>
+    <div class="kpi tl"><div class="kl">Ticket Prom. (30d)</div><div class="kv" style="color:var(--teal)">$181.8K</div><div class="ks">vs $143K 2025</div><div class="kd up">↑ +27%</div></div>
+    <div class="kpi pu"><div class="kl">Clientes 30d</div><div class="kv" style="color:#a78bfa">611</div><div class="ks">Únicos 252 · Rec. 387</div><div class="kd dn">-11% vs anterior</div></div>
+    <div class="kpi yw"><div class="kl">Cancelación</div><div class="kv" style="color:var(--yellow);font-size:18px">20.2%</div><div class="ks">385 de 1.908 órd.</div><div class="kd wa">Meta: 15%</div></div>
+  </div>
+  <!-- KPIs últimos 30 días -->
+  <div class="kg5 mb" style="grid-template-columns:repeat(5,1fr)">
+    <div class="kpi gr"><div class="kl">Revenue 30d</div><div class="kv" style="color:var(--green);font-size:16px">$116.1M</div><div class="ks">639 transacciones</div><div class="kd up">+1.22%</div></div>
+    <div class="kpi bl"><div class="kl">Recurrentes 30d</div><div class="kv" style="color:#60a5fa">60.6%</div><div class="ks">387 de 611 clientes</div><div class="kd up">↑ vs 40% industria</div></div>
+    <div class="kpi tl"><div class="kl">Toku avg ticket</div><div class="kv" style="color:var(--teal);font-size:16px">$239.9K</div><div class="ks">vs $181.8K general</div><div class="kd up">+32% · Suscripciones</div></div>
+    <div class="kpi rd"><div class="kl">Mejor día</div><div class="kv" style="color:var(--red);font-size:18px">Martes</div><div class="ks">148 ventas · Pico</div><div class="kd nt">Activar campañas L-PM</div></div>
+    <div class="kpi yw"><div class="kl">Mejor hora</div><div class="kv" style="color:var(--yellow);font-size:18px">09-11h</div><div class="ks">57 ventas/hora pico</div><div class="kd up">Enviar emails 8am</div></div>
   </div>
 
   <!-- Suscripciones highlight -->
@@ -378,6 +386,106 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
   </div>
 
+  <!-- RFM Segmentación Real -->
+  <div class="sh"><div class="sh-t">🎯 RFM — Segmentación Real E-Commerce <span class="sh-b2">Datos plataforma CRM · 20 Mar 2026</span></div></div>
+  <div style="font-size:11px;color:var(--text3);margin-bottom:10px;background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.15);border-radius:7px;padding:9px 12px">
+    💡 <b>RFM = Recency + Frequency + Monetary.</b> Segmenta clientes según cuándo compraron por última vez, con qué frecuencia y cuánto gastaron. Base total: <b>200.617 perfiles</b> · Solo 2.24% ha comprado al menos una vez.
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px">
+    <div class="card" style="border-color:rgba(16,185,129,.4);padding:11px;text-align:center">
+      <div style="font-size:16px">🏆</div>
+      <div style="font-size:10px;font-weight:700;color:var(--green);margin:3px 0">Campeones</div>
+      <div style="font-size:20px;font-weight:800;color:var(--green)">280</div>
+      <div style="font-size:10px;color:var(--text3)">3.5K ventas</div>
+      <div class="kd up" style="margin-top:4px;font-size:9px">0.14%</div>
+    </div>
+    <div class="card" style="border-color:rgba(59,130,246,.3);padding:11px;text-align:center">
+      <div style="font-size:16px">⭐</div>
+      <div style="font-size:10px;font-weight:700;color:#60a5fa;margin:3px 0">Clientes Fieles</div>
+      <div style="font-size:20px;font-weight:800;color:#60a5fa">130</div>
+      <div style="font-size:10px;color:var(--text3)">1K ventas</div>
+      <div class="kd nt" style="margin-top:4px;font-size:9px">0.06%</div>
+    </div>
+    <div class="card" style="border-color:rgba(139,92,246,.3);padding:11px;text-align:center">
+      <div style="font-size:16px">🚀</div>
+      <div style="font-size:10px;font-weight:700;color:#a78bfa;margin:3px 0">Prometedores</div>
+      <div style="font-size:20px;font-weight:800;color:#a78bfa">1.900</div>
+      <div style="font-size:10px;color:var(--text3)">3.1K ventas</div>
+      <div class="kd up" style="margin-top:4px;font-size:9px">0.94%</div>
+    </div>
+    <div class="card" style="border-color:rgba(245,158,11,.3);padding:11px;text-align:center">
+      <div style="font-size:16px">💎</div>
+      <div style="font-size:10px;font-weight:700;color:var(--yellow);margin:3px 0">No Perder</div>
+      <div style="font-size:20px;font-weight:800;color:var(--yellow)">1.600</div>
+      <div style="font-size:10px;color:var(--text3)">2.4K ventas</div>
+      <div class="kd wa" style="margin-top:4px;font-size:9px">0.80% ⚠️</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px">
+    <div class="card" style="border-color:rgba(249,115,22,.3);padding:11px;text-align:center">
+      <div style="font-size:16px">⚠️</div>
+      <div style="font-size:10px;font-weight:700;color:var(--orange);margin:3px 0">Necesitan Atención</div>
+      <div style="font-size:20px;font-weight:800;color:var(--orange)">197</div>
+      <div style="font-size:10px;color:var(--text3)">802 ventas</div>
+      <div class="kd wa" style="margin-top:4px;font-size:9px">0.10%</div>
+    </div>
+    <div class="card" style="border-color:rgba(239,68,68,.3);padding:11px;text-align:center">
+      <div style="font-size:16px">🆘</div>
+      <div style="font-size:10px;font-weight:700;color:var(--red);margin:3px 0">En Riesgo</div>
+      <div style="font-size:20px;font-weight:800;color:var(--red)">404</div>
+      <div style="font-size:10px;color:var(--text3)">2K ventas</div>
+      <div class="kd dn" style="margin-top:4px;font-size:9px">0.20%</div>
+    </div>
+    <div class="card" style="border-color:rgba(100,116,139,.3);padding:11px;text-align:center">
+      <div style="font-size:16px">😴</div>
+      <div style="font-size:10px;font-weight:700;color:var(--text2);margin:3px 0">A punto dormirse</div>
+      <div style="font-size:20px;font-weight:800;color:var(--text2)">4</div>
+      <div style="font-size:10px;color:var(--text3)">7 ventas</div>
+      <div class="kd nt" style="margin-top:4px;font-size:9px">0.00%</div>
+    </div>
+    <div class="card" style="border-color:rgba(30,41,59,.5);padding:11px;text-align:center">
+      <div style="font-size:16px">🌑</div>
+      <div style="font-size:10px;font-weight:700;color:var(--text3);margin:3px 0">Sin Ventas</div>
+      <div style="font-size:20px;font-weight:800;color:var(--text3)">197.5K</div>
+      <div style="font-size:10px;color:var(--text3)">12.4K reg.</div>
+      <div class="kd dn" style="margin-top:4px;font-size:9px">97.76% 🎯</div>
+    </div>
+  </div>
+  <div class="al b" style="margin-bottom:14px"><div class="ai">🎯</div><div><div class="at">97.76% de perfiles jamás han comprado — oportunidad masiva de activación</div><div class="ad">197.500 perfiles registrados sin compras. Si se activa el 1% = ~1.975 nuevos compradores × $181K avg ticket = <b>+$357M en revenue incremental</b>. Canal sugerido: email automatizado segmentado por convenio.</div></div><div class="ab bb">ENORME</div></div>
+
+  <!-- Trend mensual -->
+  <div class="sh"><div class="sh-t">📅 Revenue Mensual E-Commerce 2026 <span class="sh-b2">Únicos vs Recurrentes</span></div></div>
+  <div class="ch-grid mb">
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--accent)"></div>Revenue por Mes (Únicos vs Recurrentes)</div>
+      <div class="ch-wrap"><canvas id="cMonthly"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--green)"></div>Últimos 30 días · Método de Pago</div>
+      <div class="ch-wrap"><canvas id="cPago"></canvas></div>
+    </div>
+  </div>
+  <div class="kg4 mb" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi bl"><div class="kl">Ene-26 E-Com</div><div class="kv" style="color:#60a5fa;font-size:16px">$127M</div><div class="ks">Únicos $75.9M · Rec. $51.1M</div><div class="kd nt">→</div></div>
+    <div class="kpi bl"><div class="kl">Feb-26 E-Com</div><div class="kv" style="color:#60a5fa;font-size:16px">$111M</div><div class="ks">Únicos $64.2M · Rec. $46.9M</div><div class="kd dn">↓ -12.5%</div></div>
+    <div class="kpi bl"><div class="kl">Mar-26 E-Com</div><div class="kv" style="color:#60a5fa;font-size:16px">$83M*</div><div class="ks">Únicos $51.1M · Rec. $32.2M</div><div class="kd wa">*Parcial</div></div>
+    <div class="kpi gr"><div class="kl">Toku (Suscripciones)</div><div class="kv" style="color:var(--green);font-size:16px">$239K</div><div class="ks">Ticket promedio más alto</div><div class="kd up">124 órd. $29.7M</div></div>
+  </div>
+
+  <!-- Mejor día y hora -->
+  <div class="sh"><div class="sh-t">⏰ Timing Óptimo de Compras <span class="sh-b2">Últimos 30 días E-Commerce</span></div></div>
+  <div class="ch-grid mb">
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--purple)"></div>Ventas por Día de la Semana</div>
+      <div class="ch-wrap"><canvas id="cDia"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--teal)"></div>Ventas por Hora del Día (0-23h)</div>
+      <div class="ch-wrap"><canvas id="cHora"></canvas></div>
+    </div>
+  </div>
+  <div class="al g" style="margin-bottom:14px"><div class="ai">📢</div><div><div class="at">Pico de compras: Martes 10-11am — el mejor momento para activar campañas</div><div class="ad">Lunes tiene el menor volumen. Programar envío de emails y notificaciones para <b>lunes 8pm</b> (anticipa el pico martes AM) o <b>martes 9am</b> para máximo open rate. Evitar viernes PM y domingo.</div></div><div class="ab bg">TIMING</div></div>
+
   <!-- Top clientes -->
   <div class="sh"><div class="sh-t">🏆 Top 10 Clientes por Revenue (60d)</div></div>
   <div class="card mb">
@@ -421,23 +529,26 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
   </div>
 
-  <!-- Top SKUs suscripción -->
-  <div class="sh"><div class="sh-t">💊 Top SKUs en Suscripciones <span class="sh-b">Productos más suscritos</span></div></div>
+  <!-- Top SKUs suscripción con MRR -->
+  <div class="sh"><div class="sh-t">💊 Top SKUs en Suscripciones <span class="sh-b">Cantidad + MRR Estimado/mes</span></div></div>
   <div class="card mb">
     <table class="tbl">
-      <thead><tr><th>SKU</th><th>Producto</th><th># Suscripciones</th><th>Share %</th><th>Colección</th><th>Barra</th><th>Estado</th></tr></thead>
+      <thead><tr><th>SKU</th><th>Producto</th><th># Subs</th><th>MRR Est./mes</th><th>Avg/sub</th><th>Share MRR</th><th>Estado</th></tr></thead>
       <tbody>
-        <tr><td>109920</td><td>RYBELSUS 3 MG X 30 COMP</td><td><b>88</b></td><td>23.4%</td><td><span class="chip cb">Alto Costo</span></td><td><div class="bw"><div class="bf" style="width:100%;background:var(--accent)"></div></div></td><td><span class="chip cg">Activo</span></td></tr>
-        <tr><td>109921</td><td>RYBELSUS 7 MG X 30 COMP</td><td><b>86</b></td><td>22.9%</td><td><span class="chip cb">Alto Costo</span></td><td><div class="bw"><div class="bf" style="width:98%;background:var(--accent)"></div></div></td><td><span class="chip cg">Activo</span></td></tr>
-        <tr><td>109922</td><td>RYBELSUS 14 MG X 30 COMP</td><td><b>59</b></td><td>15.7%</td><td><span class="chip cb">Alto Costo</span></td><td><div class="bw"><div class="bf" style="width:67%;background:var(--accent)"></div></div></td><td><span class="chip cg">Activo</span></td></tr>
-        <tr><td>110816</td><td>NURTEC 75 MG X 8 TAB.</td><td><b>55</b></td><td>14.6%</td><td><span class="chip cr">Alto Costo</span></td><td><div class="bw"><div class="bf" style="width:63%;background:var(--green)"></div></div></td><td><span class="chip cg">Top ventas</span></td></tr>
-        <tr><td>108590</td><td>PASURTA 140 MG SOL. INY.</td><td><b>45</b></td><td>12.0%</td><td><span class="chip cr">Convenios</span></td><td><div class="bw"><div class="bf" style="width:51%;background:var(--red)"></div></div></td><td><span class="chip cr">⚠️ Stock 0</span></td></tr>
-        <tr><td>103312</td><td>LENZETTO</td><td><b>23</b></td><td>6.1%</td><td><span class="chip cy">—</span></td><td><div class="bw"><div class="bf" style="width:26%;background:var(--yellow)"></div></div></td><td><span class="chip cy">Monitorear</span></td></tr>
-        <tr><td>100086</td><td>GENOTROPIN 36 UI VIAL</td><td><b>19</b></td><td>5.1%</td><td><span class="chip cb">Alto Costo</span></td><td><div class="bw"><div class="bf" style="width:22%;background:var(--accent)"></div></div></td><td><span class="chip cg">Stock 2844</span></td></tr>
-        <tr><td>106810</td><td>OZEMPIC SOL. INY. 4MG</td><td><b>8</b></td><td>2.1%</td><td><span class="chip co">Control Peso</span></td><td><div class="bw"><div class="bf" style="width:9%;background:var(--orange)"></div></div></td><td><span class="chip cy">Stock bajo</span></td></tr>
+        <tr><td>109920</td><td>RYBELSUS 3 MG X 30 COMP</td><td><b>88</b></td><td style="color:var(--accent);font-weight:700">$4.3M</td><td style="color:var(--text2)">~$49K</td><td>5.8%</td><td><span class="chip cg">Activo</span></td></tr>
+        <tr><td>109921</td><td>RYBELSUS 7 MG X 30 COMP</td><td><b>86</b></td><td style="color:var(--accent);font-weight:700">$5.1M</td><td style="color:var(--text2)">~$59K</td><td>6.8%</td><td><span class="chip cg">Activo</span></td></tr>
+        <tr><td>109922</td><td>RYBELSUS 14 MG X 30 COMP</td><td><b>59</b></td><td style="color:var(--accent);font-weight:700">$4.5M</td><td style="color:var(--text2)">~$76K</td><td>6.0%</td><td><span class="chip cg">Activo</span></td></tr>
+        <tr style="background:rgba(16,185,129,.05)"><td>110816</td><td><b>NURTEC 75 MG X 8 TAB.</b></td><td><b>55</b></td><td style="color:var(--green);font-weight:800;font-size:13px">$24.0M ★</td><td style="color:var(--text2)">~$436K</td><td style="color:var(--green);font-weight:700">32.2%</td><td><span class="chip cg">Top MRR</span></td></tr>
+        <tr style="background:rgba(239,68,68,.05)"><td>108590</td><td><b>PASURTA 140 MG SOL. INY.</b></td><td><b>45</b></td><td style="color:var(--red);font-weight:700">$9.5M ⚠️</td><td style="color:var(--text2)">~$211K</td><td style="color:var(--red)">12.7%</td><td><span class="chip cr">Stock 0 🚨</span></td></tr>
+        <tr><td>103312</td><td>LENZETTO</td><td><b>23</b></td><td style="color:var(--yellow);font-weight:700">$2.8M</td><td style="color:var(--text2)">~$122K</td><td>3.8%</td><td><span class="chip cy">Monitorear</span></td></tr>
+        <tr><td>100086</td><td>GENOTROPIN 36 UI VIAL</td><td><b>19</b></td><td style="color:var(--accent);font-weight:700">$3.8M</td><td style="color:var(--text2)">~$200K</td><td>5.1%</td><td><span class="chip cg">Stock OK</span></td></tr>
+        <tr><td>106810</td><td>OZEMPIC SOL. INY. 4MG</td><td><b>8</b></td><td style="color:var(--yellow);font-weight:700">$2.4M</td><td style="color:var(--text2)">~$300K</td><td>3.2%</td><td><span class="chip cy">Stock bajo</span></td></tr>
+        <tr style="background:rgba(100,116,139,.05)"><td colspan="2"><i style="color:var(--text3)">Otros SKUs (~21 subs restantes)</i></td><td><b>~21</b></td><td style="color:var(--text2);font-weight:700">$18.2M</td><td style="color:var(--text3)">—</td><td>24.4%</td><td><span class="chip cy">Varios</span></td></tr>
+        <tr style="background:rgba(16,185,129,.08)"><td colspan="2"><b>TOTAL MRR ACTIVO</b></td><td><b>279</b></td><td style="color:var(--green);font-weight:800;font-size:13px">$74.6M</td><td>—</td><td>100%</td><td></td></tr>
       </tbody>
     </table>
   </div>
+  <div style="font-size:10px;color:var(--text3);margin-bottom:14px;padding:0 4px">* MRR estimado = precio producto × frecuencia suscripción × suscripciones activas. NURTEC lidera con $436K/sub por ser fármaco especialidad clase A. Pasurta en riesgo inmediato por stock cero.</div>
 
   <!-- Alertas suscripciones -->
   <div class="sh"><div class="sh-t">⚠️ Alertas Suscripciones</div></div>
@@ -514,13 +625,22 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 <!-- ══════ CAMPAÑAS ══════ -->
 <div class="tp" id="tp-campanas">
-  <div class="sh"><div class="sh-t">📢 Campañas Sugeridas <span class="sh-b">Basadas en data real</span></div></div>
+  <div class="sh"><div class="sh-t">📢 Campañas Sugeridas <span class="sh-b">Motor de acciones basado en datos reales Magento + RFM</span></div></div>
+
+  <!-- ¿Cómo funciona este módulo? -->
+  <div style="background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.2);border-radius:9px;padding:13px 16px;margin-bottom:14px">
+    <div style="font-weight:700;color:#60a5fa;font-size:12px;margin-bottom:7px">💡 ¿Cómo funciona este módulo?</div>
+    <div style="font-size:11px;color:var(--text2);line-height:1.7">
+      Cada campaña nace de un <b>insight automático de los datos Magento + RFM</b>: si hay 82 suscripciones pausadas, el sistema genera una campaña de reactivación; si hay stock=0 con 45 subs activas, genera alerta de retención; si el 97.76% nunca compró, propone activación.
+      Cada campaña incluye: <b>segmento exacto</b> (con número real de personas) + <b>canal recomendado</b> + <b>mensaje sugerido</b> + <b>ROI estimado</b>. Las campañas se ordenan por urgencia e impacto financiero.
+    </div>
+  </div>
 
   <div class="kg4 mb">
-    <div class="kpi gr"><div class="kl">Potencial Total Campañas</div><div class="kv" style="color:var(--green);font-size:17px">+$45M</div><div class="ks">Revenue incremental/trimestre</div><div class="kd up">Si se ejecutan todas</div></div>
-    <div class="kpi bl"><div class="kl">Campañas Prioritarias</div><div class="kv" style="color:#60a5fa">4</div><div class="ks">Alta urgencia / alto ROI</div></div>
-    <div class="kpi yw"><div class="kl">Campañas Secundarias</div><div class="kv" style="color:var(--yellow)">3</div><div class="ks">Potencial medio / bajo esfuerzo</div></div>
-    <div class="kpi tl"><div class="kl">Segmentos Identificados</div><div class="kv" style="color:var(--teal)">6</div><div class="ks">Con data real para targetear</div></div>
+    <div class="kpi gr"><div class="kl">Potencial Total Campañas</div><div class="kv" style="color:var(--green);font-size:17px">+$68M</div><div class="ks">Revenue incremental/trimestre</div><div class="kd up">Si se ejecutan todas</div></div>
+    <div class="kpi rd"><div class="kl">Urgentes HOY</div><div class="kv" style="color:var(--red)">2</div><div class="ks">Riesgo activo de pérdida</div><div class="kd dn">Ejecutar ahora</div></div>
+    <div class="kpi bl"><div class="kl">Alta Prioridad</div><div class="kv" style="color:#60a5fa">4</div><div class="ks">Alto ROI · Esta semana</div></div>
+    <div class="kpi tl"><div class="kl">Segmentos Targetables</div><div class="kv" style="color:var(--teal)">9</div><div class="ks">RFM + Magento + Convenio</div></div>
   </div>
 
   <!-- Campañas prioritarias -->
@@ -566,15 +686,38 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="sub-val" style="color:var(--green)">+$8M LTV</div>
   </div>
 
+  <!-- Campañas RFM -->
+  <div class="sh" style="margin-top:14px"><div class="sh-t">🟠 Campañas RFM — Segmentación Comportamiento Real</div></div>
+
+  <div class="sub-card" style="border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.04)">
+    <div class="sub-ico" style="background:rgba(245,158,11,.15)">💎</div>
+    <div class="sub-info">
+      <div class="sub-name">CAMPAÑA 5: Retener segmento "No se pueden perder" — 1.600 perfiles en riesgo</div>
+      <div class="sub-det"><b>Segmento:</b> 1.600 perfiles RFM · compraron bien pero bajando frecuencia · <b>Canal:</b> Email personalizado con historial de productos · <b>Mensaje:</b> "Tu tratamiento te espera, tenemos tu historial listo" + recompra en 1 clic</div>
+      <div style="margin-top:5px"><span class="chip cy">RFM "No perder"</span> <span class="chip cb">2.400 ventas históricas</span> <span class="chip cy">Ejecutar esta semana</span></div>
+    </div>
+    <div class="sub-val" style="color:var(--yellow)">+$20M/trim</div>
+  </div>
+
+  <div class="sub-card" style="border-color:rgba(239,68,68,.3)">
+    <div class="sub-ico" style="background:rgba(239,68,68,.15)">🆘</div>
+    <div class="sub-info">
+      <div class="sub-name">CAMPAÑA 6: Reactivar segmento "En riesgo" — 404 perfiles, 2K ventas históricas</div>
+      <div class="sub-det"><b>Segmento:</b> 404 perfiles RFM · compraron antes, hace tiempo sin actividad · <b>Canal:</b> Email "te echamos de menos" + SMS si no abre · <b>Oferta:</b> 10% descuento primera compra de vuelta</div>
+      <div style="margin-top:5px"><span class="chip cr">RFM "En riesgo"</span> <span class="chip cb">2K ventas en riesgo</span> <span class="chip cy">Esta semana</span></div>
+    </div>
+    <div class="sub-val" style="color:var(--red)">Salvar $8M</div>
+  </div>
+
   <!-- Campañas secundarias -->
-  <div class="sh" style="margin-top:14px"><div class="sh-t">🟡 Campañas Secundarias</div></div>
+  <div class="sh" style="margin-top:14px"><div class="sh-t">🟡 Campañas de Crecimiento</div></div>
 
   <div class="sub-card">
-    <div class="sub-ico" style="background:rgba(245,158,11,.15)">🎯</div>
+    <div class="sub-ico" style="background:rgba(245,158,11,.15)">🔁</div>
     <div class="sub-info">
-      <div class="sub-name">CAMPAÑA 5: Convertir 1.016 one-time buyers a segunda compra</div>
-      <div class="sub-det"><b>Segmento:</b> 1.016 clientes con 1 orden · <b>Canal:</b> Email 30 días post-compra · <b>Mensaje:</b> "¿Se te acabó? Reserva tu próxima dosis con 5% descuento"</div>
-      <div style="margin-top:5px"><span class="chip cy">+10% conversión</span> <span class="chip cb">~100 clientes nuevos recurrentes</span></div>
+      <div class="sub-name">CAMPAÑA 7: Convertir 1.016 one-time buyers a segunda compra</div>
+      <div class="sub-det"><b>Segmento:</b> 1.016 clientes con 1 orden · RFM "Prometedores" · <b>Canal:</b> Email 30 días post-compra · <b>Mensaje:</b> "¿Se te acabó? Reserva tu próxima dosis con 5% dcto" · <b>Trigger:</b> automático a los 25-28 días según producto</div>
+      <div style="margin-top:5px"><span class="chip cy">+10% conversión</span> <span class="chip cb">~100 recurrentes nuevos</span> <span class="chip cp">Automatizable</span></div>
     </div>
     <div class="sub-val" style="color:var(--yellow)">+$16M/año</div>
   </div>
@@ -582,11 +725,40 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="sub-card">
     <div class="sub-ico" style="background:rgba(139,92,246,.15)">🏙️</div>
     <div class="sub-info">
-      <div class="sub-name">CAMPAÑA 6: Foco RM (Las Condes + Providencia + Lo Barnechea)</div>
-      <div class="sub-det"><b>Segmento:</b> Top 3 comunas = $91.3M (37.7% del revenue) · <b>Canal:</b> Google Ads geotargeting + SEM · <b>Objetivo:</b> aumentar share en NSE alto</div>
-      <div style="margin-top:5px"><span class="chip cp">NSE Alto</span> <span class="chip cb">Ticket $350K+</span></div>
+      <div class="sub-name">CAMPAÑA 8: Foco RM Premium (Las Condes + Providencia + Lo Barnechea)</div>
+      <div class="sub-det"><b>Segmento:</b> Top 3 comunas = $91.3M (37.7% del revenue E-Com) · <b>Canal:</b> Google Ads geotargeting + Meta Lookalike · <b>Objetivo:</b> aumentar share en NSE alto que ya compra</div>
+      <div style="margin-top:5px"><span class="chip cp">NSE Alto</span> <span class="chip cb">Ticket $350K+</span> <span class="chip cy">Mes siguiente</span></div>
     </div>
     <div class="sub-val" style="color:var(--purple)">+$12M/trim</div>
+  </div>
+
+  <div class="sub-card">
+    <div class="sub-ico" style="background:rgba(20,184,166,.15)">💳</div>
+    <div class="sub-info">
+      <div class="sub-name">CAMPAÑA 9: Upsell a suscripción a compradores Toku frecuentes</div>
+      <div class="sub-det"><b>Segmento:</b> 124 transacciones via Toku ($239K avg ticket vs $181K general) · <b>Canal:</b> Email post-compra Toku · <b>Mensaje:</b> "¿Sabías que puedes ahorrar 8% programando tu entrega?" · <b>Meta:</b> convertir 30% a suscripción</div>
+      <div style="margin-top:5px"><span class="chip ct2">Toku buyers</span> <span class="chip cg">$239K avg ticket</span> <span class="chip cb">ROI 15x</span></div>
+    </div>
+    <div class="sub-val" style="color:var(--teal)">+$9M/año</div>
+  </div>
+
+  <!-- Resumen estado campañas -->
+  <div class="sh" style="margin-top:16px"><div class="sh-t">📊 Resumen de Campañas — Estado y Prioridad</div></div>
+  <div class="card mb">
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Campaña</th><th>Segmento</th><th>Tamaño</th><th>Potencial</th><th>Prioridad</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>C1</td><td>Reactivar pausadas</td><td>Suscriptores</td><td>82</td><td style="color:var(--green);font-weight:700">+$22M/mes</td><td><span class="chip cr">🔴 HOY</span></td><td><span class="chip cy">Pendiente</span></td></tr>
+        <tr><td>C2</td><td>Comunicar quiebre Pasurta</td><td>Sub Pasurta</td><td>45</td><td style="color:var(--red);font-weight:700">Retener $18.9M</td><td><span class="chip cr">🔴 HOY</span></td><td><span class="chip cy">Pendiente</span></td></tr>
+        <tr><td>C3</td><td>NOT LOGGED IN a registrados</td><td>562 órd sin login</td><td>562</td><td style="color:var(--accent);font-weight:700">+$26M/año</td><td><span class="chip cb">🔵 Esta semana</span></td><td><span class="chip cy">Pendiente</span></td></tr>
+        <tr><td>C4</td><td>Pack Rybelsus 6-12 meses</td><td>233 subs</td><td>233</td><td style="color:var(--green)">+$8M LTV</td><td><span class="chip cb">🔵 Esta semana</span></td><td><span class="chip cy">Pendiente</span></td></tr>
+        <tr><td>C5</td><td>Retener "No se pueden perder"</td><td>RFM</td><td>1.600</td><td style="color:var(--yellow)">+$20M/trim</td><td><span class="chip cy">🟡 Esta semana</span></td><td><span class="chip cy">Pendiente</span></td></tr>
+        <tr><td>C6</td><td>Reactivar "En riesgo"</td><td>RFM</td><td>404</td><td style="color:var(--red)">Salvar $8M</td><td><span class="chip cy">🟡 Esta semana</span></td><td><span class="chip cy">Pendiente</span></td></tr>
+        <tr><td>C7</td><td>One-time → segunda compra</td><td>1 orden</td><td>1.016</td><td style="color:var(--yellow)">+$16M/año</td><td><span class="chip cp">🟢 Próx. mes</span></td><td><span class="chip cy">Pendiente</span></td></tr>
+        <tr><td>C8</td><td>RM Premium geotargeting</td><td>Top 3 comunas</td><td>—</td><td style="color:var(--purple)">+$12M/trim</td><td><span class="chip cp">🟢 Próx. mes</span></td><td><span class="chip cy">Pendiente</span></td></tr>
+        <tr><td>C9</td><td>Upsell suscripción a Toku</td><td>124 Toku buyers</td><td>124</td><td style="color:var(--teal)">+$9M/año</td><td><span class="chip cp">🟢 Próx. mes</span></td><td><span class="chip cy">Pendiente</span></td></tr>
+      </tbody>
+    </table>
   </div>
 </div><!-- /campañas -->
 
@@ -611,6 +783,25 @@ const SUB_MES_V=[2,124,64,82,55,49];
 
 const TOP_SKUS_SUB_L=['Rybelsus 3mg','Rybelsus 7mg','Rybelsus 14mg','Nurtec 75mg','Pasurta 140mg','Lenzetto','Genotropin','Ozempic'];
 const TOP_SKUS_SUB_V=[88,86,59,55,45,23,19,8];
+const TOP_SKUS_SUB_MRR=[4.3,5.1,4.5,24.0,9.5,2.8,3.8,2.4]; // MRR estimado en millones por SKU
+
+// ── Revenue mensual 2026 E-Commerce ──
+const MONTHLY_L=['Ene-26','Feb-26','Mar-26*'];
+const MONTHLY_UNICOS=[75.85,64.24,51.06];
+const MONTHLY_RECUR=[51.12,46.85,32.2];
+const MONTHLY_TOTAL=[126.97,111.09,83.26];
+
+// ── Métodos de pago (últimos 30d) ──
+const PAGO_L=['MercadoPago CC','MP Checkout Pro','Toku (Suscripciones)'];
+const PAGO_REV=[53.84,32.55,29.75];
+const PAGO_ORD=[297,218,124];
+const PAGO_AVG=[181.28,149.33,239.92]; // avg ticket en miles CLP
+
+// ── Mejor día y hora (últimos 30d) ──
+const DIA_L=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+const DIA_V=[50,148,97,98,98,101,44];
+const HORA_L=['00h','01h','02h','03h','04h','05h','06h','07h','08h','09h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h'];
+const HORA_V=[10,3,2,1,1,8,22,36,45,57,45,46,38,38,37,42,43,50,41,28,27,26,43,34];
 
 const STOCK_ITEMS=[
   {sku:'110816',name:'NURTEC 75MG x8',rev:88104236,stock:214,subs:55,semanas:18},
@@ -719,14 +910,34 @@ function initCharts(){
   mk('cStockRisk',{type:'bar',data:{labels:STOCK_ITEMS.slice(0,10).map(s=>s.name.slice(0,20)),datasets:[{label:'Revenue 60d ($M)',data:STOCK_ITEMS.slice(0,10).map(s=>Math.round(s.rev/1000000)),backgroundColor:STOCK_ITEMS.slice(0,10).map(s=>s.stock===0?'rgba(239,68,68,.8)':s.stock<20?'rgba(245,158,11,.7)':'rgba(16,185,129,.6)'),borderRadius:3}]},options:{...bO(),plugins:{...bO().plugins,legend:{display:false},tooltip:{...bO().plugins.tooltip,callbacks:{label:c=>`Rev: $${c.raw}M · Stock: ${STOCK_ITEMS[c.dataIndex].stock}u`}}}}});
 
   // Proyección
-  const actual=[75171596/1e6,162549019/1e6,140606976/1e6];
-  const proyMin=[actual[2]*0.9, actual[2]*1.05, actual[2]*1.18];
-  const proyMax=[actual[2]*1.1, actual[2]*1.25, actual[2]*1.42];
   mk('cProyeccion',{type:'line',data:{labels:['Ene-26','Feb-26','Mar-26','Abr-26 (proy)','May-26 (proy)','Jun-26 (proy)'],datasets:[
-    {label:'Real',data:[...actual,null,null,null],borderColor:'#14b8a6',backgroundColor:'rgba(20,184,166,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2},
-    {label:'Proyección optimista',data:[null,null,actual[2],...proyMax],borderColor:'#10b981',borderDash:[5,5],backgroundColor:'rgba(16,185,129,.08)',fill:true,tension:.4,pointRadius:4,borderWidth:2},
-    {label:'Proyección base',data:[null,null,actual[2],...proyMin],borderColor:'#f59e0b',borderDash:[5,5],backgroundColor:'rgba(245,158,11,.05)',fill:false,tension:.4,pointRadius:4,borderWidth:1.5},
+    {label:'Real E-Com',data:[126.97,111.09,83.26,null,null,null],borderColor:'#14b8a6',backgroundColor:'rgba(20,184,166,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2},
+    {label:'Proyección optimista',data:[null,null,83.26,115,128,142],borderColor:'#10b981',borderDash:[5,5],backgroundColor:'rgba(16,185,129,.08)',fill:true,tension:.4,pointRadius:4,borderWidth:2},
+    {label:'Proyección base',data:[null,null,83.26,98,107,118],borderColor:'#f59e0b',borderDash:[5,5],backgroundColor:'rgba(245,158,11,.05)',fill:false,tension:.4,pointRadius:4,borderWidth:1.5},
   ]},options:bO()});
+
+  // ── NUEVOS CHARTS ──
+  // Revenue mensual Únicos vs Recurrentes
+  mk('cMonthly',{type:'bar',data:{labels:MONTHLY_L,datasets:[
+    {label:'Compradores Únicos',data:MONTHLY_UNICOS,backgroundColor:'rgba(59,130,246,.7)',borderRadius:4},
+    {label:'Compradores Recurrentes',data:MONTHLY_RECUR,backgroundColor:'rgba(16,185,129,.7)',borderRadius:4},
+  ]},options:{...bO(),plugins:{...bO().plugins,tooltip:{...bO().plugins.tooltip,callbacks:{label:c=>`${c.dataset.label}: $${c.raw}M`}}}}});
+
+  // Métodos de pago
+  mk('cPago',{type:'bar',data:{labels:PAGO_L,datasets:[
+    {label:'Revenue $M',data:PAGO_REV,backgroundColor:['rgba(59,130,246,.7)','rgba(139,92,246,.7)','rgba(20,184,166,.8)'],borderRadius:5,yAxisID:'y'},
+    {label:'Ticket prom $K',data:PAGO_AVG,type:'line',borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.1)',fill:false,tension:.3,pointRadius:6,borderWidth:2,yAxisID:'y2'},
+  ]},options:{...bO(),scales:{
+    x:{ticks:{color:'#64748b',font:{size:9}},grid:{color:'rgba(36,48,80,.4)'}},
+    y:{ticks:{color:'#64748b',font:{size:10},callback:v=>'$'+v+'M'},grid:{color:'rgba(36,48,80,.4)'}},
+    y2:{position:'right',ticks:{color:'#f59e0b',font:{size:10},callback:v=>'$'+v+'K'},grid:{display:false}}
+  },plugins:{...bO().plugins,tooltip:{...bO().plugins.tooltip,callbacks:{label:c=>c.dataset.label.includes('Ticket')?`Avg: $${c.raw}K/orden`:`Rev: $${c.raw}M (${PAGO_ORD[c.dataIndex]} órd.)`}}}}});
+
+  // Mejor día
+  mk('cDia',{type:'bar',data:{labels:DIA_L,datasets:[{label:'Ventas',data:DIA_V,backgroundColor:DIA_V.map(v=>v===Math.max(...DIA_V)?'rgba(16,185,129,.85)':v===Math.min(...DIA_V)?'rgba(239,68,68,.6)':'rgba(59,130,246,.6)'),borderRadius:5}]},options:{...bO(),plugins:{...bO().plugins,legend:{display:false},tooltip:{...bO().plugins.tooltip,callbacks:{label:c=>`${c.raw} ventas`}}}}});
+
+  // Mejor hora
+  mk('cHora',{type:'bar',data:{labels:HORA_L,datasets:[{label:'Ventas por hora',data:HORA_V,backgroundColor:HORA_V.map(v=>v>=50?'rgba(16,185,129,.85)':v>=30?'rgba(59,130,246,.6)':'rgba(100,116,139,.4)'),borderRadius:3}]},options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
 }
 
 // ══════ STOCK TABLE ══════
