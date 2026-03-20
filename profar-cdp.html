@@ -211,6 +211,56 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .mn-avg{font-size:10px;color:var(--text3);margin-top:3px;}
 .src-pbi{background:rgba(59,130,246,.1);color:var(--accent);}
 .src-calc{background:rgba(139,92,246,.1);color:var(--purple);}
+
+/* FUNNEL */
+.funnel-wrap{padding:4px 0;}
+.funnel-step{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.funnel-track{height:32px;border-radius:5px;overflow:hidden;flex:1;min-width:0;background:var(--border);}
+.funnel-fill{height:100%;border-radius:5px;min-width:6px;transition:width .6s ease;}
+.funnel-lbl{font-size:11px;font-weight:600;width:195px;flex-shrink:0;color:var(--text);}
+.funnel-stats{display:flex;align-items:center;gap:6px;width:165px;flex-shrink:0;justify-content:flex-end;}
+.funnel-n{font-size:13px;font-weight:700;}
+.funnel-pct{font-size:10px;color:var(--text3);padding:1px 5px;border-radius:4px;background:rgba(255,255,255,.06);}
+.funnel-drop{display:flex;align-items:center;gap:6px;padding:2px 0 4px 205px;font-size:10px;color:var(--text3);}
+.funnel-badge{font-size:10px;padding:1px 6px;border-radius:4px;}
+
+/* SNAPSHOT BAR */
+.snap-bar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(20,184,166,.05);border:1px solid rgba(20,184,166,.2);border-radius:8px;margin-bottom:12px;flex-wrap:wrap;}
+.snap-label{font-size:10px;font-weight:700;color:var(--teal);white-space:nowrap;}
+.snap-items{display:flex;gap:5px;flex:1;overflow-x:auto;flex-wrap:nowrap;padding:2px 0;}
+.snap-item{display:flex;flex-direction:column;align-items:center;background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:3px 7px;min-width:56px;flex-shrink:0;cursor:pointer;transition:border-color .2s;}
+.snap-item:hover{border-color:var(--border2);}
+.snap-date{font-size:9px;color:var(--text3);}
+.snap-val{font-size:11px;font-weight:700;color:var(--green);}
+.snap-btn{background:rgba(20,184,166,.1);border:1px solid rgba(20,184,166,.3);color:var(--teal);padding:4px 10px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;}
+.snap-btn:hover{background:rgba(20,184,166,.2);}
+.snap-mini-chart{height:28px;display:flex;align-items:flex-end;gap:2px;padding:0 2px;}
+.snap-bar-m{width:8px;border-radius:1px;min-height:2px;background:rgba(16,185,129,.5);transition:background .2s;}
+.snap-bar-m:hover{background:var(--green);}
+
+/* REGION */
+.region-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.region-card{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:12px;transition:border-color .2s;}
+.region-card:hover{border-color:var(--border2);}
+.region-name{font-size:11px;font-weight:700;margin-bottom:4px;}
+.region-rev{font-size:17px;font-weight:700;margin-bottom:2px;}
+.region-pct{font-size:10px;color:var(--text3);}
+.region-track{height:4px;border-radius:2px;background:var(--border);margin-top:8px;overflow:hidden;}
+.region-fill{height:100%;border-radius:2px;}
+
+/* UPLOAD / REFRESH */
+.refresh-panel{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:14px;}
+.upload-zone{border:2px dashed var(--border2);border-radius:8px;padding:12px 14px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(59,130,246,.02);}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(59,130,246,.06);}
+.upload-zone input[type=file]{display:none;}
+.upload-lbl{font-size:11px;color:var(--text2);}
+.upload-hint{font-size:10px;color:var(--text3);margin-top:3px;}
+.upload-status{margin-top:8px;font-size:11px;padding:6px 10px;border-radius:6px;display:none;}
+.upload-status.ok{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.25);display:block;}
+.upload-status.err{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.25);display:block;}
+.upload-file-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.upload-file{font-size:10px;padding:3px 8px;border-radius:5px;border:1px solid var(--border2);color:var(--text2);display:flex;align-items:center;gap:4px;}
+.upload-file.loaded{border-color:rgba(16,185,129,.4);color:var(--green);background:rgba(16,185,129,.07);}
 </style>
 </head>
 <body>
@@ -232,12 +282,12 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 <div class="wrap">
 
-<!-- CHANNEL SELECTOR -->
+<!-- CHANNEL SELECTOR (Solo E-Commerce — Sala y Telefónica están en PROFAR Analytics PBI) -->
 <div class="ch-filter">
-  <button class="cf-btn active all" onclick="setCh('all',this)">🌐 Todos los Canales</button>
-  <button class="cf-btn ec" onclick="setCh('ec',this)">🛒 E-Commerce</button>
-  <button class="cf-btn sl" onclick="setCh('sl',this)">🏪 Sala de Venta</button>
-  <button class="cf-btn tl" onclick="setCh('tl',this)">📞 Venta Telefónica</button>
+  <button class="cf-btn active ec" onclick="setCh('ec',this)">🛒 E-Commerce (Magento) <span style="font-size:9px;padding:1px 5px;border-radius:4px;background:rgba(20,184,166,.15);color:var(--teal);margin-left:4px">LIVE</span></button>
+  <button class="cf-btn sl" onclick="setCh('sl',this)" style="display:none">🏪 Sala de Venta</button>
+  <button class="cf-btn tl" onclick="setCh('tl',this)" style="display:none">📞 Venta Telefónica</button>
+  <span style="font-size:10px;color:var(--text3);padding:5px 8px;border:1px solid var(--border);border-radius:6px;align-self:center">Sala · Telefónica → <a href="profar.html" style="color:var(--accent);text-decoration:none">PROFAR Analytics ↗</a></span>
 </div>
 
 <!-- TABS -->
@@ -254,6 +304,48 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 <!-- ══════ RESUMEN ══════ -->
 <div class="tp active" id="tp-resumen">
+
+  <!-- SNAPSHOT HISTÓRICO -->
+  <div class="snap-bar">
+    <span class="snap-label">📸 Histórico</span>
+    <div class="snap-items" id="snapHistory">
+      <span style="color:var(--text3);font-size:10px;padding:4px 2px">Sin snapshots aún · Guarda uno para empezar a acumular hasta 24 meses</span>
+    </div>
+    <div class="snap-mini-chart" id="snapMiniChart"></div>
+    <button class="snap-btn" onclick="saveSnapshot()" title="Guardar snapshot del día actual">💾 Guardar snapshot</button>
+    <button class="snap-btn" onclick="clearSnapshots()" title="Borrar historial" style="border-color:rgba(239,68,68,.3);color:var(--red);background:rgba(239,68,68,.04);padding:4px 8px">🗑️</button>
+  </div>
+
+  <!-- TOP 3 ACCIONES HOY -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px">
+    <div style="background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.3);border-radius:9px;padding:11px 13px;display:flex;gap:9px;align-items:flex-start">
+      <span style="font-size:18px">🚨</span>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">Acción #1 · HOY</div>
+        <div style="font-size:12px;font-weight:700">Reponer PASURTA + ZEJULA</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px">Stock = 0 en ambos · $23.9M perdidos/mes + 45 subs en riesgo</div>
+        <div style="font-size:9px;margin-top:5px;color:var(--red);font-weight:700">→ Llamar proveedor ahora</div>
+      </div>
+    </div>
+    <div style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.3);border-radius:9px;padding:11px 13px;display:flex;gap:9px;align-items:flex-start">
+      <span style="font-size:18px">⏸️</span>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">Acción #2 · Esta semana</div>
+        <div style="font-size:12px;font-weight:700">Reactivar 82 subs pausadas</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px">$22M/mes detenidos · Email "1 clic para reactivar"</div>
+        <div style="font-size:9px;margin-top:5px;color:var(--yellow);font-weight:700">→ Ir a tab Suscripciones</div>
+      </div>
+    </div>
+    <div style="background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.25);border-radius:9px;padding:11px 13px;display:flex;gap:9px;align-items:flex-start">
+      <span style="font-size:18px">🌑</span>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">Acción #3 · Este mes</div>
+        <div style="font-size:12px;font-weight:700">Activar 151K sin compras</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px">Email por convenio · 0.5% activación = +$179M incremental</div>
+        <div style="font-size:9px;margin-top:5px;color:var(--accent);font-weight:700">→ Ver tab Clientes · Embudo</div>
+      </div>
+    </div>
+  </div>
 
   <!-- KPIs doble panel: 60d histórico + últimos 30d -->
   <div class="sh"><div class="sh-t">📊 KPIs E-Commerce <span class="sh-b">Magento Real · 60d acumulado + últimos 30d</span></div></div>
@@ -315,6 +407,35 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
   </div>
 
+  <!-- ACTUALIZAR DATOS MAGENTO -->
+  <div class="sh">
+    <div class="sh-t">🔄 Actualizar Datos desde Magento <span class="sh-b3">Arrastra los CSV exportados o usa los endpoints</span></div>
+    <button class="btn-xs" onclick="document.getElementById('refreshPanel').style.display=document.getElementById('refreshPanel').style.display==='none'?'block':'none'">⚙️ Configurar</button>
+  </div>
+  <div class="refresh-panel" id="refreshPanel" style="display:none">
+    <div style="font-size:11px;color:var(--text2);margin-bottom:10px;line-height:1.6">
+      Sube los archivos CSV exportados desde <b>Magento KnownOnline</b> para actualizar las métricas del dashboard. El parser detecta automáticamente el tipo de archivo por sus columnas.
+    </div>
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('csvInput').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleFileDrop(event)">
+      <input type="file" id="csvInput" multiple accept=".csv" onchange="handleFileSelect(event)">
+      <div style="font-size:20px;margin-bottom:6px">📂</div>
+      <div class="upload-lbl"><b>Arrastra aquí los CSV de Magento</b> o haz clic para seleccionar</div>
+      <div class="upload-hint">orders.csv · customers.csv · subscriptions.csv · products.csv</div>
+    </div>
+    <div class="upload-file-list" id="uploadFileList"></div>
+    <div class="upload-status" id="uploadStatus"></div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+      <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Endpoints Magento (token auth)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div style="font-size:10px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:5px 8px;color:var(--text3)"><span style="color:var(--teal)">📦 Products:</span> /api/export/products?token=***</div>
+        <div style="font-size:10px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:5px 8px;color:var(--text3)"><span style="color:var(--accent)">🛒 Orders:</span> /api/export/orders?token=***</div>
+        <div style="font-size:10px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:5px 8px;color:var(--text3)"><span style="color:var(--purple)">👥 Customers:</span> /api/export/customers?token=***</div>
+        <div style="font-size:10px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:5px 8px;color:var(--text3)"><span style="color:var(--green)">🔄 Subscriptions:</span> /api/export/subscriptions?token=***</div>
+      </div>
+      <div style="font-size:10px;color:var(--text3);margin-top:6px">💡 Exporta desde Magento Admin → System → Export, o usa las URLs de KnownOnline con tu token API.</div>
+    </div>
+  </div>
+
   <!-- Alertas clave -->
   <div class="sh"><div class="sh-t">🚨 Alertas Críticas E-Commerce</div></div>
   <div class="al r"><div class="ai">🚫</div><div><div class="at">PASURTA 140mg y ZEJULA sin stock — $23.9M en demanda potencial perdida</div><div class="ad">2 SKUs top ventas con stock = 0. Están entre los 5 más vendidos. Cada semana sin stock = ~$5.9M perdidos en conversión.</div></div><div class="ab br">CRÍTICO</div></div>
@@ -370,6 +491,91 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <!-- ══════ CLIENTES ══════ -->
 <div class="tp" id="tp-clientes">
   <div class="sh"><div class="sh-t">👤 Análisis de Clientes <span class="sh-b2">Magento Real · 154.646 registros</span></div></div>
+
+  <!-- EMBUDO DE CONVERSIÓN -->
+  <div class="sh"><div class="sh-t">🔽 Embudo de Conversión E-Commerce <span class="sh-b">Registrado → Comprador → Suscriptor</span></div></div>
+  <div class="card mb">
+    <div class="funnel-wrap">
+
+      <!-- Step 1: Registrados -->
+      <div class="funnel-step">
+        <div class="funnel-lbl">👥 Registrados Magento</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:100%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div>
+        <div class="funnel-stats"><span class="funnel-n" style="color:#60a5fa">154.646</span><span class="funnel-pct">100%</span></div>
+      </div>
+      <div class="funnel-drop">
+        ↓&nbsp;<span style="color:var(--red);font-weight:700">−151.529</span>&nbsp;
+        <span class="funnel-badge" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:var(--red)">nunca han comprado · 98%</span>
+        &nbsp;&nbsp;<span style="color:var(--text3)">→ Email activación = <b style="color:var(--red)">+$179M potencial</b></span>
+      </div>
+
+      <!-- Step 2: Alguna vez compraron -->
+      <div class="funnel-step">
+        <div class="funnel-lbl">🛒 Han comprado alguna vez</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:13%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div></div>
+        <div class="funnel-stats"><span class="funnel-n" style="color:#a78bfa">3.117</span><span class="funnel-pct">real: 2.0%</span></div>
+      </div>
+      <div class="funnel-drop">
+        ↓&nbsp;<span style="color:var(--orange);font-weight:700">−1.888</span>&nbsp;
+        <span class="funnel-badge" style="background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);color:var(--orange)">inactivos +60d</span>
+        &nbsp;&nbsp;+&nbsp;&nbsp;<span style="color:var(--orange)">⚠️ 385 intentos fallidos (órdenes canceladas · $69.8M perdidos)</span>
+      </div>
+
+      <!-- Step 3: Activos 60d -->
+      <div class="funnel-step">
+        <div class="funnel-lbl">✅ Activos últimos 60 días</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:9%;background:linear-gradient(90deg,#10b981,#34d399)"></div></div>
+        <div class="funnel-stats"><span class="funnel-n" style="color:#34d399">1.229</span><span class="funnel-pct">real: 0.79%</span></div>
+      </div>
+      <div class="funnel-drop">
+        ↓&nbsp;<span style="color:var(--yellow);font-weight:700">−618</span>&nbsp;
+        <span class="funnel-badge" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:var(--yellow)">activos solo 30-60d atrás</span>
+      </div>
+
+      <!-- Step 4: Activos 30d -->
+      <div class="funnel-step">
+        <div class="funnel-lbl">🔥 Activos últimos 30 días</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:6%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div></div>
+        <div class="funnel-stats"><span class="funnel-n" style="color:var(--yellow)">611</span><span class="funnel-pct">real: 0.40%</span></div>
+      </div>
+      <div class="funnel-drop">
+        ↓&nbsp;<span style="color:var(--green);font-weight:700">−332</span>&nbsp;
+        <span class="funnel-badge" style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:var(--green)">sin suscripción activa → candidatos C9</span>
+      </div>
+
+      <!-- Step 5: Suscriptores -->
+      <div class="funnel-step">
+        <div class="funnel-lbl">🔄 Suscriptores activos</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:3.5%;background:linear-gradient(90deg,#14b8a6,#2dd4bf)"></div></div>
+        <div class="funnel-stats"><span class="funnel-n" style="color:var(--teal)">279</span><span class="funnel-pct">real: 0.18%</span></div>
+      </div>
+
+    </div>
+
+    <!-- Resumen 4 cuadrantes del embudo -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+      <div style="text-align:center;padding:9px;background:rgba(239,68,68,.06);border-radius:7px;border:1px solid rgba(239,68,68,.15)">
+        <div style="font-size:20px;font-weight:700;color:var(--red)">151.529</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">🌑 Nunca compraron</div>
+        <div style="font-size:10px;color:var(--red);font-weight:600;margin-top:3px">Email activación → +$179M</div>
+      </div>
+      <div style="text-align:center;padding:9px;background:rgba(249,115,22,.06);border-radius:7px;border:1px solid rgba(249,115,22,.15)">
+        <div style="font-size:20px;font-weight:700;color:var(--orange)">385</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">⚠️ Intentos fallidos</div>
+        <div style="font-size:10px;color:var(--orange);font-weight:600;margin-top:3px">Canceladas → $69.8M perdidos</div>
+      </div>
+      <div style="text-align:center;padding:9px;background:rgba(59,130,246,.06);border-radius:7px;border:1px solid rgba(59,130,246,.15)">
+        <div style="font-size:20px;font-weight:700;color:#60a5fa">1.016</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">🆕 One-time buyers</div>
+        <div style="font-size:10px;color:#60a5fa;font-weight:600;margin-top:3px">2da compra → +$15M año</div>
+      </div>
+      <div style="text-align:center;padding:9px;background:rgba(20,184,166,.06);border-radius:7px;border:1px solid rgba(20,184,166,.15)">
+        <div style="font-size:20px;font-weight:700;color:var(--teal)">279</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">🔄 Suscriptores activos</div>
+        <div style="font-size:10px;color:var(--teal);font-weight:600;margin-top:3px">MRR base → $74.6M/mes</div>
+      </div>
+    </div>
+  </div>
 
   <div class="kg4 mb">
     <div class="kpi bl"><div class="kl">Total Registrados</div><div class="kv" style="color:#60a5fa">154.646</div><div class="ks">Base de datos Magento</div><div class="kd up">+13.718 en 2026</div></div>
@@ -579,6 +785,79 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       </tbody>
     </table>
     <div style="font-size:10px;color:var(--text3);margin-top:8px;padding:0 4px">💡 Un cliente General genera <b style="color:#60a5fa">89x más revenue</b> que un cliente Mutual por E-Commerce. La estrategia digital debe enfocarse en activar los 10K+ General y convertir NOT LOGGED IN → General.</div>
+  </div>
+
+  <!-- REGIONES / DISTRIBUCIÓN GEOGRÁFICA -->
+  <div class="sh"><div class="sh-t">🗺️ Distribución Geográfica <span class="sh-b">Por Región y Comuna · E-Commerce 60d</span></div>
+    <div class="sh-acts">
+      <button class="btn-xs active" id="btnRegion" onclick="toggleGeo('region')">Por Región</button>
+      <button class="btn-xs" id="btnComuna" onclick="toggleGeo('comuna')">Top Comunas</button>
+    </div>
+  </div>
+
+  <!-- Regiones view -->
+  <div id="geoRegion">
+    <div class="region-grid mb">
+      <div class="region-card" style="border-color:rgba(59,130,246,.35)">
+        <div class="region-name">🏙️ Región Metropolitana</div>
+        <div class="region-rev" style="color:#60a5fa">$143.7M</div>
+        <div class="region-pct">56.9% del revenue · 8 comunas top</div>
+        <div class="region-track"><div class="region-fill" style="width:100%;background:#3b82f6"></div></div>
+        <div style="margin-top:7px;font-size:10px;color:var(--text2)">Las Condes $43.1M · Providencia $25.6M · Lo Barnechea $22.7M · Ñuñoa $15.9M</div>
+      </div>
+      <div class="region-card" style="border-color:rgba(20,184,166,.35)">
+        <div class="region-name">🌊 Valparaíso</div>
+        <div class="region-rev" style="color:var(--teal)">$13.2M</div>
+        <div class="region-pct">5.2% del revenue</div>
+        <div class="region-track"><div class="region-fill" style="width:9.2%;background:var(--teal)"></div></div>
+        <div style="margin-top:7px;font-size:10px;color:var(--text2)">Viña del Mar $9.9M · Valparaíso ciudad $3.3M</div>
+      </div>
+      <div class="region-card" style="border-color:rgba(139,92,246,.35)">
+        <div class="region-name">🌿 Biobío</div>
+        <div class="region-rev" style="color:#a78bfa">$9.8M</div>
+        <div class="region-pct">3.9% del revenue</div>
+        <div class="region-track"><div class="region-fill" style="width:6.8%;background:#8b5cf6"></div></div>
+        <div style="margin-top:7px;font-size:10px;color:var(--text2)">Concepción $7.7M · Talcahuano $2.1M</div>
+      </div>
+      <div class="region-card" style="border-color:rgba(100,116,139,.35)">
+        <div class="region-name">📍 Otras Regiones</div>
+        <div class="region-rev" style="color:var(--text2)">$85.6M</div>
+        <div class="region-pct">33.9% del revenue · 13+ regiones</div>
+        <div class="region-track"><div class="region-fill" style="width:59.6%;background:#64748b"></div></div>
+        <div style="margin-top:7px;font-size:10px;color:var(--text2)">O'Higgins · Araucanía · Los Lagos · Antofagasta · otros</div>
+      </div>
+    </div>
+    <div class="card mb">
+      <div class="ct"><div class="d" style="background:var(--accent)"></div>Revenue por Región <span class="src-badge src-mg">Real Magento</span></div>
+      <div class="ch-wrap"><canvas id="cRegiones"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Comunas view (hidden by default) -->
+  <div id="geoComuna" style="display:none">
+    <div class="card mb">
+      <div class="ct"><div class="d" style="background:var(--orange)"></div>Top Comunas por Revenue <span class="src-badge src-mg">Real Magento</span></div>
+      <div class="ch-wrap-lg"><canvas id="cComunasExt"></canvas></div>
+    </div>
+    <div class="card mb">
+      <div class="ct"><div class="d" style="background:var(--text3)"></div>Distribución Comunas — Top 10 representan 63.9% del revenue</div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Comuna</th><th>Región</th><th>Revenue 60d</th><th>Share</th><th>NSE</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><b>Las Condes</b></td><td>RM</td><td><b>$43.1M</b></td><td><span class="chip cb">17.1%</span></td><td><span class="chip cg">AB</span></td></tr>
+          <tr><td>2</td><td><b>Providencia</b></td><td>RM</td><td><b>$25.6M</b></td><td>10.1%</td><td><span class="chip cg">AB</span></td></tr>
+          <tr><td>3</td><td><b>Lo Barnechea</b></td><td>RM</td><td><b>$22.7M</b></td><td>9.0%</td><td><span class="chip cg">AB</span></td></tr>
+          <tr><td>4</td><td>Ñuñoa</td><td>RM</td><td>$15.9M</td><td>6.3%</td><td><span class="chip cg">ABC1</span></td></tr>
+          <tr><td>5</td><td>Vitacura</td><td>RM</td><td>$14.2M</td><td>5.6%</td><td><span class="chip cg">AB</span></td></tr>
+          <tr><td>6</td><td>Viña del Mar</td><td>Valparaíso</td><td>$9.9M</td><td>3.9%</td><td><span class="chip cb">ABC1</span></td></tr>
+          <tr><td>7</td><td>Santiago Centro</td><td>RM</td><td>$8.3M</td><td>3.3%</td><td><span class="chip cy">C1C2</span></td></tr>
+          <tr><td>8</td><td>Concepción</td><td>Biobío</td><td>$7.7M</td><td>3.1%</td><td><span class="chip cy">C1C2</span></td></tr>
+          <tr><td>9</td><td>Colina</td><td>RM</td><td>$7.5M</td><td>3.0%</td><td><span class="chip cy">C1</span></td></tr>
+          <tr><td>10</td><td>La Florida</td><td>RM</td><td>$6.4M</td><td>2.5%</td><td><span class="chip cy">C2</span></td></tr>
+          <tr style="background:rgba(100,116,139,.05)"><td colspan="6" style="font-size:10px;color:var(--text3);font-style:italic">Top 3 comunas (Las Condes + Providencia + Lo Barnechea) = $91.3M = 36.2% del revenue total. Geo-targeting en estas 3 = máximo ROI de pauta digital.</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- Convenios activos en Magento -->
@@ -1206,11 +1485,221 @@ function botSend(){
   const msgs=document.getElementById('botMsgs');
   msgs.innerHTML+=`<div class="bot-msg usr">${q}</div>`;
   const ql=q.toLowerCase();
-  let resp='No tengo datos específicos para esa consulta aún. Puedo responder sobre: alertas, MRR, segmentos, clientes, convenios, stock, ticket promedio, ciudades o exportar datos.';
+  let resp='No tengo datos específicos para esa consulta. Puedo responder sobre: alertas, MRR, embudo, segmentos, clientes, convenios, stock, ticket promedio, ciudades/regiones, snapshots o exportar datos.';
   for(const kb of BOT_KB){if(kb.k.some(k=>ql.includes(k))){resp=kb.r;break;}}
   setTimeout(()=>{msgs.innerHTML+=`<div class="bot-msg bot">${resp}</div>`;msgs.scrollTop=msgs.scrollHeight;},400);
   msgs.scrollTop=msgs.scrollHeight;
 }
+
+// ══════ SNAPSHOT HISTÓRICO (localStorage) ══════
+const SNAP_KEY='profar_cdp_snaps_v1';
+
+function saveSnapshot(){
+  const snap={
+    date:new Date().toLocaleDateString('es-CL',{day:'2-digit',month:'2-digit',year:'2-digit'}),
+    ts:Date.now(),
+    rev60:378.3,orders60:1908,subs:279,mrr:74.6,clientes60:1229,clientes30:611,
+    rev30:116.1,ticket:181.8,paused:82,cancel_pct:20.2
+  };
+  let snaps=JSON.parse(localStorage.getItem(SNAP_KEY)||'[]');
+  // evitar duplicado del mismo día
+  snaps=snaps.filter(s=>s.date!==snap.date);
+  snaps.push(snap);
+  if(snaps.length>24)snaps=snaps.slice(-24);
+  localStorage.setItem(SNAP_KEY,JSON.stringify(snaps));
+  showNotif('✅ Snapshot guardado: '+snap.date+' · $'+snap.rev60+'M | '+snap.subs+' subs | MRR $'+snap.mrr+'M');
+  renderSnapshots();
+}
+
+function clearSnapshots(){
+  if(!confirm('¿Borrar todo el historial de snapshots?'))return;
+  localStorage.removeItem(SNAP_KEY);
+  renderSnapshots();
+  showNotif('🗑️ Historial de snapshots borrado');
+}
+
+function renderSnapshots(){
+  const snaps=JSON.parse(localStorage.getItem(SNAP_KEY)||'[]');
+  const el=document.getElementById('snapHistory');
+  const mc=document.getElementById('snapMiniChart');
+  if(!el)return;
+  if(snaps.length===0){
+    el.innerHTML='<span style="color:var(--text3);font-size:10px;padding:4px 2px">Sin snapshots · Guarda el primero para comenzar el histórico de 24 meses</span>';
+    if(mc)mc.innerHTML='';
+    return;
+  }
+  el.innerHTML=snaps.map((s,i)=>`
+    <div class="snap-item" title="Rev: $${s.rev60}M · Subs: ${s.subs} · MRR: $${s.mrr}M · Clientes 30d: ${s.clientes30}">
+      <div class="snap-date">${s.date}</div>
+      <div class="snap-val">$${s.rev60}M</div>
+      <div style="font-size:9px;color:var(--text3)">${s.subs} subs</div>
+    </div>
+  `).join('');
+  // mini chart de revenue
+  if(mc&&snaps.length>1){
+    const maxRev=Math.max(...snaps.map(s=>s.rev60));
+    mc.innerHTML=snaps.map(s=>{
+      const h=Math.max(4,Math.round((s.rev60/maxRev)*24));
+      return`<div class="snap-bar-m" style="height:${h}px" title="${s.date}: $${s.rev60}M"></div>`;
+    }).join('');
+  }
+}
+
+// ══════ GEO TOGGLE (Región / Comunas) ══════
+function toggleGeo(view){
+  const btnR=document.getElementById('btnRegion');
+  const btnC=document.getElementById('btnComuna');
+  const gR=document.getElementById('geoRegion');
+  const gC=document.getElementById('geoComuna');
+  if(view==='region'){
+    gR.style.display='block';gC.style.display='none';
+    btnR.classList.add('active');btnC.classList.remove('active');
+  }else{
+    gR.style.display='none';gC.style.display='block';
+    btnR.classList.remove('active');btnC.classList.add('active');
+    // init extended comunas chart if not done
+    if(!window._comunasExtDone){
+      window._comunasExtDone=true;
+      mk('cComunasExt',{type:'bar',data:{
+        labels:[...COMUNAS_LABELS,'Quilicura','Maipú','Antofagasta','Temuco','La Serena'],
+        datasets:[{label:'Revenue $M',
+          data:[...COMUNAS_REV.map(v=>+(v/1e6).toFixed(1)),4.8,4.2,3.9,3.1,2.7],
+          backgroundColor:'rgba(249,115,22,.7)',borderRadius:3}]
+      },options:{...bO(),indexAxis:'y',plugins:{legend:{display:false}},
+        scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(36,48,80,.4)'}},
+          y:{ticks:{color:'#94a3b8',font:{size:9}},grid:{display:false}}}}});
+    }
+  }
+}
+
+// ══════ CSV UPLOAD / MAGENTO PARSER ══════
+function handleFileDrop(e){
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.remove('drag');
+  const files=Array.from(e.dataTransfer.files).filter(f=>f.name.endsWith('.csv'));
+  if(!files.length)return;
+  processCSVFiles(files);
+}
+
+function handleFileSelect(e){
+  const files=Array.from(e.target.files);
+  processCSVFiles(files);
+}
+
+function processCSVFiles(files){
+  const list=document.getElementById('uploadFileList');
+  const status=document.getElementById('uploadStatus');
+  list.innerHTML='';
+  status.className='upload-status';
+  let processed=0;
+  const results=[];
+
+  files.forEach(file=>{
+    const div=document.createElement('div');
+    div.className='upload-file';
+    div.textContent='⏳ '+file.name;
+    list.appendChild(div);
+
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const text=e.target.result;
+      const rows=text.split('\n').filter(r=>r.trim());
+      const headers=rows[0].toLowerCase().split(',').map(h=>h.trim().replace(/"/g,''));
+      let type='unknown';
+
+      // Auto-detect file type by headers
+      if(headers.includes('sku')&&headers.includes('qty'))type='products';
+      else if(headers.includes('order_id')||headers.includes('increment_id'))type='orders';
+      else if(headers.includes('subscription_id')||headers.includes('sub_id'))type='subscriptions';
+      else if(headers.includes('entity_id')&&headers.includes('group_id'))type='customers';
+
+      const parsed={type,rows:rows.length-1,file:file.name};
+      results.push(parsed);
+      div.className='upload-file loaded';
+      div.textContent={products:'📦 ',orders:'🛒 ',subscriptions:'🔄 ',customers:'👥 ',unknown:'❓ '}[type]+file.name+' ('+parsed.rows+' rows · '+type+')';
+
+      // Apply updates based on type
+      if(type==='orders')applyOrdersCSV(headers,rows.slice(1));
+      else if(type==='products')applyProductsCSV(headers,rows.slice(1));
+      else if(type==='customers')applyCustomersCSV(headers,rows.slice(1));
+      else if(type==='subscriptions')applySubsCSV(headers,rows.slice(1));
+
+      processed++;
+      if(processed===files.length){
+        const ok=results.filter(r=>r.type!=='unknown').length;
+        status.className='upload-status '+(ok>0?'ok':'err');
+        status.textContent=ok>0
+          ?'✅ '+ok+' archivo(s) procesado(s): '+results.map(r=>r.type+'('+r.rows+'r)').join(' · ')+'. Actualizando dashboard...'
+          :'⚠️ No se detectaron columnas de Magento. Verifica que los headers coincidan con el export de KnownOnline.';
+        if(ok>0)showNotif('✅ Datos actualizados desde CSV · '+results.filter(r=>r.type!=='unknown').map(r=>r.type).join(', '));
+      }
+    };
+    reader.readAsText(file,'UTF-8');
+  });
+}
+
+function applyOrdersCSV(headers,rows){
+  // Parse orders: count, revenue, status, payment method, etc.
+  const iStatus=headers.indexOf('status');
+  const iTotal=headers.indexOf('base_grand_total')||headers.indexOf('grand_total')||headers.indexOf('total');
+  const iPayment=headers.indexOf('payment_method');
+  if(iStatus<0&&iTotal<0)return;
+
+  let total=0,completed=0,cancelled=0,totalRev=0;
+  rows.forEach(r=>{
+    const cols=r.split(',');
+    const status=(cols[iStatus]||'').toLowerCase().replace(/"/g,'');
+    const amt=parseFloat((cols[iTotal]||'0').replace(/"/g,''))||0;
+    total++;
+    if(status==='complete'||status==='processing'){completed++;totalRev+=amt;}
+    else if(status==='canceled'||status==='cancelled')cancelled++;
+  });
+
+  const cancelPct=total>0?(cancelled/total*100).toFixed(1):0;
+  showNotif(`📊 Orders CSV: ${total} órd · $${(totalRev/1e6).toFixed(1)}M · ${cancelPct}% canceladas`);
+  // Show summary card
+  document.getElementById('uploadStatus').textContent+=` | Orders: ${total} órd, $${(totalRev/1e6).toFixed(1)}M, ${cancelPct}% canceladas`;
+}
+
+function applyProductsCSV(headers,rows){
+  // Parse products: sku, qty for stock update
+  const iSku=headers.indexOf('sku');
+  const iQty=headers.indexOf('qty')||headers.indexOf('quantity');
+  if(iSku<0||iQty<0)return;
+  let zeroStock=0;
+  rows.forEach(r=>{
+    const cols=r.split(',');
+    const qty=parseFloat((cols[iQty]||'0').replace(/"/g,''));
+    if(qty===0)zeroStock++;
+  });
+  showNotif(`📦 Products CSV: ${rows.length} SKUs · ${zeroStock} sin stock`);
+}
+
+function applyCustomersCSV(headers,rows){
+  const total=rows.filter(r=>r.trim()).length;
+  showNotif(`👥 Customers CSV: ${total.toLocaleString('es-CL')} registros detectados`);
+}
+
+function applySubsCSV(headers,rows){
+  const iStatus=headers.indexOf('status');
+  let active=0,paused=0,cancelled=0;
+  rows.forEach(r=>{
+    const cols=r.split(',');
+    const s=(cols[iStatus]||'').toLowerCase().replace(/"/g,'');
+    if(s==='active')active++;else if(s==='paused'||s==='suspended')paused++;else if(s==='cancelled'||s==='canceled')cancelled++;
+  });
+  showNotif(`🔄 Subs CSV: ${active} activas · ${paused} pausadas · ${cancelled} canceladas`);
+}
+
+// ══════ INIT EXTENDED ══════
+document.addEventListener('DOMContentLoaded',()=>{
+  renderSnapshots();
+  // Region chart
+  mk('cRegiones',{type:'doughnut',data:{
+    labels:['RM ($143.7M)','Otras regiones ($85.6M)','Valparaíso ($13.2M)','Biobío ($9.8M)'],
+    datasets:[{data:[143.7,85.6,13.2,9.8],backgroundColor:['#3b82f6','#64748b','#14b8a6','#8b5cf6'],borderWidth:0}]
+  },options:{...dO(),plugins:{...dO().plugins,tooltip:{...dO().plugins.tooltip,callbacks:{label:c=>`${c.label.split('(')[0].trim()}: $${c.raw}M (${(c.raw/252.3*100).toFixed(1)}%)`}}}}});
+});
 </script>
 </body>
 </html>
