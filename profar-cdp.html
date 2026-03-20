@@ -35,6 +35,19 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .wrap{max-width:1400px;margin:0 auto;padding:18px 20px;}
 
 /* TABS */
+/* ── Two-level nav ── */
+.main-sec{display:flex;gap:5px;margin-bottom:5px;padding:2px 0;}
+.sec-btn{display:flex;align-items:center;gap:6px;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;color:var(--text3);border:1px solid var(--border);background:var(--bg2);white-space:nowrap;transition:all .2s;letter-spacing:.2px;}
+.sec-btn:hover{color:var(--text2);border-color:var(--border2);}
+.sec-btn.active.s-cdp{background:rgba(99,102,241,.15);color:#a5b4fc;border-color:rgba(99,102,241,.45);}
+.sec-btn.active.s-ecom{background:rgba(59,130,246,.15);color:#60a5fa;border-color:rgba(59,130,246,.45);}
+.sec-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.sec-btn.s-cdp .sec-dot{background:#818cf8;}
+.sec-btn.s-ecom .sec-dot{background:#3b82f6;}
+.sub-tnav{display:flex;gap:3px;margin-bottom:16px;background:var(--bg2);padding:3px;border-radius:9px;border:1px solid var(--border);overflow-x:auto;}
+.sub-tnav.sec-hidden{display:none;}
+.sub-tnav::-webkit-scrollbar{height:2px;}
+/* legacy alias */
 .tnav{display:flex;gap:3px;margin-bottom:16px;background:var(--bg2);padding:3px;border-radius:9px;border:1px solid var(--border);overflow-x:auto;}
 .tb{padding:6px 13px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;color:var(--text3);border:none;background:none;white-space:nowrap;transition:all .2s;}
 .tb:hover{color:var(--text2);}
@@ -508,25 +521,36 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <button class="cf-btn tl" onclick="setCh('tl',this)" style="display:none">📞 Venta Telefónica</button>
 </div>
 
-<!-- TABS -->
-<div class="tnav">
-  <span class="tnav-grp">🧬 CDP</span>
-  <button class="tb active" onclick="showTab('resumen',this)">📊 Resumen</button>
-  <button class="tb" onclick="showTab('convenios',this)">🤝 Convenios</button>
-  <button class="tb" onclick="showTab('clientes',this)">👤 Clientes</button>
-  <button class="tb" onclick="showTab('suscripciones',this)">🔄 Suscripciones</button>
-  <button class="tb" onclick="showTab('stock',this)">📦 Stock</button>
-  <button class="tb" onclick="showTab('predicciones',this)">🔮 Predicciones</button>
-  <button class="tb" onclick="showTab('campanas',this)">📢 Campañas</button>
-  <button class="tb" onclick="showTab('alertas',this)" id="tabAlertas">⚠️ Alertas <span id="alertBadge" style="background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:10px;margin-left:3px;font-weight:700">12</span></button>
-  <div class="tnav-sep"></div>
-  <span class="tnav-grp">🛒 E-Commerce</span>
-  <button class="tb" onclick="showTab('ventas',this)">🛒 E-Commerce</button>
-  <button class="tb" onclick="showTab('rotacion',this)">🔄 Rotación SKU</button>
-  <button class="tb" onclick="showTab('acciones',this)">🎯 Acciones</button>
-  <button class="tb" onclick="showTab('competencia',this)">⚔️ Competencia</button>
-  <button class="tb" onclick="showTab('pricing',this)">🏷️ Pricing</button>
-  <button class="tb" onclick="showTab('inversa',this)">📦 Log. Inversa</button>
+<!-- ══ SECTION SELECTOR ══ -->
+<div class="main-sec">
+  <button class="sec-btn s-cdp active" id="sec-cdp" onclick="showSection('cdp',this)">
+    <span class="sec-dot"></span>🧬 CDP
+  </button>
+  <button class="sec-btn s-ecom" id="sec-ecom" onclick="showSection('ecom',this)">
+    <span class="sec-dot"></span>🛒 E-Commerce
+  </button>
+</div>
+
+<!-- CDP sub-tabs -->
+<div class="sub-tnav" id="sub-cdp">
+  <button class="tb active" id="tb-resumen" onclick="showTab('resumen',this)">📊 Resumen</button>
+  <button class="tb" id="tb-convenios" onclick="showTab('convenios',this)">🤝 Convenios</button>
+  <button class="tb" id="tb-clientes" onclick="showTab('clientes',this)">👤 Clientes</button>
+  <button class="tb" id="tb-suscripciones" onclick="showTab('suscripciones',this)">🔄 Suscripciones</button>
+  <button class="tb" id="tb-stock" onclick="showTab('stock',this)">📦 Stock</button>
+  <button class="tb" id="tb-predicciones" onclick="showTab('predicciones',this)">🔮 Predicciones</button>
+  <button class="tb" id="tb-campanas" onclick="showTab('campanas',this)">📢 Campañas</button>
+  <button class="tb" id="tabAlertas" onclick="showTab('alertas',this)">⚠️ Alertas <span id="alertBadge" style="background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:10px;margin-left:3px;font-weight:700">12</span></button>
+</div>
+
+<!-- E-Commerce sub-tabs -->
+<div class="sub-tnav sec-hidden" id="sub-ecom">
+  <button class="tb" id="tb-ventas" onclick="showTab('ventas',this)">🛒 E-Commerce</button>
+  <button class="tb" id="tb-rotacion" onclick="showTab('rotacion',this)">🔄 Rotación SKU</button>
+  <button class="tb" id="tb-acciones" onclick="showTab('acciones',this)">🎯 Acciones</button>
+  <button class="tb" id="tb-competencia" onclick="showTab('competencia',this)">⚔️ Competencia</button>
+  <button class="tb" id="tb-pricing" onclick="showTab('pricing',this)">🏷️ Pricing</button>
+  <button class="tb" id="tb-inversa" onclick="showTab('inversa',this)">📦 Log. Inversa</button>
 </div>
 
 <!-- ══════ RESUMEN ══════ -->
@@ -2122,11 +2146,39 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 // ══════ TABS ══════
+// Which section each tab belongs to
+const TAB_SEC={resumen:'cdp',convenios:'cdp',clientes:'cdp',suscripciones:'cdp',stock:'cdp',predicciones:'cdp',campanas:'cdp',alertas:'cdp',ventas:'ecom',rotacion:'ecom',acciones:'ecom',competencia:'ecom',pricing:'ecom',inversa:'ecom'};
+
+function showSection(sec,el){
+  // Activate section button
+  document.querySelectorAll('.sec-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  // Show/hide sub-navs
+  document.getElementById('sub-cdp').classList.toggle('sec-hidden', sec!=='cdp');
+  document.getElementById('sub-ecom').classList.toggle('sec-hidden', sec!=='ecom');
+  // Activate the first tab in the chosen section (or the one that was last active)
+  const subNav=document.getElementById('sub-'+sec);
+  const prevActive=subNav.querySelector('.tb.active')||subNav.querySelector('.tb');
+  // extract tab id from onclick attr
+  const m=prevActive.getAttribute('onclick').match(/'(\w+)'/);
+  if(m)showTab(m[1],prevActive);
+}
+
 function showTab(id,el){
   document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tb').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tp-'+id).classList.add('active');
-  el.classList.add('active');
+  const panel=document.getElementById('tp-'+id);
+  if(panel)panel.classList.add('active');
+  if(el)el.classList.add('active');
+  // Keep section button in sync when tab is activated directly
+  const sec=TAB_SEC[id];
+  if(sec){
+    document.querySelectorAll('.sec-btn').forEach(b=>b.classList.remove('active'));
+    const sb=document.getElementById('sec-'+sec);
+    if(sb)sb.classList.add('active');
+    document.getElementById('sub-cdp').classList.toggle('sec-hidden',sec!=='cdp');
+    document.getElementById('sub-ecom').classList.toggle('sec-hidden',sec!=='ecom');
+  }
 }
 
 // ══════ CHANNEL FILTER ══════
