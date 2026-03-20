@@ -746,6 +746,45 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 
 
+  <!-- Revenue por Cápita — TODOS los convenios -->
+  <div class="sh" style="margin-top:18px"><div class="sh-t">📊 Revenue por Cápita — Todos los Convenios <span class="sh-b">Magento Real · 18 Ene – 19 Mar 2026</span></div></div>
+  <div class="card mb">
+    <table class="tbl">
+      <thead><tr><th>Convenio / Grupo</th><th>Tipo</th><th>Clientes Reg.</th><th>Compradores</th><th>Órdenes</th><th>Revenue 60d</th><th>Rev/Cliente Reg.</th><th>% Revenue Conv.</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr style="background:rgba(16,185,129,.05)"><td><b>Mutual</b></td><td>B2B Corporativo</td><td>142.874</td><td>11</td><td>13</td><td style="color:#34d399;font-weight:700">$1.820M</td><td style="color:#34d399">$13/reg</td><td style="color:#34d399;font-weight:700">92.4%</td><td><span class="chip cg">Activo</span></td></tr>
+        <tr style="background:rgba(245,158,11,.04)"><td><b>Empleados PROFAR</b></td><td>Interno</td><td>826</td><td>4</td><td>5</td><td style="color:var(--yellow)">$0.150M</td><td style="color:var(--text3)">$182/reg</td><td>7.6%</td><td><span class="chip cy">Bajo uso</span></td></tr>
+        <tr><td>Club de Polo</td><td>Empresa</td><td>219</td><td>0</td><td>0</td><td style="color:var(--text3)">$0</td><td style="color:var(--text3)">—</td><td style="color:var(--red)">0%</td><td><span class="chip cr">⚠️ Inactivo</span></td></tr>
+        <tr><td>Subsecretaría de Guerra</td><td>Institución</td><td>74</td><td>0</td><td>0</td><td style="color:var(--text3)">$0</td><td style="color:var(--text3)">—</td><td style="color:var(--red)">0%</td><td><span class="chip cr">⚠️ Inactivo</span></td></tr>
+        <tr><td>MED</td><td>Empresa</td><td>10</td><td>0</td><td>0</td><td style="color:var(--text3)">$0</td><td style="color:var(--text3)">—</td><td style="color:var(--red)">0%</td><td><span class="chip cr">⚠️ Inactivo</span></td></tr>
+        <tr><td>GO Integro</td><td>Empresa</td><td>2</td><td>0</td><td>0</td><td style="color:var(--text3)">$0</td><td style="color:var(--text3)">—</td><td style="color:var(--red)">0%</td><td><span class="chip cr">⚠️ Inactivo</span></td></tr>
+        <tr><td>SUBTEL</td><td>Institución</td><td>1</td><td>0</td><td>0</td><td style="color:var(--text3)">$0</td><td style="color:var(--text3)">—</td><td style="color:var(--red)">0%</td><td><span class="chip cr">⚠️ Inactivo</span></td></tr>
+        <tr><td>Conv. Tarjeta Vecino Las Condes</td><td>Institución</td><td>—</td><td>—</td><td>—</td><td style="color:var(--text3)">—</td><td style="color:var(--text3)">—</td><td style="color:var(--text3)">—</td><td><span class="chip cy">Sin grupo asignado</span></td></tr>
+        <tr style="background:rgba(16,185,129,.03);font-weight:600"><td>TOTAL CONVENIOS</td><td colspan="2">144.006 clientes registrados</td><td>15</td><td>18</td><td style="color:var(--green)">$1.970M</td><td style="color:var(--text3)">$14/reg promedio</td><td>100%</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:10px;color:var(--text3);margin-top:8px;padding:0 4px">💡 6 de 8 convenios tienen <b style="color:var(--red)">0 órdenes</b> en 60d. Oportunidad inmediata: activar Club de Polo (219 reg), Subsecretaría de Guerra (74 reg) y MED (10 reg) con campaña de email dirigida.</div>
+  </div>
+
+  <!-- Grupos de Cliente en Magento — solo convenios -->
+  <div class="sh" style="margin-top:4px"><div class="sh-t">🗂️ Grupos de Cliente en Magento — Convenios <span class="sh-b2">Configuración actual de customer_groups</span></div></div>
+  <div class="card mb">
+    <table class="tbl">
+      <thead><tr><th>ID Grupo</th><th>Nombre / Convenio</th><th>Tipo</th><th>Clientes Reg.</th><th>Revenue 60d</th><th>Órdenes</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr style="background:rgba(16,185,129,.04)"><td>9</td><td><b>Mutual</b></td><td>B2B Convenio Corporativo</td><td>142.874</td><td>$1.82M</td><td>13</td><td><span class="chip cg">Activo · Batch</span></td></tr>
+        <tr><td>4</td><td><b>Empleados PROFAR</b></td><td>Interno</td><td>826</td><td>$0.15M</td><td>5</td><td><span class="chip cy">Bajo uso</span></td></tr>
+        <tr><td>—</td><td><b>Club de Polo</b></td><td>Empresa</td><td>219</td><td>$0</td><td>0</td><td><span class="chip cr">⚠️ Sin actividad</span></td></tr>
+        <tr><td>—</td><td><b>Subsecretaría de Guerra</b></td><td>Institución</td><td>74</td><td>$0</td><td>0</td><td><span class="chip cr">⚠️ Sin actividad</span></td></tr>
+        <tr><td>—</td><td><b>MED</b></td><td>Empresa</td><td>10</td><td>$0</td><td>0</td><td><span class="chip cr">⚠️ Sin actividad</span></td></tr>
+        <tr><td>—</td><td><b>GO Integro</b></td><td>Empresa</td><td>2</td><td>$0</td><td>0</td><td><span class="chip cr">⚠️ Sin actividad</span></td></tr>
+        <tr><td>—</td><td><b>SUBTEL</b></td><td>Institución</td><td>1</td><td>$0</td><td>0</td><td><span class="chip cr">⚠️ Sin actividad</span></td></tr>
+        <tr><td>—</td><td><b>Conv. Tarjeta Vecino Las Condes</b></td><td>Institución / Municipal</td><td>—</td><td>—</td><td>—</td><td><span class="chip cy">Sin grupo Magento asignado</span></td></tr>
+        <tr style="background:rgba(100,116,139,.05)"><td colspan="7" style="color:var(--text3);font-size:10px;font-style:italic">Para agregar nuevos convenios en Magento: Admin → Customers → Customer Groups → Add New Group. Cada grupo nuevo = segmento de precio y descuento automático diferenciado.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
   <!-- Estrategia NOT LOGGED IN -->
   <div class="sh"><div class="sh-t">🔓 Estrategia NOT LOGGED IN — $75M en compras anónimas</div></div>
   <div class="kg3 mb">
@@ -846,9 +885,9 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
   <div class="kg4 mb">
     <div class="kpi bl"><div class="kl">Total Registrados</div><div class="kv" style="color:#60a5fa">154.646</div><div class="ks">Base de datos Magento</div><div class="kd up">+13.718 en 2026</div></div>
-    <div class="kpi pu"><div class="kl">Mutual (mayor grupo)</div><div class="kv" style="color:#a78bfa">142.874</div><div class="ks">92.4% de la base</div><div class="kd nt">Convenio corporativo</div></div>
     <div class="kpi gr"><div class="kl">General (activos)</div><div class="kv" style="color:#34d399">10.061</div><div class="ks">6.5% de la base</div><div class="kd up">Seguros privados</div></div>
-    <div class="kpi tl"><div class="kl">Club Beneficios</div><div class="kv" style="color:var(--teal)">579</div><div class="ks">+ 219 Club Polo</div><div class="kd wa">Potencial muy alto</div></div>
+    <div class="kpi tl"><div class="kl">Club Beneficios</div><div class="kv" style="color:var(--teal)">579</div><div class="ks">0.4% · + 219 Club Polo</div><div class="kd wa">Potencial alto</div></div>
+    <div class="kpi yw"><div class="kl">Empleados PROFAR</div><div class="kv" style="color:var(--yellow)">826</div><div class="ks">0.5% de la base</div><div class="kd up">Convenio interno</div></div>
   </div>
 
   <div class="ch-grid mb">
@@ -1005,7 +1044,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <button class="exp-btn" onclick="exportMercadoNatural()">⬇️ CSV</button>
   </div>
   <div style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:9px;padding:11px 14px;margin-bottom:12px;font-size:11px;color:var(--text2);line-height:1.7">
-    ⚡ <b>Mutual (92.4% de la base) = convenio B2B corporativo, se carga por batch desde el convenio.</b> No son clientes orgánicos de E-Commerce — acceden vía su empleador/mutual. Para la estrategia digital, el mercado real es: <b>General + Club Beneficios + NOT LOGGED IN</b>. Estos 3 generan el 89.7% del revenue E-Com con solo 6.7% de la base registrada.
+    ⚡ <b>Mercado natural E-Commerce: General + Club Beneficios + NOT LOGGED IN.</b> Estos 3 grupos generan el 89.7% del revenue con solo el 6.7% de la base registrada. Mutual y otros convenios B2B (cargados por batch) se analizan en detalle en la tab <b>Convenios</b>.
   </div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
     <div class="mn-card" style="border-color:rgba(59,130,246,.35)">
@@ -1029,17 +1068,17 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <div class="mn-avg">Avg ticket: <b style="color:var(--teal)">$150K</b></div>
       <div style="margin-top:8px;font-size:10px;background:rgba(20,184,166,.1);padding:5px 8px;border-radius:5px;color:#5eead4">📢 Bajo volumen pero alto potencial. 579 registrados, solo 12 órdenes. <b>Activar: comunicación directa</b></div>
     </div>
-    <div class="mn-card" style="border-color:rgba(16,185,129,.35)">
-      <div class="mn-lbl">Mutual (B2B Convenio)</div>
-      <div class="mn-pct" style="color:#34d399">$24.1M</div>
-      <div style="font-size:10px;color:var(--text3)">130 órdenes · 142.874 registrados</div>
-      <div class="mn-avg">Avg ticket: <b style="color:#34d399">$185K</b></div>
-      <div style="margin-top:8px;font-size:10px;background:rgba(100,116,139,.1);padding:5px 8px;border-radius:5px;color:var(--text3)">⚙️ Cargado por batch vía convenio corporativo. No es canal digital orgánico.</div>
+    <div class="mn-card" style="border-color:rgba(245,158,11,.35)">
+      <div class="mn-lbl">Empleados PROFAR</div>
+      <div class="mn-pct" style="color:var(--yellow)">$0.16M</div>
+      <div style="font-size:10px;color:var(--text3)">6 órdenes · 826 registrados</div>
+      <div class="mn-avg">Avg ticket: <b style="color:var(--yellow)">$30K</b></div>
+      <div style="margin-top:8px;font-size:10px;background:rgba(245,158,11,.1);padding:5px 8px;border-radius:5px;color:#fcd34d">💼 Personal PROFAR. Ticket bajo — revisar catálogo beneficios. <b>Activar descuento empleado</b></div>
     </div>
   </div>
 
   <!-- Revenue por cápita análisis -->
-  <div class="sh"><div class="sh-t">📊 Revenue por Cápita — Mutual vs Orgánico</div></div>
+  <div class="sh"><div class="sh-t">📊 Revenue por Cápita — Segmentos Orgánicos</div></div>
   <div class="card mb">
     <table class="tbl">
       <thead><tr><th>Segmento</th><th>Base Registrada</th><th>Órdenes 60d</th><th>Revenue 60d</th><th>Rev/Cliente</th><th>% Base</th><th>% Revenue</th><th>Estrategia</th></tr></thead>
@@ -1047,11 +1086,10 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
         <tr style="background:rgba(59,130,246,.04)"><td><b>General</b></td><td>10.061</td><td>786</td><td><b>$151.3M</b></td><td style="color:#60a5fa;font-weight:700">$15.040/cliente</td><td>6.5%</td><td style="color:#60a5fa;font-weight:700">59.8%</td><td><span class="chip cg">Fidelizar ★</span></td></tr>
         <tr style="background:rgba(139,92,246,.04)"><td><b>NOT LOGGED IN</b></td><td>—</td><td>562</td><td><b>$75.0M</b></td><td style="color:#a78bfa;font-weight:700">— (anónimo)</td><td>—</td><td style="color:#a78bfa;font-weight:700">29.7%</td><td><span class="chip cp">Registrar</span></td></tr>
         <tr style="background:rgba(20,184,166,.04)"><td><b>Club Beneficios</b></td><td>579</td><td>12</td><td><b>$1.8M</b></td><td style="color:var(--teal);font-weight:700">$3.108/cliente</td><td>0.4%</td><td style="color:var(--teal)">0.7%</td><td><span class="chip ct2">Activar</span></td></tr>
-        <tr><td>Empleados</td><td>826</td><td>6</td><td>$0.16M</td><td style="color:var(--text3)">$200/cliente</td><td>0.5%</td><td style="color:var(--text3)">0.06%</td><td><span class="chip cy">Revisar</span></td></tr>
-        <tr style="background:rgba(16,185,129,.03)"><td><b>Mutual</b> (B2B)</td><td>142.874</td><td>130</td><td><b>$24.1M</b></td><td style="color:#34d399;font-weight:700">$169/cliente</td><td>92.4%</td><td style="color:var(--text3)">9.5%</td><td><span class="chip cy">Convenio</span></td></tr>
+        <tr><td>Empleados PROFAR</td><td>826</td><td>6</td><td>$0.16M</td><td style="color:var(--text3)">$200/cliente</td><td>0.5%</td><td style="color:var(--text3)">0.06%</td><td><span class="chip cy">Revisar</span></td></tr>
       </tbody>
     </table>
-    <div style="font-size:10px;color:var(--text3);margin-top:8px;padding:0 4px">💡 Un cliente General genera <b style="color:#60a5fa">89x más revenue</b> que un cliente Mutual por E-Commerce. La estrategia digital debe enfocarse en activar los 10K+ General y convertir NOT LOGGED IN → General.</div>
+    <div style="font-size:10px;color:var(--text3);margin-top:8px;padding:0 4px">💡 Un cliente General genera el mayor revenue por cápita del canal E-Commerce. La estrategia digital debe enfocarse en activar los 10K+ General y convertir NOT LOGGED IN → General. Ver análisis de Convenios B2B en la tab Convenios.</div>
   </div>
 
   <!-- REGIONES / DISTRIBUCIÓN GEOGRÁFICA -->
@@ -1137,8 +1175,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
         <tr><td>1</td><td><b>General</b></td><td>Orgánico / Seguros</td><td>10.061</td><td>$151.3M</td><td>786</td><td><span class="chip cg">Activo ★</span></td></tr>
         <tr><td>4</td><td><b>Empleados</b></td><td>Interno</td><td>826</td><td>$0.16M</td><td>6</td><td><span class="chip cy">Bajo uso</span></td></tr>
         <tr><td>5</td><td><b>Club Beneficios</b></td><td>Fidelización</td><td>579</td><td>$1.8M</td><td>12</td><td><span class="chip ct2">Activar</span></td></tr>
-        <tr><td>9</td><td><b>Mutual</b></td><td>B2B Convenio Corporativo</td><td>142.874</td><td>$24.1M</td><td>130</td><td><span class="chip cb">Batch / Convenio</span></td></tr>
-        <tr style="background:rgba(100,116,139,.05)"><td colspan="7" style="color:var(--text3);font-size:10px;font-style:italic">Para agregar nuevos convenios (grupos) en Magento: Admin → Customers → Customer Groups → Add New Group. Cada grupo nuevo = nuevo segmento de precio y descuento automático.</td></tr>
+        <tr style="background:rgba(100,116,139,.05)"><td colspan="7" style="color:var(--text3);font-size:10px;font-style:italic">Mutual y otros convenios B2B se detallan en la tab Convenios. Para agregar nuevos grupos en Magento: Admin → Customers → Customer Groups → Add New Group.</td></tr>
       </tbody>
     </table>
   </div>
@@ -1539,6 +1576,22 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="kpi good"><div class="kpi-lbl">Febrero</div><div class="kpi-v" style="color:var(--green);font-size:19px">$110.4M</div><div class="kpi-sub" style="font-size:10px">701 órd · $158K ticket</div></div>
     <div class="kpi"><div class="kpi-lbl">Mar (1-19)</div><div class="kpi-v" style="font-size:19px">$79.7M</div><div class="kpi-sub" style="font-size:10px">423 órd · $188K ticket</div></div>
     <div class="kpi warn"><div class="kpi-lbl">🛑 Canceladas</div><div class="kpi-v" style="color:var(--red);font-size:16px">372 órd</div><div class="kpi-sub">$~62M revenue perdido est.</div></div>
+  </div>
+
+  <!-- Contexto ventas totales PROFAR — complemento con Detalle de Ventas 2025 -->
+  <div class="sh"><div class="sh-title">🏢 Contexto Canal Mix — PROFAR Total <span class="sh-badge" style="background:rgba(245,158,11,.15);color:var(--yellow)">Detalle de Ventas 2025 + Magento 2026</span></div></div>
+  <div style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-radius:9px;padding:11px 14px;margin-bottom:12px;font-size:11px;color:var(--text2);line-height:1.7">
+    📊 <b>Complemento de datos:</b> Órdenes Magento (E-Commerce) + Detalle de Ventas PROFAR 2025. El canal directo PROFAR generó <b style="color:var(--yellow)">$54.6B</b> en ventas físicas durante 2025 (~$4.55B/mes). E-Commerce representa actualmente el <b style="color:#60a5fa">~2% del canal directo</b> — oportunidad de crecimiento importante.
+  </div>
+  <div class="kgrid4 mb">
+    <div class="kpi"><div class="kpi-lbl">🏢 PROFAR In-Store 2025</div><div class="kpi-v" style="color:var(--yellow);font-size:17px">$54.6B</div><div class="kpi-sub">Canal directo · 12 meses completos</div><div class="kpi-delta up">Oncología + Especialidad</div></div>
+    <div class="kpi ec"><div class="kpi-lbl">🌐 E-Commerce 2026 (62d)</div><div class="kpi-v" style="color:#60a5fa;font-size:17px">$249.5M</div><div class="kpi-sub">Magento · Ene-Mar 2026</div><div class="kpi-delta up">~$120M/mes estimado</div></div>
+    <div class="kpi"><div class="kpi-lbl">📈 Participación E-Com</div><div class="kpi-v" style="color:var(--teal);font-size:17px">~2%</div><div class="kpi-sub">vs canal directo PROFAR 2025</div><div class="kpi-delta up">↑ Meta: 5% en 2026</div></div>
+    <div class="kpi warn"><div class="kpi-lbl">🎯 Potencial E-Com</div><div class="kpi-v" style="color:var(--orange);font-size:17px">$2.7B</div><div class="kpi-sub">Proyección anual 5% canal</div><div class="kpi-delta up">Oportunidad real</div></div>
+  </div>
+  <div class="card mb">
+    <div class="ct"><div class="d" style="background:var(--yellow)"></div>PROFAR In-Store 2025 vs E-Commerce 2026 (referencia mensual $M) <span class="src-badge" style="background:rgba(245,158,11,.15);color:var(--yellow)">Detalle de Ventas 2025</span></div>
+    <div class="ch-wrap"><canvas id="cCanalMix"></canvas></div>
   </div>
 
   <div class="ch-grid">
@@ -2676,6 +2729,11 @@ const INV_FULL=[
 function initAnalyticsCharts(){
   const bO=()=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:10}}},tooltip:{backgroundColor:'#1a2540',borderColor:'#2a3a5c',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:9}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(42,58,92,.4)'}},y:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(42,58,92,.4)'}}}});
   const mkC=(id,cfg)=>{const el=document.getElementById(id);if(!el)return;return new Chart(el,cfg);};
+  // Canal Mix: PROFAR In-Store 2025 vs E-Commerce 2026 (monthly ref $M)
+  mkC('cCanalMix',{type:'bar',data:{labels:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],datasets:[
+    {label:'PROFAR In-Store 2025 ($M)',data:[4508.8,3765.3,4369.2,4600.5,5705.3,3180.2,4873.9,5027.6,4542.7,5025.0,4403.1,4622.1],backgroundColor:'rgba(245,158,11,.7)',borderRadius:3,yAxisID:'y'},
+    {label:'E-Commerce 2026 ($M)',data:[59.3,110.4,79.7,null,null,null,null,null,null,null,null,null],backgroundColor:'rgba(59,130,246,.85)',borderRadius:3,yAxisID:'y2'},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:10}}},tooltip:{backgroundColor:'#1a2540',borderColor:'#2a3a5c',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:9}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(42,58,92,.4)'}},y:{ticks:{color:'#f59e0b',font:{size:10},callback:v=>'$'+v.toLocaleString()+'M'},grid:{color:'rgba(42,58,92,.2)'},title:{display:true,text:'In-Store $M',color:'#f59e0b',font:{size:9}}},y2:{position:'right',ticks:{color:'#60a5fa',font:{size:10},callback:v=>'$'+v+'M'},grid:{drawOnChartArea:false},title:{display:true,text:'E-Com $M',color:'#60a5fa',font:{size:9}}}}}});
   mkC('cV26',{type:'bar',data:{labels:MES,datasets:[
     {label:'E-Com 2026 (real Magento)',data:[59.3,110.4,79.7],backgroundColor:'rgba(59,130,246,.85)',borderRadius:3},
     {label:'E-Com 2025 (est.)',data:D.ecom.v25,backgroundColor:'rgba(59,130,246,.22)',borderRadius:3},
