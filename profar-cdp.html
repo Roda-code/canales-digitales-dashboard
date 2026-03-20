@@ -686,11 +686,12 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
   <!-- KPIs resumen -->
   <div class="sh"><div class="sh-t">🤝 Resumen Convenios E-Commerce <span class="sh-b2">60d · Magento Real</span></div></div>
+  <!-- KPIs Convenios — datos reales cruce Ordenes-orders.csv × customers.csv (ene-mar 2026) -->
   <div class="kg4 mb">
-    <div class="kpi bl"><div class="kl">Revenue Convenios 60d</div><div class="kv" style="color:#60a5fa">$73.1M</div><div class="ks">Mutual + Club + Empresas</div><div class="kd up">↑ +22% YoY · 19.3% canal</div></div>
-    <div class="kpi gr"><div class="kl">Convenios Activos</div><div class="kv" style="color:#34d399">9</div><div class="ks">de 12 convenios firmados</div><div class="kd wa">3 inactivos sin compras 60d</div></div>
-    <div class="kpi pu"><div class="kl">Clientes Convenio 60d</div><div class="kv" style="color:#a78bfa">130</div><div class="ks">de ~197.500 registrados</div><div class="kd wa">Enorme base sin activar</div></div>
-    <div class="kpi tl"><div class="kl">Ticket Prom. Convenio</div><div class="kv" style="color:var(--teal)">$185K</div><div class="ks">vs $133K compra anónima</div><div class="kd up">+39% vs NOT LOGGED IN</div></div>
+    <div class="kpi gr"><div class="kl">Revenue Convenios 60d</div><div class="kv" style="color:var(--green)">$1.97M</div><div class="ks">Mutual $1.82M + Empleados $0.15M</div><div class="kd dn">⚠️ 6 de 8 grupos sin órdenes</div></div>
+    <div class="kpi bl"><div class="kl">Grupos c/ Compras 60d</div><div class="kv">2</div><div class="ks">Mutual (13 órd) · Empleados (5)</div><div class="kd dn">6 convenios inactivos</div></div>
+    <div class="kpi tl"><div class="kl">Clientes Activos 60d</div><div class="kv">15</div><div class="ks">11 Mutual + 4 Empleados</div><div class="kd dn">142K registrados sin activar</div></div>
+    <div class="kpi rd"><div class="kl">Ticket Prom. Mutual</div><div class="kv">$140K</div><div class="ks">Alto costo / oncológicos</div><div class="kd up">↑ Oportunidad crónico</div></div>
   </div>
 
   <!-- Sábana filtrable -->
@@ -1564,7 +1565,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="sh-actions">
       <button class="btn-xs active" onclick="filterRot('all',this)">Todos</button>
       <button class="btn-xs" onclick="filterRot('ecom',this)">E-Com</button>
-      <button class="btn-xs" onclick="filterRot('sala',this)">Sala</button>
+
       <button class="btn-xs" onclick="filterRot('tel',this)">Tel.</button>
     </div>
   </div>
@@ -2515,7 +2516,7 @@ const CDP_SEGS=[
   {name:'VIP Crónico',canal:'E-Com',clientes:142,ticket:'$245K',compras:'8.2/trim',ltv:'$2.1M',tier:'A',spark:[8,9,7,10,11,9,12]},
   {name:'Club Beneficios',canal:'E-Com',clientes:389,ticket:'$82K',compras:'4.1/trim',ltv:'$337K',tier:'B',spark:[6,7,8,7,9,8,9]},
   {name:'NOT LOGGED IN',canal:'E-Com',clientes:621,ticket:'$51K',compras:'1.8/trim',ltv:'$92K',tier:'C',spark:[4,5,3,6,4,5,4]},
-  {name:'Sala Regular',canal:'Sala',clientes:412,ticket:'$195K',compras:'5.3/trim',ltv:'$1.03M',tier:'A',spark:[9,8,10,11,9,10,8]},
+
   {name:'Telefónica Activo',canal:'Tel.',clientes:703,ticket:'$134K',compras:'4.8/trim',ltv:'$643K',tier:'B',spark:[7,8,9,8,7,6,7]},
   {name:'En Riesgo',canal:'Todos',clientes:341,ticket:'$88K',compras:'0.3/trim',ltv:'$26K',tier:'D',spark:[5,4,3,2,1,1,0]},
 ];
@@ -2560,17 +2561,17 @@ const INV_ITEMS=[
 ];
 const CH_COLOR={'E-Com':'ch-b','Sala':'ch-g','Tel.':'ch-p','Todos':'ch-c'};
 // ══ CONVENIOS DATA ══
-// CONV_DATA — Grupos de cliente Magento reales (export customers.csv 20-Mar-2026)
-// Revenue/órdenes pendientes: exportar orders Magento con customer_group para cruzar
+// CONV_DATA — Grupos de cliente Magento REALES
+// Cruce: customers.csv (154.646 reg) × Ordenes-orders.csv (1.484 órd, ene-mar 2026)
 const CONV_DATA=[
-  {id:1,n:'Mutual',rut:'—',tipo:'mutual',cli:142874,ord:null,rev:null,tick:null,tend:'up',est:'Activo',acc:'Grupo más grande — pendiente cruce órdenes Magento'},
-  {id:2,n:'Empleados PROFAR',rut:'76.XXX.XXX-X',tipo:'inst',cli:826,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'Beneficio empleados — pendiente cruce órdenes'},
-  {id:3,n:'Club de Polo',rut:'—',tipo:'empresa',cli:219,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'Pendiente cruce órdenes Magento'},
-  {id:4,n:'Subsecretaría de Guerra',rut:'61.XXX.XXX-X',tipo:'inst',cli:74,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'Pendiente cruce órdenes Magento'},
-  {id:5,n:'MED',rut:'—',tipo:'empresa',cli:10,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'Grupo pequeño — validar si activo'},
-  {id:6,n:'GO Integro',rut:'—',tipo:'empresa',cli:2,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'En inicio — validar contrato'},
-  {id:7,n:'SUBTEL',rut:'61.XXX.XXX-X',tipo:'inst',cli:1,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'1 cliente — verificar estado'},
-  {id:8,n:'Conv. Tarjeta Vecino Las Condes',rut:'69.070.800-6',tipo:'inst',cli:null,ord:null,rev:null,tick:null,tend:'nt',est:'Activo',acc:'Catálogo -5% cargado. Pendiente grupo Magento'},
+  {id:1,n:'Mutual',rut:'—',tipo:'mutual',cli:142874,ord:13,rev:1820000,tick:140000,tend:'up',est:'Activo',acc:'142K reg / solo 13 órd — activar base con campaña descuento'},
+  {id:2,n:'Empleados PROFAR',rut:'76.XXX.XXX-X',tipo:'inst',cli:826,ord:5,rev:150000,tick:30000,tend:'nt',est:'Activo',acc:'Ticket bajo $30K — revisar catálogo beneficios'},
+  {id:3,n:'Club de Polo',rut:'—',tipo:'empresa',cli:219,ord:0,rev:0,tick:0,tend:'dn',est:'Activo',acc:'⚠️ 0 órdenes en 60d — reactivar o revisar condiciones'},
+  {id:4,n:'Subsecretaría de Guerra',rut:'61.XXX.XXX-X',tipo:'inst',cli:74,ord:0,rev:0,tick:0,tend:'dn',est:'Activo',acc:'⚠️ 0 órdenes — contactar encargado de compras'},
+  {id:5,n:'MED',rut:'—',tipo:'empresa',cli:10,ord:0,rev:0,tick:0,tend:'dn',est:'Activo',acc:'⚠️ Sin actividad — validar contrato vigente'},
+  {id:6,n:'GO Integro',rut:'—',tipo:'empresa',cli:2,ord:0,rev:0,tick:0,tend:'dn',est:'Activo',acc:'⚠️ 2 clientes reg / 0 órdenes — seguimiento comercial'},
+  {id:7,n:'SUBTEL',rut:'61.XXX.XXX-X',tipo:'inst',cli:1,ord:0,rev:0,tick:0,tend:'dn',est:'Activo',acc:'⚠️ 1 cliente / 0 órdenes — verificar estado convenio'},
+  {id:8,n:'Conv. Tarjeta Vecino Las Condes',rut:'69.070.800-6',tipo:'inst',cli:null,ord:0,rev:0,tick:0,tend:'nt',est:'Activo',acc:'Catálogo -5% cargado — sin grupo Magento asignado aún'},
 ];
 // ══ COMPETENCIA SKU DATA ══
 const COMP_SKUS=[
@@ -2639,12 +2640,8 @@ function initAnalyticsCharts(){
   ]},options:bO()});
   mkC('cRotDonut',{type:'doughnut',data:{labels:['Alta Rotación','Normal','Baja Rotación','Sin Rotación +3M'],datasets:[{data:[28,40,18,14],backgroundColor:['#10b981','#3b82f6','#f59e0b','#ef4444'],borderWidth:0,hoverOffset:4}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:10},padding:10}}}}});
-  mkC('cRotCanal',{type:'bar',data:{labels:['E-Commerce','Sala Venta','Venta Tel.'],datasets:[
-    {label:'Alta',data:[35,42,28],backgroundColor:'rgba(16,185,129,.75)',borderRadius:3},
-    {label:'Normal',data:[40,38,44],backgroundColor:'rgba(59,130,246,.75)',borderRadius:3},
-    {label:'Baja',data:[15,12,18],backgroundColor:'rgba(245,158,11,.75)',borderRadius:3},
-    {label:'Sin Rot.',data:[10,8,10],backgroundColor:'rgba(239,68,68,.75)',borderRadius:3},
-  ]},options:{...bO(),scales:{...bO().scales,x:{...bO().scales.x,stacked:true},y:{...bO().scales.y,stacked:true}}}});
+  mkC('cRotCanal',{type:'doughnut',data:{labels:['Alta Rotación','Normal','Baja Rotación','Sin Rotación +3M'],datasets:[{data:[35,40,15,10],backgroundColor:['rgba(16,185,129,.8)','rgba(59,130,246,.8)','rgba(245,158,11,.8)','rgba(239,68,68,.8)'],borderWidth:0,hoverOffset:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:10},padding:10}}}}});
   mkC('cComp',{type:'bar',data:{labels:['Paracetamol 500','Ibuprofeno 400','Omeprazol 20','Loratadina 10','Metformina 850','Vitamina C 1g'],datasets:[
     {label:'PROFAR',data:[3490,4290,6890,4990,5290,3190],backgroundColor:'rgba(59,130,246,.75)',borderRadius:3},
     {label:'Salcobrand',data:[3790,4590,7490,5390,5890,3490],backgroundColor:'rgba(16,185,129,.5)',borderRadius:3},
