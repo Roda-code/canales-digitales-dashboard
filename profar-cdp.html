@@ -539,7 +539,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <span style="color:var(--text3);font-size:10px;padding:4px 2px">⏳ Cargando historial 24 meses…</span>
     </div>
     <div class="snap-mini-chart" id="snapMiniChart"></div>
-    <button class="snap-btn" onclick="saveSnapshot()" title="Guardar snapshot del día actual">💾 Guardar snapshot</button>
     <button class="snap-btn" onclick="clearSnapshots()" title="Borrar historial" style="border-color:rgba(239,68,68,.3);color:var(--red);background:rgba(239,68,68,.04);padding:4px 8px">🗑️</button>
   </div>
 
@@ -695,26 +694,54 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 
   <!-- Sábana filtrable -->
+  <!-- ── RENDIMIENTO POR GRUPO ── -->
   <div class="sh">
-    <div class="sh-t">📋 Sábana de Convenios — Detalle Completo</div>
+    <div class="sh-t">📊 Rendimiento por Grupo Convenio <span class="sh-b">Real Magento · 18 Ene - 19 Mar 2026</span></div>
     <div class="sh-actions">
-      <button class="btn-xs active" onclick="filterConv('all',this)">Todos</button>
-      <button class="btn-xs" onclick="filterConv('mutual',this)">Mutuales</button>
-      <button class="btn-xs" onclick="filterConv('empresa',this)">Empresas</button>
-      <button class="btn-xs" onclick="filterConv('inst',this)">Instituciones</button>
-      <button class="btn-xs" onclick="filterConv('inactivo',this)" style="border-color:rgba(239,68,68,.4);color:var(--red)">⚠️ Inactivos</button>
+      <button class="btn-xs active conv-filter" onclick="filterConv('all',this)">Todos</button>
+      <button class="btn-xs conv-filter" onclick="filterConv('mutual',this)">Mutual</button>
+      <button class="btn-xs conv-filter" onclick="filterConv('inst',this)">Instituciones</button>
+      <button class="btn-xs conv-filter" onclick="filterConv('empresa',this)">Empresas</button>
+      <button class="btn-xs conv-filter" onclick="filterConv('inactivo',this)" style="border-color:rgba(239,68,68,.4);color:var(--red)">⚠️ Sin actividad</button>
       <button class="btn-xs" onclick="exportConvCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal);margin-left:8px">📥 Exportar CSV</button>
     </div>
   </div>
   <div class="card mb" style="overflow-x:auto">
-    <table class="tbl" style="min-width:900px">
+    <table class="tbl" style="min-width:950px">
       <thead><tr>
-        <th>#</th><th>Convenio / Empresa</th><th>RUT Empresa</th><th>Tipo</th>
-        <th style="text-align:right">Clientes Reg.</th><th style="text-align:right">Órdenes 60d</th>
-        <th style="text-align:right">Revenue 60d</th><th style="text-align:right">% Convenios</th>
-        <th style="text-align:right">Ticket Prom.</th><th>Tendencia</th><th>Estado</th><th>Acción</th>
+        <th>Grupo / Convenio</th><th>Tipo</th>
+        <th style="text-align:right">Clientes Reg.</th>
+        <th style="text-align:right">Compradores</th>
+        <th style="text-align:right">Conv. %</th>
+        <th style="text-align:right">Órdenes</th>
+        <th style="text-align:right">Revenue</th>
+        <th style="text-align:right">Ticket Prom.</th>
+        <th>Tend.</th><th>Estado</th><th>Acción</th>
       </tr></thead>
       <tbody id="convBody"></tbody>
+    </table>
+  </div>
+
+  <!-- ── DETALLE COMPRADORES ── -->
+  <div class="sh" style="margin-top:18px">
+    <div class="sh-t">👤 Detalle Compradores por Convenio <span class="sh-b">15 compradores reales · 18 Ene - 19 Mar 2026</span></div>
+    <div class="sh-actions">
+      <button class="btn-xs active buyer-filter" onclick="filterBuyers('all',this)">Todos (15)</button>
+      <button class="btn-xs buyer-filter" onclick="filterBuyers('Mutual',this)">Mutual (11)</button>
+      <button class="btn-xs buyer-filter" onclick="filterBuyers('Empleados',this)">Empleados (4)</button>
+      <button class="btn-xs" onclick="exportBuyersCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal);margin-left:8px">📥 Exportar CSV</button>
+    </div>
+  </div>
+  <div class="card mb" style="overflow-x:auto">
+    <table class="tbl" style="min-width:750px">
+      <thead><tr>
+        <th>RUT</th><th>Nombre</th><th>Grupo</th>
+        <th style="text-align:right">Órdenes</th>
+        <th style="text-align:right">Revenue</th>
+        <th style="text-align:right">Ticket Prom.</th>
+        <th>Últ. Compra</th>
+      </tr></thead>
+      <tbody id="buyersBody"></tbody>
     </table>
   </div>
 
@@ -1477,39 +1504,41 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
   </div>
 
-  <div class="sh"><div class="sh-title">🛒 E-Commerce PROFAR <span class="sh-badge">Q1 2026</span></div></div>
+  <!-- KPIs E-Commerce — datos reales Magento orders.csv (18 Ene - 19 Mar 2026, órdenes "complete") -->
+  <div class="sh"><div class="sh-title">🛒 E-Commerce PROFAR <span class="sh-badge" style="background:rgba(16,185,129,.15);color:#10b981">Datos reales Magento</span></div></div>
+  <div style="font-size:10px;color:var(--text3);margin:-10px 0 12px 4px">📅 18 Ene → 19 Mar 2026 · 1.480 órdenes completadas · Ene parcial (desde día 18)</div>
   <div class="kgrid">
     <div class="kpi ec">
       <div class="kpi-lbl">💰 Ventas E-Com</div>
-      <div class="kpi-v" style="color:#60a5fa">$266M</div>
-      <div class="kpi-sub">Mg CR prom: <b>14.1%</b></div>
-      <div class="kpi-delta up">↑ +39.4% YoY</div>
+      <div class="kpi-v" style="color:#60a5fa">$249.5M</div>
+      <div class="kpi-sub">18 Ene – 19 Mar · solo "complete"</div>
+      <div class="kpi-delta up">↑ Feb $110.4M · mejor mes</div>
     </div>
     <div class="kpi ec">
-      <div class="kpi-lbl">📦 Órdenes Q1</div>
-      <div class="kpi-v" style="color:#60a5fa">47,382</div>
-      <div class="kpi-sub">Promedio: <b>15,794/mes</b></div>
-      <div class="kpi-delta up">↑ +31.2% YoY</div>
+      <div class="kpi-lbl">📦 Órdenes</div>
+      <div class="kpi-v" style="color:#60a5fa">1,480</div>
+      <div class="kpi-sub">Prom: <b>~740/mes</b> · 25/día</div>
+      <div class="kpi-delta up">↑ Feb 701 órd · Mar 423 (parcial)</div>
     </div>
     <div class="kpi ec">
-      <div class="kpi-lbl">🎯 Tasa Conversión</div>
-      <div class="kpi-v" style="color:#60a5fa">3.84%</div>
-      <div class="kpi-sub">vs 3.21% Q1 2025</div>
-      <div class="kpi-delta up">↑ +0.63pp YoY</div>
+      <div class="kpi-lbl">🎯 Ticket Promedio</div>
+      <div class="kpi-v" style="color:#60a5fa">$168K</div>
+      <div class="kpi-sub">CLP por orden (bruto c/IVA)</div>
+      <div class="kpi-delta up">↑ Mar $188K · creciendo</div>
     </div>
     <div class="kpi ec">
-      <div class="kpi-lbl">📈 AOV</div>
-      <div class="kpi-v" style="color:#60a5fa">$5,614</div>
-      <div class="kpi-sub">Δ MoM: +2.3%</div>
-      <div class="kpi-delta up">↑ +6.9% YoY</div>
+      <div class="kpi-lbl">📊 Canceladas</div>
+      <div class="kpi-v" style="color:var(--yellow)">372</div>
+      <div class="kpi-sub">20% del total de intentos</div>
+      <div class="kpi-delta dn">↓ Revisar checkout</div>
     </div>
   </div>
 
   <div class="kgrid4 mb">
-    <div class="kpi ec"><div class="kpi-lbl">Ingresos E-Com Q1</div><div class="kpi-v" style="color:var(--blue);font-size:19px">$266M</div></div>
-    <div class="kpi good"><div class="kpi-lbl">Crecimiento YoY</div><div class="kpi-v" style="color:var(--green);font-size:19px">+39.4%</div></div>
-    <div class="kpi"><div class="kpi-lbl">Mg CR Consolidado</div><div class="kpi-v" style="font-size:19px">14.1%</div></div>
-    <div class="kpi warn"><div class="kpi-lbl">⚠️ Alerta Mar</div><div class="kpi-v" style="color:var(--red);font-size:16px">E-Com -31%</div><div class="kpi-sub">$70.7M vs $92.4M Feb</div></div>
+    <div class="kpi ec"><div class="kpi-lbl">Ene (18-31)</div><div class="kpi-v" style="color:var(--blue);font-size:19px">$59.3M</div><div class="kpi-sub" style="font-size:10px">356 órd · $167K ticket</div></div>
+    <div class="kpi good"><div class="kpi-lbl">Febrero</div><div class="kpi-v" style="color:var(--green);font-size:19px">$110.4M</div><div class="kpi-sub" style="font-size:10px">701 órd · $158K ticket</div></div>
+    <div class="kpi"><div class="kpi-lbl">Mar (1-19)</div><div class="kpi-v" style="font-size:19px">$79.7M</div><div class="kpi-sub" style="font-size:10px">423 órd · $188K ticket</div></div>
+    <div class="kpi warn"><div class="kpi-lbl">🛑 Canceladas</div><div class="kpi-v" style="color:var(--red);font-size:16px">372 órd</div><div class="kpi-sub">$~62M revenue perdido est.</div></div>
   </div>
 
   <div class="ch-grid">
@@ -2573,6 +2602,25 @@ const CONV_DATA=[
   {id:7,n:'SUBTEL',rut:'61.XXX.XXX-X',tipo:'inst',cli:1,ord:0,rev:0,tick:0,tend:'dn',est:'Activo',acc:'⚠️ 1 cliente / 0 órdenes — verificar estado convenio'},
   {id:8,n:'Conv. Tarjeta Vecino Las Condes',rut:'69.070.800-6',tipo:'inst',cli:null,ord:0,rev:0,tick:0,tend:'nt',est:'Activo',acc:'Catálogo -5% cargado — sin grupo Magento asignado aún'},
 ];
+
+// CONV_BUYERS — compradores reales de grupos convenio (cruce orders × customers, 18 ene - 19 mar 2026)
+const CONV_BUYERS=[
+  {rut:'10592045-8',n:'Maria Fuentealba',email:'—',grupo:'Mutual',ords:2,rev:740000,tick:370000,ult:'27/02/2026'},
+  {rut:'4790816-7',n:'MARIA Muñoz Coppelli',email:'—',grupo:'Mutual',ords:2,rev:290000,tick:145000,ult:'16/02/2026'},
+  {rut:'14176671-6',n:'JOVITA Farias',email:'—',grupo:'Mutual',ords:1,rev:210000,tick:210000,ult:'19/02/2026'},
+  {rut:'19372742-5',n:'JAVIERA CASTILLO',email:'—',grupo:'Mutual',ords:1,rev:170000,tick:170000,ult:'12/03/2026'},
+  {rut:'16121599-6',n:'Paulina Riveros',email:'—',grupo:'Mutual',ords:1,rev:130000,tick:130000,ult:'09/02/2026'},
+  {rut:'19299292-3',n:'ALEXIS Mondaca Valenzuela',email:'—',grupo:'Mutual',ords:1,rev:100000,tick:100000,ult:'05/03/2026'},
+  {rut:'19099131-8',n:'Paola Aqueveque',email:'—',grupo:'Mutual',ords:1,rev:100000,tick:100000,ult:'28/01/2026'},
+  {rut:'13604045-6',n:'KAREN RUBILAR',email:'—',grupo:'Mutual',ords:1,rev:50000,tick:50000,ult:'11/02/2026'},
+  {rut:'122313336',n:'MARY ITURRA',email:'—',grupo:'Mutual',ords:1,rev:20000,tick:20000,ult:'17/02/2026'},
+  {rut:'10622022-0',n:'NICOLAS ALERT',email:'—',grupo:'Mutual',ords:1,rev:20000,tick:20000,ult:'11/02/2026'},
+  {rut:'11228506-7',n:'LOURDES Ahumada Duarte',email:'—',grupo:'Mutual',ords:1,rev:10000,tick:10000,ult:'14/02/2026'},
+  {rut:'20118335-9',n:'Karla Araya',email:'karla@profar.cl',grupo:'Empleados',ords:2,rev:70000,tick:35000,ult:'11/02/2026'},
+  {rut:'14019238-4',n:'INGRID Dachelet',email:'ingrid@profar.cl',grupo:'Empleados',ords:1,rev:30000,tick:30000,ult:'07/02/2026'},
+  {rut:'12357242-4',n:'EMILIO ROMAN',email:'—',grupo:'Empleados',ords:1,rev:30000,tick:30000,ult:'29/01/2026'},
+  {rut:'195295255',n:'NESTOR NAVARRO',email:'—',grupo:'Empleados',ords:1,rev:20000,tick:20000,ult:'21/01/2026'},
+];
 // ══ COMPETENCIA SKU DATA ══
 const COMP_SKUS=[
   {n:'Paracetamol 500mg x20',cat:'otc',pf:3490,sb:3790,cv:4190,ah:3510,cf:3400,tend:'caro',nota:'⚠️ Cofar -2.5%'},
@@ -2629,9 +2677,9 @@ function initAnalyticsCharts(){
   const bO=()=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:10}}},tooltip:{backgroundColor:'#1a2540',borderColor:'#2a3a5c',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:9}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(42,58,92,.4)'}},y:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(42,58,92,.4)'}}}});
   const mkC=(id,cfg)=>{const el=document.getElementById(id);if(!el)return;return new Chart(el,cfg);};
   mkC('cV26',{type:'bar',data:{labels:MES,datasets:[
-    {label:'E-Com 2026',data:D.ecom.v26,backgroundColor:'rgba(59,130,246,.8)',borderRadius:3},
-    {label:'E-Com 2025',data:D.ecom.v25,backgroundColor:'rgba(59,130,246,.25)',borderRadius:3},
-  ]},options:bO()});
+    {label:'E-Com 2026 (real Magento)',data:[59.3,110.4,79.7],backgroundColor:'rgba(59,130,246,.85)',borderRadius:3},
+    {label:'E-Com 2025 (est.)',data:D.ecom.v25,backgroundColor:'rgba(59,130,246,.22)',borderRadius:3},
+  ]},options:{...bO(),plugins:{...bO().plugins,tooltip:{...bO().plugins.tooltip,callbacks:{footer:items=>{const i=items[0].dataIndex;if(i===0)return'Ene parcial (desde día 18)';if(i===2)return'Mar parcial (hasta día 19)';return '';}}}}}}); 
   mkC('cMg',{type:'line',data:{labels:MES,datasets:[
     {label:'E-Commerce',data:D.ecom.mg26,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#3b82f6'},
   ]},options:bO()});
@@ -2657,7 +2705,7 @@ function initAnalyticsCharts(){
   mkC('cCDPFreq',{type:'bar',data:{labels:['1 compra','2-3','4-6','7-10','11+'],datasets:[{label:'Clientes',data:[421,689,513,287,142],backgroundColor:['rgba(239,68,68,.6)','rgba(245,158,11,.6)','rgba(59,130,246,.6)','rgba(16,185,129,.6)','rgba(16,185,129,.9)'],borderRadius:4}]},
     options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
   renderRot();renderActions();renderPricing();renderInversa();renderCDP();renderChurn();
-  renderConv();renderComp();renderPricTable();renderInvTable();
+  renderConv();renderBuyers();renderComp();renderPricTable();renderInvTable();
 }
 document.addEventListener('DOMContentLoaded',initAnalyticsCharts);
 
@@ -2666,21 +2714,25 @@ document.addEventListener('DOMContentLoaded',initAnalyticsCharts);
 function fmtCLP(n){if(!n)return '$0';if(n>=1e6)return '$'+(n/1e6).toFixed(1)+'M';if(n>=1e3)return '$'+(n/1e3).toFixed(0)+'K';return '$'+n.toLocaleString();}
 function renderConv(filter='all'){
   const el=document.getElementById('convBody');if(!el)return;
-  const d=filter==='all'?CONV_DATA:filter==='inactivo'?CONV_DATA.filter(r=>r.est==='Inactivo'):CONV_DATA.filter(r=>r.tipo===filter&&r.est!=='Inactivo');
-  const total=CONV_DATA.filter(r=>r.est==='Activo').reduce((s,r)=>s+r.rev,0);
+  let d=CONV_DATA;
+  if(filter==='inactivo') d=CONV_DATA.filter(r=>r.ord===0||r.ord===null);
+  else if(filter!=='all') d=CONV_DATA.filter(r=>r.tipo===filter);
+  const totalRev=CONV_DATA.reduce((s,r)=>s+(r.rev||0),0);
   el.innerHTML=d.map(r=>{
-    const pct=total>0&&r.rev?(r.rev/total*100).toFixed(1):'—';
+    const pct=totalRev>0&&r.rev?(r.rev/totalRev*100).toFixed(1):'—';
+    const convPct=r.cli?(((CONV_BUYERS.filter(b=>b.grupo===r.n).length)/r.cli)*100).toFixed(3):'—';
+    const buyers=CONV_BUYERS.filter(b=>b.grupo===r.n).length;
     const tendIco=r.tend==='up'?'<span style="color:#10b981">▲</span>':r.tend==='dn'?'<span style="color:#ef4444">▼</span>':'<span style="color:#94a3b8">—</span>';
-    const estChip=r.est==='Activo'?'<span class="chip ch-g">Activo</span>':'<span class="chip ch-r">Inactivo</span>';
+    const estChip=r.ord>0?'<span class="chip ch-g">Activo</span>':'<span class="chip ch-r">Sin compras</span>';
+    const TIPO={'mutual':'Mutual','inst':'Institución','empresa':'Empresa'};
     return `<tr>
-      <td style="color:var(--text2);font-size:11px">${r.id}</td>
       <td style="font-weight:500">${r.n}</td>
-      <td style="color:var(--text2);font-size:11px">${r.rut}</td>
-      <td><span class="chip ch-b">${r.tipo==='mutual'?'Mutual':r.tipo==='inst'?'Institución':'Empresa'}</span></td>
-      <td style="text-align:right">${r.cli.toLocaleString()}</td>
-      <td style="text-align:right">${r.ord!=null?r.ord:'<span style=\"color:#64748b;font-size:10px\">pend.</span>'}</td>
-      <td style="text-align:right;color:var(--green)">${r.rev?fmtCLP(r.rev):'<span style=\"color:#64748b;font-size:10px\">pend. export</span>'}</td>
-      <td style="text-align:right;color:var(--text2)">${pct==='—'?'—':pct+'%'}</td>
+      <td><span class="chip ch-b">${TIPO[r.tipo]||r.tipo}</span></td>
+      <td style="text-align:right">${r.cli!=null?r.cli.toLocaleString():'—'}</td>
+      <td style="text-align:right;color:${buyers>0?'#10b981':'#ef4444'}">${buyers||0}</td>
+      <td style="text-align:right;font-size:11px">${convPct!=='—'?convPct+'%':'—'}</td>
+      <td style="text-align:right">${r.ord||'0'}</td>
+      <td style="text-align:right;color:var(--green)">${r.rev?fmtCLP(r.rev):'$0'}</td>
       <td style="text-align:right">${r.tick?fmtCLP(r.tick):'—'}</td>
       <td style="text-align:center">${tendIco}</td>
       <td>${estChip}</td>
@@ -2694,10 +2746,39 @@ function filterConv(f,el){
   renderConv(f);
 }
 function exportConvCSV(){
-  const rows=[['#','Convenio','RUT Empresa','Tipo','Clientes Reg.','Órdenes 60d','Revenue 60d','Ticket Prom.','Tendencia','Estado','Acción']];
-  CONV_DATA.forEach(r=>rows.push([r.id,r.n,r.rut,r.tipo,r.cli,r.ord,r.rev,r.tick,r.tend,r.est,r.acc]));
-  dlCSV(rows.map(r=>r.join(',')).join('\n'),'convenios-profar-'+new Date().toISOString().slice(0,10)+'.csv');
-  showNotif('✅ Exportado: convenios-profar.csv');
+  const rows=[['Grupo','Tipo','Clientes Reg.','Compradores','Conv.%','Órdenes','Revenue','Ticket','Estado','Acción']];
+  CONV_DATA.forEach(r=>{
+    const b=CONV_BUYERS.filter(x=>x.grupo===r.n).length;
+    const pct=r.cli?(b/r.cli*100).toFixed(3):'';
+    rows.push([r.n,r.tipo,r.cli||'',b,pct,r.ord||0,r.rev||0,r.tick||'',r.tend,r.acc]);
+  });
+  dlCSV(rows.map(r=>r.join(',')).join('\n'),'rendimiento-convenios-'+new Date().toISOString().slice(0,10)+'.csv');
+  showNotif('✅ Exportado: rendimiento-convenios.csv');
+}
+// Buyer detail table
+function renderBuyers(filter='all'){
+  const el=document.getElementById('buyersBody');if(!el)return;
+  const d=filter==='all'?CONV_BUYERS:CONV_BUYERS.filter(b=>b.grupo===filter);
+  el.innerHTML=d.map(b=>`<tr>
+    <td style="font-family:monospace;font-size:12px">${b.rut}</td>
+    <td style="font-weight:500">${b.n}</td>
+    <td><span class="chip ch-b">${b.grupo}</span></td>
+    <td style="text-align:right">${b.ords}</td>
+    <td style="text-align:right;color:var(--green)">${fmtCLP(b.rev)}</td>
+    <td style="text-align:right">${fmtCLP(b.tick)}</td>
+    <td style="color:var(--text2);font-size:11px">${b.ult}</td>
+  </tr>`).join('');
+}
+function filterBuyers(f,el){
+  document.querySelectorAll('.buyer-filter').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderBuyers(f);
+}
+function exportBuyersCSV(){
+  const rows=[['RUT','Nombre','Grupo/Convenio','Órdenes','Revenue','Ticket Prom.','Últ. Compra']];
+  CONV_BUYERS.forEach(b=>rows.push([b.rut,b.n,b.grupo,b.ords,b.rev,b.tick,b.ult]));
+  dlCSV(rows.map(r=>r.join(',')).join('\n'),'compradores-convenio-'+new Date().toISOString().slice(0,10)+'.csv');
+  showNotif('✅ Exportado: compradores-convenio.csv');
 }
 
 // ── Sábana Render: Competencia ──
