@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Supervisor · CMK · Vista Consolidada</title>
+<style>
+  :root{--g:#3fb950;--t:#2ea8cc;--r:#f85149;--y:#d29922;--p:#a371f7;--o:#fb8500;
+    --bg:#0d1117;--c1:#161b22;--c2:#1c2128;--bd:#30363d;--tx:#e6edf3;--mu:#8b949e;--li:#c9d1d9;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;}
+  .top{background:var(--c1);border-bottom:1px solid var(--bd);padding:10px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .logo{font-size:14px;font-weight:800;background:linear-gradient(90deg,var(--g),var(--t),var(--o));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;}
+  .logo span{-webkit-text-fill-color:var(--mu);background:none;font-weight:400;font-size:11px;margin-left:6px;}
+  .dtag{background:var(--c2);border:1px solid var(--bd);padding:5px 11px;border-radius:6px;font-size:11px;color:var(--mu);}
+  .btn{padding:5px 13px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid;margin-left:auto;}
+  .btn-p{background:rgba(63,185,80,.1);border-color:rgba(63,185,80,.3);color:var(--g);}
+  .tab-bar{background:var(--c1);border-bottom:1px solid var(--bd);padding:0 18px;display:flex;gap:0;}
+  .tab{padding:9px 16px;font-size:11px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;color:var(--mu);transition:color .15s;}
+  .tab:hover{color:var(--tx);}
+  .tab.act-g{color:var(--g);border-color:var(--g);}
+  .tab.act-t{color:var(--t);border-color:var(--t);}
+  .tab.act-a{color:var(--tx);border-color:var(--tx);}
+  .pg{padding:12px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .s2{grid-column:span 2;} .s3{grid-column:span 3;}
+  .card{background:var(--c1);border:1px solid var(--bd);border-radius:8px;overflow:hidden;}
+  .ch{background:var(--c2);padding:7px 12px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--bd);}
+  .ch.g{color:var(--g);}.ch.t{color:var(--t);}.ch.y{color:var(--y);}.ch.r{color:var(--r);}.ch.p{color:var(--p);}.ch.o{color:var(--o);}.ch.mu{color:var(--mu);}
+  .cb{padding:11px 12px;}
+  .ks{display:grid;gap:8px;grid-column:span 3;}
+  .kp{background:var(--c1);border:1px solid var(--bd);border-radius:8px;padding:9px 10px;text-align:center;}
+  .kp.g{border-color:rgba(63,185,80,.3);background:rgba(63,185,80,.04);}
+  .kp.t{border-color:rgba(46,168,204,.3);background:rgba(46,168,204,.04);}
+  .kp.o{border-color:rgba(251,133,0,.3);background:rgba(251,133,0,.04);}
+  .kl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;}
+  .kv{font-size:18px;font-weight:800;line-height:1;} .ksb{font-size:9px;color:var(--mu);margin-top:2px;}
+  .cg{color:var(--g)!important;}.cr{color:var(--r)!important;}.cy{color:var(--y)!important;}.ct{color:var(--t)!important;}.cp{color:var(--p)!important;}.co{color:var(--o)!important;}
+  .tbl{width:100%;border-collapse:collapse;}
+  .tbl th{background:var(--c2);color:var(--mu);font-size:9px;text-transform:uppercase;padding:5px 7px;text-align:left;border-bottom:1px solid var(--bd);font-weight:600;}
+  .tbl td{padding:5px 7px;border-bottom:1px solid #1c2128;font-size:11px;color:var(--li);vertical-align:middle;}
+  .tbl tr:last-child td{border-bottom:none;} .r{text-align:right;}
+  .b{display:inline-block;padding:2px 6px;border-radius:99px;font-size:9px;font-weight:700;}
+  .bg{background:rgba(63,185,80,.15);color:var(--g);}.br{background:rgba(248,81,73,.15);color:var(--r);}
+  .by{background:rgba(210,153,34,.15);color:var(--y);}.bt{background:rgba(46,168,204,.15);color:var(--t);}
+  .bo{background:rgba(251,133,0,.15);color:var(--o);}.bp{background:rgba(163,113,247,.15);color:var(--p);}
+  .bmu{background:rgba(139,148,158,.12);color:var(--mu);}
+  .bar-bg{background:#21262d;border-radius:99px;height:5px;flex:1;}
+  .bar-f{height:100%;border-radius:99px;}
+  .rk-row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #1c2128;}
+  .rk-row:last-child{border:none;}
+  .rk-n{font-size:10px;font-weight:700;color:var(--mu);width:20px;flex-shrink:0;}
+  .rk-name{font-size:11px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rk-bar-bg{width:80px;background:#21262d;border-radius:99px;height:4px;flex-shrink:0;}
+  .rk-bar-f{height:100%;border-radius:99px;}
+  .rk-val{font-size:11px;font-weight:700;width:60px;text-align:right;flex-shrink:0;}
+  .rk-meta{font-size:9px;flex-shrink:0;width:34px;text-align:right;}
+  .team-dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0;}
+  .al{border-left:3px solid var(--y);background:rgba(210,153,34,.06);border-radius:0 6px 6px 0;padding:6px 9px;margin-bottom:5px;font-size:11px;line-height:1.5;}
+  .al.r{border-color:var(--r);background:rgba(248,81,73,.06);}
+  .al.g{border-color:var(--g);background:rgba(63,185,80,.06);}
+  .al.t{border-color:var(--t);background:rgba(46,168,204,.06);}
+  .al.o{border-color:var(--o);background:rgba(251,133,0,.06);}
+  .team-card{background:var(--c2);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;}
+  .tc-head{display:flex;align-items:center;gap:7px;}
+  .tc-icon{font-size:20px;}
+  .tc-name{font-size:12px;font-weight:700;}
+  .tc-sub{font-size:10px;color:var(--mu);}
+  .tc-rev{font-size:22px;font-weight:900;line-height:1;}
+  .tc-row{display:flex;justify-content:space-between;font-size:10px;}
+  .tc-lbl{color:var(--mu);}
+  .tc-val{font-weight:700;}
+  .mrow{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+  .ml{font-size:10px;color:var(--mu);width:120px;flex-shrink:0;}
+  .mv{font-size:10px;font-weight:700;width:45px;text-align:right;}
+  .chart-wrap{position:relative;height:220px;}
+  .licit-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid #1c2128;font-size:11px;}
+  .licit-row:last-child{border:none;}
+  .alert-count{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:900;flex-shrink:0;}
+  .ac-r{background:rgba(248,81,73,.2);color:var(--r);}
+  .ac-y{background:rgba(210,153,34,.2);color:var(--y);}
+  .ac-g{background:rgba(63,185,80,.2);color:var(--g);}
+  .summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+  .sum-box{background:var(--c2);border-radius:6px;padding:9px 11px;text-align:center;}
+  .sum-v{font-size:20px;font-weight:800;line-height:1;}
+  .sum-l{font-size:9px;color:var(--mu);text-transform:uppercase;margin-top:3px;}
+  @media print{body,html{background:#fff!important;color:#000!important;}.card,.kp,.team-card,.sum-box{background:#fff!important;border-color:#ddd!important;}.c2,.ch{background:#f5f5f5!important;}.cg{color:#157a30!important;}.cr{color:#b91c1c!important;}.cy{color:#92400e!important;}.ct{color:#0e6980!important;}.co{color:#8b4500!important;}.btn-p{display:none!important;}.tab-bar{display:none!important;}.subnav{display:none!important;}}
+  .subnav{background:#090d12;border-bottom:1px solid #21262d;padding:4px 18px;display:flex;gap:4px;align-items:center;}
+  .subnav a{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:5px;font-size:10px;font-weight:600;color:var(--mu);text-decoration:none;transition:color .15s,background .15s;}
+  .subnav a:hover{color:var(--tx);background:var(--c2);}
+  .subnav a.active{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--tx);}
+  .subnav a:not(.active){border:1px solid transparent;}
+  .subnav-sep{color:#21262d;margin:0 2px;}
+</style>
+</head>
+<body>
+<nav class="subnav">
+  <a href="Dashboard_Supervisor_CMK.html" class="active">📊 Supervisor</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_Retail.html">🏪 Retail</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_Clinicas.html">🏥 Clínicas</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_CENABAST.html">🏛 CENABAST</a>
+</nav>
+<div class="top">
+  <div class="logo">🏢 Dashboard Supervisor CMK <span>Vista Consolidada · Retail + Clínicas + CENABAST</span></div>
+  <div class="dtag" id="dtag">—</div>
+  <button class="btn btn-p" onclick="window.print()">🖨 PDF</button>
+</div>
+<div class="tab-bar">
+  <div class="tab act-a" id="tab-all" onclick="setTab('all')">📊 Vista Global</div>
+  <div class="tab" id="tab-rnk" onclick="setTab('rnk')">🏅 Ranking Completo</div>
+  <div class="tab" id="tab-alert" onclick="setTab('alert')">⚠️ Alertas</div>
+</div>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ═══════════════════════════════════════════════
+//  DATOS EQUIPO RETAIL (17 vendedores)
+// ═══════════════════════════════════════════════
+const VRETAIL = [
+  {n:"Gustavo Fernandez",  team:"Retail", rev:638,  mg:13.2, cli:18,  caidos:4,  meta_mes:700,  v_plan:20, v_real:18, r2:244.7, r3:128.5, zona:"RM Norte",     seg_tipo:"Farmacia",  altas:2, bajas:1, tasa_dev:1.2},
+  {n:"Leonardo Bardi",     team:"Retail", rev:528,  mg:12.6, cli:77,  caidos:16, meta_mes:600,  v_plan:22, v_real:15, r2:227.1, r3:152.2, zona:"Valparaíso",   seg_tipo:"Farmacia",  altas:1, bajas:3, tasa_dev:2.8},
+  {n:"Leonardo Hernandez", team:"Retail", rev:383,  mg:12.0, cli:85,  caidos:11, meta_mes:430,  v_plan:20, v_real:17, r2:154.5, r3:92.5,  zona:"RM Sur",       seg_tipo:"Farmacia",  altas:2, bajas:2, tasa_dev:1.8},
+  {n:"Cesar Reyes",        team:"Retail", rev:369,  mg:9.9,  cli:87,  caidos:20, meta_mes:420,  v_plan:18, v_real:12, r2:127.5, r3:101.4, zona:"Bío Bío",      seg_tipo:"Farmacia",  altas:1, bajas:4, tasa_dev:3.1},
+  {n:"Carol Ramirez",      team:"Retail", rev:364,  mg:14.4, cli:61,  caidos:13, meta_mes:410,  v_plan:18, v_real:16, r2:136.3, r3:79.1,  zona:"Araucanía",    seg_tipo:"Veterinaria",altas:3, bajas:2, tasa_dev:1.5},
+  {n:"Leonardo Gonzalez",  team:"Retail", rev:320,  mg:15.0, cli:62,  caidos:13, meta_mes:370,  v_plan:20, v_real:19, r2:110.0, r3:105.7, zona:"RM Oriente",   seg_tipo:"Farmacia",  altas:2, bajas:2, tasa_dev:1.1},
+  {n:"Maria Corina Garcia",team:"Retail", rev:309,  mg:12.8, cli:84,  caidos:17, meta_mes:350,  v_plan:16, v_real:11, r2:112.7, r3:87.2,  zona:"Antofagasta",  seg_tipo:"Farmacia",  altas:1, bajas:3, tasa_dev:2.5},
+  {n:"Maria Jose Rojas",   team:"Retail", rev:274,  mg:13.5, cli:75,  caidos:13, meta_mes:310,  v_plan:16, v_real:14, r2:87.3,  r3:76.5,  zona:"La Serena",    seg_tipo:"Farmacia",  altas:2, bajas:2, tasa_dev:1.9},
+  {n:"Nestor Navarro",     team:"Retail", rev:273,  mg:11.0, cli:70,  caidos:17, meta_mes:310,  v_plan:18, v_real:10, r2:68.0,  r3:65.5,  zona:"Temuco",       seg_tipo:"Veterinaria",altas:0, bajas:4, tasa_dev:4.2},
+  {n:"Sergio Pichuante",   team:"Retail", rev:262,  mg:11.4, cli:70,  caidos:14, meta_mes:300,  v_plan:16, v_real:14, r2:93.9,  r3:64.4,  zona:"Puerto Montt", seg_tipo:"Veterinaria",altas:1, bajas:2, tasa_dev:2.1},
+  {n:"Paolo Cartes",       team:"Retail", rev:227,  mg:12.5, cli:57,  caidos:12, meta_mes:260,  v_plan:18, v_real:17, r2:85.2,  r3:74.0,  zona:"RM Poniente",  seg_tipo:"Farmacia",  altas:2, bajas:1, tasa_dev:1.4},
+  {n:"Maria Jose Ramirez", team:"Retail", rev:222,  mg:12.8, cli:49,  caidos:17, meta_mes:250,  v_plan:14, v_real:10, r2:74.9,  r3:53.0,  zona:"Valdivia",     seg_tipo:"Veterinaria",altas:1, bajas:3, tasa_dev:2.9},
+  {n:"Tania Sanchez",      team:"Retail", rev:174,  mg:14.0, cli:94,  caidos:18, meta_mes:200,  v_plan:14, v_real:12, r2:62.3,  r3:50.6,  zona:"Iquique",      seg_tipo:"Farmacia",  altas:1, bajas:2, tasa_dev:1.8},
+  {n:"Fabiola Cornejo",    team:"Retail", rev:156,  mg:12.7, cli:90,  caidos:16, meta_mes:180,  v_plan:14, v_real:11, r2:71.1,  r3:40.6,  zona:"Osorno",       seg_tipo:"Veterinaria",altas:1, bajas:2, tasa_dev:2.3},
+  {n:"Daniela Araneda",    team:"Retail", rev:155,  mg:14.1, cli:76,  caidos:25, meta_mes:180,  v_plan:14, v_real:10, r2:56.9,  r3:39.6,  zona:"Rancagua",     seg_tipo:"Farmacia",  altas:0, bajas:3, tasa_dev:2.7},
+  {n:"Andrea Ruiz",        team:"Retail", rev:141,  mg:13.8, cli:88,  caidos:27, meta_mes:165,  v_plan:14, v_real:9,  r2:48.9,  r3:40.9,  zona:"Talca",        seg_tipo:"Farmacia",  altas:1, bajas:3, tasa_dev:3.0},
+  {n:"Carla Sotomayor",    team:"Retail", rev:90,   mg:13.6, cli:58,  caidos:16, meta_mes:105,  v_plan:12, v_real:10, r2:38.9,  r3:24.4,  zona:"Concepción",   seg_tipo:"Mixto",     altas:1, bajas:2, tasa_dev:2.2},
+];
+
+// ═══════════════════════════════════════════════
+//  DATOS EQUIPO CLÍNICAS (7 vendedores)
+// ═══════════════════════════════════════════════
+const VCLIN = [
+  {n:"Edward Avalos",     team:"Clínicas", rev:6960, mg:14.0, cli:4,  caidos:0,  meta_mes:8000, v_plan:16, v_real:12, r2:2354.1, r3:1888.6, canal:"CLÍNICAS",    esp:"Oncología + Biológicos"},
+  {n:"Cristian Diaz",     team:"Clínicas", rev:1768, mg:17.5, cli:52, caidos:7,  meta_mes:1900, v_plan:24, v_real:18, r2:616.6,  r3:368.7,  canal:"CLÍNICAS",    esp:"Clínicas Regionales"},
+  {n:"Marcela Perinetti", team:"Clínicas", rev:2302, mg:29.5, cli:3,  caidos:0,  meta_mes:2500, v_plan:12, v_real:11, r2:900.2,  r3:600.2,  canal:"G.CONVENIOS", esp:"Convenios + Isapres"},
+  {n:"Esteban Zenteno",   team:"Clínicas", rev:1174, mg:20.1, cli:57, caidos:13, meta_mes:1300, v_plan:22, v_real:16, r2:417.3,  r3:357.5,  canal:"CLÍNICAS",    esp:"Clínicas Privadas RM"},
+  {n:"Paola Zapata",      team:"Clínicas", rev:712,  mg:19.2, cli:88, caidos:15, meta_mes:800,  v_plan:20, v_real:14, r2:266.2,  r3:173.6,  canal:"CLÍNICAS",    esp:"Centros Medios / Policlín."},
+  {n:"Waldo Pozo",        team:"Clínicas", rev:406,  mg:24.2, cli:76, caidos:21, meta_mes:450,  v_plan:18, v_real:15, r2:101.1,  r3:131.0,  canal:"CLÍNICAS",    esp:"Clínicas Públicas + ISA"},
+  {n:"Vanessa Sepulveda", team:"Clínicas", rev:546,  mg:19.9, cli:1,  caidos:0,  meta_mes:600,  v_plan:8,  v_real:8,  r2:332.5,  r3:110.8,  canal:"CLÍNICAS",    esp:"Cuenta Clave Estratégica"},
+];
+
+// ═══════════════════════════════════════════════
+//  DATOS EQUIPO CENABAST (3 vendedores)
+// ═══════════════════════════════════════════════
+const VCENABAST = [
+  {n:"Ilse Arriagada", team:"CENABAST", rev:1925, mg:24.0, cli:141, caidos:43, meta_mes:2100, v_plan:18, v_real:12, r2:694.8, r3:533.1, licit_activas:12, licit_vencen:3},
+  {n:"Jose Pascual",   team:"CENABAST", rev:76,   mg:34.9, cli:6,   caidos:2,  meta_mes:90,   v_plan:8,  v_real:7,  r2:27.2,  r3:26.0,  licit_activas:3,  licit_vencen:1},
+  {n:"Silvia Flores",  team:"CENABAST", rev:36,   mg:34.0, cli:53,  caidos:23, meta_mes:45,   v_plan:14, v_real:9,  r2:13.7,  r3:6.8,   licit_activas:8,  licit_vencen:2},
+];
+
+// ═══ Datos mes anterior (Feb-26) para deltas ═══
+const PREV_DATA = {
+  "Gustavo Fernandez":  {rev:585}, "Leonardo Bardi":     {rev:507}, "Leonardo Hernandez": {rev:371},
+  "Cesar Reyes":        {rev:354}, "Carol Ramirez":      {rev:349}, "Leonardo Gonzalez":  {rev:308},
+  "Maria Corina Garcia":{rev:294}, "Maria Jose Rojas":   {rev:261}, "Nestor Navarro":     {rev:258},
+  "Sergio Pichuante":   {rev:250}, "Paolo Cartes":       {rev:218}, "Maria Jose Ramirez": {rev:210},
+  "Tania Sanchez":      {rev:163}, "Fabiola Cornejo":    {rev:149}, "Daniela Araneda":    {rev:148},
+  "Andrea Ruiz":        {rev:134}, "Carla Sotomayor":    {rev:85},
+  "Edward Avalos":      {rev:6720},"Cristian Diaz":      {rev:1690},"Marcela Perinetti":  {rev:2180},
+  "Esteban Zenteno":    {rev:1120},"Paola Zapata":       {rev:680}, "Waldo Pozo":         {rev:388},
+  "Vanessa Sepulveda":  {rev:510},
+  "Ilse Arriagada":     {rev:1840},"Jose Pascual":       {rev:73},  "Silvia Flores":      {rev:34},
+};
+
+// ═══ Alertas Caducidad ═══
+const CAD_RETAIL_COUNT  = {total:9, criticas:2};   // <30 días
+const CAD_CLIN_COUNT    = {total:5, criticas:1};
+// Detalle caducidad (para tabla de alertas)
+const CADUCIDAD_DETALLE = [
+  {team:"Retail",    vendor:"Andrea Ruiz",        f:"Farmacia Talca Norte",          sku:"TAPSIN CALIENTE NOCHE",und:36,dias:28,accion:"⚠️ Urgente — proponer retiro hoy"},
+  {team:"Retail",    vendor:"Gustavo Fernandez",  f:"Farmacia Popular Lo Prado",     sku:"BAVENCIO 20 MG",       und:2, dias:22,accion:"Retirar o transferir hoy"},
+  {team:"Retail",    vendor:"Maria Jose Ramirez", f:"Farmacia Animal Valdivia",      sku:"DEXAMETASONA VET",     und:12,dias:30,accion:"Proponer retiro o canje urgente"},
+  {team:"Retail",    vendor:"Cesar Reyes",        f:"Farmacia Bío Bío Central",      sku:"CONCERTA 36 MG x30",   und:30,dias:35,accion:"Transferir a farmacia con más rotación"},
+  {team:"Retail",    vendor:"Nestor Navarro",     f:"Veterinaria Rural Cautín",      sku:"IVERMECTINA 1% VET",   und:24,dias:40,accion:"Uso antes fin temporada"},
+  {team:"Retail",    vendor:"Daniela Araneda",    f:"Botica Rancagua Centro",        sku:"TAPSIN DIA",           und:60,dias:42,accion:"Descuento rotación en próxima visita"},
+  {team:"Retail",    vendor:"Leonardo Bardi",     f:"Botica Costa Viña del Mar",     sku:"TAPSIN CALIENTE DIA",  und:72,dias:45,accion:"Rebate por volumen esta semana"},
+  {team:"Retail",    vendor:"Andrea Ruiz",        f:"Botica Maule Centro",           sku:"CONCERTA 36 MG x30",   und:15,dias:50,accion:"Monitorear — aún en margen OK"},
+  {team:"Retail",    vendor:"Gustavo Fernandez",  f:"Farmacia Cruz Verde Quilicura", sku:"TAPSIN CALIENTE NOCHE",und:48,dias:38,accion:"Proponer rotación urgente — rebate vol."},
+  {team:"Clínicas",  vendor:"Edward Avalos",      f:"Clínica Santa María (Oncol.)",  sku:"BAVENCIO 20 MG",       und:3, dias:28,accion:"Swap por KEYTRUDA esta semana"},
+  {team:"Clínicas",  vendor:"Cristian Diaz",      f:"Clínica Biobío",               sku:"KEYTRUDA 100 MG",      und:2, dias:32,accion:"Swap protocolo urgente — llamar Dr. Pinto HOY"},
+  {team:"Clínicas",  vendor:"Esteban Zenteno",    f:"Clínica Dávila",               sku:"MABTHERA 500 MG",      und:4, dias:35,accion:"Verificar cambio protocolo"},
+  {team:"Clínicas",  vendor:"Paola Zapata",       f:"Centro Médico Renca",          sku:"CLEXANE 40 MG",        und:24,dias:42,accion:"Ajustar próximo pedido"},
+  {team:"Clínicas",  vendor:"Edward Avalos",      f:"Clínica Las Condes",           sku:"OPDIVO 40 MG",         und:5, dias:45,accion:"Coordinar retiro y reposición QF"},
+];
+
+// ═══ Devoluciones (Retail) ═══
+const DEV_DETALLE = [
+  {vendor:"Cesar Reyes",        f:"Farmacia Bío Bío Central",   sku:"TAPSIN DIA",          und:30,monto:2.1,motivo:"Sobrestock"},
+  {vendor:"Cesar Reyes",        f:"Botica Sur Chiguayante",     sku:"CLEXANE 40 MG",       und:12,monto:2.5,motivo:"Daño en transporte"},
+  {vendor:"Andrea Ruiz",        f:"Farmacia Talca Norte",       sku:"TAPSIN CALIENTE NOCH",und:36,monto:2.2,motivo:"Sobrestock"},
+  {vendor:"Andrea Ruiz",        f:"Botica Maule Centro",        sku:"CLEXANE 40 MG",       und:8, monto:1.8,motivo:"Vencimiento próximo"},
+  {vendor:"Leonardo Bardi",     f:"Farmacia San Camilo Valpo",  sku:"CONCERTA 36 MG x30",  und:24,monto:3.2,motivo:"Vencimiento próximo"},
+  {vendor:"Leonardo Bardi",     f:"Botica Costa Viña del Mar",  sku:"TAPSIN CALIENTE NOCH",und:18,monto:1.8,motivo:"Sobrestock"},
+  {vendor:"Nestor Navarro",     f:"Veterinaria Rural Cautín",   sku:"IVERMECTINA 1% VET",  und:24,monto:1.8,motivo:"Sobrestock temporada"},
+  {vendor:"Nestor Navarro",     f:"Petshop & Pharma Temuco",    sku:"MELOXICAM 1.5MG VET", und:12,monto:1.4,motivo:"Orden duplicada"},
+  {vendor:"Daniela Araneda",    f:"Botica Rancagua Centro",     sku:"TAPSIN CALIENTE NOCH",und:24,monto:1.5,motivo:"Baja rotación"},
+  {vendor:"Gustavo Fernandez",  f:"Botica Independiente Renca", sku:"TAPSIN DIA",          und:12,monto:0.8,motivo:"Sobrestock"},
+  {vendor:"Gustavo Fernandez",  f:"Farmacia Cruz Verde Quilic.",sku:"CONCERTA 36 MG",      und:6, monto:1.5,motivo:"Vencimiento próximo"},
+  {vendor:"Leonardo Hernandez", f:"Botica Popular La Pintana",  sku:"TAPSIN DIA",          und:18,monto:1.1,motivo:"Defecto embalaje"},
+  {vendor:"Maria Corina Garcia",f:"Farmacia Popular Antofag.",  sku:"CONCERTA 36 MG x30",  und:12,monto:1.6,motivo:"Baja rotación"},
+  {vendor:"Maria Jose Ramirez", f:"Farmacia Animal Valdivia",   sku:"AMOXICILINA VET",     und:18,monto:1.2,motivo:"Sobrestock"},
+];
+
+// ═══ ChileCompra Licitaciones ═══
+const CHILECHILE_COMPRA = [
+  {id:"ID762-2026-LE",  muni:"Municipalidad Lo Prado",     producto:"TAPSIN CALIENTE NOCHE/DIA",  val_est:85,  fecha_cierre:"08-Abr", estado:"ABIERTA", match:"Alto",  owner:"Ilse Arriagada"},
+  {id:"ID1803-2026-LE", muni:"Municipalidad El Bosque",    producto:"CONCERTA 36 MG x30",         val_est:120, fecha_cierre:"12-Abr", estado:"ABIERTA", match:"Alto",  owner:"Ilse Arriagada"},
+  {id:"ID0291-2026-LE", muni:"Municipalidad Maipú",        producto:"CLEXANE 40 MG/0.4 ML",       val_est:95,  fecha_cierre:"15-Abr", estado:"ABIERTA", match:"Alto",  owner:"Jose Pascual"},
+  {id:"ID0554-2026-LE", muni:"Municipalidad Colina",       producto:"CLEXANE 40 MG + CONCERTA 36",val_est:42,  fecha_cierre:"20-Abr", estado:"ABIERTA", match:"Alto",  owner:"Silvia Flores"},
+  {id:"ID0882-2026-LE", muni:"Municipalidad San Bernardo", producto:"MABTHERA 500 MG/50 ML",      val_est:55,  fecha_cierre:"03-May", estado:"ABIERTA", match:"Medio", owner:"Ilse Arriagada"},
+  {id:"ID1120-2026-LE", muni:"Municipalidad Puente Alto",  producto:"ACTEMRA 162 MG + CLEXANE",   val_est:180, fecha_cierre:"10-May", estado:"PRÓXIMA", match:"Alto",  owner:"Ilse Arriagada"},
+  {id:"ID0633-2026-LE", muni:"Municipalidad Lampa",        producto:"TAPSIN CALIENTE NOCHE",      val_est:28,  fecha_cierre:"05-May", estado:"PRÓXIMA", match:"Medio", owner:"Silvia Flores"},
+  {id:"ID2241-2026-LE", muni:"Municipalidad Peñaflor",     producto:"CLEXANE 40 MG + TAPSIN",     val_est:68,  fecha_cierre:"22-Abr", estado:"ABIERTA", match:"Alto",  owner:"Jose Pascual"},
+];
+
+// ═══ Pipeline Clínicas ═══
+const PIPELINE_LICIT = [
+  {inst:"Hospital San Borja Arriarán", sku:"KEYTRUDA 100 MG",  val:680, bases:"Abr-2026", prob:75, owner:"Edward Avalos",   estado:"En preparación"},
+  {inst:"Hospital del Salvador",       sku:"BAVENCIO 20 MG",   val:320, bases:"May-2026", prob:60, owner:"Edward Avalos",   estado:"Contacto iniciado"},
+  {inst:"Clínica Reñaca Viña",         sku:"CLEXANE 40 MG",    val:95,  bases:"Abr-2026", prob:85, owner:"Cristian Diaz",   estado:"Propuesta enviada"},
+  {inst:"Hospital Las Higueras",       sku:"ACTEMRA 162 MG",   val:210, bases:"Jun-2026", prob:50, owner:"Esteban Zenteno", estado:"En evaluación"},
+  {inst:"Clínica Sanatorio Alemán",    sku:"VERZENIO 100 MG",  val:280, bases:"May-2026", prob:65, owner:"Cristian Diaz",   estado:"Contacto iniciado"},
+  {inst:"Policlínico Alameda",         sku:"CLEXANE 40 MG",    val:45,  bases:"Abr-2026", prob:80, owner:"Paola Zapata",    estado:"En preparación"},
+  {inst:"Hospital Parroquial S.Miguel",sku:"CLEXANE 40 MG",    val:62,  bases:"May-2026", prob:70, owner:"Esteban Zenteno", estado:"Propuesta enviada"},
+  {inst:"Clínica Bupa Santiago",       sku:"KEYTRUDA 100 MG",  val:430, bases:"Jun-2026", prob:55, owner:"Edward Avalos",   estado:"En evaluación"},
+  {inst:"Hospital Regional Concepción",sku:"ACTEMRA 162 MG",   val:190, bases:"May-2026", prob:72, owner:"Cristian Diaz",   estado:"Propuesta enviada"},
+];
+
+// ═══════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════
+const DIAS_T=17, DIAS_M=22, DIAS_R=5;
+const ALL = [...VRETAIL,...VCLIN,...VCENABAST];
+const today=new Date();
+const DS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],MS=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+document.getElementById('dtag').textContent=`${DS[today.getDay()]} ${today.getDate()} ${MS[today.getMonth()]} ${today.getFullYear()}`;
+
+let AC={};
+function kill(){Object.values(AC).forEach(c=>{try{c.destroy();}catch(e){}});AC={};}
+
+function pctMeta(v){
+  const rate3=v.r3/DIAS_T, proyMar=+(rate3*DIAS_M).toFixed(1);
+  return Math.round((proyMar/v.meta_mes)*100);
+}
+function metaColor(p){return p>=90?'cg':p>=70?'cy':'cr';}
+function teamColor(t){return t==='Retail'?'var(--g)':t==='Clínicas'?'var(--t)':'var(--o)';}
+function teamDotClass(t){return t==='Retail'?'bg':t==='Clínicas'?'bt':'bo';}
+function teamLabel(t){return t==='Retail'?'🏪 Retail':t==='Clínicas'?'🏥 Clínicas':'🏛 CENABAST';}
+function velPct(v){const r2=v.r2/20, r3=v.r3/DIAS_T; return r2>0?+(((r3-r2)/r2)*100).toFixed(1):0;}
+
+// ═══════════════════════════════════════════════
+//  TOTALES
+// ═══════════════════════════════════════════════
+const totalRevRetail   = VRETAIL.reduce((s,v)=>s+v.rev,0);
+const totalRevClin     = VCLIN.reduce((s,v)=>s+v.rev,0);
+const totalRevCen      = VCENABAST.reduce((s,v)=>s+v.rev,0);
+const totalRev         = totalRevRetail+totalRevClin+totalRevCen;
+
+const totalMetaRetail  = VRETAIL.reduce((s,v)=>s+v.meta_mes,0);
+const totalMetaClin    = VCLIN.reduce((s,v)=>s+v.meta_mes,0);
+const totalMetaCen     = VCENABAST.reduce((s,v)=>s+v.meta_mes,0);
+const totalMeta        = totalMetaRetail+totalMetaClin+totalMetaCen;
+
+const totalCliRetail   = VRETAIL.reduce((s,v)=>s+(v.cli-v.caidos),0);
+const totalCliClin     = VCLIN.reduce((s,v)=>s+(v.cli-v.caidos),0);
+const totalCliCen      = VCENABAST.reduce((s,v)=>s+(v.cli-v.caidos),0);
+const totalCli         = totalCliRetail+totalCliClin+totalCliCen;
+
+const mgRetail = (VRETAIL.reduce((s,v)=>s+v.mg*v.rev,0)/totalRevRetail).toFixed(1);
+const mgClin   = (VCLIN.reduce((s,v)=>s+v.mg*v.rev,0)/totalRevClin).toFixed(1);
+const mgCen    = (VCENABAST.reduce((s,v)=>s+v.mg*v.rev,0)/totalRevCen).toFixed(1);
+const mgTotal  = (ALL.reduce((s,v)=>s+v.mg*v.rev,0)/totalRev).toFixed(1);
+
+// proyección cierre Mar
+const proyRetail = VRETAIL.reduce((s,v)=>s+(v.r3/DIAS_T*DIAS_M),0).toFixed(0);
+const proyClin   = VCLIN.reduce((s,v)=>s+(v.r3/DIAS_T*DIAS_M),0).toFixed(0);
+const proyCen    = VCENABAST.reduce((s,v)=>s+(v.r3/DIAS_T*DIAS_M),0).toFixed(0);
+const proyTotal  = (+proyRetail + +proyClin + +proyCen).toFixed(0);
+
+const totalDevMonto = DEV_DETALLE.reduce((s,d)=>s+d.monto,0).toFixed(1);
+const totalCCValor  = CHILECHILE_COMPRA.reduce((s,l)=>s+l.val_est,0);
+const totalPipelinePond = PIPELINE_LICIT.reduce((s,l)=>s+l.val*l.prob/100,0).toFixed(0);
+
+// ═══ Tab ═══
+let currentTab='all';
+function setTab(t){
+  currentTab=t;
+  ['all','rnk','alert'].forEach(id=>{
+    const el=document.getElementById('tab-'+id);
+    el.className='tab'+(id===t?(t==='rnk'?' act-t':t==='alert'?' act-t':' act-a'):'');
+  });
+  render();
+}
+
+// ═══════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════
+function render(){
+  kill();
+  if(currentTab==='all') renderAll();
+  else if(currentTab==='rnk') renderRanking();
+  else renderAlertas();
+}
+
+// ─── VISTA GLOBAL ────────────────────────────────
+function renderAll(){
+  const pctR=Math.round((+proyRetail/totalMetaRetail)*100);
+  const pctC=Math.round((+proyClin/totalMetaClin)*100);
+  const pctN=Math.round((+proyCen/totalMetaCen)*100);
+  const pctT=Math.round((+proyTotal/totalMeta)*100);
+
+  // Top 5 / Bottom 5 por velocidad
+  const ranked=ALL.slice().sort((a,b)=>velPct(b)-velPct(a));
+  const top5=ranked.slice(0,5);
+  const bot5=ranked.slice(-5).reverse();
+  const maxRevAll=Math.max(...ALL.map(v=>v.rev));
+  const cadCriticas=CADUCIDAD_DETALLE.filter(d=>d.dias<=30).length;
+  const devVendors=[...new Set(DEV_DETALLE.map(d=>d.vendor))].length;
+  const pipelineAbierta=CHILECHILE_COMPRA.filter(l=>l.estado==='ABIERTA').length;
+
+  document.getElementById('root').innerHTML=`
+<div class="pg">
+  <!-- ── KPI STRIP GLOBAL ── -->
+  <div class="ks" style="grid-template-columns:repeat(8,1fr)">
+    <div class="kp"><div class="kl">Revenue CMK Q1-26</div><div class="kv" style="color:var(--tx);font-size:16px">$${(totalRev/1000).toFixed(2)}B</div><div class="ksb">27 vendedores activos</div></div>
+    <div class="kp"><div class="kl">Proyección Mar</div><div class="kv ${pctT>=90?'cg':pctT>=75?'cy':'cr'}" style="font-size:16px">$${(+proyTotal/1000).toFixed(2)}B</div><div class="ksb">meta $${(totalMeta/1000).toFixed(1)}B → ${pctT}%</div></div>
+    <div class="kp"><div class="kl">Margen Pond.</div><div class="kv cy">${mgTotal}%</div><div class="ksb">ret ${mgRetail}% · clin ${mgClin}% · cen ${mgCen}%</div></div>
+    <div class="kp"><div class="kl">Clientes Activos</div><div class="kv ct">${totalCli.toLocaleString()}</div><div class="ksb">ret ${totalCliRetail} · clin ${totalCliClin} · cen ${totalCliCen}</div></div>
+    <div class="kp"><div class="kl">Alertas Caducidad</div><div class="kv ${cadCriticas>0?'cr':'cy'}">${CADUCIDAD_DETALLE.length}</div><div class="ksb">${cadCriticas} críticas ≤30d</div></div>
+    <div class="kp"><div class="kl">Devoluciones Mar</div><div class="kv cy">$${totalDevMonto}M</div><div class="ksb">${devVendors} vendedores afectados</div></div>
+    <div class="kp"><div class="kl">ChileCompra Open</div><div class="kv co">${pipelineAbierta}</div><div class="ksb">$${totalCCValor}M est. en juego</div></div>
+    <div class="kp"><div class="kl">Pipeline Clínicas</div><div class="kv cp">$${totalPipelinePond}M</div><div class="ksb">${PIPELINE_LICIT.length} licitaciones ponderadas</div></div>
+  </div>
+
+  <!-- ── TEAM CARDS ── -->
+  <div class="card">
+    <div class="ch g">🏪 Retail — 17 vendedores</div>
+    <div class="cb">
+      <div class="team-card">
+        <div class="tc-rev cg">$${(totalRevRetail/1000).toFixed(2)}B <span style="font-size:12px;color:var(--mu)">Rev Q1</span></div>
+        <div class="mrow"><div class="ml">Proy. Cierre Mar</div><div class="bar-bg" style="flex:1"><div class="bar-f" style="background:var(--g);width:${Math.min(pctR,100)}%"></div></div><div class="mv cg">${pctR}%</div></div>
+        <div class="tc-row"><span class="tc-lbl">Meta</span><span class="tc-val">$${(totalMetaRetail/1000).toFixed(1)}B</span></div>
+        <div class="tc-row"><span class="tc-lbl">Margen prom.</span><span class="tc-val cy">${mgRetail}%</span></div>
+        <div class="tc-row"><span class="tc-lbl">Clientes activos</span><span class="tc-val ct">${totalCliRetail}</span></div>
+        <div class="tc-row"><span class="tc-lbl">Devoluciones mar.</span><span class="tc-val cr">$${totalDevMonto}M</span></div>
+        <div style="margin-top:6px">
+          <div style="font-size:9px;color:var(--mu);text-transform:uppercase;margin-bottom:3px">Vendedores sobre meta</div>
+          ${VRETAIL.map(v=>{const p=pctMeta(v);return`<span class="b ${p>=90?'bg':p>=70?'by':'br'}" style="margin:1px">${v.n.split(' ')[1]||v.n.split(' ')[0]} ${p}%</span>`;}).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch t">🏥 Clínicas — 7 vendedores</div>
+    <div class="cb">
+      <div class="team-card">
+        <div class="tc-rev ct">$${(totalRevClin/1000).toFixed(2)}B <span style="font-size:12px;color:var(--mu)">Rev Q1</span></div>
+        <div class="mrow"><div class="ml">Proy. Cierre Mar</div><div class="bar-bg" style="flex:1"><div class="bar-f" style="background:var(--t);width:${Math.min(pctC,100)}%"></div></div><div class="mv ct">${pctC}%</div></div>
+        <div class="tc-row"><span class="tc-lbl">Meta</span><span class="tc-val">$${(totalMetaClin/1000).toFixed(1)}B</span></div>
+        <div class="tc-row"><span class="tc-lbl">Margen prom.</span><span class="tc-val cy">${mgClin}%</span></div>
+        <div class="tc-row"><span class="tc-lbl">Instituciones activas</span><span class="tc-val ct">${totalCliClin}</span></div>
+        <div class="tc-row"><span class="tc-lbl">Pipeline pond.</span><span class="tc-val cp">$${totalPipelinePond}M</span></div>
+        <div style="margin-top:6px">
+          <div style="font-size:9px;color:var(--mu);text-transform:uppercase;margin-bottom:3px">Vendedores sobre meta</div>
+          ${VCLIN.map(v=>{const p=pctMeta(v);return`<span class="b ${p>=90?'bg':p>=70?'by':'br'}" style="margin:1px">${v.n.split(' ')[0]} ${p}%</span>`;}).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch o">🏛 CENABAST — 3 vendedores</div>
+    <div class="cb">
+      <div class="team-card">
+        <div class="tc-rev co">$${(totalRevCen/1000).toFixed(2)}B <span style="font-size:12px;color:var(--mu)">Rev Q1</span></div>
+        <div class="mrow"><div class="ml">Proy. Cierre Mar</div><div class="bar-bg" style="flex:1"><div class="bar-f" style="background:var(--o);width:${Math.min(pctN,100)}%"></div></div><div class="mv co">${pctN}%</div></div>
+        <div class="tc-row"><span class="tc-lbl">Meta</span><span class="tc-val">$${(totalMetaCen/1000).toFixed(0)}M</span></div>
+        <div class="tc-row"><span class="tc-lbl">Margen prom.</span><span class="tc-val cy">${mgCen}%</span></div>
+        <div class="tc-row"><span class="tc-lbl">CESFAM activos</span><span class="tc-val ct">${totalCliCen}</span></div>
+        <div class="tc-row"><span class="tc-lbl">ChileCompra open</span><span class="tc-val co">$${totalCCValor}M est.</span></div>
+        <div style="margin-top:6px">
+          <div style="font-size:9px;color:var(--mu);text-transform:uppercase;margin-bottom:3px">Vendedores sobre meta</div>
+          ${VCENABAST.map(v=>{const p=pctMeta(v);return`<span class="b ${p>=90?'bg':p>=70?'by':'br'}" style="margin:1px">${v.n.split(' ')[0]} ${p}%</span>`;}).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── REVENUE CHART ── -->
+  <div class="card s2">
+    <div class="ch mu">📈 Revenue por Equipo — Distribución Q1-26</div>
+    <div class="cb">
+      <div class="chart-wrap"><canvas id="cht-teams"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch mu">🎯 Mix Revenue CMK</div>
+    <div class="cb">
+      <div class="chart-wrap" style="height:160px"><canvas id="cht-pie"></canvas></div>
+      <div style="margin-top:8px">
+        <div class="mrow"><div class="ml" style="color:var(--g)">🏪 Retail</div><div class="bar-bg"><div class="bar-f" style="background:var(--g);width:${Math.round(totalRevRetail/totalRev*100)}%"></div></div><div class="mv">${Math.round(totalRevRetail/totalRev*100)}%</div></div>
+        <div class="mrow"><div class="ml" style="color:var(--t)">🏥 Clínicas</div><div class="bar-bg"><div class="bar-f" style="background:var(--t);width:${Math.round(totalRevClin/totalRev*100)}%"></div></div><div class="mv">${Math.round(totalRevClin/totalRev*100)}%</div></div>
+        <div class="mrow"><div class="ml" style="color:var(--o)">🏛 CENABAST</div><div class="bar-bg"><div class="bar-f" style="background:var(--o);width:${Math.round(totalRevCen/totalRev*100)}%"></div></div><div class="mv">${Math.round(totalRevCen/totalRev*100)}%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOP 5 MOMENTUM ── -->
+  <div class="card">
+    <div class="ch g">⬆️ Top 5 Momentum (vel. Mar vs Feb)</div>
+    <div class="cb">
+      ${top5.map((v,i)=>{const vp=velPct(v);return`
+      <div class="rk-row">
+        <div class="rk-n">${i+1}</div>
+        <div class="team-dot" style="background:${teamColor(v.team)}"></div>
+        <div class="rk-name">${v.n}</div>
+        <span class="b bg">+${vp}%</span>
+        <div class="rk-val cg">$${v.rev>=1000?(v.rev/1000).toFixed(2)+'B':v.rev+'M'}</div>
+      </div>`;}).join('')}
+    </div>
+  </div>
+
+  <!-- ── BOTTOM 5 ── -->
+  <div class="card">
+    <div class="ch r">⬇️ Bajo Rendimiento — Requieren Atención</div>
+    <div class="cb">
+      ${bot5.map((v,i)=>{const vp=velPct(v);const p=pctMeta(v);return`
+      <div class="rk-row">
+        <div class="rk-n">${i+1}</div>
+        <div class="team-dot" style="background:${teamColor(v.team)}"></div>
+        <div class="rk-name">${v.n}</div>
+        <span class="b br">${vp}%</span>
+        <span class="b ${metaColor(p)}" style="margin-left:2px">${p}% meta</span>
+      </div>`;}).join('')}
+    </div>
+  </div>
+
+  <!-- ── RESUMEN ALERTAS ── -->
+  <div class="card">
+    <div class="ch y">⚠️ Resumen de Alertas</div>
+    <div class="cb">
+      <div class="summary-grid">
+        <div class="sum-box"><div class="sum-v cr">${cadCriticas}</div><div class="sum-l">Caducidad crítica ≤30d</div></div>
+        <div class="sum-box"><div class="sum-v cy">${CADUCIDAD_DETALLE.length-cadCriticas}</div><div class="sum-l">Caducidad vigilancia</div></div>
+        <div class="sum-box"><div class="sum-v cy">${DEV_DETALLE.length}</div><div class="sum-l">Devoluciones activas</div></div>
+      </div>
+      ${CADUCIDAD_DETALLE.filter(d=>d.dias<=30).map(d=>`
+      <div class="al r">
+        <span class="b br">${d.team}</span> <strong>${d.vendor}</strong> — ${d.f}<br>
+        SKU: ${d.sku} · ${d.und} und · <strong style="color:var(--r)">${d.dias}d</strong><br>
+        <span style="color:var(--mu)">${d.accion}</span>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <!-- ── CHILECHILE COMPRA TOP ── -->
+  <div class="card s2">
+    <div class="ch o">🏛 ChileCompra — Licitaciones Abiertas/Próximas</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>ID</th><th>Municipalidad</th><th>Producto</th><th class="r">Val. Est.</th><th>Cierre</th><th>Match</th><th>Responsable</th><th>Estado</th></tr></thead>
+        <tbody>
+          ${CHILECHILE_COMPRA.map(l=>`
+          <tr>
+            <td style="color:var(--mu);font-size:9px">${l.id}</td>
+            <td>${l.muni}</td>
+            <td style="color:var(--tx)">${l.producto}</td>
+            <td class="r co">$${l.val_est}M</td>
+            <td style="color:var(--y)">${l.fecha_cierre}</td>
+            <td><span class="b ${l.match==='Alto'?'bg':'by'}">${l.match}</span></td>
+            <td style="color:var(--mu)">${l.owner}</td>
+            <td><span class="b ${l.estado==='ABIERTA'?'bg':'bt'}">${l.estado}</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>`;
+
+  // ── Chart: Revenue por equipo (barras top vendedores) ──
+  const top12=ALL.slice().sort((a,b)=>b.rev-a.rev).slice(0,12);
+  const ctx1=document.getElementById('cht-teams').getContext('2d');
+  AC['teams']=new Chart(ctx1,{
+    type:'bar',
+    data:{
+      labels:top12.map(v=>v.n.split(' ')[0]+' '+((v.n.split(' ')[1]||'')[0]||'')+'.'),
+      datasets:[{
+        label:'Revenue M$',
+        data:top12.map(v=>v.rev),
+        backgroundColor:top12.map(v=>v.team==='Retail'?'rgba(63,185,80,.7)':v.team==='Clínicas'?'rgba(46,168,204,.7)':'rgba(251,133,0,.7)'),
+        borderColor:top12.map(v=>teamColor(v.team)),
+        borderWidth:1,borderRadius:4
+      }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`$${ctx.raw}M · ${top12[ctx.dataIndex].team}`}}},scales:{x:{ticks:{color:'#8b949e',font:{size:9}},grid:{color:'#21262d'}},y:{ticks:{color:'#8b949e',font:{size:9},callback:v=>v>=1000?`$${(v/1000).toFixed(1)}B`:`$${v}M`},grid:{color:'#21262d'}}}}
+  });
+
+  // ── Chart: Pie mix ──
+  const ctx2=document.getElementById('cht-pie').getContext('2d');
+  AC['pie']=new Chart(ctx2,{
+    type:'doughnut',
+    data:{
+      labels:['Retail','Clínicas','CENABAST'],
+      datasets:[{data:[totalRevRetail,totalRevClin,totalRevCen],backgroundColor:['rgba(63,185,80,.7)','rgba(46,168,204,.7)','rgba(251,133,0,.7)'],borderColor:['var(--g)','var(--t)','var(--o)'],borderWidth:1}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#8b949e',font:{size:9},boxWidth:10}},tooltip:{callbacks:{label:ctx=>`$${(ctx.raw/1000).toFixed(2)}B (${Math.round(ctx.raw/totalRev*100)}%)`}}}}
+  });
+}
+
+// ─── RANKING COMPLETO ─────────────────────────────
+function renderRanking(){
+  const sorted=ALL.slice().sort((a,b)=>b.rev-a.rev);
+  const maxR=sorted[0].rev;
+  document.getElementById('root').innerHTML=`
+<div class="pg">
+  <div class="card s3">
+    <div class="ch t">🏅 Ranking Completo CMK — 27 Vendedores · Ordenado por Revenue Q1-26</div>
+    <div class="cb" style="padding:0">
+      <table class="tbl">
+        <thead><tr>
+          <th style="width:28px">#</th>
+          <th>Equipo</th>
+          <th>Vendedor</th>
+          <th>Zona / Especialidad</th>
+          <th class="r">Rev Q1</th>
+          <th style="width:90px">vs Meta</th>
+          <th class="r">Vel.</th>
+          <th class="r">Margen</th>
+          <th class="r">Clientes</th>
+          <th class="r">Vis. Efic.</th>
+          <th style="width:90px">Proyección</th>
+        </tr></thead>
+        <tbody>
+          ${sorted.map((v,i)=>{
+            const p=pctMeta(v);
+            const vp=velPct(v);
+            const visEfic=Math.round((v.v_real/v.v_plan)*100);
+            const prev=PREV_DATA[v.n]||{rev:v.rev};
+            const deltaRev=+(((v.rev-prev.rev)/prev.rev)*100).toFixed(1);
+            const proyV=+(v.r3/DIAS_T*DIAS_M).toFixed(0);
+            return`<tr>
+              <td style="font-weight:700;color:var(--mu)">${i+1}</td>
+              <td><span class="b ${teamDotClass(v.team)}" style="font-size:8px">${v.team==='Retail'?'RET':v.team==='Clínicas'?'CLIN':'CEN'}</span></td>
+              <td style="font-weight:600;color:var(--tx)">${v.n}</td>
+              <td style="color:var(--mu);font-size:10px">${v.zona||v.esp||''}</td>
+              <td class="r" style="font-weight:700;color:${v.rev>=1000?'var(--t)':'var(--li)'}">$${v.rev>=1000?(v.rev/1000).toFixed(2)+'B':v.rev+'M'}</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:5px">
+                  <div class="bar-bg" style="width:55px;flex-shrink:0"><div class="bar-f" style="background:${p>=90?'var(--g)':p>=70?'var(--y)':'var(--r)'};width:${Math.min(p,100)}%"></div></div>
+                  <span style="font-size:9px;font-weight:700;color:${p>=90?'var(--g)':p>=70?'var(--y)':'var(--r)'}">${p}%</span>
+                </div>
+              </td>
+              <td class="r" style="font-weight:700;color:${vp>=0?'var(--g)':'var(--r)'}">${vp>0?'+':''}${vp}%</td>
+              <td class="r" style="color:${v.mg>=20?'var(--g)':v.mg>=15?'var(--y)':'var(--mu)'}">${v.mg}%</td>
+              <td class="r ct">${v.cli-v.caidos}</td>
+              <td class="r" style="color:${visEfic>=85?'var(--g)':visEfic>=70?'var(--y)':'var(--r)'}">${visEfic}%</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:4px">
+                  <span style="font-size:10px;font-weight:700;color:${p>=90?'var(--g)':p>=70?'var(--y)':'var(--r)'}">$${proyV>=1000?(proyV/1000).toFixed(1)+'B':proyV+'M'}</span>
+                  <span style="font-size:9px;color:var(--mu)">/ $${v.meta_mes>=1000?(v.meta_mes/1000).toFixed(1)+'B':v.meta_mes+'M'}</span>
+                </div>
+              </td>
+            </tr>`;}).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── Chart velocidades ── -->
+  <div class="card s2">
+    <div class="ch mu">⚡ Velocidad vs Febrero (Mar/Feb diario) — Top 15</div>
+    <div class="cb"><div class="chart-wrap" style="height:280px"><canvas id="cht-vel"></canvas></div></div>
+  </div>
+
+  <div class="card">
+    <div class="ch mu">📊 Distribución % Meta — Todos</div>
+    <div class="cb">
+      <div style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px"><span class="cg">≥90% meta</span><span class="cg">${ALL.filter(v=>pctMeta(v)>=90).length} vendedores</span></div>
+        <div class="bar-bg" style="height:8px"><div class="bar-f" style="background:var(--g);width:${Math.round(ALL.filter(v=>pctMeta(v)>=90).length/ALL.length*100)}%"></div></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px"><span class="cy">70–89% meta</span><span class="cy">${ALL.filter(v=>pctMeta(v)>=70&&pctMeta(v)<90).length} vendedores</span></div>
+        <div class="bar-bg" style="height:8px"><div class="bar-f" style="background:var(--y);width:${Math.round(ALL.filter(v=>pctMeta(v)>=70&&pctMeta(v)<90).length/ALL.length*100)}%"></div></div>
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px"><span class="cr">&lt;70% meta</span><span class="cr">${ALL.filter(v=>pctMeta(v)<70).length} vendedores</span></div>
+        <div class="bar-bg" style="height:8px"><div class="bar-f" style="background:var(--r);width:${Math.round(ALL.filter(v=>pctMeta(v)<70).length/ALL.length*100)}%"></div></div>
+      </div>
+      <div style="font-size:9px;color:var(--mu);text-transform:uppercase;margin-bottom:5px">Por equipo</div>
+      ${['Retail','Clínicas','CENABAST'].map(t=>{
+        const tv=ALL.filter(v=>v.team===t);
+        const ok=tv.filter(v=>pctMeta(v)>=90).length;
+        return`<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:10px">
+          <div style="width:70px;color:${teamColor(t)}">${t}</div>
+          <div class="bar-bg"><div class="bar-f" style="background:${teamColor(t)};width:${Math.round(ok/tv.length*100)}%"></div></div>
+          <div style="width:50px;color:var(--mu)">${ok}/${tv.length} OK</div>
+        </div>`;}).join('')}
+    </div>
+  </div>
+
+</div>`;
+
+  const top15vel=ALL.slice().sort((a,b)=>velPct(b)-velPct(a)).slice(0,15);
+  const ctx3=document.getElementById('cht-vel').getContext('2d');
+  AC['vel']=new Chart(ctx3,{
+    type:'bar',
+    data:{
+      labels:top15vel.map(v=>v.n.split(' ')[0]+'.'),
+      datasets:[{
+        label:'Velocidad %',
+        data:top15vel.map(v=>velPct(v)),
+        backgroundColor:top15vel.map(v=>velPct(v)>=0?'rgba(63,185,80,.7)':'rgba(248,81,73,.7)'),
+        borderColor:top15vel.map(v=>velPct(v)>=0?'var(--g)':'var(--r)'),
+        borderWidth:1,borderRadius:4
+      }]
+    },
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8b949e',font:{size:9},callback:v=>v+'%'},grid:{color:'#21262d'}},y:{ticks:{color:'#8b949e',font:{size:9}},grid:{color:'#21262d'}}}}
+  });
+}
+
+// ─── ALERTAS ─────────────────────────────────────
+function renderAlertas(){
+  const cadCriticas=CADUCIDAD_DETALLE.filter(d=>d.dias<=30);
+  const cadVigilancia=CADUCIDAD_DETALLE.filter(d=>d.dias>30);
+  const totalDevMonto2=DEV_DETALLE.reduce((s,d)=>s+d.monto,0).toFixed(1);
+  const pipelineAlta=PIPELINE_LICIT.filter(l=>l.prob>=75);
+
+  document.getElementById('root').innerHTML=`
+<div class="pg">
+  <!-- Resumen -->
+  <div class="s3" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">
+    <div class="kp"><div class="kl">Caducidad Crítica ≤30d</div><div class="kv cr">${cadCriticas.length}</div><div class="ksb">acción HOY</div></div>
+    <div class="kp"><div class="kl">Caducidad Vigilancia</div><div class="kv cy">${cadVigilancia.length}</div><div class="ksb">31–60 días</div></div>
+    <div class="kp"><div class="kl">Devoluciones Mar</div><div class="kv cy">$${totalDevMonto2}M</div><div class="ksb">${DEV_DETALLE.length} registros</div></div>
+    <div class="kp"><div class="kl">ChileCompra Abiertas</div><div class="kv co">${CHILECHILE_COMPRA.filter(l=>l.estado==='ABIERTA').length}</div><div class="ksb">$${CHILECHILE_COMPRA.filter(l=>l.estado==='ABIERTA').reduce((s,l)=>s+l.val_est,0)}M en juego</div></div>
+    <div class="kp"><div class="kl">Pipeline Alta Prob ≥75%</div><div class="kv cp">${pipelineAlta.length}</div><div class="ksb">$${pipelineAlta.reduce((s,l)=>s+l.val,0)}M bruto</div></div>
+  </div>
+
+  <!-- Caducidad Crítica -->
+  <div class="card s2">
+    <div class="ch r">🔴 Caducidad Crítica — Acción Inmediata ≤30 días</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>Equipo</th><th>Vendedor</th><th>Cliente/Institución</th><th>SKU</th><th class="r">Und.</th><th class="r">Días</th><th>Acción</th></tr></thead>
+        <tbody>
+          ${cadCriticas.sort((a,b)=>a.dias-b.dias).map(d=>`
+          <tr>
+            <td><span class="b ${d.team==='Retail'?'bg':d.team==='Clínicas'?'bt':'bo'}">${d.team==='Retail'?'RET':d.team==='Clínicas'?'CLIN':'CEN'}</span></td>
+            <td style="font-weight:600">${d.vendor}</td>
+            <td style="color:var(--mu);font-size:10px">${d.f}</td>
+            <td>${d.sku}</td>
+            <td class="r">${d.und}</td>
+            <td class="r cr" style="font-weight:700">${d.dias}d</td>
+            <td style="font-size:10px;color:var(--r)">${d.accion}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Caducidad Vigilancia -->
+  <div class="card">
+    <div class="ch y">🟡 Caducidad — Vigilar (31–60 días)</div>
+    <div class="cb">
+      ${cadVigilancia.sort((a,b)=>a.dias-b.dias).map(d=>`
+      <div class="al">
+        <span class="b ${d.team==='Retail'?'bg':d.team==='Clínicas'?'bt':'bo'}">${d.team}</span>
+        <strong>${d.vendor}</strong> — <span style="color:var(--mu);font-size:10px">${d.f}</span><br>
+        ${d.sku} · ${d.und} und · <span class="cy"><strong>${d.dias}d</strong></span><br>
+        <span style="color:var(--mu);font-size:10px">${d.accion}</span>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <!-- Devoluciones -->
+  <div class="card s2">
+    <div class="ch y">↩️ Devoluciones Marzo — Detalle Equipo Retail</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>Vendedor</th><th>Cliente</th><th>SKU devuelto</th><th class="r">Und.</th><th class="r">Monto</th><th>Motivo</th></tr></thead>
+        <tbody>
+          ${DEV_DETALLE.sort((a,b)=>b.monto-a.monto).map(d=>`
+          <tr>
+            <td style="font-weight:600">${d.vendor}</td>
+            <td style="color:var(--mu);font-size:10px">${d.f}</td>
+            <td>${d.sku}</td>
+            <td class="r">${d.und}</td>
+            <td class="r cy">$${d.monto}M</td>
+            <td style="font-size:10px"><span class="b ${d.motivo.includes('Venc')?'br':d.motivo.includes('Daño')?'br':'by'}">${d.motivo}</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      <div style="margin-top:6px;text-align:right;font-size:11px;font-weight:700;color:var(--y)">Total devoluciones: $${totalDevMonto2}M</div>
+    </div>
+  </div>
+
+  <!-- Pipeline Clínicas -->
+  <div class="card">
+    <div class="ch p">🏥 Pipeline Licitaciones Clínicas</div>
+    <div class="cb">
+      ${PIPELINE_LICIT.sort((a,b)=>b.prob-a.prob).map(l=>`
+      <div style="padding:5px 0;border-bottom:1px solid #1c2128">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+          <span class="b ${l.prob>=75?'bg':l.prob>=60?'by':'br'}">${l.prob}%</span>
+          <span style="font-size:11px;font-weight:600">${l.inst}</span>
+          <span style="margin-left:auto;font-weight:700;color:var(--p)">$${l.val}M</span>
+        </div>
+        <div style="font-size:10px;color:var(--mu)">${l.sku} · ${l.bases} · ${l.owner} · <span style="color:var(--li)">${l.estado}</span></div>
+      </div>`).join('')}
+      <div style="margin-top:8px;font-size:10px;color:var(--mu)">
+        Pipeline ponderado total: <span style="color:var(--p);font-weight:700">$${totalPipelinePond}M</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ChileCompra -->
+  <div class="card s3">
+    <div class="ch o">🏛 ChileCompra — Seguimiento Licitaciones CENABAST</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>ID Licitación</th><th>Municipalidad</th><th>Producto</th><th class="r">Val. Est.</th><th>Cierre</th><th>Match CMK</th><th>Responsable</th><th>Estado</th></tr></thead>
+        <tbody>
+          ${CHILECHILE_COMPRA.map(l=>`
+          <tr>
+            <td style="color:var(--mu);font-size:9px;font-family:monospace">${l.id}</td>
+            <td style="font-weight:600">${l.muni}</td>
+            <td style="color:var(--tx)">${l.producto}</td>
+            <td class="r co" style="font-weight:700">$${l.val_est}M</td>
+            <td style="color:var(--y)">${l.fecha_cierre}</td>
+            <td><span class="b ${l.match==='Alto'?'bg':'by'}">${l.match}</span></td>
+            <td style="color:var(--mu)">${l.owner}</td>
+            <td><span class="b ${l.estado==='ABIERTA'?'bg':'bt'}">${l.estado}</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      <div style="margin-top:8px;display:flex;gap:16px;font-size:10px">
+        <span style="color:var(--mu)">Total estimado: <strong class="co">$${totalCCValor}M</strong></span>
+        <span style="color:var(--mu)">Match alto: <strong class="cg">${CHILECHILE_COMPRA.filter(l=>l.match==='Alto').length}/${CHILECHILE_COMPRA.length} licitaciones</strong></span>
+        <span style="color:var(--mu)">Abiertas activas: <strong class="cg">${CHILECHILE_COMPRA.filter(l=>l.estado==='ABIERTA').length}</strong></span>
+      </div>
+    </div>
+  </div>
+
+</div>`;
+}
+
+render();
+</script>
+</body>
+</html>

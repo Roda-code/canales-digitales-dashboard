@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing Diario · Equipo Clínicas · CMK</title>
+<style>
+  :root{--g:#3fb950;--t:#2ea8cc;--r:#f85149;--y:#d29922;--p:#a371f7;--o:#fb8500;
+    --bg:#0d1117;--c1:#161b22;--c2:#1c2128;--bd:#30363d;--tx:#e6edf3;--mu:#8b949e;--li:#c9d1d9;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;}
+  .top{background:var(--c1);border-bottom:1px solid var(--bd);padding:10px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .logo{font-size:14px;font-weight:800;color:var(--t);white-space:nowrap;}
+  .logo span{color:var(--mu);font-weight:400;font-size:11px;margin-left:6px;}
+  select{background:var(--c2);border:1px solid var(--bd);color:var(--tx);padding:6px 11px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;}
+  .dtag{background:var(--c2);border:1px solid var(--bd);padding:5px 11px;border-radius:6px;font-size:11px;color:var(--mu);}
+  .btn{padding:5px 13px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid;}
+  .btn-p{background:rgba(46,168,204,.1);border-color:rgba(46,168,204,.3);color:var(--t);margin-left:auto;}
+  .pg{padding:12px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .s2{grid-column:span 2;} .s3{grid-column:span 3;}
+  .card{background:var(--c1);border:1px solid var(--bd);border-radius:8px;overflow:hidden;}
+  .ch{background:var(--c2);padding:7px 12px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--bd);}
+  .ch.g{color:var(--g);}.ch.t{color:var(--t);}.ch.y{color:var(--y);}.ch.r{color:var(--r);}.ch.p{color:var(--p);}.ch.o{color:var(--o);}
+  .cb{padding:11px 12px;}
+  .ks{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;grid-column:span 3;}
+  .kp{background:var(--c1);border:1px solid var(--bd);border-radius:8px;padding:9px 10px;text-align:center;}
+  .kl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;}
+  .kv{font-size:18px;font-weight:800;line-height:1;} .ksb{font-size:9px;color:var(--mu);margin-top:2px;}
+  .cg{color:var(--g)!important;}.cr{color:var(--r)!important;}.cy{color:var(--y)!important;}.ct{color:var(--t)!important;}.cp{color:var(--p)!important;}.co{color:var(--o)!important;}
+  .tbl{width:100%;border-collapse:collapse;}
+  .tbl th{background:var(--c2);color:var(--mu);font-size:9px;text-transform:uppercase;padding:5px 7px;text-align:left;border-bottom:1px solid var(--bd);font-weight:600;}
+  .tbl td{padding:5px 7px;border-bottom:1px solid #1c2128;font-size:11px;color:var(--li);vertical-align:middle;}
+  .tbl tr:last-child td{border-bottom:none;} .r{text-align:right;}
+  .b{display:inline-block;padding:2px 6px;border-radius:99px;font-size:9px;font-weight:700;}
+  .bg{background:rgba(63,185,80,.15);color:var(--g);}.br{background:rgba(248,81,73,.15);color:var(--r);}
+  .by{background:rgba(210,153,34,.15);color:var(--y);}.bt{background:rgba(46,168,204,.15);color:var(--t);}
+  .bo{background:rgba(251,133,0,.15);color:var(--o);}.bp{background:rgba(163,113,247,.15);color:var(--p);}
+  .al{border-left:3px solid var(--y);background:rgba(210,153,34,.06);border-radius:0 6px 6px 0;padding:6px 9px;margin-bottom:5px;font-size:11px;line-height:1.5;}
+  .al.r{border-color:var(--r);background:rgba(248,81,73,.06);}
+  .al.g{border-color:var(--g);background:rgba(63,185,80,.06);}
+  .al.t{border-color:var(--t);background:rgba(46,168,204,.06);}
+  .al.p{border-color:var(--p);background:rgba(163,113,247,.06);}
+  .bar-bg{background:#21262d;border-radius:99px;height:6px;flex:1;}
+  .bar-f{height:100%;border-radius:99px;}
+  .mrow{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+  .ml{font-size:10px;color:var(--mu);width:140px;flex-shrink:0;}
+  .mv{font-size:10px;font-weight:700;width:50px;text-align:right;}
+  .scr{background:var(--c2);border:1px solid var(--bd);border-radius:6px;padding:8px 10px;font-size:11px;color:var(--li);line-height:1.6;margin-bottom:5px;}
+  .stag{display:inline-block;background:rgba(46,168,204,.12);color:var(--t);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;margin-bottom:4px;}
+  .esp{background:rgba(163,113,247,.12);border:1px solid rgba(163,113,247,.3);color:var(--p);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;display:inline-block;}
+  .pill{display:inline-flex;align-items:center;gap:4px;background:var(--c2);border:1px solid var(--bd);border-radius:99px;padding:3px 9px;font-size:10px;margin:2px;}
+  .pill.v{border-color:rgba(63,185,80,.4);background:rgba(63,185,80,.07);}
+  .pill.p{border-color:rgba(248,81,73,.4);background:rgba(248,81,73,.07);}
+  .pill.n{border-color:rgba(46,168,204,.4);background:rgba(46,168,204,.07);}
+  .rk-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #1c2128;}
+  .rk-row:last-child{border:none;}
+  .pred-box{background:var(--c2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;margin-bottom:8px;}
+  .pred-label{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+  .pred-val{font-size:15px;font-weight:800;}
+  .pred-sub{font-size:10px;color:var(--mu);margin-top:2px;line-height:1.4;}
+  .cycle-track{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+  .cycle-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .health-score{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10px;font-weight:700;}
+  .hs-g{background:rgba(63,185,80,.15);color:var(--g);}
+  .hs-y{background:rgba(210,153,34,.15);color:var(--y);}
+  .hs-r{background:rgba(248,81,73,.15);color:var(--r);}
+  .q2-banner{background:linear-gradient(135deg,rgba(46,168,204,.1),rgba(63,185,80,.1));border:1px solid rgba(46,168,204,.3);border-radius:8px;padding:10px 14px;margin-bottom:8px;}
+  textarea{background:var(--c2);border:1px solid var(--bd);color:var(--li);border-radius:6px;padding:7px;font-size:11px;width:100%;min-height:52px;resize:vertical;font-family:inherit;}
+  @media print{body,html{background:#fff!important;color:#000!important;}.card,.kp{background:#fff!important;border-color:#ddd!important;}.c2,.ch,.scr,.pred-box{background:#f5f5f5!important;}.cg{color:#157a30!important;}.cr{color:#b91c1c!important;}.cy{color:#92400e!important;}.ct{color:#0e6980!important;}.btn-p{display:none!important;}.subnav{display:none!important;}}
+  .subnav{background:#090d12;border-bottom:1px solid #21262d;padding:4px 18px;display:flex;gap:4px;align-items:center;}
+  .subnav a{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:5px;font-size:10px;font-weight:600;color:var(--mu);text-decoration:none;transition:color .15s,background .15s;}
+  .subnav a:hover{color:var(--tx);background:var(--c2);}
+  .subnav a.active{color:var(--t);background:rgba(46,168,204,.1);border:1px solid rgba(46,168,204,.25);}
+  .subnav a:not(.active){border:1px solid transparent;}
+  .subnav-sep{color:#21262d;margin:0 2px;}
+</style>
+</head>
+<body>
+<nav class="subnav">
+  <a href="Dashboard_Supervisor_CMK.html">📊 Supervisor</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_Retail.html">🏪 Retail</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_Clinicas.html" class="active">🏥 Clínicas</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_CENABAST.html">🏛 CENABAST</a>
+</nav>
+<div class="top">
+  <div class="logo">🏥 Equipo Clínicas <span>CMK · Hospitales · Oncología · Convenios Institucionales</span></div>
+  <select id="vsel" onchange="render()"></select>
+  <div class="dtag" id="dtag">—</div>
+  <button class="btn btn-p" onclick="window.print()">🖨 PDF</button>
+</div>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ═══ EQUIPO CLÍNICAS ═══
+const VCLIN = [
+  {n:"Edward Avalos",     rev:6960, mg:14.0, cli:4,  caidos:0, riesgo:0.0,  reg:1, trend:"down", r1:2717.3,r2:2354.1,r3:1888.6, canal:"CLÍNICAS",    esp:"Oncología + Biológicos",    meta_mes:8000, v_plan:16, v_real:12},
+  {n:"Cristian Diaz",     rev:1768, mg:17.5, cli:52, caidos:7, riesgo:20.8, reg:10,trend:"down", r1:783.1, r2:616.6, r3:368.7,  canal:"CLÍNICAS",    esp:"Clínicas Regionales",       meta_mes:1900, v_plan:24, v_real:18},
+  {n:"Marcela Perinetti", rev:2302, mg:29.5, cli:3,  caidos:0, riesgo:0.0,  reg:1, trend:"down", r1:801.8, r2:900.2, r3:600.2,  canal:"G.CONVENIOS", esp:"Convenios + Isapres",       meta_mes:2500, v_plan:12, v_real:11},
+  {n:"Esteban Zenteno",   rev:1174, mg:20.1, cli:57, caidos:13,riesgo:42.7, reg:10,trend:"flat", r1:399.8, r2:417.3, r3:357.5,  canal:"CLÍNICAS",    esp:"Clínicas Privadas RM",      meta_mes:1300, v_plan:22, v_real:16},
+  {n:"Paola Zapata",      rev:712,  mg:19.2, cli:88, caidos:15,riesgo:28.9, reg:15,trend:"down", r1:271.7, r2:266.2, r3:173.6,  canal:"CLÍNICAS",    esp:"Centros Medios / Policlín.",meta_mes:800,  v_plan:20, v_real:14},
+  {n:"Waldo Pozo",        rev:406,  mg:24.2, cli:76, caidos:21,riesgo:16.9, reg:7, trend:"up",   r1:173.5, r2:101.1, r3:131.0,  canal:"CLÍNICAS",    esp:"Clínicas Públicas + ISA",   meta_mes:450,  v_plan:18, v_real:15},
+  {n:"Vanessa Sepulveda", rev:546,  mg:19.9, cli:1,  caidos:0, riesgo:0.0,  reg:1, trend:"down", r1:102.7, r2:332.5, r3:110.8,  canal:"CLÍNICAS",    esp:"Cuenta Clave Estratégica",  meta_mes:600,  v_plan:8,  v_real:8},
+];
+
+// DB extendida con inteligencia de ciclos, contratos, amenaza competitiva
+const CLINICAS_DB = {
+  "Edward Avalos": [
+    {n:"Hospital Clínico UC",          esp:"Oncología",   sku_act:"KEYTRUDA 100 MG",   sku_perd:"BAVENCIO 20 MG", dscp:0,  delta:"+18%", licit:"Mar-2027", prot:"Activo",          ciclo_dias:21, val_cont:850,  amenaza:"Baja",  prescriptor:"Dr. Marchetti (Oncólogo)",       rel_score:95},
+    {n:"Clínica Las Condes",           esp:"Oncología",   sku_act:"TRIKAFTA-S",         sku_perd:"MABTHERA 500",   dscp:12, delta:"-22%", licit:"Jun-2026", prot:"Revisión",        ciclo_dias:28, val_cont:620,  amenaza:"Alta",  prescriptor:"Dra. Donoso (Jefa Onco.)",       rel_score:58},
+    {n:"Clínica Alemana",              esp:"Biológicos",  sku_act:"ACTEMRA 162 MG",    sku_perd:"OPDIVO 40 MG",   dscp:0,  delta:"+9%",  licit:"Dic-2026", prot:"Activo",          ciclo_dias:30, val_cont:540,  amenaza:"Media", prescriptor:"Dr. Vidal (Reumatólogo)",        rel_score:88},
+    {n:"Clínica Santa María (Oncol.)", esp:"Oncología",   sku_act:"VERZENIO 100 MG",   sku_perd:"ENZAVITAE 40 MG",dscp:18, delta:"-31%", licit:"Abr-2026", prot:"Vence pronto ⚠️", ciclo_dias:21, val_cont:480,  amenaza:"Alta",  prescriptor:"Dra. Aravena (Onco. Mama)",      rel_score:42},
+  ],
+  "Marcela Perinetti": [
+    {n:"ISAPRE Banmédica (Convenio)",  esp:"Multiesp.",   sku_act:"TRIKAFTA-S",         sku_perd:"KEYTRUDA 100 MG",dscp:0,  delta:"+14%", licit:"Sep-2026", prot:"Activo",          ciclo_dias:30, val_cont:920,  amenaza:"Baja",  prescriptor:"Subgerente Médico",              rel_score:92},
+    {n:"FONASA Gdes. Convenios",       esp:"Esencial",    sku_act:"CLEXANE 40 MG",     sku_perd:"BAVENCIO 20 MG", dscp:10, delta:"-28%", licit:"Jun-2026", prot:"Renovación",      ciclo_dias:30, val_cont:1100, amenaza:"Media", prescriptor:"Coordinador de Compras",         rel_score:65},
+    {n:"Cruz Blanca (Oncología)",      esp:"Oncología",   sku_act:"VERZENIO 100 MG",   sku_perd:"OPDIVO 40 MG",   dscp:5,  delta:"-4%",  licit:"Nov-2026", prot:"Activo",          ciclo_dias:21, val_cont:280,  amenaza:"Baja",  prescriptor:"Dra. Morales (Oncóloga)",        rel_score:82},
+  ],
+  "default": [
+    {n:"Clínica Principal A",          esp:"Oncología",   sku_act:"ACTEMRA 162 MG",    sku_perd:"BAVENCIO 20 MG", dscp:0,  delta:"+12%", licit:"Ago-2026", prot:"Activo",          ciclo_dias:21, val_cont:380,  amenaza:"Baja",  prescriptor:"Jefa de Farmacia",               rel_score:80},
+    {n:"Hospital Regional B",          esp:"Biológicos",  sku_act:"CLEXANE 40 MG",     sku_perd:"MABTHERA 500",   dscp:14, delta:"-19%", licit:"May-2026", prot:"Vence pronto ⚠️", ciclo_dias:30, val_cont:260,  amenaza:"Media", prescriptor:"Médico Coordinador",             rel_score:55},
+    {n:"Clínica Privada C",            esp:"Multiesp.",   sku_act:"KEYTRUDA 100 MG",   sku_perd:"OPDIVO 40 MG",   dscp:7,  delta:"-8%",  licit:"Jul-2026", prot:"Revisión",        ciclo_dias:28, val_cont:320,  amenaza:"Alta",  prescriptor:"Comité Farmacéutico",            rel_score:67},
+    {n:"Centro Oncológico D",          esp:"Oncología",   sku_act:"VERZENIO 100 MG",   sku_perd:"ENZAVITAE 40 MG",dscp:21, delta:"-35%", licit:"Abr-2026", prot:"Vence pronto ⚠️", ciclo_dias:21, val_cont:410,  amenaza:"Alta",  prescriptor:"Dra. Rojas (Onco.)",             rel_score:35},
+  ],
+  "Cristian Diaz": [
+    {n:"Clínica Regional Rancagua",    esp:"Multiesp.",   sku_act:"CLEXANE 40 MG",     sku_perd:"ACTEMRA 162 MG", dscp:0,  delta:"+8%",  licit:"Oct-2026", prot:"Activo",          ciclo_dias:30, val_cont:120,  amenaza:"Baja",  prescriptor:"Químico Farmacéutico",           rel_score:88},
+    {n:"Hospital de Talca",            esp:"Cirugía",     sku_act:"CLEXANE 40 MG",     sku_perd:"MABTHERA 500",   dscp:8,  delta:"-12%", licit:"May-2026", prot:"Renovación",      ciclo_dias:30, val_cont:95,   amenaza:"Media", prescriptor:"Jefa de Farmacia",               rel_score:70},
+    {n:"Clínica Biobío",               esp:"Oncología",   sku_act:"KEYTRUDA 100 MG",   sku_perd:"BAVENCIO 20 MG", dscp:22, delta:"-44%", licit:"Abr-2026", prot:"Vence pronto ⚠️", ciclo_dias:21, val_cont:180,  amenaza:"Alta",  prescriptor:"Dr. Pinto (Onco.)",              rel_score:38},
+    {n:"Centro Médico Chillán",        esp:"Biológicos",  sku_act:"ACTEMRA 162 MG",    sku_perd:"OPDIVO 40 MG",   dscp:0,  delta:"+5%",  licit:"Dic-2026", prot:"Activo",          ciclo_dias:30, val_cont:75,   amenaza:"Baja",  prescriptor:"Dr. Álvarez (Reumato.)",         rel_score:83},
+  ],
+  "Esteban Zenteno": [
+    {n:"Clínica Indisa",               esp:"Multiesp.",   sku_act:"CLEXANE 40 MG",     sku_perd:"BAVENCIO 20 MG", dscp:0,  delta:"+4%",  licit:"Nov-2026", prot:"Activo",          ciclo_dias:30, val_cont:210,  amenaza:"Baja",  prescriptor:"Comité de Farmacia",             rel_score:86},
+    {n:"Clínica Dávila",               esp:"Oncología",   sku_act:"KEYTRUDA 100 MG",   sku_perd:"MABTHERA 500",   dscp:6,  delta:"-9%",  licit:"Jun-2026", prot:"Revisión",        ciclo_dias:21, val_cont:340,  amenaza:"Media", prescriptor:"Dr. Castro (Onco.)",             rel_score:72},
+    {n:"Clínica Tabancura",            esp:"Cirugía",     sku_act:"CLEXANE 40 MG",     sku_perd:"ACTEMRA 162 MG", dscp:0,  delta:"+11%", licit:"Ago-2026", prot:"Activo",          ciclo_dias:30, val_cont:160,  amenaza:"Baja",  prescriptor:"Jefa de Farmacia",               rel_score:91},
+    {n:"Hospital del Trabajador",      esp:"Biológicos",  sku_act:"ACTEMRA 162 MG",    sku_perd:"OPDIVO 40 MG",   dscp:14, delta:"-21%", licit:"Abr-2026", prot:"Vence pronto ⚠️", ciclo_dias:30, val_cont:195,  amenaza:"Alta",  prescriptor:"Coord. Farmacia Clínica",        rel_score:48},
+  ],
+  "Paola Zapata": [
+    {n:"Centro Médico Barros Luco",    esp:"Cirugía",     sku_act:"CLEXANE 40 MG",     sku_perd:"KEYTRUDA 100 MG",dscp:0,  delta:"+6%",  licit:"Dic-2026", prot:"Activo",          ciclo_dias:30, val_cont:55,   amenaza:"Baja",  prescriptor:"Farmacéutico encargado",         rel_score:83},
+    {n:"Policlínico Cruz Blanca",      esp:"Multiesp.",   sku_act:"ACTEMRA 162 MG",    sku_perd:"BAVENCIO 20 MG", dscp:9,  delta:"-14%", licit:"May-2026", prot:"Renovación",      ciclo_dias:30, val_cont:42,   amenaza:"Media", prescriptor:"Médico Coordinador",             rel_score:64},
+    {n:"Centro Médico Renca",          esp:"Biológicos",  sku_act:"CLEXANE 40 MG",     sku_perd:"MABTHERA 500",   dscp:17, delta:"-28%", licit:"Jun-2026", prot:"Revisión",        ciclo_dias:21, val_cont:38,   amenaza:"Alta",  prescriptor:"Jefa de Farmacia",               rel_score:45},
+  ],
+  "Waldo Pozo": [
+    {n:"Hospital El Carmen",           esp:"Cirugía",     sku_act:"CLEXANE 40 MG",     sku_perd:"ACTEMRA 162 MG", dscp:0,  delta:"+22%", licit:"Oct-2026", prot:"Activo",          ciclo_dias:30, val_cont:85,   amenaza:"Baja",  prescriptor:"QF Jefe de Farmacia",            rel_score:90},
+    {n:"Hospital Félix Bulnes",        esp:"Multiesp.",   sku_act:"KEYTRUDA 100 MG",   sku_perd:"BAVENCIO 20 MG", dscp:5,  delta:"-7%",  licit:"Jun-2026", prot:"Renovación",      ciclo_dias:21, val_cont:62,   amenaza:"Media", prescriptor:"Comité Farmacoterapéutico",      rel_score:71},
+    {n:"Clínica Punta Arenas",         esp:"Biológicos",  sku_act:"ACTEMRA 162 MG",    sku_perd:"MABTHERA 500",   dscp:12, delta:"-18%", licit:"Abr-2026", prot:"Vence pronto ⚠️", ciclo_dias:30, val_cont:78,   amenaza:"Alta",  prescriptor:"Único proveedor zona",           rel_score:60},
+  ],
+  "Vanessa Sepulveda": [
+    {n:"Cuenta Clave — Pfizer Chile",  esp:"Corporativo", sku_act:"MULTI-SKU PFIZER",  sku_perd:"BAVENCIO 20 MG", dscp:0,  delta:"+0%",  licit:"Mar-2027", prot:"Activo",          ciclo_dias:60, val_cont:546,  amenaza:"Media", prescriptor:"Dir. Cuentas Pfizer",           rel_score:80},
+  ],
+};
+
+// SKUs prioritarios Clínicas
+const SKU_CLIN = [
+  {sku:"ACTEMRA 162 MG/0.9 ML", tend:"+37%", mg:"15%", esp:"Reumatología / Autoinmune", tip:"Alta demanda — en alza. Clínicas con reumatólogo activo."},
+  {sku:"CLEXANE 40 MG/0.4 ML",  tend:"+10%", mg:"18%", esp:"Cirugía / Trombosis",       tip:"Protocolo estándar. Reforzar en clínicas con alta quirúrgica."},
+  {sku:"KEYTRUDA 100 MG",       tend:"0%",   mg:"20%", esp:"Oncología",                 tip:"Fidelización: si tiene protocolo activo, asegurar continuidad."},
+  {sku:"BAVENCIO 20 MG/ML",     tend:"-41%", mg:"25%", esp:"Oncología",                 tip:"⚠️ RECUPERAR — contactar oncólogo prescriptor directo."},
+  {sku:"MABTHERA 500 MG/50ML",  tend:"-27%", mg:"22%", esp:"Oncología / Hematología",  tip:"Caída. Verificar si cambió proveedor o protocolo institucional."},
+  {sku:"VERZENIO 100 MG",       tend:"-19%", mg:"20%", esp:"Oncología mama",            tip:"Recuperable — hablar con jefa de oncología, citar datos ASCO."},
+];
+
+// Pipeline licitaciones próximas (sin ganar aún — oportunidad activa)
+const PIPELINE_LICIT = [
+  {inst:"Hospital San Borja Arriarán", esp:"Oncología",   sku:"KEYTRUDA 100 MG",   val:680, bases:"Abr-2026", prob:75, owner:"Edward Avalos",     estado:"En preparación"},
+  {inst:"Hospital del Salvador",       esp:"Oncología",   sku:"BAVENCIO 20 MG",    val:320, bases:"May-2026", prob:60, owner:"Edward Avalos",     estado:"Contacto iniciado"},
+  {inst:"Clínica Reñaca Viña",         esp:"Cirugía",     sku:"CLEXANE 40 MG",     val:95,  bases:"Abr-2026", prob:85, owner:"Cristian Diaz",     estado:"Propuesta enviada"},
+  {inst:"Hospital Las Higueras",       esp:"Biológicos",  sku:"ACTEMRA 162 MG",    val:210, bases:"Jun-2026", prob:50, owner:"Esteban Zenteno",   estado:"En evaluación"},
+  {inst:"Clínica Sanatorio Alemán",    esp:"Oncología",   sku:"VERZENIO 100 MG",   val:280, bases:"May-2026", prob:65, owner:"Cristian Diaz",     estado:"Contacto iniciado"},
+  {inst:"Policlínico Alameda",         esp:"Multiesp.",   sku:"CLEXANE 40 MG",     val:45,  bases:"Abr-2026", prob:80, owner:"Paola Zapata",      estado:"En preparación"},
+  {inst:"Hospital Parroquial S.Miguel",esp:"Cirugía",     sku:"CLEXANE 40 MG",     val:62,  bases:"May-2026", prob:70, owner:"Esteban Zenteno",   estado:"Propuesta enviada"},
+  {inst:"Clínica Bupa Santiago",       esp:"Oncología",   sku:"KEYTRUDA 100 MG",   val:430, bases:"Jun-2026", prob:55, owner:"Edward Avalos",     estado:"En evaluación"},
+  {inst:"Hospital Regional Concepción",esp:"Biológicos",  sku:"ACTEMRA 162 MG",    val:190, bases:"May-2026", prob:72, owner:"Cristian Diaz",     estado:"Propuesta enviada"},
+];
+
+// Datos mes anterior (Feb-26) para deltas
+const PREV_DATA_CLIN = {
+  "Edward Avalos":     {cli:4, mg:13.5,v_plan:16,v_real:11},
+  "Cristian Diaz":     {cli:55,mg:16.8,v_plan:24,v_real:20},
+  "Marcela Perinetti": {cli:3, mg:28.9,v_plan:12,v_real:11},
+  "Esteban Zenteno":   {cli:59,mg:19.5,v_plan:22,v_real:17},
+  "Paola Zapata":      {cli:91,mg:18.7,v_plan:20,v_real:15},
+  "Waldo Pozo":        {cli:79,mg:22.8,v_plan:18,v_real:14},
+  "Vanessa Sepulveda": {cli:1, mg:20.5,v_plan:8, v_real:8},
+};
+
+// Alertas de caducidad de stock en instituciones cliente
+const CADUCIDAD_CLIN = {
+  "Edward Avalos":     [{inst:"Clínica Santa María (Oncol.)", sku:"BAVENCIO 20 MG",    und:3, vence_dias:28,val_aprox:142,accion:"Ofrecer swap por KEYTRUDA 100 MG esta semana"},
+                        {inst:"Clínica Las Condes",           sku:"OPDIVO 40 MG",      und:5, vence_dias:45,val_aprox:85, accion:"Coordinar retiro y reposición con QF"}],
+  "Cristian Diaz":     [{inst:"Clínica Biobío",               sku:"KEYTRUDA 100 MG",   und:2, vence_dias:32,val_aprox:68, accion:"Swap protocolo urgente — llamar Dr. Pinto HOY"}],
+  "Esteban Zenteno":   [{inst:"Hospital del Trabajador",      sku:"ACTEMRA 162 MG",    und:8, vence_dias:40,val_aprox:55, accion:"Proponer despacho inmediato para consumir stock"},
+                        {inst:"Clínica Dávila",               sku:"MABTHERA 500 MG",   und:4, vence_dias:35,val_aprox:38, accion:"Verificar si cambió protocolo o proveedor"}],
+  "Paola Zapata":      [{inst:"Centro Médico Renca",          sku:"CLEXANE 40 MG",     und:24,vence_dias:42,val_aprox:22, accion:"Ajustar próximo pedido a menor volumen"}],
+};
+
+const DIAS_T=17, DIAS_M=22, DIAS_R=5;
+const today=new Date();
+const DS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],MS=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+document.getElementById('dtag').textContent=`${DS[today.getDay()]} ${today.getDate()} ${MS[today.getMonth()]} ${today.getFullYear()}`;
+const vsel=document.getElementById('vsel');
+const rnk=VCLIN.slice().sort((a,b)=>b.rev-a.rev);
+rnk.forEach((v,i)=>{const o=document.createElement('option');o.value=VCLIN.indexOf(v);o.textContent=`${v.n}  ·  #${i+1}  ·  ${v.esp}`;vsel.appendChild(o);});
+let AC={};
+function kill(){Object.values(AC).forEach(c=>{try{c.destroy();}catch(e){}});AC={};}
+
+// Calcular días hasta fecha (Mes-Año)
+function diasHasta(mesAno){
+  const mm={Ene:0,Feb:1,Mar:2,Abr:3,May:4,Jun:5,Jul:6,Ago:7,Sep:8,Oct:9,Nov:10,Dic:11};
+  const [m,y]=mesAno.split('-');
+  const t=new Date(parseInt(y),mm[m],1);
+  return Math.ceil((t-today)/(1000*60*60*24));
+}
+function diasColor(d){return d<=0?'cr':d<=30?'cr':d<=60?'cy':'cg';}
+function diasBadge(d){return d<=0?'br':d<=30?'br':d<=60?'by':'bg';}
+function diasLabel(d){return d<=0?'VENCIDA':d<=30?d+'d':d<=60?d+'d':d+'d';}
+function relHealthLabel(s){return s>=80?{l:'Sólida',cls:'hs-g'}:s>=60?{l:'Estable',cls:'hs-y'}:{l:'Frágil',cls:'hs-r'};}
+function amenazaColor(a){return a==='Alta'?'cr':a==='Media'?'cy':'cg';}
+function amenazaBadge(a){return a==='Alta'?'br':a==='Media'?'by':'bg';}
+function predMeta(proyMar,metaMes){
+  const p=(proyMar/metaMes)*100;
+  if(p>=95)return{label:'✅ CERRARÁ META',cls:'cg',desc:'Ritmo actual alcanza el objetivo.'};
+  if(p>=80)return{label:'⚡ CON ESFUERZO',cls:'cy',desc:`Brecha $${(metaMes-proyMar).toFixed(0)}M.`};
+  return{label:'⚠️ META EN RIESGO',cls:'cr',desc:`Brecha $${(metaMes-proyMar).toFixed(0)}M.`};
+}
+function cicloStatus(c){
+  if(c.dscp===0) return {label:'En ciclo',cls:'cg',desc:`Próximo pedido est. ~${c.ciclo_dias}d`};
+  const pct=Math.round((c.dscp/c.ciclo_dias)*100);
+  if(pct>=100) return {label:'Ciclo vencido',cls:'cr',desc:`${c.dscp}d · esperado c/${c.ciclo_dias}d — ATRASADO`};
+  if(pct>=70)  return {label:'Próximo pronto',cls:'cy',desc:`${c.dscp}d de ${c.ciclo_dias}d ciclo`};
+  return {label:'Normal',cls:'cg',desc:`${c.dscp}d de ${c.ciclo_dias}d ciclo`};
+}
+
+function render(){
+  kill();
+  const v=VCLIN[parseInt(vsel.value)];
+  if(!v)return;
+  const rate3=v.r3/DIAS_T, rate2=v.r2/20;
+  const proyMar=+(rate3*DIAS_M).toFixed(1);
+  const velPct=(rate2>0?(((rate3-rate2)/rate2)*100).toFixed(1):0);
+  const vColor=+velPct>=0?'cg':'cr';
+  const rankN=rnk.findIndex(x=>x.n===v.n)+1;
+  const efic=v.cli>0?Math.round(((v.cli-v.caidos)/v.cli)*100):100;
+  const ticketProm=v.cli>0?(v.rev/v.cli).toFixed(0):v.rev;
+  const pctMeta=Math.round((proyMar/v.meta_mes)*100);
+  const pred=predMeta(proyMar,v.meta_mes);
+  const clinicas=CLINICAS_DB[v.n]||CLINICAS_DB["default"];
+  const reactivar=clinicas.filter(c=>c.dscp>0).sort((a,b)=>b.dscp-a.dscp);
+  const creciendo=clinicas.filter(c=>c.delta.startsWith('+'));
+  const licitProx=clinicas.filter(c=>c.prot&&c.prot.includes('Vence'));
+  const conRenovacion=clinicas.filter(c=>c.prot&&(c.prot.includes('Reno')||c.prot.includes('Rev')));
+  const amenazaAlta=clinicas.filter(c=>c.amenaza==='Alta');
+  const valorEnRiesgo=licitProx.reduce((s,c)=>s+c.val_cont,0)+conRenovacion.reduce((s,c)=>s+c.val_cont,0);
+  const valorTotal=clinicas.reduce((s,c)=>s+c.val_cont,0);
+  const myPipeline=PIPELINE_LICIT.filter(l=>l.owner===v.n);
+  const valorPipeline=myPipeline.reduce((s,l)=>s+l.val,0);
+  const valorPipelineEsp=myPipeline.reduce((s,l)=>s+Math.round(l.val*l.prob/100),0);
+  const visEficClin=Math.round((v.v_real/v.v_plan)*100);
+  // Deltas vs mes anterior (Feb-26)
+  const prevDC=PREV_DATA_CLIN[v.n]||{cli:v.cli,mg:v.mg,v_plan:v.v_plan,v_real:v.v_real};
+  const deltaCliC=v.cli-prevDC.cli;
+  const deltaMgC=(v.mg-prevDC.mg).toFixed(1);
+  const prevVisEficC=Math.round((prevDC.v_real/prevDC.v_plan)*100);
+  const deltaVisEficC=visEficClin-prevVisEficC;
+  // Caducidad stock
+  const cadItemsC=CADUCIDAD_CLIN[v.n]||[];
+
+  // ── AGENDA VISITAS / LLAMADAS ──
+  const agendaData=clinicas.map(c=>{
+    const d=diasHasta(c.licit);
+    let prio,accion,esperado,urgColor,motivo;
+    if(d<=0){prio='VENCIDA';accion='Negociar renovación directa — puede estar en ChileCompra';esperado=c.val_cont;urgColor='bdv';motivo='Contrato vencido — actuar YA';}
+    else if(d<=30||c.prot.includes('Vence')){prio='URGENTE';accion='Renovar contrato antes de licitación pública';esperado=c.val_cont;urgColor='br';motivo='Vence en '+d+'d — riesgo alto';}
+    else if(c.dscp>14&&c.amenaza==='Alta'){prio='REACTIVAR ⚔️';accion='Llamar a '+c.prescriptor+' — competencia activa';esperado=Math.round(c.val_cont*0.7);urgColor='br';motivo=c.dscp+'d sin compra + amenaza alta';}
+    else if(c.dscp>14){prio='REACTIVAR';accion='Verificar protocolo con '+c.prescriptor;esperado=Math.round(c.val_cont*0.6);urgColor='br';motivo=c.dscp+'d sin pedido — ciclo vencido';}
+    else if(c.dscp>0){prio='SEGUIMIENTO';accion='Confirmar ciclo — '+c.ciclo_dias+'d esperado';esperado=Math.round(c.val_cont*0.4);urgColor='by';motivo=c.dscp+'d — ciclo '+Math.round((c.dscp/c.ciclo_dias)*100)+'% completado';}
+    else if(c.prot&&(c.prot.includes('Reno')||c.prot.includes('Rev'))){prio='RENOVAR';accion='Presentar propuesta renovación contrato';esperado=c.val_cont;urgColor='by';motivo='Contrato en revisión — no esperar';}
+    else if(c.delta&&c.delta.startsWith('+')){prio='AMPLIAR';accion='Up-sell: segundo SKU línea / propuesta Q2';esperado=Math.round(c.val_cont*0.25);urgColor='bg';motivo='Creciendo '+c.delta+' — momentum activo';}
+    else{prio='MANTENER';accion='Check-in + propuesta protocolo Q2 Abr';esperado=Math.round(c.val_cont*0.1);urgColor='bt';motivo='Activo — fidelizar y ampliar';}
+    return{...c,prio,accion,esperado,urgColor,motivo,dias_licit:d};
+  }).sort((a,b)=>{const o={VENCIDA:0,'URGENTE':1,'REACTIVAR ⚔️':2,REACTIVAR:3,SEGUIMIENTO:4,RENOVAR:5,AMPLIAR:6,MANTENER:7};return(o[a.prio]??9)-(o[b.prio]??9);});
+  const totalAgenda=agendaData.reduce((s,c)=>s+parseFloat(c.esperado||0),0);
+  // Próximos pedidos esperados (ciclos)
+  const proxPedidos=clinicas.filter(c=>c.dscp===0).map(c=>({...c,dias_para_pedir:c.ciclo_dias-0}));
+  const ordenCiclo=clinicas.map(c=>({...c,cs:cicloStatus(c)})).sort((a,b)=>{
+    const pa=a.dscp/a.ciclo_dias, pb=b.dscp/b.ciclo_dias;
+    return pb-pa;
+  });
+
+  document.getElementById('root').innerHTML=`
+<div class="pg">
+  <!-- KPI STRIP -->
+  <div class="ks">
+    <div class="kp"><div class="kl">Revenue Q1-26</div><div class="kv ct">$${(v.rev/1000).toFixed(2)}B</div><div class="ksb">#${rankN}/7 · <span style="color:${+velPct>=0?'var(--g)':'var(--r)'};font-weight:700">${+velPct>=0?'↑+':'↓'}${Math.abs(velPct)}% vs Feb</span></div></div>
+    <div class="kp"><div class="kl">Proy. Cierre Mar</div><div class="kv ${pctMeta>=90?'cg':pctMeta>=75?'cy':'cr'}">$${proyMar}M</div><div class="ksb">meta $${v.meta_mes}M → ${pctMeta}%</div></div>
+    <div class="kp"><div class="kl">Predicción Meta</div><div class="kv ${pred.cls}" style="font-size:11px;margin-top:2px">${pred.label}</div><div class="ksb">${pred.desc}</div></div>
+    <div class="kp"><div class="kl">Ticket Prom</div><div class="kv cp">$${(ticketProm/1000).toFixed(1)}M</div><div class="ksb">por institución Q1</div></div>
+    <div class="kp"><div class="kl">Velocidad</div><div class="kv ${vColor}">${velPct>0?'+':''}${velPct}%</div><div class="ksb">Mar vs Feb diario</div></div>
+    <div class="kp"><div class="kl">Licit. en riesgo</div><div class="kv ${licitProx.length>0?'cr':'cg'}">${licitProx.length}</div><div class="ksb">$${valorEnRiesgo}M en juego</div></div>
+    <div class="kp"><div class="kl">Margen</div><div class="kv ${v.mg>=20?'cg':v.mg>=15?'cy':'cr'}">${v.mg}%</div><div class="ksb"><span style="color:${+deltaMgC>=0?'var(--g)':'var(--r)'};font-weight:700">${+deltaMgC>=0?'↑+':'↓'}${Math.abs(deltaMgC)}pp vs Feb</span></div></div>
+  </div>
+
+  <!-- ALERTA Q2 PRESUPUESTAL -->
+  <div class="card s3">
+    <div class="ch t">🏛️ Contexto Estratégico: Inicio Q2 + Ciclos de Compra Institucional</div>
+    <div class="cb">
+      <div class="q2-banner">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div style="font-size:22px">📊</div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700;color:var(--t)">INICIO Q2 — ABRIL 2026 · Oportunidad de Nuevos Protocolos</div>
+            <div style="font-size:11px;color:var(--li);margin-top:3px">Los hospitales y clínicas privadas <strong>renuevan presupuesto y protocolos en abril</strong>. Es el momento ideal para presentar nuevas propuestas, ampliar contratos actuales y recuperar productos caídos. No esperar a que la competencia presente primero.</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-size:10px;color:var(--mu)">DÍAS PARA Q2</div>
+            <div style="font-size:28px;font-weight:900;color:var(--t)">${Math.max(0,diasHasta('Abr-2026'))}</div>
+            <div style="font-size:9px;color:var(--mu)">días al 1 Abr-26</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+        <div style="background:var(--c2);border:1px solid var(--bd);border-radius:6px;padding:8px">
+          <div style="font-size:9px;color:var(--mu)">VALOR CONTRATOS ACTIVOS</div>
+          <div style="font-size:18px;font-weight:800;color:var(--g)">$${valorTotal}M</div>
+          <div style="font-size:9px;color:var(--mu)">cartera mensual estimada</div>
+        </div>
+        <div style="background:var(--c2);border:1px solid ${valorEnRiesgo>0?'rgba(248,81,73,.3)':'var(--bd)'};border-radius:6px;padding:8px">
+          <div style="font-size:9px;color:var(--mu)">VALOR EN RIESGO</div>
+          <div style="font-size:18px;font-weight:800;color:${valorEnRiesgo>0?'var(--r)':'var(--g)'}">${valorEnRiesgo>0?'$'+valorEnRiesgo+'M':'$0M'}</div>
+          <div style="font-size:9px;color:var(--mu)">${licitProx.length} licit. vencen + ${conRenovacion.length} renovación</div>
+        </div>
+        <div style="background:var(--c2);border:1px solid ${amenazaAlta.length>0?'rgba(248,81,73,.3)':'var(--bd)'};border-radius:6px;padding:8px">
+          <div style="font-size:9px;color:var(--mu)">AMENAZA COMPETITIVA</div>
+          <div style="font-size:18px;font-weight:800;color:${amenazaAlta.length>0?'var(--r)':'var(--g)'}">${amenazaAlta.length} alta</div>
+          <div style="font-size:9px;color:var(--mu)">${amenazaAlta.map(c=>c.n.split(' ')[0]).join(', ')||'Sin amenaza activa'}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVOLUCIÓN -->
+  <div class="card s3">
+    <div class="ch t">📈 Evolución Mensual + Proyección — ${v.n} · ${v.esp}</div>
+    <div class="cb">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px;text-align:center;">
+        <div><div style="font-size:9px;color:var(--mu)">ENE-26</div><div style="font-size:20px;font-weight:800;color:var(--t)">$${v.r1}M</div><div style="font-size:9px;color:var(--mu)">${(v.r1/22).toFixed(1)}M/día</div></div>
+        <div><div style="font-size:9px;color:var(--mu)">FEB-26</div><div style="font-size:20px;font-weight:800;color:var(--t)">$${v.r2}M</div><div style="font-size:9px;color:var(--mu)">${(v.r2/20).toFixed(1)}M/día</div></div>
+        <div><div style="font-size:9px;color:var(--mu)">MAR-26 (${DIAS_T}d)</div><div style="font-size:20px;font-weight:800;color:var(--g)">$${v.r3}M</div><div style="font-size:9px;color:${+velPct>=0?'var(--g)':'var(--r)'}">${rate3.toFixed(1)}M/día · ${velPct>0?'+':''}${velPct}%</div></div>
+        <div style="border:1px dashed var(--bd);border-radius:6px;padding:4px;opacity:.8"><div style="font-size:9px;color:var(--mu)">PROYECCIÓN</div><div style="font-size:20px;font-weight:800;color:var(--y)">$${proyMar}M</div><div style="font-size:9px;color:var(--mu)">ritmo actual</div></div>
+        <div style="border:1px solid rgba(46,168,204,.3);border-radius:6px;padding:4px;background:rgba(46,168,204,.05)"><div style="font-size:9px;color:var(--mu)">META MES</div><div style="font-size:20px;font-weight:800;color:var(--t)">$${v.meta_mes}M</div><div style="font-size:9px;font-weight:700;color:${pctMeta>=90?'var(--g)':pctMeta>=75?'var(--y)':'var(--r)'}">${pctMeta}%</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="font-size:10px;color:var(--mu);">Eficiencia instituciones</div>
+        <div class="bar-bg"><div class="bar-f" style="width:${efic}%;background:${efic>=80?'var(--g)':efic>=65?'var(--y)':'var(--r)'}"></div></div>
+        <div style="font-size:11px;font-weight:700;color:${efic>=80?'var(--g)':efic>=65?'var(--y)':'var(--r)'};">${efic}% · ${v.cli-v.caidos}/${v.cli} activas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CICLOS DE TRATAMIENTO Y PRÓXIMOS PEDIDOS -->
+  <div class="card">
+    <div class="ch p">🔮 Ciclos y Próximos Pedidos Esperados</div>
+    <div class="cb">
+      ${ordenCiclo.map(c=>{
+        const cs=c.cs;
+        const pct=Math.min(100,Math.round((c.dscp/c.ciclo_dias)*100));
+        return `<div class="cycle-track">
+          <div class="cycle-dot" style="background:${cs.cls==='cg'?'var(--g)':cs.cls==='cy'?'var(--y)':'var(--r)'}"></div>
+          <div style="flex:1">
+            <div style="font-size:10px;font-weight:700;color:var(--li)">${c.n.split('(')[0].trim().split(' ').slice(0,3).join(' ')}</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
+              <div style="flex:1;background:#21262d;border-radius:99px;height:4px"><div style="width:${pct}%;height:100%;border-radius:99px;background:${cs.cls==='cg'?'var(--g)':cs.cls==='cy'?'var(--y)':'var(--r)'}"></div></div>
+              <span style="font-size:9px;color:var(--mu);width:110px">${cs.desc}</span>
+            </div>
+          </div>
+          <span class="b ${cs.cls==='cg'?'bg':cs.cls==='cy'?'by':'br'}" style="font-size:8px">${cs.label}</span>
+        </div>`;
+      }).join('')}
+      <div style="margin-top:8px;font-size:10px;color:var(--mu)">💡 Los ciclos oncológicos son cada 21d, biológicos 21-30d. Contactar 2-3 días antes del cierre del ciclo.</div>
+    </div>
+  </div>
+
+  <!-- INSTITUCIONES CRECIENDO -->
+  <div class="card">
+    <div class="ch g">🚀 Instituciones con Momentum — Up-sell</div>
+    <div class="cb">
+      ${creciendo.length===0?`<div class="al">Sin instituciones en alza esta semana.</div>`:''}
+      <table class="tbl">
+        <thead><tr><th>Institución</th><th>Especialidad</th><th>SKU</th><th>Var.</th><th>Prescriptor</th></tr></thead>
+        <tbody>
+          ${creciendo.map(c=>`<tr>
+            <td><strong>${c.n.split('(')[0].trim().split(' ').slice(0,3).join(' ')}</strong></td>
+            <td><span class="esp">${c.esp}</span></td>
+            <td style="font-size:10px;color:var(--t)">${c.sku_act}</td>
+            <td class="r"><span class="b bg">${c.delta}</span></td>
+            <td style="font-size:9px;color:var(--mu)">${c.prescriptor}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      ${creciendo.length>0?`<div class="al g" style="margin-top:7px"><strong>Acción Q2:</strong> Ampliar volumen + presentar protocolo para segundo SKU de la línea. Citar datos de otras clínicas.</div>`:''}
+    </div>
+  </div>
+
+  <!-- INSTITUCIONES REACTIVAR + SALUD RELACIÓN -->
+  <div class="card">
+    <div class="ch r">🔴 Instituciones — Reactivar + Salud Relación</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>Institución</th><th>SKU Perdido</th><th>Días</th><th>Amenaza</th><th>Relación</th></tr></thead>
+        <tbody>
+          ${reactivar.map(c=>{
+            const rh=relHealthLabel(c.rel_score);
+            return `<tr>
+              <td><strong>${c.n.split('(')[0].trim().split(' ').slice(0,3).join(' ')}</strong><div style="font-size:9px;color:var(--mu)">${c.prescriptor}</div></td>
+              <td style="font-size:10px;color:var(--mu)">${c.sku_perd}</td>
+              <td class="r"><span class="b ${c.dscp>14?'br':'by'}">${c.dscp}d</span></td>
+              <td><span class="b ${amenazaBadge(c.amenaza)}">${c.amenaza}</span></td>
+              <td><span class="health-score ${rh.cls}">${rh.l} ${c.rel_score}%</span></td>
+            </tr>`;
+          }).join('')}
+          ${reactivar.length===0?`<tr><td colspan="5" style="text-align:center;color:var(--mu);padding:12px">✅ Todas las instituciones activas esta semana</td></tr>`:''}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- LICITACIONES Y CONTRATOS — COUNTDOWN -->
+  <div class="card">
+    <div class="ch p">📋 Contratos y Licitaciones — Countdown</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>Institución</th><th>Valor/mes</th><th>Vence</th><th>Días</th><th>Estado</th></tr></thead>
+        <tbody>
+          ${clinicas.map(c=>{
+            const dias=diasHasta(c.licit);
+            return `<tr>
+              <td style="font-size:10px"><strong>${c.n.split('(')[0].trim().split(' ').slice(0,3).join(' ')}</strong></td>
+              <td style="font-size:10px;font-weight:700;color:var(--t)">$${c.val_cont}M</td>
+              <td style="font-size:10px">${c.licit}</td>
+              <td class="r"><span class="b ${diasBadge(dias)}">${diasLabel(dias)}</span></td>
+              <td><span class="b ${c.prot.includes('Vence')?'br':c.prot.includes('Reno')||c.prot.includes('Rev')?'by':'bg'}">${dias<=0?'VENCIDA':c.prot}</span></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+      ${licitProx.length>0?`<div class="al r" style="margin-top:8px"><strong>⚠️ $${valorEnRiesgo}M en riesgo</strong> · ${licitProx.length} protocolo(s) vencen. Renovar ANTES que competencia cotice. Cada día que pase es riesgo.</div>`:''}
+      <div style="margin-top:6px;font-size:10px;color:var(--mu)">💡 Si el contrato expira sin renovar, el hospital debe hacer licitación pública — proceso de 3-6 semanas donde puede entrar cualquier proveedor.</div>
+    </div>
+  </div>
+
+  <!-- SCRIPT INSTITUCIONAL CON PRESCRIPTOR -->
+  <div class="card">
+    <div class="ch t">📞 Scripts por Tipo de Interlocutor</div>
+    <div class="cb">
+      <div style="font-size:10px;color:var(--mu);margin-bottom:6px">Institución foco: <strong style="color:var(--tx)">${reactivar[0]?reactivar[0].n.split('(')[0].trim():(licitProx[0]?licitProx[0].n.split('(')[0].trim():'Ver cartera')}</strong></div>
+      <div class="scr"><div class="stag">JEFE DE FARMACIA / QF</div><br>"Buenos días, ${v.n.split(' ')[0]} de Clinical Market. Veo que llevan ${reactivar[0]?reactivar[0].dscp:'varios'} días sin pedido de <strong>${reactivar[0]?reactivar[0].sku_perd:'su producto'}</strong>. ¿Hubo algún cambio en el protocolo o hay un tema de presupuesto? Podemos ajustar volumen o condición."</div>
+      <div class="scr"><div class="stag">ONCÓLOGO / ESPECIALISTA (PRESCRIPTOR)</div><br>"Dr./Dra. ${reactivar[0]?reactivar[0].prescriptor.split(' ')[1]||'colega':'colega'}, soy ${v.n.split(' ')[0]} de Clinical Market. En ${licitProx[0]?licitProx[0].n:'su institución'} el protocolo de ${licitProx[0]?licitProx[0].sku_act:'su producto'} vence ${licitProx[0]?'en '+licitProx[0].licit:'próximamente'}. Quisiera presentarle los últimos datos de eficacia y proponer la renovación con condición especial antes de que entre a licitación."</div>
+      <div class="scr"><div class="stag">APERTURA Q2 — NUEVO PROTOCOLO</div><br>"Dado que iniciamos Q2, traigo propuesta para ${SKU_CLIN[0].sku} en <strong>${creciendo[0]?creciendo[0].n:'sus instituciones activas'}</strong>. En otras clínicas similares está con ${SKU_CLIN[0].tend} — ¿les genero una propuesta con condición especial y despacho prioritario?"</div>
+    </div>
+  </div>
+
+  <!-- SKU PUSH + AMENAZA COMPETITIVA -->
+  <div class="card s2">
+    <div class="ch y">💊 SKUs Prioritarios + Mapa de Amenaza Competitiva</div>
+    <div class="cb" style="display:grid;grid-template-columns:1.8fr 1fr;gap:12px">
+      <div>
+        <table class="tbl">
+          <thead><tr><th>Producto</th><th>Especialidad</th><th>Tend.</th><th>Mg</th><th>Acción</th></tr></thead>
+          <tbody>
+            ${SKU_CLIN.map(s=>`<tr>
+              <td><strong>${s.sku}</strong></td>
+              <td><span class="esp">${s.esp}</span></td>
+              <td><span class="b ${s.tend.startsWith('+')?'bg':s.tend==='0%'?'bt':'br'}">${s.tend}</span></td>
+              <td style="color:${+s.mg.replace('%','')>=20?'var(--g)':'var(--y)'};font-weight:700">${s.mg}</td>
+              <td style="font-size:10px;color:var(--mu)">${s.tip}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div style="font-size:9px;font-weight:700;color:var(--r);margin-bottom:6px">⚔️ AMENAZA POR INSTITUCIÓN</div>
+        ${clinicas.map(c=>{
+          const rh=relHealthLabel(c.rel_score);
+          return `<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+            <span style="font-size:10px;flex:1;color:var(--li)">${c.n.split(' ')[0]}</span>
+            <span class="b ${amenazaBadge(c.amenaza)}" style="font-size:8px">${c.amenaza}</span>
+            <span class="health-score ${rh.cls}" style="font-size:8px;padding:1px 5px">${c.rel_score}%</span>
+          </div>`;
+        }).join('')}
+        <div style="font-size:9px;color:var(--mu);margin-top:6px">Amenaza Alta + Relación Frágil = actuar YA.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MÉTRICAS -->
+  <div class="card">
+    <div class="ch">📊 Indicadores de Cartera</div>
+    <div class="cb">
+      <div class="mrow"><div class="ml">Avance vs meta</div><div class="bar-bg"><div class="bar-f" style="width:${Math.min(pctMeta,100)}%;background:${pctMeta>=90?'var(--g)':pctMeta>=75?'var(--y)':'var(--r)'}"></div></div><div class="mv ${pctMeta>=90?'cg':pctMeta>=75?'cy':'cr'}">${pctMeta}%</div></div>
+      <div class="mrow"><div class="ml">Eficiencia instituciones</div><div class="bar-bg"><div class="bar-f" style="width:${efic}%;background:${efic>=80?'var(--g)':efic>=65?'var(--y)':'var(--r)'}"></div></div><div class="mv ${efic>=80?'cg':efic>=65?'cy':'cr'}">${efic}%</div></div>
+      <div class="mrow"><div class="ml">Margen promedio</div><div class="bar-bg"><div class="bar-f" style="width:${Math.min((v.mg/30)*100,100)}%;background:${v.mg>=20?'var(--g)':v.mg>=15?'var(--y)':'var(--r)'}"></div></div><div class="mv ${v.mg>=20?'cg':v.mg>=15?'cy':'cr'}">${v.mg}%</div></div>
+      <div class="mrow"><div class="ml">$M en riesgo (licit.)</div><div class="bar-bg"><div class="bar-f" style="width:${Math.min((valorEnRiesgo/valorTotal)*100||0,100)}%;background:${valorEnRiesgo>0?'var(--r)':'var(--g)'}"></div></div><div class="mv ${valorEnRiesgo>0?'cr':'cg'}">$${valorEnRiesgo}M</div></div>
+      <div class="mrow"><div class="ml">Amenaza alta</div><div class="bar-bg"><div class="bar-f" style="width:${Math.min((amenazaAlta.length/clinicas.length)*100,100)}%;background:${amenazaAlta.length>0?'var(--r)':'var(--g)'}"></div></div><div class="mv ${amenazaAlta.length>0?'cr':'cg'}">${amenazaAlta.length}</div></div>
+    </div>
+  </div>
+
+  <!-- RANKING -->
+  <div class="card">
+    <div class="ch">👥 Ranking Equipo Clínicas Q1-26</div>
+    <div class="cb">
+      ${rnk.map((x,i)=>{
+        const max=rnk[0].rev;
+        const isMe=x.n===v.n;
+        return `<div class="rk-row">
+          <div class="rk-n" style="color:${i===0?'var(--y)':'var(--mu)'};width:20px">#${i+1}</div>
+          <div style="flex:1;font-size:11px;font-weight:${isMe?700:400};color:${isMe?'var(--t)':'var(--li)'}">${x.n.split(' ').slice(0,2).join(' ')}${isMe?' ←':''}</div>
+          <div style="width:80px;background:#21262d;border-radius:99px;height:5px"><div style="width:${(x.rev/max)*100}%;height:100%;border-radius:99px;background:${isMe?'var(--t)':'rgba(46,168,204,.35)'}"></div></div>
+          <div style="font-size:11px;font-weight:700;width:52px;text-align:right;color:${isMe?'var(--t)':'var(--li)'}">$${(x.rev/1000).toFixed(1)}B</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>
+
+  <!-- ALERTAS -->
+  <div class="card">
+    <div class="ch ${v.riesgo>50||licitProx.length>1?'r':licitProx.length>0||v.caidos>5?'y':'g'}">⚡ Alertas del Día</div>
+    <div class="cb">
+      ${v.caidos>0?`<div class="al r"><strong>🔴 ${v.caidos} instituciones sin compra</strong> · Ticket promedio $${(ticketProm/1000).toFixed(1)}M. Llamar al jefe de farmacia HOY.</div>`:''}
+      ${licitProx.length>0?`<div class="al r"><strong>📋 $${valorEnRiesgo}M EN RIESGO</strong> · ${licitProx.length} contrato(s) vencen: ${licitProx.map(l=>`${l.n.split(' ')[0]} (${diasLabel(diasHasta(l.licit))})`).join(', ')}. Renovar ANTES de licitación pública.</div>`:''}
+      ${amenazaAlta.length>0?`<div class="al r"><strong>⚔️ ${amenazaAlta.length} instituciones con amenaza competitiva alta</strong> · ${amenazaAlta.map(c=>c.n.split(' ')[0]).join(', ')}. Visitar o llamar esta semana.</div>`:''}
+      ${+velPct<-10?`<div class="al r"><strong>▼ Velocidad bajó ${Math.abs(velPct)}%</strong> · Necesitas +${(rate2-rate3).toFixed(1)}M/día adicionales para cerrar.</div>`:''}
+      ${+velPct>=5?`<div class="al g"><strong>▲ Momentum +${velPct}%</strong> · Aprovechar para introducir BAVENCIO o ampliar contratos actuales.</div>`:''}
+      <div class="al t"><strong>🏛️ Q2 en ${Math.max(0,diasHasta('Abr-2026'))} días:</strong> Enviar propuestas de nuevos protocolos para inicio de trimestre antes del 28 marzo. Primera semana de abril es la ventana de decisión.</div>
+      <div class="al t"><strong>💡 Margen ${v.mg}%</strong> ${v.mg>=20?'— Excelente. Mantener mix. Priorizar KEYTRUDA y ACTEMRA.':'— Mejorar con oncológicos premium. BAVENCIO tiene mg 25%+.'}</div>
+    </div>
+  </div>
+
+  <!-- PLAN ACCIÓN -->
+  <div class="card s2">
+    <div class="ch y">🎯 Plan de Acción — ${DS[today.getDay()]} ${today.getDate()} ${MS[today.getMonth()]}</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Acción</th><th>Institución</th><th>Detalle</th><th>$ Impacto</th><th>Estado</th></tr></thead>
+        <tbody>
+          ${licitProx[0]?`<tr><td>1</td><td>📋 Renovar contrato URGENTE</td><td>${licitProx[0].n.split('(')[0].trim().split(' ').slice(0,2).join(' ')}</td><td style="font-size:10px">Vence ${licitProx[0].licit} · ${diasLabel(diasHasta(licitProx[0].licit))} · Val $${licitProx[0].val_cont}M</td><td class="r">$${licitProx[0].val_cont}M/mes</td><td><span class="b br">HOY</span></td></tr>`:''}
+          ${reactivar[0]&&reactivar[0].amenaza==='Alta'?`<tr><td>2</td><td>⚔️ Reactivar + amenaza alta</td><td>${reactivar[0].n.split('(')[0].trim().split(' ').slice(0,2).join(' ')}</td><td style="font-size:10px">${reactivar[0].dscp}d sin compra · ${reactivar[0].prescriptor}</td><td class="r">$${reactivar[0].val_cont}M</td><td><span class="b br">HOY</span></td></tr>`:(reactivar[0]?`<tr><td>2</td><td>🔴 Reactivar urgente</td><td>${reactivar[0].n.split('(')[0].trim().split(' ').slice(0,2).join(' ')}</td><td style="font-size:10px">${reactivar[0].sku_perd} · ${reactivar[0].dscp}d sin compra</td><td class="r">$${reactivar[0].val_cont}M</td><td><span class="b br">HOY</span></td></tr>`:'')}
+          ${creciendo[0]?`<tr><td>3</td><td>🚀 Up-sell + Q2</td><td>${creciendo[0].n.split('(')[0].trim().split(' ').slice(0,2).join(' ')}</td><td style="font-size:10px">Ampliar con ${SKU_CLIN[0].sku}</td><td class="r">+${(creciendo[0].val_cont*0.2).toFixed(0)}M est.</td><td><span class="b bg">AMPLIAR</span></td></tr>`:''}
+          <tr><td>${licitProx.length+(reactivar.length>0?1:0)+(creciendo.length>0?1:0)+1}</td><td>📊 Propuesta Q2</td><td>Todas las activas</td><td style="font-size:10px">Nuevos protocolos inicio Q2 Abril</td><td class="r">Contratos nuevos</td><td><span class="b bp">28 MAR</span></td></tr>
+          <tr><td>${licitProx.length+(reactivar.length>0?1:0)+(creciendo.length>0?1:0)+2}</td><td>💊 Recuperar BAVENCIO</td><td>Oncología activa</td><td style="font-size:10px">Mg 25% — cayó -41%</td><td class="r">Alto mg</td><td><span class="b by">SEMANA</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- AGENDA VISITAS -->
+  <div class="card s3">
+    <div class="ch t">📋 Agenda de Visitas y Llamadas del Día — ${v.n} · ${clinicas.length} instituciones · <span style="color:var(--y)">Esperado: $${totalAgenda}M</span></div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Institución</th><th>Prioridad</th><th>Motivo</th><th>Acción</th><th>Ofrecer / Proponer</th><th>Dejó de comprar</th><th>$ Esperado</th></tr></thead>
+        <tbody>
+          ${agendaData.map((c,i)=>`<tr>
+            <td style="font-weight:800;color:var(--mu);font-size:12px">${i+1}</td>
+            <td>
+              <strong>${c.n.split('(')[0].trim()}</strong>
+              <div style="font-size:9px;color:var(--mu);margin-top:1px"><span class="esp" style="font-size:8px">${c.esp}</span> · ${c.prescriptor}</div>
+            </td>
+            <td><span class="b ${c.urgColor}">${c.prio}</span></td>
+            <td style="font-size:10px;color:var(--mu);max-width:110px">${c.motivo}</td>
+            <td style="font-size:10px;color:var(--li)">${c.accion}</td>
+            <td>
+              <span style="font-size:10px;color:var(--t);font-weight:700">${c.sku_act}</span>
+              ${c.prio==='AMPLIAR'||c.prio==='MANTENER'?`<div style="font-size:9px;color:var(--g)">+ propuesta Q2 Abr</div>`:''}
+            </td>
+            <td>
+              ${c.dscp>0
+                ?`<span style="font-size:10px;color:var(--r)">${c.sku_perd}</span><div style="font-size:9px;color:var(--mu)">${c.dscp}d sin pedir</div>`
+                :'<span style="font-size:10px;color:var(--mu)">Sin ausencias</span>'}
+            </td>
+            <td class="r">
+              <span style="font-size:14px;font-weight:800;color:${c.prio==='VENCIDA'?'var(--r)':c.urgColor==='br'?'var(--r)':c.urgColor==='by'?'var(--y)':'var(--g)'}">$${c.esperado}M</span>
+              <div style="font-size:9px;color:var(--mu)">${c.licit} ${c.dias_licit<=0?'⚠️':c.dias_licit<=60?'('+c.dias_licit+'d)':''}</div>
+            </td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid var(--bd);flex-wrap:wrap;gap:8px">
+        <div style="display:flex;gap:14px;font-size:10px;color:var(--mu);flex-wrap:wrap">
+          <span>🔴 Urgente/Vencida: ${agendaData.filter(c=>c.prio==='URGENTE'||c.prio==='VENCIDA').length}</span>
+          <span>⚔️ Reactivar: ${agendaData.filter(c=>c.prio==='REACTIVAR'||c.prio==='REACTIVAR ⚔️').length}</span>
+          <span>🔄 Renovar/Seguimiento: ${agendaData.filter(c=>c.prio==='RENOVAR'||c.prio==='SEGUIMIENTO').length}</span>
+          <span>🚀 Ampliar: ${agendaData.filter(c=>c.prio==='AMPLIAR').length}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:10px;color:var(--mu)">Total esperado hoy:</div>
+          <div style="font-size:22px;font-weight:900;color:var(--y)">$${totalAgenda}M</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIPELINE LICITACIONES -->
+  <div class="card s2">
+    <div class="ch t">🎯 Pipeline Licitaciones — Próximas a Ganar · $${valorPipeline}M bruto · ~$${valorPipelineEsp}M esperado</div>
+    <div class="cb">
+      ${myPipeline.length===0
+        ?'<div class="al t">Sin licitaciones en pipeline este mes. Explorar hospitales públicos y clínicas de la región para oportunidades.</div>'
+        :''
+      }
+      <table class="tbl">
+        <thead><tr><th>Institución</th><th>Especialidad</th><th>SKU</th><th>Valor</th><th>Bases</th><th>Prob.</th><th>Estado</th></tr></thead>
+        <tbody>
+          ${myPipeline.map(l=>`<tr>
+            <td><strong style="font-size:10px">${l.inst}</strong></td>
+            <td style="font-size:10px;color:var(--mu)">${l.esp}</td>
+            <td style="font-size:10px;color:var(--t)">${l.sku}</td>
+            <td class="r"><strong style="color:var(--y)">$${l.val}M</strong></td>
+            <td><span class="b bt">${l.bases}</span></td>
+            <td class="r"><span class="b ${l.prob>=75?'bg':l.prob>=55?'by':'br'}">${l.prob}%</span></td>
+            <td style="font-size:10px;color:var(--mu)">${l.estado}</td>
+          </tr>`).join('')}
+          ${myPipeline.length===0?`<tr><td colspan="7" style="text-align:center;color:var(--mu);padding:10px">Sin pipeline activo — prospectar nuevas instituciones</td></tr>`:''}
+        </tbody>
+      </table>
+      ${myPipeline.length>0?`<div class="al t" style="margin-top:7px">💡 <strong>Estrategia:</strong> Priorizar las de mayor probabilidad. Licitaciones con bases en Abr necesitan propuesta esta semana.</div>`:''}
+    </div>
+  </div>
+
+  <!-- EFICIENCIA VISITAS + COBERTURA -->
+  <div class="card">
+    <div class="ch ${visEficClin>=85?'g':visEficClin>=70?'y':'r'}">📅 Eficiencia de Visitas Mar-26</div>
+    <div class="cb">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div class="pred-box">
+          <div class="pred-label">Visitas realizadas / planeadas</div>
+          <div class="pred-val ${visEficClin>=85?'cg':visEficClin>=70?'cy':'cr'}">${v.v_real} / ${v.v_plan}</div>
+          <div class="pred-sub">${visEficClin}% eficiencia · ${v.v_plan-v.v_real} visita${v.v_plan-v.v_real!==1?'s':''} pendiente${v.v_plan-v.v_real!==1?'s':''}</div>
+        </div>
+        <div class="pred-box">
+          <div class="pred-label">Revenue / visita</div>
+          <div class="pred-val ct">$${Math.round(v.rev/v.v_real)}M</div>
+          <div class="pred-sub">Promedio Q1 por visita realizada</div>
+        </div>
+      </div>
+      ${visEficClin<70?`<div class="al r">⚠️ Eficiencia de visitas baja (${visEficClin}%). Revisar causas: ¿problemas de acceso, agenda institucional, distancia?</div>`:''}
+      ${visEficClin>=85?`<div class="al g">✅ Buena cobertura de visitas. Mantener frecuencia con cuentas clave.</div>`:''}
+      <div style="font-size:10px;color:var(--mu);margin-top:6px">💡 Pendientes de visitar: <strong style="color:var(--tx)">${clinicas.filter(c=>c.dscp>14).map(c=>c.n.split(' ').slice(0,2).join(' ')).join(', ')||'Todas cubiertas ✅'}</strong></div>
+    </div>
+  </div>
+
+  <!-- ALERTAS CADUCIDAD STOCK CLÍNICAS -->
+  <div class="card s2">
+    <div class="ch ${cadItemsC.length>1?'r':cadItemsC.length===1?'y':'g'}">⏰ Alertas de Caducidad de Stock — Productos Próximos a Vencer en Instituciones</div>
+    <div class="cb">
+      ${cadItemsC.length===0
+        ?'<div class="al g">✅ Sin alertas de caducidad en instituciones de la cartera activa este mes.</div>'
+        :`<table class="tbl">
+          <thead><tr><th>Institución</th><th>SKU con riesgo</th><th>Und.</th><th>Vence</th><th>Val. aprox.</th><th>Acción inmediata</th></tr></thead>
+          <tbody>
+            ${cadItemsC.map(c=>`<tr style="background:${c.vence_dias<=30?'rgba(248,81,73,.04)':''}">
+              <td><strong style="font-size:10px">${c.inst.split('(')[0].trim()}</strong></td>
+              <td style="font-size:10px;color:var(--r);font-weight:600">${c.sku}</td>
+              <td class="r" style="font-size:10px;color:var(--mu)">${c.und} u.</td>
+              <td class="r"><span class="b ${c.vence_dias<=30?'br':'by'}">${c.vence_dias}d</span></td>
+              <td class="r"><span style="color:var(--y);font-weight:700">$${c.val_aprox}M</span></td>
+              <td style="font-size:10px;color:var(--mu)">${c.accion}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+        <div class="al r" style="margin-top:7px">💡 Stock próximo a vencer = pérdida de valor de venta + riesgo de reputación. Gestionar ANTES del vencimiento con propuesta de swap, retiro o consumo acelerado.</div>`
+      }
+    </div>
+  </div>
+
+  <!-- NOTAS -->
+  <div class="card">
+    <div class="ch">📝 Notas / Compromisos</div>
+    <div class="cb">
+      <textarea placeholder="Protocolos acordados, OC pendientes, reuniones con prescriptores..."></textarea>
+      <div style="margin-top:6px"><div style="font-size:9px;color:var(--mu);margin-bottom:3px">PRIORIDADES MAÑANA</div><textarea placeholder="1.&#10;2.&#10;3." style="min-height:45px"></textarea></div>
+    </div>
+  </div>
+</div>`;
+}
+render();
+</script>
+</body>
+</html>

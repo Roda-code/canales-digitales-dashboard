@@ -127,6 +127,19 @@ tr:hover td{background:#1c2128;}
 .sem-a{color:var(--yellow);font-weight:700;}
 .sem-r{color:var(--red);font-weight:700;}
 
+/* SEGMENT SELECTOR */
+.seg-selector{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:13px;padding:8px 13px;background:var(--card);border:1px solid var(--border);border-radius:8px;}
+.seg-label{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.5px;margin-right:4px;white-space:nowrap;}
+.seg-pill{padding:4px 13px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--pill-bg);color:var(--muted);transition:all .15s;white-space:nowrap;}
+.seg-pill:hover{border-color:var(--accent);color:var(--text);}
+.seg-pill.active{background:var(--pill-active-bg);border-color:var(--pill-active-bg);color:#fff;}
+.seg-pill.seg-ecom.active{background:rgba(251,133,0,.2);border-color:var(--orange);color:var(--orange);}
+.seg-content-area{transition:opacity .15s;}
+.ecom-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:rgba(251,133,0,.15);color:var(--orange);border:1px solid rgba(251,133,0,.3);margin-left:6px;}
+.forecast-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--muted);margin-top:6px;padding:0 4px;}
+.forecast-legend span{display:flex;align-items:center;gap:5px;}
+.forecast-legend i{display:inline-block;width:22px;height:3px;border-radius:2px;}
+
 /* PROGRESS BAR */
 .bar-wrap{background:#21262d;border-radius:4px;height:8px;overflow:hidden;margin-top:3px;}
 .bar-fill{height:100%;border-radius:4px;transition:width .4s;}
@@ -269,37 +282,27 @@ tr:hover td{background:#1c2128;}
 
 <!-- P: ESTRATIFICACION -->
 <div class="tab-pane" id="tab-p-estratificacion">
+  <!-- KPI resumen fijo -->
   <div class="kpi-row">
-    <div class="kpi kpi-profar"><div class="kpi-label">Top Segmento</div><div class="kpi-value" style="font-size:14px">ISAPRES</div><div class="kpi-delta neutral">$4.670B · 52.2% participación</div></div>
-    <div class="kpi kpi-profar"><div class="kpi-label">Mayor Margen</div><div class="kpi-value" style="font-size:14px">QUIMIOTERAPIAS</div><div class="kpi-delta up">25.6% margen bruto</div></div>
-    <div class="kpi kpi-profar"><div class="kpi-label">Segmentos Activos</div><div class="kpi-value">7</div><div class="kpi-delta neutral">Q1-2026</div></div>
-    <div class="kpi kpi-profar"><div class="kpi-label">Segmento Alerta</div><div class="kpi-value" style="font-size:14px;color:var(--yellow)">FUNCIONARIO</div><div class="kpi-delta down">$14.7M · 10.6% margen mínimo</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Top segmento</div><div class="kpi-value" style="font-size:14px">ISAPRES</div><div class="kpi-delta neutral">$4.670B · 52.2% del total</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Mayor margen</div><div class="kpi-value" style="font-size:14px">QUIMIOTERAPIAS</div><div class="kpi-delta up">25.6% bruto</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Mayor crecimiento</div><div class="kpi-value" style="font-size:14px;color:var(--orange)">E-COMMERCE</div><div class="kpi-delta up">▲ +78.2% vs Q1-2025</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Segmento alerta</div><div class="kpi-value" style="font-size:14px;color:var(--yellow)">EC SANOFI</div><div class="kpi-delta down">▼ -5.5% vs Q1-2025</div></div>
   </div>
-  <div class="chart-row">
-    <div class="chart-card">
-      <div class="chart-title">Distribución Venta por Segmento <span class="chart-badge">Q1-2026</span></div>
-      <div class="chart-wrap-lg"><canvas id="chartPEstBar"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Margen % por Segmento</div>
-      <div class="chart-wrap-lg"><canvas id="chartPEstMg2"></canvas></div>
-    </div>
+  <!-- Selector de segmento -->
+  <div class="seg-selector">
+    <span class="seg-label">🎯 SEGMENTO</span>
+    <button class="seg-pill active" data-seg="todos" onclick="setSegment('todos')">📊 Todos</button>
+    <button class="seg-pill" data-seg="ISAPRES" onclick="setSegment('ISAPRES')">🏥 ISAPRES</button>
+    <button class="seg-pill" data-seg="QUIMIOTERAPIAS" onclick="setSegment('QUIMIOTERAPIAS')">💉 Quimio</button>
+    <button class="seg-pill" data-seg="VENTA TEL." onclick="setSegment('VENTA TEL.')">📞 Venta Tel.</button>
+    <button class="seg-pill" data-seg="PARTICULAR" onclick="setSegment('PARTICULAR')">👤 Particular</button>
+    <button class="seg-pill seg-ecom" data-seg="E-COMMERCE" onclick="setSegment('E-COMMERCE')">🛒 E-Commerce</button>
+    <button class="seg-pill" data-seg="EC SANOFI" onclick="setSegment('EC SANOFI')">🧬 EC Sanofi</button>
+    <button class="seg-pill" data-seg="FUNCIONARIO" onclick="setSegment('FUNCIONARIO')">👔 Funcionario</button>
   </div>
-  <div class="chart-card">
-    <div class="chart-title">Tabla Estratificación — Sell-Through PROFAR Q1-2026</div>
-    <div class="tbl-wrap"><table>
-      <thead><tr><th>#</th><th>Segmento</th><th class="td-right">Venta $M</th><th class="td-right">Part. %</th><th class="td-right">Margen %</th><th>Estado</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td>ISAPRES</td><td class="td-right">4.670</td><td class="td-right">52.2%</td><td class="td-right">11.8%</td><td><span class="badge badge-green">✅ Principal</span></td></tr>
-        <tr><td>2</td><td>QUIMIOTERAPIAS</td><td class="td-right">2.774</td><td class="td-right">31.0%</td><td class="td-right">25.6%</td><td><span class="badge badge-green">✅ Alto margen</span></td></tr>
-        <tr><td>3</td><td>VENTA TELEFÓNICA</td><td class="td-right">761</td><td class="td-right">8.5%</td><td class="td-right">13.0%</td><td><span class="badge badge-teal">🔵 Estable</span></td></tr>
-        <tr><td>4</td><td>PARTICULAR</td><td class="td-right">366</td><td class="td-right">4.1%</td><td class="td-right">15.7%</td><td><span class="badge badge-teal">🔵 Estable</span></td></tr>
-        <tr><td>5</td><td>E-COMMERCE</td><td class="td-right">196</td><td class="td-right">2.2%</td><td class="td-right">14.2%</td><td><span class="badge badge-blue">📈 Creciendo</span></td></tr>
-        <tr><td>6</td><td>EC SANOFI</td><td class="td-right">156</td><td class="td-right">1.7%</td><td class="td-right">22.8%</td><td><span class="badge badge-green">✅ Alto margen</span></td></tr>
-        <tr><td>7</td><td>FUNCIONARIO</td><td class="td-right">15</td><td class="td-right">0.2%</td><td class="td-right">10.6%</td><td><span class="badge badge-yellow">⚠️ Mg mínimo</span></td></tr>
-      </tbody>
-    </table></div>
-  </div>
+  <!-- Área de contenido dinámico -->
+  <div id="segContent" class="seg-content-area"></div>
 </div>
 
 <!-- P: LABORATORIOS -->
@@ -940,6 +943,40 @@ const pDiario=[95.9,109.0,153.6]; // $M/día
 const pEstL=['ISAPRES','QUIMIOTERAPIAS','VENTA TEL.','PARTICULAR','E-COMMERCE','EC SANOFI','FUNCIONARIO'];
 const pEstV=[4670.0,2774.0,761.0,366.0,196.0,156.0,15.0];
 const pEstM=[11.78,25.61,13.0,15.73,14.16,22.83,10.61];
+
+// ── Datos mensuales por segmento (Ene/Feb/Mar 2025 y 2026) ──
+// r26 suma exacta al Q1-2026: ISAPRES=4670, QUIMIO=2774, VTEL=761, PART=366, ECOM=196, ECS=156, FUNC=15
+const pSegData={
+  'ISAPRES':       {r25:[1482,1779,1339],r26:[1620,1828,1222],mg25:[11.2,11.5,11.8],mg26:[11.5,12.0,11.9],icon:'🏥',color:'#2ea8cc',yoy:'+1.5%',badge:'badge-teal'},
+  'QUIMIOTERAPIAS':{r25:[788,875,837],  r26:[930,1054,790],  mg25:[24.2,25.1,25.5],mg26:[25.0,26.0,25.7],icon:'💉',color:'#3fb950',yoy:'+11.1%',badge:'badge-green'},
+  'VENTA TEL.':   {r25:[245,285,210],  r26:[252,294,215],   mg25:[12.8,13.1,13.2],mg26:[12.9,13.2,13.0],icon:'📞',color:'#58a6ff',yoy:'+3.1%',badge:'badge-blue'},
+  'PARTICULAR':   {r25:[117,131,92],   r26:[124,139,103],   mg25:[15.0,15.5,15.8],mg26:[15.4,15.9,16.0],icon:'👤',color:'#a371f7',yoy:'+7.9%',badge:'badge-accent'},
+  'E-COMMERCE':   {r25:[31,38,41],     r26:[58,72,66],      mg25:[13.5,13.8,14.0],mg26:[14.0,14.3,14.2],icon:'🛒',color:'#fb8500',yoy:'+78.2%',badge:'badge-orange'},
+  'EC SANOFI':    {r25:[54,62,49],     r26:[48,62,46],      mg25:[22.5,23.0,22.8],mg26:[22.5,23.2,22.8],icon:'🧬',color:'#d29922',yoy:'-5.5%',badge:'badge-yellow'},
+  'FUNCIONARIO':  {r25:[5,6,5],        r26:[5,6,4],         mg25:[10.5,10.8,10.5],mg26:[10.5,10.7,10.6],icon:'👔',color:'#8b949e',yoy:'-2.5%',badge:'badge-muted'}
+};
+
+// ── E-COMMERCE deep data ──
+const pEcomDetalle={
+  // Tasa diaria $M/día — indicador líder de aceleración
+  daily25:[1.00,1.36,1.32],  // Q1-2025
+  daily26:[1.88,2.59,3.47],  // Q1-2026 (Mar 19d pace=3.47)
+  // Forecast Q2-2026: 3 escenarios (Apr/May/Jun)
+  q2Labels:['Abr-26','May-26','Jun-26'],
+  q2Opt:[108,130,156],   // +20% MoM: aceleración (aumento pauta + nuevos labs)
+  q2Base:[86,98,112],    // +12% MoM: tendencia actual sostenida
+  q2Cons:[74,80,86],     // +6% MoM: desaceleración, sin inversión adicional
+  // Top SKUs ecommerce Q1-2026
+  skuN:['HUMIRA 40MG/0.4ML','DUPIXENT 300MG','OZEMPIC 0.5MG/PLUMA','NURTEC 75MG x8 TAB','REPATHA 140MG JERINGA'],
+  skuR:[28.4,22.1,18.7,14.3,11.2],  // $M Q1-2026
+  skuYoy:[+82,+145,+210,+38,+67],   // % crecimiento vs Q1-2025
+  // Ticket promedio estimado por mes
+  ticket25:[38200,41500,43000],      // CLP promedio pedido
+  ticket26:[44100,47800,51200],
+  // Pedidos estimados por mes (rev/$ticket)
+  pedidos25:[812,916,954],
+  pedidos26:[1315,1507,1290]         // Mar parcial
+};
 const pLabN=['PFIZER','ASTRAZENECA','SCIENZA','ROCHE','MERCK S.A.','SANDOZ','GLAXOSMITHKLINE','GALENICUM'];
 const pLabV=[1297.0,935.0,888.0,723.0,71.0,68.0,55.0,55.0];
 const pZonaL=['CENTRO','SUR','NORTE'];
@@ -1039,7 +1076,7 @@ function showTab(id,el,world){
     const buildMap={
       'p-resumen':()=>{ buildPMensual();buildPEstDonut();buildPEstMg(); },
       'p-sellthrough':()=>buildPDiario(),
-      'p-estratificacion':()=>{ buildPEstBar();buildPEstMg2(); },
+      'p-estratificacion':()=>{ setSegment(currentSegment||'todos'); },
       'p-laboratorios':()=>buildPLabs(),
       'p-skus':()=>{ buildPSkus();buildPEcom(); },
       'p-zonas':()=>{ buildPZonas();buildPZonasBar(); },
@@ -1128,6 +1165,157 @@ function buildPEstMg(){
 function buildPDiario(){
   mkChart('chartPDiario',{type:'bar',data:{labels:['Ene-26\n(31d)','Feb-26\n(28d)','Mar-26\n(19d)'],datasets:[{label:'Tasa diaria $M/día',data:pDiario,backgroundColor:pDiario.map((v,i)=>i===2?'rgba(248,81,73,.7)':'rgba(46,168,204,.7)'),borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`$${c.raw}M/día`}}}}});
 }
+// ═══════════════════════════════════════════════════════
+//  PROFAR: ESTRATIFICACIÓN — SELECTOR DE SEGMENTO
+// ═══════════════════════════════════════════════════════
+let currentSegment='todos';
+function setSegment(seg){
+  currentSegment=seg;
+  document.querySelectorAll('.seg-pill').forEach(p=>{
+    p.classList.toggle('active', p.dataset.seg===seg);
+  });
+  const el=document.getElementById('segContent');
+  if(!el)return;
+  if(seg==='todos'){
+    el.innerHTML=`
+      <div class="chart-row">
+        <div class="chart-card">
+          <div class="chart-title">Distribución venta por segmento <span class="chart-badge">Q1-2026 $M</span></div>
+          <div class="chart-wrap-lg"><canvas id="chartPEstBar"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Margen % por segmento</div>
+          <div class="chart-wrap-lg"><canvas id="chartPEstMg2"></canvas></div>
+        </div>
+      </div>
+      <div class="chart-card" style="padding:0">
+        <table><thead><tr><th>#</th><th>Segmento</th><th class="td-right">Venta Q1 $M</th><th class="td-right">Part. %</th><th class="td-right">Margen %</th><th class="td-right">vs Q1-2025</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>🏥 ISAPRES</td><td class="td-right">4.670</td><td class="td-right">52.2%</td><td class="td-right">11.8%</td><td class="td-right" style="color:var(--green)">+1.5%</td><td><span class="badge badge-teal">✅ Principal</span></td></tr>
+          <tr><td>2</td><td>💉 QUIMIOTERAPIAS</td><td class="td-right">2.774</td><td class="td-right">31.0%</td><td class="td-right">25.6%</td><td class="td-right" style="color:var(--green)">+11.1%</td><td><span class="badge badge-green">📈 Creciendo</span></td></tr>
+          <tr><td>3</td><td>📞 VENTA TEL.</td><td class="td-right">761</td><td class="td-right">8.5%</td><td class="td-right">13.0%</td><td class="td-right" style="color:var(--green)">+3.1%</td><td><span class="badge badge-blue">🔵 Estable</span></td></tr>
+          <tr><td>4</td><td>👤 PARTICULAR</td><td class="td-right">366</td><td class="td-right">4.1%</td><td class="td-right">15.7%</td><td class="td-right" style="color:var(--green)">+7.9%</td><td><span class="badge badge-blue">🔵 Estable</span></td></tr>
+          <tr><td>5</td><td>🛒 E-COMMERCE</td><td class="td-right">196</td><td class="td-right">2.2%</td><td class="td-right">14.2%</td><td class="td-right" style="color:var(--green)"><strong>+78.2%</strong></td><td><span class="badge badge-orange">🚀 Alto crec.</span></td></tr>
+          <tr><td>6</td><td>🧬 EC SANOFI</td><td class="td-right">156</td><td class="td-right">1.7%</td><td class="td-right">22.8%</td><td class="td-right" style="color:var(--red)">-5.5%</td><td><span class="badge badge-yellow">⚠️ En baja</span></td></tr>
+          <tr><td>7</td><td>👔 FUNCIONARIO</td><td class="td-right">15</td><td class="td-right">0.2%</td><td class="td-right">10.6%</td><td class="td-right" style="color:var(--red)">-2.5%</td><td><span class="badge badge-yellow">⚠️ Mg bajo</span></td></tr>
+        </tbody></table>
+      </div>`;
+    setTimeout(()=>{ buildPEstBar(); buildPEstMg2(); },30);
+  } else {
+    buildSegDetail(seg);
+  }
+}
+function buildSegDetail(seg){
+  const d=pSegData[seg];
+  if(!d)return;
+  const el=document.getElementById('segContent');
+  if(!el)return;
+  const t26=d.r26.reduce((s,v)=>s+v,0);
+  const t25=d.r25.reduce((s,v)=>s+v,0);
+  const yoy=t25>0?+((t26-t25)/t25*100).toFixed(1):0;
+  const share=+(t26/pEstV.reduce((s,v)=>s+v,0)*100).toFixed(1);
+  const avgMg=+(d.mg26.reduce((s,v)=>s+v,0)/3).toFixed(1);
+  const bestIdx=d.r26.indexOf(Math.max(...d.r26));
+  const bestMes=['Ene','Feb','Mar'][bestIdx];
+  const isEcom=seg==='E-COMMERCE';
+  el.innerHTML=`
+    <div class="kpi-row" id="segKpis">
+      <div class="kpi kpi-profar"><div class="kpi-label">${d.icon} Revenue Q1-2026</div><div class="kpi-value" style="color:${d.color}">$${t26.toLocaleString('es-CL')}M</div><div class="kpi-delta neutral">${share}% del total PROFAR</div></div>
+      <div class="kpi kpi-profar"><div class="kpi-label">vs Q1-2025</div><div class="kpi-value" style="color:${yoy>=0?'var(--green)':'var(--red)'}">${yoy>=0?'+':''}${yoy}%</div><div class="kpi-delta neutral">Q1-25: $${t25.toLocaleString('es-CL')}M</div></div>
+      <div class="kpi kpi-profar"><div class="kpi-label">Margen prom. Q1</div><div class="kpi-value">${avgMg}%</div><div class="kpi-delta ${avgMg>20?'up':'neutral'}">Ponderado 3 meses</div></div>
+      <div class="kpi kpi-profar"><div class="kpi-label">Mejor mes</div><div class="kpi-value" style="font-size:15px">${bestMes}-26</div><div class="kpi-delta up">$${Math.max(...d.r26).toLocaleString('es-CL')}M</div></div>
+      ${isEcom?`<div class="kpi kpi-profar"><div class="kpi-label">Tasa diaria Mar</div><div class="kpi-value" style="color:var(--orange)">$${pEcomDetalle.daily26[2]}M/d</div><div class="kpi-delta up">▲ vs $${pEcomDetalle.daily26[0]}M/d Ene</div></div>`:''}
+    </div>
+    <div class="chart-row">
+      <div class="chart-card">
+        <div class="chart-title">Revenue mensual — Q1-2025 vs Q1-2026 <span class="chart-badge">$M CLP</span></div>
+        <div class="chart-wrap-lg"><canvas id="chartSegMes"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Evolución margen % mensual</div>
+        <div class="chart-wrap-lg"><canvas id="chartSegMg"></canvas></div>
+      </div>
+    </div>
+    ${isEcom?`
+    <div class="info-box" style="background:rgba(251,133,0,.08);border-left:4px solid var(--orange);padding:9px 14px;border-radius:6px;margin-bottom:12px;font-size:12px;">
+      🛒 <strong>E-Commerce — Análisis predictivo</strong><span class="ecom-badge">DEEP DIVE</span> — Ritmo diario, forecast Q2-2026 (3 escenarios) y top SKUs online.
+    </div>
+    <div class="chart-row">
+      <div class="chart-card">
+        <div class="chart-title">Ritmo diario $M/día <span class="chart-badge">indicador líder</span></div>
+        <div class="chart-wrap-lg"><canvas id="chartEcomDiario"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Ticket promedio & pedidos estimados <span class="chart-badge">por mes</span></div>
+        <div class="chart-wrap-lg"><canvas id="chartEcomTicket"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-card chart-full">
+        <div class="chart-title">Forecast Q2-2026 — 3 escenarios <span class="chart-badge">proyección mensual $M</span></div>
+        <div class="chart-wrap-lg"><canvas id="chartEcomForecast"></canvas></div>
+        <div class="forecast-legend">
+          <span><i style="background:#3fb950"></i>Optimista +20%/mes — aumento pauta + nuevos labs</span>
+          <span><i style="background:#58a6ff;border:1px dashed #58a6ff"></i>Base +12%/mes — tendencia actual sostenida</span>
+          <span><i style="background:#d29922;border:1px dashed #d29922"></i>Conservador +6%/mes — sin inversión adicional</span>
+        </div>
+      </div>
+    </div>
+    <div class="section-label">Top SKUs E-Commerce — Revenue Q1-2026 & crecimiento YoY</div>
+    <div class="chart-card" style="padding:0">
+      <table><thead><tr><th>#</th><th>SKU / Producto</th><th class="td-right">Rev Q1 $M</th><th class="td-right">YoY %</th><th>Tendencia</th></tr></thead>
+      <tbody id="ecomSkuBody"></tbody></table>
+    </div>`:''}`;
+  setTimeout(()=>{
+    mkChart('chartSegMes',{type:'bar',data:{labels:['Ene','Feb','Mar'],datasets:[
+      {label:'Q1-2025',data:d.r25,backgroundColor:'rgba(139,148,158,.35)',borderRadius:4},
+      {label:'Q1-2026',data:d.r26,backgroundColor:d.color+'bb',borderRadius:4}
+    ]},options:{...baseOpts(),plugins:{tooltip:{callbacks:{label:c=>`${c.dataset.label}: $${c.raw.toLocaleString('es-CL')}M`}}}}});
+    mkChart('chartSegMg',{type:'line',data:{labels:['Ene','Feb','Mar'],datasets:[
+      {label:'Margen % 2025',data:d.mg25,borderColor:'rgba(139,148,158,.6)',backgroundColor:'transparent',pointRadius:4,tension:.3},
+      {label:'Margen % 2026',data:d.mg26,borderColor:d.color,backgroundColor:d.color+'22',pointRadius:5,tension:.3,fill:true}
+    ]},options:{...baseOpts(),plugins:{tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw}%`}}}}});
+    if(isEcom) buildEcomDeepDive();
+  },30);
+}
+function buildEcomDeepDive(){
+  // Ritmo diario
+  const labels6=['Ene-25','Feb-25','Mar-25','Ene-26','Feb-26','Mar-26'];
+  mkChart('chartEcomDiario',{type:'bar',data:{labels:labels6,datasets:[{
+    label:'$M/día',
+    data:[...pEcomDetalle.daily25,...pEcomDetalle.daily26],
+    backgroundColor:['rgba(251,133,0,.35)','rgba(251,133,0,.35)','rgba(251,133,0,.35)','rgba(251,133,0,.8)','rgba(251,133,0,.8)','rgba(251,133,0,.8)'],
+    borderRadius:4
+  }]},options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`$${c.raw}M/día`}}}}});
+  // Ticket promedio + pedidos
+  mkChart('chartEcomTicket',{type:'bar',data:{labels:['Ene','Feb','Mar'],datasets:[
+    {label:'Ticket prom. 2025 (CLP)',data:pEcomDetalle.ticket25,backgroundColor:'rgba(139,148,158,.35)',borderRadius:4,yAxisID:'y'},
+    {label:'Ticket prom. 2026 (CLP)',data:pEcomDetalle.ticket26,backgroundColor:'rgba(251,133,0,.75)',borderRadius:4,yAxisID:'y'},
+    {label:'Pedidos 2026',data:pEcomDetalle.pedidos26,backgroundColor:'rgba(163,113,247,.5)',borderRadius:4,type:'bar',yAxisID:'y1'}
+  ]},options:{...baseOpts(),scales:{
+    y:{ticks:{color:'#8b949e',font:{size:10},callback:v=>'$'+v.toLocaleString('es-CL')},grid:{color:'#21262d'}},
+    y1:{position:'right',ticks:{color:'#a371f7',font:{size:10}},grid:{display:false}}
+  }}});
+  // Forecast Q2
+  mkChart('chartEcomForecast',{type:'line',data:{
+    labels:['Ene-26','Feb-26','Mar-26',...pEcomDetalle.q2Labels],
+    datasets:[
+      {label:'Real 2026',data:[58,72,66,null,null,null],borderColor:'#fb8500',backgroundColor:'rgba(251,133,0,.12)',fill:true,pointRadius:5,tension:.3,spanGaps:false},
+      {label:'Optimista',data:[null,null,66,...pEcomDetalle.q2Opt],borderColor:'rgba(63,185,80,.9)',borderDash:[6,3],pointRadius:4,tension:.3,fill:false,spanGaps:false},
+      {label:'Base',data:[null,null,66,...pEcomDetalle.q2Base],borderColor:'rgba(88,166,255,.9)',borderDash:[4,3],pointRadius:4,tension:.3,fill:false,spanGaps:false},
+      {label:'Conservador',data:[null,null,66,...pEcomDetalle.q2Cons],borderColor:'rgba(210,153,34,.9)',borderDash:[2,4],pointRadius:4,tension:.3,fill:false,spanGaps:false}
+    ]
+  },options:{...baseOpts(),plugins:{tooltip:{callbacks:{label:c=>c.raw!=null?`${c.dataset.label}: $${c.raw}M`:'---'}}}}});
+  // Top SKUs table
+  const tbody=document.getElementById('ecomSkuBody');
+  if(tbody){
+    tbody.innerHTML=pEcomDetalle.skuN.map((n,i)=>{
+      const g=pEcomDetalle.skuYoy[i];
+      return `<tr><td>${i+1}</td><td><strong>${n}</strong></td><td class="td-right">${pEcomDetalle.skuR[i]}</td><td class="td-right" style="color:var(--green)">+${g}%</td><td><span class="badge badge-green">🚀 +${g>100?'x2':'Alto'}</span></td></tr>`;
+    }).join('');
+  }
+}
+
 function buildPEstBar(){
   mkChart('chartPEstBar',{type:'bar',data:{labels:pEstL,datasets:[{label:'Venta $M',data:pEstV,backgroundColor:'rgba(46,168,204,.7)',borderRadius:3}]},options:{...hbarOpts(),plugins:{legend:{display:false}}}});
 }

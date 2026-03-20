@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing Diario · Equipo CENABAST · CMK</title>
+<style>
+  :root{--g:#3fb950;--t:#2ea8cc;--r:#f85149;--y:#d29922;--p:#a371f7;--o:#fb8500;
+    --bg:#0d1117;--c1:#161b22;--c2:#1c2128;--bd:#30363d;--tx:#e6edf3;--mu:#8b949e;--li:#c9d1d9;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;}
+  .top{background:var(--c1);border-bottom:1px solid var(--bd);padding:10px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .logo{font-size:14px;font-weight:800;color:var(--o);white-space:nowrap;}
+  .logo span{color:var(--mu);font-weight:400;font-size:11px;margin-left:6px;}
+  select{background:var(--c2);border:1px solid var(--bd);color:var(--tx);padding:6px 11px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;}
+  .dtag{background:var(--c2);border:1px solid var(--bd);padding:5px 11px;border-radius:6px;font-size:11px;color:var(--mu);}
+  .btn{padding:5px 13px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid;}
+  .btn-p{background:rgba(251,133,0,.1);border-color:rgba(251,133,0,.3);color:var(--o);margin-left:auto;}
+  .pg{padding:12px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .s2{grid-column:span 2;} .s3{grid-column:span 3;}
+  .card{background:var(--c1);border:1px solid var(--bd);border-radius:8px;overflow:hidden;}
+  .ch{background:var(--c2);padding:7px 12px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--bd);}
+  .ch.g{color:var(--g);}.ch.t{color:var(--t);}.ch.y{color:var(--y);}.ch.r{color:var(--r);}.ch.o{color:var(--o);}.ch.p{color:var(--p);}
+  .cb{padding:11px 12px;}
+  .ks{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;grid-column:span 3;}
+  .kp{background:var(--c1);border:1px solid var(--bd);border-radius:8px;padding:9px 10px;text-align:center;}
+  .kl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;}
+  .kv{font-size:18px;font-weight:800;line-height:1;} .ksb{font-size:9px;color:var(--mu);margin-top:2px;}
+  .cg{color:var(--g)!important;}.cr{color:var(--r)!important;}.cy{color:var(--y)!important;}.ct{color:var(--t)!important;}.co{color:var(--o)!important;}.cp{color:var(--p)!important;}
+  .tbl{width:100%;border-collapse:collapse;}
+  .tbl th{background:var(--c2);color:var(--mu);font-size:9px;text-transform:uppercase;padding:5px 7px;text-align:left;border-bottom:1px solid var(--bd);font-weight:600;}
+  .tbl td{padding:5px 7px;border-bottom:1px solid #1c2128;font-size:11px;color:var(--li);vertical-align:middle;}
+  .tbl tr:last-child td{border-bottom:none;} .r{text-align:right;}
+  .b{display:inline-block;padding:2px 6px;border-radius:99px;font-size:9px;font-weight:700;}
+  .bg{background:rgba(63,185,80,.15);color:var(--g);}.br{background:rgba(248,81,73,.15);color:var(--r);}
+  .by{background:rgba(210,153,34,.15);color:var(--y);}.bt{background:rgba(46,168,204,.15);color:var(--t);}
+  .bo{background:rgba(251,133,0,.15);color:var(--o);}.bp{background:rgba(163,113,247,.15);color:var(--p);}
+  .bdv{background:rgba(248,81,73,.3);color:#fff;}
+  .al{border-left:3px solid var(--y);background:rgba(210,153,34,.06);border-radius:0 6px 6px 0;padding:6px 9px;margin-bottom:5px;font-size:11px;line-height:1.5;}
+  .al.r{border-color:var(--r);background:rgba(248,81,73,.06);}
+  .al.g{border-color:var(--g);background:rgba(63,185,80,.06);}
+  .al.o{border-color:var(--o);background:rgba(251,133,0,.06);}
+  .al.t{border-color:var(--t);background:rgba(46,168,204,.06);}
+  .al.p{border-color:var(--p);background:rgba(163,113,247,.06);}
+  .bar-bg{background:#21262d;border-radius:99px;height:6px;flex:1;}
+  .bar-f{height:100%;border-radius:99px;}
+  .mrow{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+  .ml{font-size:10px;color:var(--mu);width:140px;flex-shrink:0;}
+  .mv{font-size:10px;font-weight:700;width:50px;text-align:right;}
+  .scr{background:var(--c2);border:1px solid var(--bd);border-radius:6px;padding:8px 10px;font-size:11px;color:var(--li);line-height:1.6;margin-bottom:5px;}
+  .stag{display:inline-block;background:rgba(251,133,0,.12);color:var(--o);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;margin-bottom:4px;}
+  .licit-card{background:var(--c2);border:1px solid var(--bd);border-radius:6px;padding:9px 11px;margin-bottom:6px;}
+  .licit-top{display:flex;justify-content:space-between;align-items:flex-start;}
+  .licit-n{font-size:11px;font-weight:700;color:var(--tx);}
+  .licit-sub{font-size:10px;color:var(--mu);margin-top:2px;}
+  .licit-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+  .licit-countdown{font-size:22px;font-weight:900;}
+  .semaforo{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:4px;}
+  .sem-r{background:var(--r);box-shadow:0 0 5px var(--r);}
+  .sem-y{background:var(--y);box-shadow:0 0 5px var(--y);}
+  .sem-g{background:var(--g);box-shadow:0 0 5px var(--g);}
+  .timeline-step{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;}
+  .tl-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;margin-top:2px;}
+  .tl-line{width:2px;background:var(--bd);position:absolute;top:14px;left:5px;height:calc(100% - 14px);}
+  .timeline{position:relative;padding-left:4px;}
+  .pred-box{background:var(--c2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;margin-bottom:8px;}
+  .pred-label{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+  .pred-val{font-size:16px;font-weight:800;}
+  .pred-sub{font-size:10px;color:var(--mu);margin-top:2px;line-height:1.4;}
+  textarea{background:var(--c2);border:1px solid var(--bd);color:var(--li);border-radius:6px;padding:7px;font-size:11px;width:100%;min-height:52px;resize:vertical;font-family:inherit;}
+  @media print{body,html{background:#fff!important;color:#000!important;}.card,.kp{background:#fff!important;border-color:#ddd!important;}.c2,.ch,.scr,.licit-card,.pred-box{background:#f5f5f5!important;}.cg{color:#157a30!important;}.cr{color:#b91c1c!important;}.cy{color:#92400e!important;}.co{color:#92500e!important;}.btn-p{display:none!important;}.subnav{display:none!important;}}
+  .subnav{background:#090d12;border-bottom:1px solid #21262d;padding:4px 18px;display:flex;gap:4px;align-items:center;}
+  .subnav a{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:5px;font-size:10px;font-weight:600;color:var(--mu);text-decoration:none;transition:color .15s,background .15s;}
+  .subnav a:hover{color:var(--tx);background:var(--c2);}
+  .subnav a.active{color:var(--o);background:rgba(251,133,0,.1);border:1px solid rgba(251,133,0,.25);}
+  .subnav a:not(.active){border:1px solid transparent;}
+  .subnav-sep{color:#21262d;margin:0 2px;}
+</style>
+</head>
+<body>
+<nav class="subnav">
+  <a href="Dashboard_Supervisor_CMK.html">📊 Supervisor</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_Retail.html">🏪 Retail</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_Clinicas.html">🏥 Clínicas</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_CENABAST.html" class="active">🏛 CENABAST</a>
+</nav>
+<div class="top">
+  <div class="logo">🏛 Equipo CENABAST <span>CMK · Central de Abastecimiento · CESFAM · Consultorios APS</span></div>
+  <select id="vsel" onchange="render()"></select>
+  <div class="dtag" id="dtag">—</div>
+  <button class="btn btn-p" onclick="window.print()">🖨 PDF</button>
+</div>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ═══ EQUIPO CENABAST ═══
+const VCENABAST = [
+  {n:"Ilse Arriagada",  rev:1925, mg:24.0, cli:141, caidos:43, riesgo:55.4, reg:16, trend:"down", r1:697.2, r2:694.8, r3:533.1, meta_mes:2100, licit_activas:12, licit_vencen:3, v_plan:18, v_real:12},
+  {n:"Jose Pascual",    rev:76,   mg:34.9, cli:6,   caidos:2,  riesgo:0.5,  reg:2,  trend:"flat", r1:23.1,  r2:27.2,  r3:26.0,  meta_mes:90,   licit_activas:3,  licit_vencen:1, v_plan:8,  v_real:7},
+  {n:"Silvia Flores",   rev:36,   mg:34.0, cli:53,  caidos:23, riesgo:7.9,  reg:10, trend:"down", r1:15.7,  r2:13.7,  r3:6.8,   meta_mes:45,   licit_activas:8,  licit_vencen:2, v_plan:14, v_real:9},
+];
+
+// DB extendida con valor licitación, riesgo competitivo, presupuesto mensual
+const CESFAM_DB = {
+  "Ilse Arriagada": [
+    {n:"CESFAM Lo Espejo",       sku_act:"CLEXANE 40 MG",   sku_perd:"TAPSIN CALIENTE",  dscp:19, delta:"-31%", licit_vence:"Abr-2026", estado:"URGENTE",  val_licit:82,  comp_risk:"Alto",  presup_mens:110, encargado:"José Muñoz (Compras)",   ejec_pct:67},
+    {n:"CESFAM Pudahuel Norte",  sku_act:"CONCERTA 36 MG",  sku_perd:"CLEXANE 40 MG",    dscp:3,  delta:"+2%",  licit_vence:"Ago-2026", estado:"ACTIVO",   val_licit:65,  comp_risk:"Bajo",  presup_mens:85,  encargado:"Carmen Lagos (QF)",      ejec_pct:82},
+    {n:"CESFAM Bajos de Mena",   sku_act:"TAPSIN CALIENTE", sku_perd:"MABTHERA 500 MG",  dscp:14, delta:"-18%", licit_vence:"May-2026", estado:"RENOVAR",  val_licit:58,  comp_risk:"Medio", presup_mens:72,  encargado:"Ricardo Soto (Jefe)",    ejec_pct:71},
+    {n:"CESFAM La Pintana",      sku_act:"CLEXANE 40 MG",   sku_perd:"CONCERTA 36 MG",   dscp:0,  delta:"+7%",  licit_vence:"Nov-2026", estado:"ACTIVO",   val_licit:74,  comp_risk:"Bajo",  presup_mens:92,  encargado:"Ana Fuentes (QF)",       ejec_pct:88},
+    {n:"Consultorio Limache",    sku_act:"CONCERTA 36 MG",  sku_perd:"BRUKINSA 80 MG",   dscp:25, delta:"-22%", licit_vence:"Mar-2026", estado:"URGENTE",  val_licit:48,  comp_risk:"Alto",  presup_mens:55,  encargado:"Pedro Rojas (Compras)",  ejec_pct:45},
+    {n:"CESFAM El Bosque",       sku_act:"TAPSIN CALIENTE", sku_perd:"CLEXANE 40 MG",    dscp:8,  delta:"-9%",  licit_vence:"Jul-2026", estado:"ACTIVO",   val_licit:61,  comp_risk:"Bajo",  presup_mens:78,  encargado:"María Vega (QF)",        ejec_pct:79},
+    {n:"CESFAM Pedro Aguirre",   sku_act:"CLEXANE 40 MG",   sku_perd:"MABTHERA 500 MG",  dscp:0,  delta:"+4%",  licit_vence:"Oct-2026", estado:"ACTIVO",   val_licit:53,  comp_risk:"Bajo",  presup_mens:68,  encargado:"Luis Torres (Jefe)",     ejec_pct:91},
+    {n:"CESFAM San Ramón",       sku_act:"CONCERTA 36 MG",  sku_perd:"ACTEMRA 162 MG",   dscp:31, delta:"-45%", licit_vence:"Abr-2026", estado:"URGENTE",  val_licit:71,  comp_risk:"Alto",  presup_mens:95,  encargado:"Sandra Pérez (Compras)", ejec_pct:38},
+  ],
+  "Jose Pascual": [
+    {n:"CESFAM Estación Central",sku_act:"CLEXANE 40 MG",   sku_perd:"TAPSIN CALIENTE",  dscp:0,  delta:"+6%",  licit_vence:"Sep-2026", estado:"ACTIVO",   val_licit:22,  comp_risk:"Bajo",  presup_mens:28,  encargado:"Rosa Díaz (QF)",         ejec_pct:88},
+    {n:"CESFAM Maipú Centro",    sku_act:"CONCERTA 36 MG",  sku_perd:"ACTEMRA 162 MG",   dscp:5,  delta:"-3%",  licit_vence:"Abr-2026", estado:"RENOVAR",  val_licit:18,  comp_risk:"Medio", presup_mens:22,  encargado:"Jorge Álvarez (Jefe)",   ejec_pct:74},
+    {n:"CESFAM Los Almendros",   sku_act:"TAPSIN CALIENTE", sku_perd:"CLEXANE 40 MG",    dscp:20, delta:"-38%", licit_vence:"Mar-2026", estado:"URGENTE",  val_licit:36,  comp_risk:"Alto",  presup_mens:40,  encargado:"Patricia Vera (Compras)",ejec_pct:52},
+  ],
+  "Silvia Flores": [
+    {n:"CESFAM Colina",          sku_act:"CONCERTA 36 MG",  sku_perd:"TAPSIN CALIENTE",  dscp:0,  delta:"+3%",  licit_vence:"Ago-2026", estado:"ACTIVO",   val_licit:12,  comp_risk:"Bajo",  presup_mens:16,  encargado:"Carlos Meza (QF)",       ejec_pct:83},
+    {n:"CESFAM Lampa",           sku_act:"CLEXANE 40 MG",   sku_perd:"ACTEMRA 162 MG",   dscp:11, delta:"-17%", licit_vence:"May-2026", estado:"RENOVAR",  val_licit:15,  comp_risk:"Medio", presup_mens:19,  encargado:"Elena Soto (Jefe)",      ejec_pct:66},
+    {n:"CESFAM Tiltil",          sku_act:"TAPSIN CALIENTE", sku_perd:"MABTHERA 500 MG",  dscp:28, delta:"-51%", licit_vence:"Abr-2026", estado:"URGENTE",  val_licit:8,   comp_risk:"Alto",  presup_mens:10,  encargado:"Manuel Rojas (Compras)", ejec_pct:41},
+    {n:"Consultorio Batuco",     sku_act:"CONCERTA 36 MG",  sku_perd:"CLEXANE 40 MG",    dscp:14, delta:"-22%", licit_vence:"Jun-2026", estado:"RENOVAR",  val_licit:11,  comp_risk:"Medio", presup_mens:14,  encargado:"Beatriz Torres (QF)",    ejec_pct:78},
+  ],
+};
+
+// SKUs CENABAST (esenciales + convenio marco)
+const SKU_CENABAST = [
+  {sku:"CLEXANE 40 MG/0.4 ML",  tend:"+10%", mg:"18%", tipo:"Convenio Marco", tip:"Alta demanda APS. Protocolo antitrombótico estándar en CESFAM."},
+  {sku:"CONCERTA 36 MG x30",    tend:"+10%", mg:"14%", tipo:"Licitación",     tip:"En alza — asegurar volumen antes de próxima licit."},
+  {sku:"TAPSIN CALIENTE NOCHE", tend:"+63%", mg:"10%", tipo:"Directa",        tip:"Alta rotación invierno. Temporada se acerca — preparar stock."},
+  {sku:"ACTEMRA 162 MG",        tend:"+37%", mg:"15%", tipo:"Especialidad",   tip:"Baja penetración en APS — potencial no explotado."},
+  {sku:"MABTHERA 500 MG",       tend:"-27%", mg:"22%", tipo:"Especialidad",   tip:"⚠️ Cayó. Verificar si CENABAST central cambió proveedor."},
+];
+
+// Datos mes anterior (Feb-26) para deltas
+const PREV_DATA_CEN = {
+  "Ilse Arriagada": {cli:145,mg:23.5,v_plan:18,v_real:13},
+  "Jose Pascual":   {cli:6,  mg:34.2,v_plan:8, v_real:7},
+  "Silvia Flores":  {cli:55, mg:33.5,v_plan:14,v_real:10},
+};
+
+// Alertas ChileCompra — licitaciones abiertas/próximas no asignadas aún
+const CHILECHILE_COMPRA = [
+  {id:"ID762-2026-LE",  muni:"Municipalidad Lo Prado",      producto:"TAPSIN CALIENTE NOCHE/DIA",   val_est:85,  fecha_cierre:"08-Abr", estado:"ABIERTA", match:"Alto",  owner:"Ilse Arriagada"},
+  {id:"ID1803-2026-LE", muni:"Municipalidad El Bosque",     producto:"CONCERTA 36 MG x30",          val_est:120, fecha_cierre:"12-Abr", estado:"ABIERTA", match:"Alto",  owner:"Ilse Arriagada"},
+  {id:"ID0291-2026-LE", muni:"Municipalidad Maipú",         producto:"CLEXANE 40 MG/0.4 ML",        val_est:95,  fecha_cierre:"15-Abr", estado:"ABIERTA", match:"Alto",  owner:"Jose Pascual"},
+  {id:"ID0554-2026-LE", muni:"Municipalidad Colina",        producto:"CLEXANE 40 MG + CONCERTA 36", val_est:42,  fecha_cierre:"20-Abr", estado:"ABIERTA", match:"Alto",  owner:"Silvia Flores"},
+  {id:"ID0882-2026-LE", muni:"Municipalidad San Bernardo",  producto:"MABTHERA 500 MG/50 ML",       val_est:55,  fecha_cierre:"03-May", estado:"ABIERTA", match:"Medio", owner:"Ilse Arriagada"},
+  {id:"ID1120-2026-LE", muni:"Municipalidad Puente Alto",   producto:"ACTEMRA 162 MG + CLEXANE",    val_est:180, fecha_cierre:"10-May", estado:"PRÓXIMA", match:"Alto",  owner:"Ilse Arriagada"},
+  {id:"ID0633-2026-LE", muni:"Municipalidad Lampa",         producto:"TAPSIN CALIENTE NOCHE",       val_est:28,  fecha_cierre:"05-May", estado:"PRÓXIMA", match:"Medio", owner:"Silvia Flores"},
+  {id:"ID2241-2026-LE", muni:"Municipalidad Peñaflor",      producto:"CLEXANE 40 MG + TAPSIN",      val_est:68,  fecha_cierre:"22-Abr", estado:"ABIERTA", match:"Alto",  owner:"Jose Pascual"},
+];
+
+const DIAS_T=17, DIAS_M=22, DIAS_R=5;
+const today=new Date();
+const DS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],MS=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+document.getElementById('dtag').textContent=`${DS[today.getDay()]} ${today.getDate()} ${MS[today.getMonth()]} ${today.getFullYear()}`;
+const vsel=document.getElementById('vsel');
+const rnk=VCENABAST.slice().sort((a,b)=>b.rev-a.rev);
+rnk.forEach((v,i)=>{const o=document.createElement('option');o.value=VCENABAST.indexOf(v);o.textContent=`${v.n}  ·  ${v.cli} CESFAM  ·  ${v.licit_activas} licitaciones`;vsel.appendChild(o);});
+let AC={};
+function kill(){Object.values(AC).forEach(c=>{try{c.destroy();}catch(e){}});AC={};}
+
+// Calcular días hasta fecha
+function diasHasta(mesAno){
+  const mm={Ene:0,Feb:1,Mar:2,Abr:3,May:4,Jun:5,Jul:6,Ago:7,Sep:8,Oct:9,Nov:10,Dic:11};
+  const[m,y]=mesAno.split('-');
+  const t=new Date(parseInt(y),mm[m],1);
+  return Math.ceil((t-today)/(1000*60*60*24));
+}
+function countdownClass(d){return d<=0?'cr':d<=30?'cr':d<=60?'cy':'cg';}
+function countdownBadge(d){return d<=0?'bdv':d<=30?'br':d<=60?'by':'bg';}
+function countdownLabel(d,mesAno){return d<=0?`VENCIDA (${mesAno})`:d<=30?`${d}d — URGENTE`:d<=60?`${d}d — RENOVAR`:`${d}d — ACTIVO`;}
+function compBadge(c){return c==='Alto'?'br':c==='Medio'?'by':'bg';}
+function estadoBadge(e){return e==='URGENTE'?'br':e==='RENOVAR'?'by':'bg';}
+function predMeta(proyMar,metaMes){
+  const p=(proyMar/metaMes)*100;
+  if(p>=95)return{label:'✅ CERRARÁ META',cls:'cg',desc:'Ritmo actual alcanza el objetivo.'};
+  if(p>=80)return{label:'⚡ CON ESFUERZO',cls:'cy',desc:`Brecha $${(metaMes-proyMar).toFixed(1)}M.`};
+  return{label:'⚠️ META EN RIESGO',cls:'cr',desc:`Brecha $${(metaMes-proyMar).toFixed(1)}M.`};
+}
+
+function render(){
+  kill();
+  const v=VCENABAST[parseInt(vsel.value)];
+  if(!v)return;
+  const rate3=v.r3/DIAS_T, rate2=v.r2/20;
+  const proyMar=+(rate3*DIAS_M).toFixed(1);
+  const velPct=(rate2>0?(((rate3-rate2)/rate2)*100).toFixed(1):0);
+  const vColor=+velPct>=0?'cg':'cr';
+  const rankN=rnk.findIndex(x=>x.n===v.n)+1;
+  const efic=v.cli>0?Math.round(((v.cli-v.caidos)/v.cli)*100):100;
+  const pctMeta=Math.round((proyMar/v.meta_mes)*100);
+  const pred=predMeta(proyMar,v.meta_mes);
+  const cesfams=CESFAM_DB[v.n]||[];
+  const urgentes=cesfams.filter(c=>c.estado==='URGENTE');
+  const renovar=cesfams.filter(c=>c.estado==='RENOVAR');
+  const activos=cesfams.filter(c=>c.estado==='ACTIVO');
+  const sinCompra=cesfams.filter(c=>c.dscp>0).sort((a,b)=>b.dscp-a.dscp);
+  const compAlto=cesfams.filter(c=>c.comp_risk==='Alto');
+  const visEficCen=Math.round((v.v_real/v.v_plan)*100);
+  // Deltas vs mes anterior
+  const prevDN=PREV_DATA_CEN[v.n]||{cli:v.cli,mg:v.mg,v_plan:v.v_plan,v_real:v.v_real};
+  const deltaCliN=v.cli-prevDN.cli;
+  const deltaMgN=(v.mg-prevDN.mg).toFixed(1);
+  const prevVisEficN=Math.round((prevDN.v_real/prevDN.v_plan)*100);
+  const deltaVisEficN=visEficCen-prevVisEficN;
+  // Pipeline ChileCompra propio
+  const myChileCompra=CHILECHILE_COMPRA.filter(l=>l.owner===v.n);
+  const valChileCompra=myChileCompra.reduce((s,l)=>s+l.val_est,0);
+  const cesfamsBajoEjec=cesfams.filter(c=>c.ejec_pct<60).sort((a,b)=>a.ejec_pct-b.ejec_pct);
+  const presupTotalAnual=cesfams.reduce((s,c)=>s+c.presup_mens*12,0);
+  const saldoDisp=cesfams.reduce((s,c)=>s+Math.round(c.presup_mens*12*(1-c.ejec_pct/100)),0);
+
+  // ── AGENDA CONTACTOS ──
+  const agendaCen=cesfams.map(c=>{
+    const d=diasHasta(c.licit_vence);
+    let prio,accion,esperado,urgColor,motivo;
+    if(d<=0){prio='VENCIDA';accion='Llamar HOY a '+c.encargado+' — verificar si está en ChileCompra';esperado=c.val_licit;urgColor='bdv';motivo='Contrato vencido — ventana crítica';}
+    else if(d<=15){prio='URGENTE <15d';accion='Proponer renovación directa antes del portal — '+c.encargado;esperado=c.val_licit;urgColor='br';motivo='Vence en '+d+'d — riesgo máximo';}
+    else if(d<=30){prio='URGENTE';accion='Gestionar renovación esta semana con '+c.encargado;esperado=c.val_licit;urgColor='br';motivo='Vence en '+d+'d — actuar pronto';}
+    else if(c.dscp>20&&c.comp_risk==='Alto'){prio='REACTIVAR ⚔️';accion='Sin compra '+c.dscp+'d + comp. alta — llamar hoy';esperado=Math.round(c.presup_mens*0.7);urgColor='br';motivo=c.dscp+'d sin pedido · competencia activa';}
+    else if(c.dscp>14){prio='REACTIVAR';accion='Sin compra '+c.dscp+'d — verificar presupuesto CESFAM';esperado=Math.round(c.presup_mens*0.6);urgColor='br';motivo='Sin compra '+c.dscp+'d — requiere contacto';}
+    else if(c.dscp>0){prio='SEGUIMIENTO';accion='Recordar pedido + proponer TAPSIN invierno';esperado=Math.round(c.presup_mens*0.5);urgColor='by';motivo='Sin compra '+c.dscp+'d — seguimiento rutinario';}
+    else if(c.estado==='RENOVAR'){prio='RENOVAR';accion='Gestionar renovación antes de licitación pública';esperado=c.val_licit;urgColor='by';motivo='Vence en '+d+'d — renovar este mes';}
+    else{prio='ACTIVO';accion='Check-in + pedido anticipado TAPSIN invierno';esperado=Math.round(c.presup_mens*0.18);urgColor='bg';motivo='Activo OK — fidelizar y hacer pedido invierno';}
+    return{...c,prio,accion,esperado,urgColor,motivo,d_licit:d};
+  }).sort((a,b)=>{const o={VENCIDA:0,'URGENTE <15d':1,URGENTE:2,'REACTIVAR ⚔️':3,REACTIVAR:4,SEGUIMIENTO:5,RENOVAR:6,ACTIVO:7};return(o[a.prio]??9)-(o[b.prio]??9);});
+  const totalAgendaCen=agendaCen.reduce((s,c)=>s+parseFloat(c.esperado||0),0);
+  // Valor total en riesgo (urgentes + renovar)
+  const valorUrgente=urgentes.reduce((s,c)=>s+c.val_licit,0);
+  const valorRenovar=renovar.reduce((s,c)=>s+c.val_licit,0);
+  const valorTotal=cesfams.reduce((s,c)=>s+c.val_licit,0);
+  // Vencidas (días < 0)
+  const vencidas=cesfams.filter(c=>diasHasta(c.licit_vence)<=0);
+
+  document.getElementById('root').innerHTML=`
+<div class="pg">
+  <!-- KPI STRIP -->
+  <div class="ks">
+    <div class="kp"><div class="kl">Revenue Q1-26</div><div class="kv co">$${(v.rev/1000).toFixed(2)}B</div><div class="ksb">#${rankN}/3 · <span style="color:${+velPct>=0?'var(--g)':'var(--r)'};font-weight:700">${+velPct>=0?'↑+':'↓'}${Math.abs(velPct)}% vs Feb</span></div></div>
+    <div class="kp"><div class="kl">Proy. Cierre Mar</div><div class="kv ${pctMeta>=90?'cg':pctMeta>=75?'cy':'cr'}">$${proyMar}M</div><div class="ksb">meta $${v.meta_mes}M → ${pctMeta}%</div></div>
+    <div class="kp"><div class="kl">Predicción Meta</div><div class="kv ${pred.cls}" style="font-size:11px;margin-top:2px">${pred.label}</div><div class="ksb">${pred.desc}</div></div>
+    <div class="kp"><div class="kl">Valor cartera</div><div class="kv co">$${valorTotal}M</div><div class="ksb">licitaciones activas/mes</div></div>
+    <div class="kp"><div class="kl">$M en riesgo</div><div class="kv ${valorUrgente>0?'cr':'cg'}">$${valorUrgente+valorRenovar}M</div><div class="ksb">${urgentes.length} urg + ${renovar.length} renov.</div></div>
+    <div class="kp"><div class="kl">CESFAM activos</div><div class="kv ct">${v.cli-v.caidos}</div><div class="ksb">${v.caidos} sin pedido · <span style="color:${deltaCliN>0?'var(--g)':deltaCliN<0?'var(--r)':'var(--mu)'};font-weight:700">${deltaCliN>0?'↑+':deltaCliN<0?'↓':'='}${deltaCliN!==0?Math.abs(deltaCliN)+' vs Feb':'igual'}</span></div></div>
+    <div class="kp"><div class="kl">Margen</div><div class="kv cg">${v.mg}%</div><div class="ksb"><span style="color:${+deltaMgN>=0?'var(--g)':'var(--r)'};font-weight:700">${+deltaMgN>=0?'↑+':'↓'}${Math.abs(deltaMgN)}pp vs Feb</span></div></div>
+  </div>
+
+  <!-- CONTEXTO LICITACIONES Y TEMPORADA -->
+  <div class="card s3">
+    <div class="ch o">🏛️ Contexto Estratégico · Licitaciones + Temporada APS</div>
+    <div class="cb">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;">
+        <div style="background:rgba(248,81,73,.07);border:1px solid rgba(248,81,73,.2);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:var(--mu)">VENCIDAS / URGENTES</div>
+          <div style="font-size:22px;font-weight:900;color:var(--r)">${vencidas.length + urgentes.filter(c=>diasHasta(c.licit_vence)>0).length}</div>
+          <div style="font-size:9px;color:var(--mu)">$${valorUrgente}M en juego</div>
+        </div>
+        <div style="background:rgba(210,153,34,.07);border:1px solid rgba(210,153,34,.2);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:var(--mu)">POR RENOVAR</div>
+          <div style="font-size:22px;font-weight:900;color:var(--y)">${renovar.length}</div>
+          <div style="font-size:9px;color:var(--mu)">$${valorRenovar}M · gestionar antes jun</div>
+        </div>
+        <div style="background:rgba(63,185,80,.07);border:1px solid rgba(63,185,80,.2);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:var(--mu)">ACTIVOS OK</div>
+          <div style="font-size:22px;font-weight:900;color:var(--g)">${activos.length}</div>
+          <div style="font-size:9px;color:var(--mu)">Sin novedad</div>
+        </div>
+        <div style="background:rgba(251,133,0,.07);border:1px solid rgba(251,133,0,.2);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:var(--mu)">🌧️ INVIERNO APS</div>
+          <div style="font-size:22px;font-weight:900;color:var(--o)">10 sem</div>
+          <div style="font-size:9px;color:var(--mu)">TAPSIN NOCH sube +80% jun</div>
+        </div>
+      </div>
+      <div class="al r">
+        <strong>📋 Si una licitación expira SIN renovar:</strong> El CESFAM debe publicar en ChileCompra → proceso de <strong>4-6 semanas mínimo</strong> → cualquier proveedor puede competir → RIESGO DE PERDER EL CONTRATO. Actuar antes del vencimiento es la única ventana.
+      </div>
+      ${vencidas.length>0?`<div class="al r" style="margin-top:5px"><strong>🚨 ${vencidas.length} contrato(s) ya vencidos:</strong> ${vencidas.map(c=>c.n).join(', ')}. Verificar si ya está en proceso ChileCompra o se puede aún negociar directo.</div>`:''}
+    </div>
+  </div>
+
+  <!-- EVOLUCIÓN + SEMÁFORO -->
+  <div class="card s2">
+    <div class="ch o">📈 Evolución + Proyección — ${v.n} · ${v.cli} CESFAM / Consultorios</div>
+    <div class="cb">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px;text-align:center;">
+        <div><div style="font-size:9px;color:var(--mu)">ENE-26</div><div style="font-size:20px;font-weight:800;color:var(--t)">$${v.r1}M</div><div style="font-size:9px;color:var(--mu)">${(v.r1/22).toFixed(1)}M/día</div></div>
+        <div><div style="font-size:9px;color:var(--mu)">FEB-26</div><div style="font-size:20px;font-weight:800;color:var(--t)">$${v.r2}M</div><div style="font-size:9px;color:var(--mu)">${(v.r2/20).toFixed(1)}M/día</div></div>
+        <div><div style="font-size:9px;color:var(--mu)">MAR-26 (${DIAS_T}d)</div><div style="font-size:20px;font-weight:800;color:var(--g)">$${v.r3}M</div><div style="font-size:9px;color:${+velPct>=0?'var(--g)':'var(--r)'}">${rate3.toFixed(1)}M/día · ${velPct>0?'+':''}${velPct}%</div></div>
+        <div style="border:1px dashed var(--bd);border-radius:6px;padding:4px;opacity:.8"><div style="font-size:9px;color:var(--mu)">PROYECCIÓN</div><div style="font-size:20px;font-weight:800;color:var(--y)">$${proyMar}M</div><div style="font-size:9px;color:var(--mu)">a ritmo actual</div></div>
+        <div style="border:1px solid rgba(251,133,0,.3);border-radius:6px;padding:4px;background:rgba(251,133,0,.05)"><div style="font-size:9px;color:var(--mu)">META MES</div><div style="font-size:20px;font-weight:800;color:var(--o)">$${v.meta_mes}M</div><div style="font-size:9px;font-weight:700;color:${pctMeta>=90?'var(--g)':pctMeta>=75?'var(--y)':'var(--r)'}">${pctMeta}%</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="font-size:10px;color:var(--mu);">CESFAM activos</div>
+        <div class="bar-bg"><div class="bar-f" style="width:${efic}%;background:${efic>=80?'var(--g)':efic>=65?'var(--y)':'var(--r)'}"></div></div>
+        <div style="font-size:11px;font-weight:700;color:${efic>=80?'var(--g)':efic>=65?'var(--y)':'var(--r)'};">${efic}% (${v.cli-v.caidos}/${v.cli} activos)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREDICCIONES -->
+  <div class="card">
+    <div class="ch p">🧠 Inteligencia Predictiva</div>
+    <div class="cb">
+      <div class="pred-box">
+        <div class="pred-label">¿Cerrará la meta?</div>
+        <div class="pred-val ${pred.cls}">${pred.label}</div>
+        <div class="pred-sub">${pred.desc}</div>
+      </div>
+      <div class="pred-box">
+        <div class="pred-label">Predicción semana siguiente</div>
+        <div class="pred-val cy">$${(rate3*5).toFixed(1)}M</div>
+        <div class="pred-sub">5 días hábiles × ${rate3.toFixed(1)}M/día. ${vencidas.length>0?'⚠️ Caída esperada si contratos vencidos no se resuelven.':''}</div>
+      </div>
+      <div class="pred-box">
+        <div class="pred-label">Impacto invierno (Jun-26)</div>
+        <div class="pred-val co">+TAPSIN +80%</div>
+        <div class="pred-sub">Respiratory season. CESFAM con adultos mayores = alta demanda. Preparar stock con TODOS los CESFAM activos AHORA.</div>
+      </div>
+      <div class="pred-box">
+        <div class="pred-label">Riesgo competitivo (contratos en riesgo)</div>
+        <div class="pred-val ${compAlto.length>0?'cr':'cg'}">${compAlto.length} CESFAM</div>
+        <div class="pred-sub">${compAlto.length>0?compAlto.map(c=>c.n.split(' ').slice(0,2).join(' ')).join(', ')+' — tienen alternativas activas.':'Sin riesgo competitivo alto esta semana.'}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDARIO LICITACIONES CON COUNTDOWN -->
+  <div class="card s2">
+    <div class="ch r">📅 Calendario de Licitaciones — Countdown Exacto HOY</div>
+    <div class="cb">
+      ${cesfams.map(c=>{
+        const d=diasHasta(c.licit_vence);
+        return `<div class="licit-card" style="border-color:${d<=0?'rgba(248,81,73,.4)':d<=30?'rgba(248,81,73,.3)':d<=60?'rgba(210,153,34,.3)':'var(--bd)'}">
+          <div class="licit-top">
+            <div>
+              <div class="licit-n"><span class="semaforo ${d<=0||d<=30?'sem-r':d<=60?'sem-y':'sem-g'}"></span>${c.n}</div>
+              <div class="licit-sub">Encargado: ${c.encargado} · SKU activo: ${c.sku_act}</div>
+              <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap">
+                <span class="b ${estadoBadge(c.estado)}">${d<=0?'VENCIDA':c.estado}</span>
+                <span class="b ${compBadge(c.comp_risk)}">Comp. ${c.comp_risk}</span>
+                ${c.dscp>0?`<span class="b br">${c.dscp}d sin pedido</span>`:'<span class="b bg">Al día</span>'}
+                <span style="font-size:9px;color:var(--mu)">$${c.presup_mens}M/mes · Licit. $${c.val_licit}M</span>
+              </div>
+            </div>
+            <div class="licit-right">
+              <div class="licit-countdown ${countdownClass(d)}">${d<=0?'⚠️':Math.abs(d)}</div>
+              <div style="font-size:9px;color:var(--mu);text-align:right">${d<=0?'días vencida':'días restantes'}</div>
+              <span class="b ${countdownBadge(d)}">${c.licit_vence}</span>
+            </div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>
+
+  <!-- PROCESO LICITACIÓN TIMELINE -->
+  <div class="card">
+    <div class="ch r">⚠️ ¿Qué pasa si el contrato VENCE sin renovar?</div>
+    <div class="cb">
+      <div style="background:rgba(248,81,73,.05);border:1px solid rgba(248,81,73,.2);border-radius:6px;padding:10px;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:var(--r);margin-bottom:8px">PROCESO OBLIGATORIO CHILECOMPRA:</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          ${[
+            {d:'Día 0',label:'Contrato vence → CESFAM queda sin proveedor',c:'var(--r)'},
+            {d:'Día 1-3',label:'Encargado compras publica en portal.mercadopublico.cl',c:'var(--y)'},
+            {d:'Día 3-14',label:'Período de cotizaciones abiertas (cualquier proveedor)',c:'var(--y)'},
+            {d:'Día 14-21',label:'Evaluación de ofertas por comité',c:'var(--y)'},
+            {d:'Día 21-42',label:'Adjudicación y formalización (si no hay impugnaciones)',c:'var(--g)'},
+            {d:'Resultado',label:'CMK puede PERDER el contrato a un competidor',c:'var(--r)'}
+          ].map(s=>`
+            <div style="display:flex;align-items:flex-start;gap:8px">
+              <span style="background:${s.c};color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;width:55px;flex-shrink:0;text-align:center">${s.d}</span>
+              <span style="font-size:10px;color:var(--li)">${s.label}</span>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div class="al r"><strong>Ventana de acción:</strong> Actuar <strong>2-4 semanas ANTES</strong> del vencimiento. Proponer renovación directa con precio y condiciones actuales. Una vez en ChileCompra = juego abierto.</div>
+    </div>
+  </div>
+
+  <!-- LICITACIONES URGENTES DETALLE -->
+  <div class="card">
+    <div class="ch r">🚨 Urgentes — Actuar Esta Semana</div>
+    <div class="cb">
+      ${urgentes.length===0&&vencidas.length===0?`<div style="text-align:center;color:var(--mu);padding:12px;font-size:11px">✅ Sin licitaciones urgentes esta semana</div>`:''}
+      ${[...vencidas,...urgentes.filter(c=>diasHasta(c.licit_vence)>0)].map(c=>{
+        const d=diasHasta(c.licit_vence);
+        return `<div class="licit-card" style="border-color:rgba(248,81,73,.4)">
+          <div class="licit-top">
+            <div>
+              <div class="licit-n">${c.n}</div>
+              <div class="licit-sub">${c.encargado} · SKU: ${c.sku_act} ${c.dscp>0?'· '+c.dscp+'d sin compra':''}</div>
+            </div>
+            <div class="licit-right">
+              <span class="b bdv">${d<=0?'VENCIDA':d+'d'}</span>
+              <span style="font-size:11px;font-weight:700;color:var(--r)">$${c.val_licit}M</span>
+            </div>
+          </div>
+        </div>`;
+      }).join('')}
+      ${urgentes.length>0||vencidas.length>0?`<div class="al r" style="margin-top:5px"><strong>Acción inmediata:</strong> Llamar al encargado de compras de cada CESFAM HOY. Proponer renovación directa antes del proceso ChileCompra.</div>`:''}
+    </div>
+  </div>
+
+  <!-- CESFAM SIN PEDIDO + RIESGO COMPETITIVO -->
+  <div class="card">
+    <div class="ch r">🔴 CESFAM sin Pedido — Reactivar</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>CESFAM</th><th>Último SKU</th><th>Días</th><th>Comp.</th><th>Proponer</th></tr></thead>
+        <tbody>
+          ${sinCompra.slice(0,6).map((c,i)=>`<tr>
+            <td><strong>${c.n.split(' ').slice(0,3).join(' ')}</strong></td>
+            <td style="font-size:10px;color:var(--mu)">${c.sku_perd}</td>
+            <td class="r"><span class="b ${c.dscp>20?'br':c.dscp>10?'by':'bt'}">${c.dscp}d</span></td>
+            <td><span class="b ${compBadge(c.comp_risk)}">${c.comp_risk}</span></td>
+            <td style="font-size:10px;color:var(--t)">${SKU_CENABAST[i%SKU_CENABAST.length].sku.split(' ').slice(0,2).join(' ')}</td>
+          </tr>`).join('')}
+          ${sinCompra.length===0?`<tr><td colspan="5" style="text-align:center;color:var(--mu);padding:10px">✅ Todos los CESFAM realizaron pedido esta semana</td></tr>`:''}
+        </tbody>
+      </table>
+      <div style="margin-top:7px;font-size:10px;color:var(--mu)">${sinCompra.length} de ${cesfams.length} CESFAM sin pedido · Riesgo: <strong style="color:var(--r)">$${v.riesgo}M/mes</strong></div>
+    </div>
+  </div>
+
+  <!-- ESTADO CARTERA COMPLETO -->
+  <div class="card">
+    <div class="ch o">🚦 Estado Cartera CESFAM — Vista Completa</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>CESFAM</th><th>Licit. vence</th><th>Días</th><th>Estado</th><th>Comp.</th><th>Pedido</th></tr></thead>
+        <tbody>
+          ${cesfams.map(c=>{
+            const d=diasHasta(c.licit_vence);
+            return `<tr>
+              <td style="font-size:10px"><strong>${c.n.split(' ').slice(0,3).join(' ')}</strong></td>
+              <td style="font-size:10px">${c.licit_vence}</td>
+              <td><span class="b ${countdownBadge(d)}" style="font-size:8px">${d<=0?'VENCIDA':d+'d'}</span></td>
+              <td>
+                <span class="semaforo ${d<=0||d<=30?'sem-r':d<=60?'sem-y':'sem-g'}"></span>
+                <span class="b ${estadoBadge(d<=0?'URGENTE':c.estado)}" style="font-size:8px">${d<=0?'VENCIDA':c.estado}</span>
+              </td>
+              <td><span class="b ${compBadge(c.comp_risk)}" style="font-size:8px">${c.comp_risk}</span></td>
+              <td class="r"><span class="b ${c.dscp===0?'bg':c.dscp>14?'br':'by'}">${c.dscp===0?'OK':c.dscp+'d'}</span></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SCRIPT CENABAST -->
+  <div class="card">
+    <div class="ch t">📞 Scripts para Encargados CESFAM</div>
+    <div class="cb">
+      <div style="font-size:10px;color:var(--mu);margin-bottom:6px">Prioridad: <strong style="color:var(--tx)">${urgentes[0]?urgentes[0].n+' · '+urgentes[0].encargado:sinCompra[0]?sinCompra[0].n:'Encargado de compras'}</strong></div>
+      <div class="scr"><div class="stag">RENOVACIÓN URGENTE</div><br>"Buenos días, ${v.n.split(' ')[0]} de Clinical Market. Les llamo porque el contrato de <strong>${urgentes[0]?urgentes[0].sku_act:'su producto'}</strong> vence en ${urgentes[0]?diasHasta(urgentes[0].licit_vence)<=0?'ya vencido':'menos de '+diasHasta(urgentes[0].licit_vence)+' días':'poco tiempo'}. ¿Podemos renovar directo antes de que entre a ChileCompra?"</div>
+      <div class="scr"><div class="stag">VENTAJA RENOVACIÓN DIRECTA</div><br>"Renovando con nosotros ahora se aseguran el precio actual, despacho en 48h y sin los plazos de licitación pública. Si entra al portal, el proceso demora 4-6 semanas mínimo y cualquier proveedor puede cotizar."</div>
+      <div class="scr"><div class="stag">🌧️ PREPARACIÓN INVIERNO APS</div><br>"Además, dado que se acerca invierno — <strong>TAPSIN CALIENTE NOCHE</strong> va a subir fuerte en mayo-junio en todos los CESFAM. Los que piden ahora aseguran stock y precio. ¿Le hago propuesta de pedido anticipado?"</div>
+    </div>
+  </div>
+
+  <!-- SKU PUSH -->
+  <div class="card s2">
+    <div class="ch y">💊 SKUs para CENABAST / APS + Valor por Tipo de Venta</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>Producto</th><th>Tipo Venta</th><th>Tend.</th><th>Mg</th><th>Tip + Acción</th></tr></thead>
+        <tbody>
+          ${SKU_CENABAST.map(s=>`<tr>
+            <td><strong>${s.sku}</strong></td>
+            <td><span class="b bo">${s.tipo}</span></td>
+            <td><span class="b ${s.tend.startsWith('+')?'bg':'br'}">${s.tend}</span></td>
+            <td style="font-weight:700;color:${+s.mg.replace('%','')>=18?'var(--g)':'var(--y)'}">${s.mg}</td>
+            <td style="font-size:10px;color:var(--mu)">${s.tip}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MÉTRICAS -->
+  <div class="card">
+    <div class="ch">📊 Indicadores CENABAST</div>
+    <div class="cb">
+      <div class="mrow"><div class="ml">Avance vs meta</div><div class="bar-bg"><div class="bar-f" style="width:${Math.min(pctMeta,100)}%;background:${pctMeta>=90?'var(--g)':pctMeta>=75?'var(--y)':'var(--r)'}"></div></div><div class="mv ${pctMeta>=90?'cg':pctMeta>=75?'cy':'cr'}">${pctMeta}%</div></div>
+      <div class="mrow"><div class="ml">CESFAM activos</div><div class="bar-bg"><div class="bar-f" style="width:${efic}%;background:${efic>=80?'var(--g)':efic>=65?'var(--y)':'var(--r)'}"></div></div><div class="mv ${efic>=80?'cg':efic>=65?'cy':'cr'}">${efic}%</div></div>
+      <div class="mrow"><div class="ml">Margen promedio</div><div class="bar-bg"><div class="bar-f" style="width:${(v.mg/35)*100}%;background:var(--g)"></div></div><div class="mv cg">${v.mg}%</div></div>
+      <div class="mrow"><div class="ml">Licit. urgentes+vencidas</div><div class="bar-bg"><div class="bar-f" style="width:${Math.min(((urgentes.length+vencidas.length)/5)*100,100)}%;background:${(urgentes.length+vencidas.length)>0?'var(--r)':'var(--g)'}"></div></div><div class="mv ${(urgentes.length+vencidas.length)>0?'cr':'cg'}">${urgentes.length+vencidas.length}</div></div>
+      <div class="mrow"><div class="ml">$M en riesgo (contratos)</div><div class="bar-bg"><div class="bar-f" style="width:${Math.min(((valorUrgente+valorRenovar)/valorTotal)*100||0,100)}%;background:var(--r)"></div></div><div class="mv cr">$${valorUrgente+valorRenovar}M</div></div>
+    </div>
+  </div>
+
+  <!-- ALERTAS -->
+  <div class="card">
+    <div class="ch ${vencidas.length>0||urgentes.length>0?'r':v.caidos>30?'y':'g'}">⚡ Alertas del Día</div>
+    <div class="cb">
+      ${vencidas.length>0?`<div class="al r"><strong>🚨 ${vencidas.length} CONTRATO(S) VENCIDO(S)</strong> · ${vencidas.map(c=>c.n).join(', ')}. Verificar urgente si ya está en ChileCompra o hay tiempo de negociar.</div>`:''}
+      ${urgentes.filter(c=>diasHasta(c.licit_vence)>0).length>0?`<div class="al r"><strong>🔴 ${urgentes.filter(c=>diasHasta(c.licit_vence)>0).length} licitación(es) urgentes</strong> · Vencen en menos de 30 días. Llamar HOY al encargado de compras. $${valorUrgente}M en juego.</div>`:''}
+      ${v.caidos>0?`<div class="al r"><strong>🔴 ${v.caidos} CESFAM sin pedido</strong> · Muchos pueden estar esperando licitación o tener presupuesto bloqueado. Verificar razón.</div>`:''}
+      ${renovar.length>0?`<div class="al"><strong>📋 ${renovar.length} contratos por renovar</strong> · $${valorRenovar}M. No urgentes aún, pero gestionar antes de junio para no perder ventana.</div>`:''}
+      ${+velPct<-10?`<div class="al r"><strong>▼ Velocidad bajó ${Math.abs(velPct)}%</strong> · Posible impacto de licitaciones en proceso. Verificar con cada CESFAM.</div>`:''}
+      <div class="al o"><strong>🌧️ Invierno APS:</strong> En ~10 semanas, TAPSIN sube +80% en CESFAM. Preparar pedidos anticipados para adultos mayores y APS general HOY.</div>
+      <div class="al o"><strong>💡 Margen ${v.mg}%:</strong> El mayor del equipo CMK. Mantener mix actual. MABTHERA cayó -27% — verificar si CENABAST central cambió proveedor o formulario.</div>
+    </div>
+  </div>
+
+  <!-- PLAN ACCIÓN -->
+  <div class="card s2">
+    <div class="ch y">🎯 Plan de Acción — ${DS[today.getDay()]} ${today.getDate()} ${MS[today.getMonth()]}</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Acción</th><th>CESFAM</th><th>Tema</th><th>$M Impacto</th><th>Estado</th></tr></thead>
+        <tbody>
+          ${vencidas[0]?`<tr><td>1</td><td>🚨 Rescatar contrato vencido</td><td>${vencidas[0].n.split(' ').slice(0,2).join(' ')}</td><td style="font-size:10px">Verificar si está en ChileCompra · ${vencidas[0].encargado}</td><td class="r">$${vencidas[0].val_licit}M</td><td><span class="b bdv">CRÍTICO</span></td></tr>`:''}
+          ${urgentes.filter(c=>diasHasta(c.licit_vence)>0)[0]?`<tr><td>${vencidas.length>0?2:1}</td><td>🔴 Renovar urgente</td><td>${urgentes.filter(c=>diasHasta(c.licit_vence)>0)[0].n.split(' ').slice(0,2).join(' ')}</td><td style="font-size:10px">Vence en ${diasHasta(urgentes.filter(c=>diasHasta(c.licit_vence)>0)[0].licit_vence)}d · ${urgentes.filter(c=>diasHasta(c.licit_vence)>0)[0].encargado}</td><td class="r">$${urgentes.filter(c=>diasHasta(c.licit_vence)>0)[0].val_licit}M</td><td><span class="b br">HOY</span></td></tr>`:''}
+          ${sinCompra[0]?`<tr><td>3</td><td>🔴 Reactivar CESFAM</td><td>${sinCompra[0].n.split(' ').slice(0,2).join(' ')}</td><td style="font-size:10px">${sinCompra[0].dscp}d sin pedido · ${sinCompra[0].sku_perd}</td><td class="r">$${(v.riesgo/v.caidos*1).toFixed(1)}M</td><td><span class="b br">HOY</span></td></tr>`:''}
+          ${renovar[0]?`<tr><td>4</td><td>📋 Gestionar renovación</td><td>${renovar[0].n.split(' ').slice(0,2).join(' ')}</td><td style="font-size:10px">Antes de licitación pública · $${renovar[0].val_licit}M</td><td class="r">Continuidad</td><td><span class="b by">SEMANA</span></td></tr>`:''}
+          <tr><td>5</td><td>🌧️ Pedido anticipado invierno</td><td>CESFAM activos</td><td style="font-size:10px">TAPSIN NOCH — stock May-Jun APS</td><td class="r">+$${(rate3*0.15).toFixed(1)}M</td><td><span class="b bt">PROPUESTA</span></td></tr>
+          <tr><td>6</td><td>💊 Push ACTEMRA APS</td><td>CESFAM con adultos mayores</td><td style="font-size:10px">ACTEMRA 162 MG (+37%) — potencial APS no explotado</td><td class="r">Mg 15%</td><td><span class="b bp">MES</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- AGENDA CONTACTOS DÍA -->
+  <div class="card s3">
+    <div class="ch o">📞 Agenda de Contactos del Día — ${v.n} · ${cesfams.length} CESFAM · <span style="color:var(--y)">Esperado: $${totalAgendaCen}M</span></div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>CESFAM / Consultorio</th><th>Prioridad</th><th>Motivo</th><th>Acción</th><th>Ofrecer / Gestionar</th><th>Dejó de comprar</th><th>$ Esperado</th></tr></thead>
+        <tbody>
+          ${agendaCen.map((c,i)=>`<tr style="${c.urgColor==='bdv'?'background:rgba(248,81,73,.06)':''}">
+            <td style="font-weight:800;color:var(--mu);font-size:12px">${i+1}</td>
+            <td>
+              <strong>${c.n}</strong>
+              <div style="font-size:9px;color:var(--mu);margin-top:1px">${c.encargado}</div>
+            </td>
+            <td><span class="b ${c.urgColor}">${c.prio}</span></td>
+            <td style="font-size:10px;color:var(--mu);max-width:110px">${c.motivo}</td>
+            <td style="font-size:10px;color:var(--li)">${c.accion}</td>
+            <td>
+              <span style="font-size:10px;color:var(--o);font-weight:700">${c.sku_act}</span>
+              ${c.prio==='ACTIVO'||c.prio==='SEGUIMIENTO'?'<div style="font-size:9px;color:var(--p)">+ TAPSIN NOCH invierno</div>':''}
+              ${c.urgColor==='bdv'||c.urgColor==='br'?`<div style="font-size:9px;color:var(--y)">Licit. $${c.val_licit}M</div>`:''}
+            </td>
+            <td>
+              ${c.dscp>0
+                ?`<span style="font-size:10px;color:var(--r)">${c.sku_perd}</span><div style="font-size:9px;color:var(--mu)">${c.dscp}d sin pedir</div>`
+                :'<span style="font-size:10px;color:var(--mu)">—</span>'}
+            </td>
+            <td class="r">
+              <span style="font-size:14px;font-weight:800;color:${c.urgColor==='bdv'?'var(--r)':c.urgColor==='br'?'var(--r)':c.urgColor==='by'?'var(--y)':'var(--g)'}">$${c.esperado}M</span>
+              <div style="font-size:9px;color:var(--mu)">${c.d_licit<=0?'VENCIDA':c.d_licit+'d para licit.'}</div>
+            </td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid var(--bd);flex-wrap:wrap;gap:8px">
+        <div style="display:flex;gap:14px;font-size:10px;color:var(--mu);flex-wrap:wrap">
+          <span>🚨 Vencida: ${agendaCen.filter(c=>c.prio==='VENCIDA').length}</span>
+          <span>🔴 Urgente: ${agendaCen.filter(c=>c.prio.includes('URGENTE')).length}</span>
+          <span>⚠️ Reactivar: ${agendaCen.filter(c=>c.prio.includes('REACTIVAR')).length}</span>
+          <span>📋 Renovar: ${agendaCen.filter(c=>c.prio==='RENOVAR').length}</span>
+          <span>✅ Activo: ${agendaCen.filter(c=>c.prio==='ACTIVO').length}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:10px;color:var(--mu)">Esperado total hoy:</div>
+          <div style="font-size:22px;font-weight:900;color:var(--y)">$${totalAgendaCen}M</div>
+          <div style="font-size:10px;color:var(--mu)">/ meta $${v.meta_mes}M mes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EJECUCIÓN PRESUPUESTARIA -->
+  <div class="card s2">
+    <div class="ch ${saldoDisp>200?'g':'y'}">💰 Ejecución Presupuestaria Municipal — Saldo Disponible Año 2026</div>
+    <div class="cb">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px">
+        <div class="pred-box">
+          <div class="pred-label">Presup. Anual Total Cartera</div>
+          <div class="pred-val ct">$${(presupTotalAnual/1000).toFixed(0)}k</div>
+          <div class="pred-sub">${cesfams.length} CESFAM/consultorio</div>
+        </div>
+        <div class="pred-box">
+          <div class="pred-label">Saldo Disponible (sin ejecutar)</div>
+          <div class="pred-val cg">$${saldoDisp}M</div>
+          <div class="pred-sub">Oportunidad directa este año</div>
+        </div>
+        <div class="pred-box">
+          <div class="pred-label">CESFAM con &lt;60% ejecución</div>
+          <div class="pred-val ${cesfamsBajoEjec.length>0?'cy':'cg'}">${cesfamsBajoEjec.length}</div>
+          <div class="pred-sub">${cesfamsBajoEjec.length>0?'Mayor oportunidad de venta':'Todos bien ejecutados'}</div>
+        </div>
+      </div>
+      <table class="tbl">
+        <thead><tr><th>CESFAM</th><th>Presup. Anual</th><th>% Ejecutado</th><th>Saldo</th><th>Acción</th></tr></thead>
+        <tbody>
+          ${cesfams.slice().sort((a,b)=>a.ejec_pct-b.ejec_pct).map(c=>{
+            const presupAnual=c.presup_mens*12;
+            const saldo=Math.round(presupAnual*(1-c.ejec_pct/100));
+            return `<tr>
+              <td><strong style="font-size:10px">${c.n}</strong><div style="font-size:9px;color:var(--mu)">${c.encargado}</div></td>
+              <td class="r" style="font-weight:700">$${presupAnual}M</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <div class="bar-bg"><div class="bar-f" style="width:${c.ejec_pct}%;background:${c.ejec_pct>=80?'var(--g)':c.ejec_pct>=60?'var(--y)':'var(--r)'}"></div></div>
+                  <span style="font-size:11px;font-weight:700;color:${c.ejec_pct>=80?'var(--g)':c.ejec_pct>=60?'var(--y)':'var(--r)'}">${c.ejec_pct}%</span>
+                </div>
+              </td>
+              <td class="r"><strong style="color:${saldo>100?'var(--g)':saldo>50?'var(--y)':'var(--mu)'}">$${saldo}M</strong></td>
+              <td style="font-size:10px;color:var(--mu)">${c.ejec_pct<50?'🔥 Presionar pedido — saldo alto disponible':c.ejec_pct<70?'Ofrecer producto nuevo / volumen extra':'Mantenimiento y renovación oportuna'}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+      ${cesfamsBajoEjec.length>0?`<div class="al g" style="margin-top:7px">💡 <strong>Oportunidad inmediata:</strong> ${cesfamsBajoEjec.map(c=>c.n.split(' ').slice(0,2).join(' ')).join(', ')} tienen saldo presupuestario sin ejecutar. Contactar esta semana con propuesta específica.</div>`:''}
+    </div>
+  </div>
+
+  <!-- EFICIENCIA VISITAS CENABAST -->
+  <div class="card">
+    <div class="ch ${visEficCen>=85?'g':visEficCen>=70?'y':'r'}">📅 Visitas y Cobertura Territorial</div>
+    <div class="cb">
+      <div class="pred-box">
+        <div class="pred-label">Visitas realizadas / planeadas (Mar)</div>
+        <div class="pred-val ${visEficCen>=85?'cg':visEficCen>=70?'cy':'cr'}">${v.v_real} / ${v.v_plan}</div>
+        <div class="pred-sub">${visEficCen}% · ${v.v_plan-v.v_real} pendiente${v.v_plan-v.v_real!==1?'s':''} — ${v.cli} CESFAM en cartera</div>
+      </div>
+      <div class="pred-box">
+        <div class="pred-label">Cobertura cartera</div>
+        <div class="pred-val cy">${Math.round((v.v_real/v.cli)*100)}%</div>
+        <div class="pred-sub">${v.v_real} visitados de ${v.cli} CESFAM totales este mes</div>
+      </div>
+      ${visEficCen<70?`<div class="al r">⚠️ Baja cobertura. CESFAM no visitados tienen mayor riesgo de ser captados por competencia antes de licitación.</div>`:''}
+      <div style="font-size:10px;color:var(--mu);margin-top:6px">Sin visita reciente: <strong style="color:var(--r)">${cesfams.filter(c=>c.dscp>10).map(c=>c.n.split(' ').slice(0,2).join(' ')).join(', ')||'Todos visitados ✅'}</strong></div>
+    </div>
+  </div>
+
+  <!-- RANKING EQUIPO CENABAST -->
+  <div class="card">
+    <div class="ch o">👥 Ranking Equipo CENABAST Q1-26</div>
+    <div class="cb" style="padding:8px 10px">
+      ${rnk.map((x,i)=>{
+        const max=rnk[0].rev;
+        const isMe=x.n===v.n;
+        const xRate3=x.r3/DIAS_T, xRate2=x.r2/20;
+        const xVelPct=xRate2>0?(((xRate3-xRate2)/xRate2)*100).toFixed(0):0;
+        const xEfic=x.cli>0?Math.round(((x.cli-x.caidos)/x.cli)*100):100;
+        return `<div class="rk-row">
+          <div class="rk-n" style="color:${i===0?'var(--y)':'var(--mu)'};font-size:9px">#${i+1}</div>
+          <div style="flex:1;font-size:11px;font-weight:${isMe?700:400};color:${isMe?'var(--o)':'var(--li)'}">${x.n.split(' ').slice(0,2).join(' ')}${isMe?' ← tú':''}</div>
+          <span style="font-size:9px;color:var(--mu);width:55px">${x.cli} CESFAM</span>
+          <span style="font-size:8px;color:${+xVelPct>=0?'var(--g)':'var(--r)'};font-weight:700;width:42px;text-align:right">${+xVelPct>=0?'↑+':'↓'}${Math.abs(xVelPct)}%</span>
+          <div style="width:70px;background:#21262d;border-radius:99px;height:5px;margin:0 6px"><div style="width:${(x.rev/max)*100}%;height:100%;border-radius:99px;background:${isMe?'var(--o)':'rgba(251,133,0,.35)'}"></div></div>
+          <div style="font-size:10px;font-weight:700;width:58px;text-align:right;color:${isMe?'var(--o)':'var(--li)'}">$${(x.rev/1000).toFixed(2)}B</div>
+        </div>`;
+      }).join('')}
+      <div style="margin-top:6px;font-size:9px;color:var(--mu)">Flecha = velocidad Mar vs Feb. CESFAM = cartera total del vendedor.</div>
+    </div>
+  </div>
+
+  <!-- ALERTAS CHILECHILE COMPRA — LICITACIONES NUEVAS -->
+  <div class="card s2">
+    <div class="ch ${myChileCompra.length>0?'o':'g'}">🔍 ChileCompra — Licitaciones Nuevas Detectadas · $${valChileCompra}M oportunidad</div>
+    <div class="cb">
+      ${myChileCompra.length===0
+        ?'<div class="al g">✅ Sin licitaciones abiertas asignadas esta semana. Revisar portal ChileCompra regularmente.</div>'
+        :`<div class="al o" style="margin-bottom:8px">📢 <strong>${myChileCompra.length} licitacion${myChileCompra.length!==1?'es':''} activa${myChileCompra.length!==1?'s':''}</strong> en ChileCompra para tu zona — valor total estimado: <strong>$${valChileCompra}M</strong>. Las ABIERTA requieren propuesta técnica URGENTE.</div>
+        <table class="tbl">
+          <thead><tr><th>ID Licitación</th><th>Municipalidad</th><th>Producto</th><th>Val. Est.</th><th>Cierre</th><th>Match</th><th>Estado</th></tr></thead>
+          <tbody>
+            ${myChileCompra.map(l=>`<tr style="${l.estado==='ABIERTA'?'background:rgba(251,133,0,.04)':''}">
+              <td style="font-size:9px;color:var(--mu);font-family:monospace">${l.id}</td>
+              <td><strong style="font-size:10px">${l.muni.replace('Municipalidad ','')}</strong></td>
+              <td style="font-size:10px;color:var(--t)">${l.producto}</td>
+              <td class="r"><strong style="color:var(--y)">$${l.val_est}M</strong></td>
+              <td><span class="b ${l.estado==='ABIERTA'?'br':'by'}" style="font-size:8px">${l.fecha_cierre}</span></td>
+              <td><span class="b ${l.match==='Alto'?'bg':'by'}">${l.match}</span></td>
+              <td><span class="b ${l.estado==='ABIERTA'?'br':'by'}">${l.estado}</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+        <div class="al o" style="margin-top:7px">💡 <strong>Proceso:</strong> (1) Descargar bases en chilechile.cl · (2) Preparar oferta técnica + precio · (3) Subir propuesta antes del cierre. Match "Alto" = productos que ya vendemos. Priorizar ABIERTA.</div>`
+      }
+    </div>
+  </div>
+
+  <!-- NOTAS -->
+  <div class="card">
+    <div class="ch">📝 Notas / Compromisos</div>
+    <div class="cb">
+      <textarea placeholder="Renovaciones gestionadas, OC enviadas, reuniones con encargados..."></textarea>
+      <div style="margin-top:6px"><div style="font-size:9px;color:var(--mu);margin-bottom:3px">SEGUIMIENTOS SEMANA</div><textarea placeholder="1.&#10;2.&#10;3." style="min-height:45px"></textarea></div>
+    </div>
+  </div>
+</div>`;
+}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing Diario · Equipo Retail · CMK</title>
+<style>
+  :root{--g:#3fb950;--t:#2ea8cc;--r:#f85149;--y:#d29922;--p:#a371f7;--o:#fb8500;
+    --bg:#0d1117;--c1:#161b22;--c2:#1c2128;--bd:#30363d;--tx:#e6edf3;--mu:#8b949e;--li:#c9d1d9;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;}
+  .top{background:var(--c1);border-bottom:1px solid var(--bd);padding:10px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .logo{font-size:14px;font-weight:800;color:var(--g);white-space:nowrap;}
+  .logo span{color:var(--mu);font-weight:400;font-size:11px;margin-left:6px;}
+  select{background:var(--c2);border:1px solid var(--bd);color:var(--tx);padding:6px 11px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;}
+  .dtag{background:var(--c2);border:1px solid var(--bd);padding:5px 11px;border-radius:6px;font-size:11px;color:var(--mu);}
+  .btn{padding:5px 13px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid;}
+  .btn-p{background:rgba(63,185,80,.1);border-color:rgba(63,185,80,.3);color:var(--g);margin-left:auto;}
+  .pg{padding:12px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .s2{grid-column:span 2;} .s3{grid-column:span 3;}
+  .card{background:var(--c1);border:1px solid var(--bd);border-radius:8px;overflow:hidden;}
+  .ch{background:var(--c2);padding:7px 12px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--bd);}
+  .ch.g{color:var(--g);}.ch.t{color:var(--t);}.ch.y{color:var(--y);}.ch.r{color:var(--r);}.ch.p{color:var(--p);}.ch.o{color:var(--o);}
+  .cb{padding:11px 12px;}
+  .ks{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;grid-column:span 3;}
+  .kp{background:var(--c1);border:1px solid var(--bd);border-radius:8px;padding:9px 10px;text-align:center;}
+  .kl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;}
+  .kv{font-size:18px;font-weight:800;line-height:1;} .ksb{font-size:9px;color:var(--mu);margin-top:2px;}
+  .cg{color:var(--g)!important;}.cr{color:var(--r)!important;}.cy{color:var(--y)!important;}.ct{color:var(--t)!important;}.cp{color:var(--p)!important;}.co{color:var(--o)!important;}
+  .tbl{width:100%;border-collapse:collapse;}
+  .tbl th{background:var(--c2);color:var(--mu);font-size:9px;text-transform:uppercase;padding:5px 7px;text-align:left;border-bottom:1px solid var(--bd);font-weight:600;}
+  .tbl td{padding:5px 7px;border-bottom:1px solid #1c2128;font-size:11px;color:var(--li);vertical-align:middle;}
+  .tbl tr:last-child td{border-bottom:none;} .r{text-align:right;}
+  .b{display:inline-block;padding:2px 6px;border-radius:99px;font-size:9px;font-weight:700;}
+  .bg{background:rgba(63,185,80,.15);color:var(--g);}.br{background:rgba(248,81,73,.15);color:var(--r);}
+  .by{background:rgba(210,153,34,.15);color:var(--y);}.bt{background:rgba(46,168,204,.15);color:var(--t);}
+  .bo{background:rgba(251,133,0,.15);color:var(--o);}.bp{background:rgba(163,113,247,.15);color:var(--p);}
+  .al{border-left:3px solid var(--y);background:rgba(210,153,34,.06);border-radius:0 6px 6px 0;padding:6px 9px;margin-bottom:5px;font-size:11px;line-height:1.5;}
+  .al.r{border-color:var(--r);background:rgba(248,81,73,.06);}
+  .al.g{border-color:var(--g);background:rgba(63,185,80,.06);}
+  .al.t{border-color:var(--t);background:rgba(46,168,204,.06);}
+  .al.p{border-color:var(--p);background:rgba(163,113,247,.06);}
+  .al.o{border-color:var(--o);background:rgba(251,133,0,.06);}
+  .bar-bg{background:#21262d;border-radius:99px;height:6px;flex:1;}
+  .bar-f{height:100%;border-radius:99px;}
+  .mrow{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+  .ml{font-size:10px;color:var(--mu);width:140px;flex-shrink:0;}
+  .mv{font-size:10px;font-weight:700;width:50px;text-align:right;}
+  .scr{background:var(--c2);border:1px solid var(--bd);border-radius:6px;padding:8px 10px;font-size:11px;color:var(--li);line-height:1.6;margin-bottom:5px;}
+  .stag{display:inline-block;background:rgba(63,185,80,.12);color:var(--g);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;margin-bottom:4px;}
+  .pill{display:inline-flex;align-items:center;gap:4px;background:var(--c2);border:1px solid var(--bd);border-radius:99px;padding:3px 9px;font-size:10px;margin:2px;}
+  .pill.v{border-color:rgba(63,185,80,.4);background:rgba(63,185,80,.07);}
+  .pill.p{border-color:rgba(248,81,73,.4);background:rgba(248,81,73,.07);}
+  .pill.n{border-color:rgba(46,168,204,.4);background:rgba(46,168,204,.07);}
+  .rk-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #1c2128;}
+  .rk-row:last-child{border:none;}
+  .rk-n{font-size:10px;font-weight:700;color:var(--mu);width:20px;}
+  .rk-name{font-size:11px;flex:1;}
+  .rk-bar-bg{width:100px;background:#21262d;border-radius:99px;height:5px;}
+  .rk-bar-f{height:100%;border-radius:99px;background:var(--g);}
+  .rk-val{font-size:11px;font-weight:700;width:50px;text-align:right;}
+  .pred-box{background:var(--c2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;margin-bottom:8px;}
+  .pred-label{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+  .pred-val{font-size:16px;font-weight:800;}
+  .pred-sub{font-size:10px;color:var(--mu);margin-top:2px;line-height:1.4;}
+  .season-banner{background:linear-gradient(135deg,rgba(46,168,204,.1),rgba(163,113,247,.1));border:1px solid rgba(163,113,247,.3);border-radius:8px;padding:10px 14px;margin-bottom:8px;}
+  .comp-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px;}
+  textarea{background:var(--c2);border:1px solid var(--bd);color:var(--li);border-radius:6px;padding:7px;font-size:11px;width:100%;min-height:52px;resize:vertical;font-family:inherit;}
+  @media print{body,html{background:#fff!important;color:#000!important;}.card,.kp{background:#fff!important;border-color:#ddd!important;}.c2,.ch,.scr,.pred-box{background:#f5f5f5!important;}.cg{color:#157a30!important;}.cr{color:#b91c1c!important;}.cy{color:#92400e!important;}.ct{color:#0e6980!important;}.btn-p{display:none!important;}.subnav{display:none!important;}}
+  .subnav{background:#090d12;border-bottom:1px solid #21262d;padding:4px 18px;display:flex;gap:4px;align-items:center;}
+  .subnav a{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:5px;font-size:10px;font-weight:600;color:var(--mu);text-decoration:none;transition:color .15s,background .15s;}
+  .subnav a:hover{color:var(--tx);background:var(--c2);}
+  .subnav a.active{color:var(--g);background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.25);}
+  .subnav a:not(.active){border:1px solid transparent;}
+  .subnav-sep{color:#21262d;margin:0 2px;}
+</style>
+</head>
+<body>
+<nav class="subnav">
+  <a href="Dashboard_Supervisor_CMK.html">📊 Supervisor</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_Retail.html" class="active">🏪 Retail</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_Clinicas.html">🏥 Clínicas</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_CENABAST.html">🏛 CENABAST</a>
+</nav>
+<div class="top">
+  <div class="logo">🏪 Equipo Retail <span>CMK · Farmacias Independientes y Cadenas Regionales</span></div>
+  <select id="vsel" onchange="render()"></select>
+  <div class="dtag" id="dtag">—</div>
+  <button class="btn btn-p" onclick="window.print()">🖨 PDF</button>
+</div>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ═══ DATOS EQUIPO RETAIL ═══
+const VRETAIL = [
+  {n:"Gustavo Fernandez",  rev:638,  mg:13.2, cli:18,  caidos:4,  riesgo:4.6,  reg:5, trend:"down", r1:264.6, r2:244.7, r3:128.5, zona:"RM Norte",     meta_mes:700, comp_zona:4, dias_prom:12, seg_tipo:"Farmacia",    oc_trans:45, altas:2, bajas:1, tasa_dev:1.2, v_plan:20, v_real:18},
+  {n:"Leonardo Bardi",     rev:528,  mg:12.6, cli:77,  caidos:16, riesgo:16.1, reg:3, trend:"down", r1:148.3, r2:227.1, r3:152.2, zona:"Valparaíso",   meta_mes:600, comp_zona:3, dias_prom:9,  seg_tipo:"Farmacia",    oc_trans:38, altas:1, bajas:3, tasa_dev:2.8, v_plan:22, v_real:15},
+  {n:"Leonardo Hernandez", rev:383,  mg:12.0, cli:85,  caidos:11, riesgo:13.9, reg:6, trend:"down", r1:136.3, r2:154.5, r3:92.5,  zona:"RM Sur",       meta_mes:430, comp_zona:5, dias_prom:11, seg_tipo:"Farmacia",    oc_trans:28, altas:2, bajas:2, tasa_dev:1.8, v_plan:20, v_real:17},
+  {n:"Cesar Reyes",        rev:369,  mg:9.9,  cli:87,  caidos:20, riesgo:20.6, reg:13,trend:"down", r1:140.5, r2:127.5, r3:101.4, zona:"Bío Bío",      meta_mes:420, comp_zona:2, dias_prom:10, seg_tipo:"Farmacia",    oc_trans:22, altas:1, bajas:4, tasa_dev:3.1, v_plan:18, v_real:12},
+  {n:"Carol Ramirez",      rev:364,  mg:14.4, cli:61,  caidos:13, riesgo:5.3,  reg:5, trend:"down", r1:149.0, r2:136.3, r3:79.1,  zona:"Araucanía",    meta_mes:410, comp_zona:2, dias_prom:13, seg_tipo:"Veterinaria", oc_trans:31, altas:3, bajas:2, tasa_dev:1.5, v_plan:18, v_real:16},
+  {n:"Leonardo Gonzalez",  rev:320,  mg:15.0, cli:62,  caidos:13, riesgo:9.3,  reg:7, trend:"flat", r1:104.8, r2:110.0, r3:105.7, zona:"RM Oriente",   meta_mes:370, comp_zona:4, dias_prom:11, seg_tipo:"Farmacia",    oc_trans:24, altas:2, bajas:2, tasa_dev:1.1, v_plan:20, v_real:19},
+  {n:"Maria Corina Garcia",rev:309,  mg:12.8, cli:84,  caidos:17, riesgo:24.0, reg:9, trend:"down", r1:108.9, r2:112.7, r3:87.2,  zona:"Antofagasta",  meta_mes:350, comp_zona:2, dias_prom:10, seg_tipo:"Farmacia",    oc_trans:18, altas:1, bajas:3, tasa_dev:2.5, v_plan:16, v_real:11},
+  {n:"Maria Jose Rojas",   rev:274,  mg:13.5, cli:75,  caidos:13, riesgo:23.2, reg:5, trend:"flat", r1:110.0, r2:87.3,  r3:76.5,  zona:"La Serena",    meta_mes:310, comp_zona:2, dias_prom:12, seg_tipo:"Farmacia",    oc_trans:20, altas:2, bajas:2, tasa_dev:1.9, v_plan:16, v_real:14},
+  {n:"Nestor Navarro",     rev:273,  mg:11.0, cli:70,  caidos:17, riesgo:80.0, reg:4, trend:"flat", r1:139.7, r2:68.0,  r3:65.5,  zona:"Temuco",       meta_mes:310, comp_zona:2, dias_prom:11, seg_tipo:"Veterinaria", oc_trans:12, altas:0, bajas:4, tasa_dev:4.2, v_plan:18, v_real:10},
+  {n:"Sergio Pichuante",   rev:262,  mg:11.4, cli:70,  caidos:14, riesgo:13.4, reg:2, trend:"down", r1:103.3, r2:93.9,  r3:64.4,  zona:"Puerto Montt", meta_mes:300, comp_zona:1, dias_prom:13, seg_tipo:"Veterinaria", oc_trans:19, altas:1, bajas:2, tasa_dev:2.1, v_plan:16, v_real:14},
+  {n:"Paolo Cartes",       rev:227,  mg:12.5, cli:57,  caidos:12, riesgo:7.2,  reg:2, trend:"flat", r1:68.2,  r2:85.2,  r3:74.0,  zona:"RM Poniente",  meta_mes:260, comp_zona:4, dias_prom:11, seg_tipo:"Farmacia",    oc_trans:17, altas:2, bajas:1, tasa_dev:1.4, v_plan:18, v_real:17},
+  {n:"Maria Jose Ramirez", rev:222,  mg:12.8, cli:49,  caidos:17, riesgo:33.4, reg:5, trend:"down", r1:94.5,  r2:74.9,  r3:53.0,  zona:"Valdivia",     meta_mes:250, comp_zona:1, dias_prom:14, seg_tipo:"Veterinaria", oc_trans:14, altas:1, bajas:3, tasa_dev:2.9, v_plan:14, v_real:10},
+  {n:"Tania Sanchez",      rev:174,  mg:14.0, cli:94,  caidos:18, riesgo:10.4, reg:3, trend:"down", r1:61.0,  r2:62.3,  r3:50.6,  zona:"Iquique",      meta_mes:200, comp_zona:2, dias_prom:10, seg_tipo:"Farmacia",    oc_trans:11, altas:1, bajas:2, tasa_dev:1.8, v_plan:14, v_real:12},
+  {n:"Fabiola Cornejo",    rev:156,  mg:12.7, cli:90,  caidos:16, riesgo:7.2,  reg:2, trend:"down", r1:44.9,  r2:71.1,  r3:40.6,  zona:"Osorno",       meta_mes:180, comp_zona:1, dias_prom:12, seg_tipo:"Veterinaria", oc_trans:9,  altas:1, bajas:2, tasa_dev:2.3, v_plan:14, v_real:11},
+  {n:"Daniela Araneda",    rev:155,  mg:14.1, cli:76,  caidos:25, riesgo:10.3, reg:4, trend:"down", r1:58.4,  r2:56.9,  r3:39.6,  zona:"Rancagua",     meta_mes:180, comp_zona:3, dias_prom:11, seg_tipo:"Farmacia",    oc_trans:12, altas:0, bajas:3, tasa_dev:2.7, v_plan:14, v_real:10},
+  {n:"Andrea Ruiz",        rev:141,  mg:13.8, cli:88,  caidos:27, riesgo:18.1, reg:4, trend:"down", r1:51.4,  r2:48.9,  r3:40.9,  zona:"Talca",        meta_mes:165, comp_zona:2, dias_prom:10, seg_tipo:"Farmacia",    oc_trans:8,  altas:1, bajas:3, tasa_dev:3.0, v_plan:14, v_real:9},
+  {n:"Carla Sotomayor",    rev:90,   mg:13.6, cli:58,  caidos:16, riesgo:9.2,  reg:4, trend:"down", r1:27.1,  r2:38.9,  r3:24.4,  zona:"Concepción",   meta_mes:105, comp_zona:3, dias_prom:12, seg_tipo:"Mixto",       oc_trans:6,  altas:1, bajas:2, tasa_dev:2.2, v_plan:12, v_real:10},
+];
+
+// Farmacias por vendedor con inteligencia extendida
+const FARMACIAS = {
+  "Gustavo Fernandez": [
+    {n:"Farmacia San Pablo RM Norte",   sku:"TAPSIN NOCH",  dscp:0, delta:"+41%", win_back:100, sig_sku:"CLEXANE 40",  comp:2, seg:"CRECIENDO"},
+    {n:"Farmacia Cruz Verde Quilicura", sku:"CONCERTA 36",  dscp:9, delta:"-12%", win_back:82,  sig_sku:"TAPSIN DIA",   comp:4, seg:"RIESGO"},
+    {n:"Farmacia Popular Lo Prado",     sku:"CLEXANE 40",   dscp:0, delta:"+5%",  win_back:100, sig_sku:"TAPSIN NOCH",  comp:2, seg:"ESTABLE"},
+    {n:"Botica Independiente Renca",    sku:"TAPSIN DIA",   dscp:18,delta:"-23%", win_back:62,  sig_sku:"TAPSIN NOCH",  comp:1, seg:"REACTIVAR"},
+  ],
+  "Leonardo Bardi": [
+    {n:"Farmacias Doñihue Valpo",       sku:"TAPSIN DIA",   dscp:0, delta:"+19%", win_back:100, sig_sku:"CLEXANE 40",  comp:2, seg:"CRECIENDO"},
+    {n:"Farmacia Cruz Verde Viña",      sku:"CONCERTA 36",  dscp:7, delta:"-8%",  win_back:86,  sig_sku:"TAPSIN NOCH",  comp:4, seg:"RIESGO"},
+    {n:"Botica Costa Viña del Mar",     sku:"TAPSIN NOCH",  dscp:14,delta:"-31%", win_back:70,  sig_sku:"TAPSIN DIA",   comp:2, seg:"REACTIVAR"},
+    {n:"Farmacia San Camilo Valpo",     sku:"CLEXANE 40",   dscp:22,delta:"-44%", win_back:45,  sig_sku:"CONCERTA 36",  comp:1, seg:"REACTIVAR"},
+  ],
+  "Leonardo Hernandez": [
+    {n:"Farmacia Ahumada Sur RM",       sku:"CONCERTA 36",  dscp:3, delta:"+2%",  win_back:92,  sig_sku:"TAPSIN NOCH",  comp:5, seg:"ESTABLE"},
+    {n:"Botica Popular La Pintana",     sku:"TAPSIN NOCH",  dscp:11,delta:"-18%", win_back:78,  sig_sku:"TAPSIN DIA",   comp:1, seg:"RIESGO"},
+    {n:"Farmacia Salud El Bosque",      sku:"TAPSIN DIA",   dscp:0, delta:"+8%",  win_back:100, sig_sku:"CLEXANE 40",   comp:2, seg:"ESTABLE"},
+    {n:"Farmacia Cruz Verde P.Arenas",  sku:"CLEXANE 40",   dscp:6, delta:"-9%",  win_back:88,  sig_sku:"TAPSIN NOCH",  comp:3, seg:"RIESGO"},
+  ],
+  "default": [
+    {n:"Farmacia Principal A",          sku:"TAPSIN NOCH",  dscp:0, delta:"+15%", win_back:100, sig_sku:"CLEXANE 40",   comp:2, seg:"CRECIENDO"},
+    {n:"Farmacia Principal B",          sku:"CONCERTA 36",  dscp:8, delta:"-11%", win_back:84,  sig_sku:"TAPSIN DIA",   comp:3, seg:"RIESGO"},
+    {n:"Botica Regional C",             sku:"TAPSIN DIA",   dscp:14,delta:"-26%", win_back:68,  sig_sku:"TAPSIN NOCH",  comp:1, seg:"REACTIVAR"},
+    {n:"Farmacia Independiente D",      sku:"CLEXANE 40",   dscp:21,delta:"-38%", win_back:50,  sig_sku:"CONCERTA 36",  comp:1, seg:"REACTIVAR"},
+  ],
+};
+
+// ═══ CLÍNICAS / FARMACIAS VETERINARIAS ═══
+const VETERINARIAS = {
+  "Carol Ramirez": [
+    {n:"Clínica Vet La Araucanía",      sku:"IVERMECTINA 1% VET",    dscp:0,  delta:"+22%", win_back:100, sig_sku:"ENROFLOXACINA 50MG VET", comp:2, seg:"CRECIENDO"},
+    {n:"Petvet Temuco Centro",          sku:"MELOXICAM 1.5MG VET",   dscp:7,  delta:"-12%", win_back:82,  sig_sku:"IVERMECTINA 1% VET",     comp:1, seg:"RIESGO"},
+    {n:"Farmacia Vet Campo Sur",        sku:"AMOXICILINA 500MG VET", dscp:0,  delta:"+9%",  win_back:100, sig_sku:"DEXAMETASONA VET",       comp:1, seg:"ESTABLE"},
+    {n:"Clínica Vet Los Ríos",          sku:"ENROFLOXACINA 50MG VET",dscp:16, delta:"-31%", win_back:62,  sig_sku:"MELOXICAM VET",          comp:2, seg:"REACTIVAR"},
+  ],
+  "Nestor Navarro": [
+    {n:"Clínica Vet Temuco Norte",      sku:"IVERMECTINA 1% VET",    dscp:0,  delta:"+28%", win_back:100, sig_sku:"ENROFLOXACINA 50MG VET", comp:1, seg:"CRECIENDO"},
+    {n:"Petshop & Pharma Temuco",       sku:"MELOXICAM 1.5MG VET",   dscp:12, delta:"-24%", win_back:70,  sig_sku:"AMOXICILINA VET",        comp:2, seg:"RIESGO"},
+    {n:"Clínica Agropecuaria Sur",      sku:"DEXAMETASONA VET",      dscp:4,  delta:"-7%",  win_back:88,  sig_sku:"IVERMECTINA VET",        comp:1, seg:"ESTABLE"},
+    {n:"Veterinaria Rural Cautín",      sku:"AMOXICILINA 500MG VET", dscp:23, delta:"-45%", win_back:48,  sig_sku:"ENROFLOXACINA VET",      comp:1, seg:"REACTIVAR"},
+  ],
+  "Sergio Pichuante": [
+    {n:"Clínica Vet Puerto Montt",      sku:"IVERMECTINA 1% VET",    dscp:0,  delta:"+14%", win_back:100, sig_sku:"ENROFLOXACINA 50MG VET", comp:1, seg:"CRECIENDO"},
+    {n:"Farmacia Vet Patagonia",        sku:"AMOXICILINA 500MG VET", dscp:9,  delta:"-17%", win_back:79,  sig_sku:"MELOXICAM VET",          comp:2, seg:"RIESGO"},
+    {n:"Vet & Campo Puerto Varas",      sku:"MELOXICAM 1.5MG VET",   dscp:0,  delta:"+6%",  win_back:100, sig_sku:"DEXAMETASONA VET",       comp:1, seg:"ESTABLE"},
+  ],
+  "Maria Jose Ramirez": [
+    {n:"Clínica Vet Valdivia Centro",   sku:"IVERMECTINA 1% VET",    dscp:5,  delta:"-8%",  win_back:87,  sig_sku:"ENROFLOXACINA 50MG VET", comp:1, seg:"RIESGO"},
+    {n:"Agroveterinaria Los Ríos",      sku:"DEXAMETASONA VET",      dscp:0,  delta:"+21%", win_back:100, sig_sku:"IVERMECTINA VET",        comp:2, seg:"CRECIENDO"},
+    {n:"Farmacia Animal Valdivia",      sku:"AMOXICILINA 500MG VET", dscp:18, delta:"-36%", win_back:58,  sig_sku:"MELOXICAM VET",          comp:1, seg:"REACTIVAR"},
+  ],
+  "Fabiola Cornejo": [
+    {n:"Clínica Vet Osorno Centro",     sku:"IVERMECTINA 1% VET",    dscp:6,  delta:"-10%", win_back:85,  sig_sku:"ENROFLOXACINA 50MG VET", comp:1, seg:"RIESGO"},
+    {n:"Agroveterinaria Los Lagos",     sku:"DEXAMETASONA VET",      dscp:0,  delta:"+19%", win_back:100, sig_sku:"IVERMECTINA VET",        comp:2, seg:"CRECIENDO"},
+    {n:"Farmacia Animal Osorno",        sku:"AMOXICILINA 500MG VET", dscp:17, delta:"-35%", win_back:60,  sig_sku:"MELOXICAM VET",          comp:1, seg:"REACTIVAR"},
+  ],
+  "Carla Sotomayor": [
+    {n:"Clínica Vet Biobío",            sku:"IVERMECTINA 1% VET",    dscp:4,  delta:"-6%",  win_back:90,  sig_sku:"ENROFLOXACINA VET",      comp:2, seg:"ESTABLE"},
+    {n:"Petshop Pharma Concepción",     sku:"MELOXICAM VET",         dscp:13, delta:"-22%", win_back:72,  sig_sku:"IVERMECTINA VET",        comp:1, seg:"RIESGO"},
+  ],
+  "default": [
+    {n:"Clínica Vet Principal A",       sku:"IVERMECTINA 1% VET",    dscp:0,  delta:"+16%", win_back:100, sig_sku:"ENROFLOXACINA 50MG VET", comp:2, seg:"CRECIENDO"},
+    {n:"Farmacia Vet B",                sku:"MELOXICAM 1.5MG VET",   dscp:9,  delta:"-12%", win_back:82,  sig_sku:"AMOXICILINA VET",        comp:1, seg:"RIESGO"},
+    {n:"Agroveterinaria C",             sku:"DEXAMETASONA VET",      dscp:15, delta:"-28%", win_back:66,  sig_sku:"MELOXICAM VET",          comp:1, seg:"REACTIVAR"},
+    {n:"Clínica Animal D",              sku:"AMOXICILINA 500MG VET", dscp:22, delta:"-40%", win_back:48,  sig_sku:"ENROFLOXACINA VET",      comp:1, seg:"REACTIVAR"},
+  ],
+};
+
+// SKUs prioritarios Retail
+const SKU_RETAIL = [
+  {sku:"TAPSIN CALIENTE NOCHE", tend:"+63%", mg:"10%", stock:"ALTO",   tip:"⭐ ESTRELLA DE INVIERNO — máxima rotación. Stock antes de Jun."},
+  {sku:"TAPSIN CALIENTE DIA",   tend:"+42%", mg:"10%", stock:"ALTO",   tip:"Combo ideal con NOCHE — pedir los dos juntos."},
+  {sku:"CONCERTA 36 MG x30",   tend:"+10%", mg:"14%", stock:"MEDIO",  tip:"Farmacias con receta médica — ticket alto garantizado."},
+  {sku:"CLEXANE 40 MG/0.4 ML", tend:"+10%", mg:"18%", stock:"MEDIO",  tip:"Alta rentabilidad. Mejor margen del catálogo OTC."},
+  {sku:"BAVENCIO 20 MG (recup)",tend:"-41%", mg:"25%+",stock:"DISP.",  tip:"RECUPERAR: dejaron de pedirlo. Muy rentable. Oferta puntual."},
+];
+
+// SKUs prioritarios Veterinaria
+const SKU_VET = [
+  {sku:"IVERMECTINA 1% VET 50ML",    tend:"+42%", mg:"16%", stock:"ALTO",  tip:"⭐ TEMPORADA ECTOPARÁSITOS — otoño. Pulgas/garrapatas/sarna. Stock antes de Abr."},
+  {sku:"ENROFLOXACINA 50MG VET",     tend:"+24%", mg:"18%", stock:"MEDIO", tip:"Antibiótico estrella — rotación constante. Clínicas piden cada 2-3 sem."},
+  {sku:"MELOXICAM 1.5MG VET",        tend:"+17%", mg:"14%", stock:"MEDIO", tip:"Anti-inflamatorio top. Cirugías + post-op. Ticket alto garantizado."},
+  {sku:"AMOXICILINA 500MG VET",      tend:"+11%", mg:"12%", stock:"ALTO",  tip:"Volumen base. Ideal primer pedido clínicas nuevas. Alta rotación."},
+  {sku:"DEXAMETASONA 0.1% VET",      tend:"-20%", mg:"20%+",stock:"DISP.", tip:"RECUPERAR: alta rentabilidad. Muchas clínicas dejaron de pedir. Re-intro ahora."},
+];
+
+// Productos de temporada (invierno se acerca — Mar→Jun)
+const SEASON_ALERT = {
+  mes_actual: "Marzo",
+  semanas_invierno: 10,
+  skus_temp: ["TAPSIN CALIENTE NOCHE","TAPSIN CALIENTE DIA"],
+  pred_aumento: "+45-80%",
+  accion: "Asegurar stock en farmacias clave ANTES de mayo. Proponer pedidos anticipados con descuento por volumen."
+};
+const SEASON_ALERT_VET = {
+  mes_actual: "Marzo",
+  semanas_ecto: 4,
+  skus_temp: ["IVERMECTINA 1% VET","ENROFLOXACINA 50MG VET"],
+  pred_aumento: "+35-55%",
+  accion: "Otoño = peak ectoparásitos (pulgas, garrapatas, sarna). Stock IVERMECTINA ya. Proponer combos antiparasitario + antibiótico."
+};
+
+// Crédito y deuda vencida por cliente (credito=días plazo, deuda=M$ vencida)
+const CREDITO_DB = {
+  "Farmacia Cruz Verde Quilicura":   {credito:45, deuda:2.3},
+  "Botica Independiente Renca":      {credito:60, deuda:5.8},
+  "Farmacia Cruz Verde Viña":        {credito:45, deuda:1.8},
+  "Botica Costa Viña del Mar":       {credito:60, deuda:3.2},
+  "Farmacia San Camilo Valpo":       {credito:90, deuda:8.4},
+  "Botica Popular La Pintana":       {credito:60, deuda:2.1},
+  "Farmacia Cruz Verde P.Arenas":    {credito:45, deuda:1.5},
+  "Farmacia Principal B":            {credito:45, deuda:1.5},
+  "Botica Regional C":               {credito:60, deuda:3.0},
+  "Farmacia Independiente D":        {credito:90, deuda:7.2},
+  "Clínica Vet Los Ríos":            {credito:60, deuda:4.8},
+  "Petshop & Pharma Temuco":         {credito:45, deuda:2.1},
+  "Veterinaria Rural Cautín":        {credito:90, deuda:9.2},
+  "Farmacia Vet Patagonia":          {credito:45, deuda:1.6},
+  "Clínica Vet Valdivia Centro":     {credito:45, deuda:0.8},
+  "Farmacia Animal Valdivia":        {credito:60, deuda:3.4},
+  "Clínica Vet Osorno Centro":       {credito:45, deuda:1.1},
+  "Farmacia Animal Osorno":          {credito:60, deuda:5.2},
+  "Petshop Pharma Concepción":       {credito:45, deuda:1.8},
+  "Farmacia Vet B":                  {credito:45, deuda:1.5},
+  "Agroveterinaria C":               {credito:60, deuda:3.0},
+  "Clínica Animal D":                {credito:90, deuda:7.2},
+};
+
+// Datos previo mes (Feb-26) para deltas en KPIs
+const PREV_DATA_RETAIL = {
+  "Gustavo Fernandez":  {cli:16,mg:12.8,v_plan:20,v_real:16},
+  "Leonardo Bardi":     {cli:80,mg:12.4,v_plan:22,v_real:17},
+  "Leonardo Hernandez": {cli:86,mg:12.3,v_plan:20,v_real:18},
+  "Cesar Reyes":        {cli:90,mg:10.2,v_plan:18,v_real:13},
+  "Carol Ramirez":      {cli:58,mg:13.9,v_plan:18,v_real:15},
+  "Leonardo Gonzalez":  {cli:63,mg:15.2,v_plan:20,v_real:19},
+  "Maria Corina Garcia":{cli:87,mg:12.5,v_plan:16,v_real:12},
+  "Maria Jose Rojas":   {cli:77,mg:13.1,v_plan:16,v_real:15},
+  "Nestor Navarro":     {cli:72,mg:11.4,v_plan:18,v_real:11},
+  "Sergio Pichuante":   {cli:71,mg:11.8,v_plan:16,v_real:14},
+  "Paolo Cartes":       {cli:56,mg:12.3,v_plan:18,v_real:16},
+  "Maria Jose Ramirez": {cli:51,mg:13.0,v_plan:14,v_real:11},
+  "Tania Sanchez":      {cli:95,mg:14.2,v_plan:14,v_real:13},
+  "Fabiola Cornejo":    {cli:92,mg:12.4,v_plan:14,v_real:12},
+  "Daniela Araneda":    {cli:79,mg:13.8,v_plan:14,v_real:11},
+  "Andrea Ruiz":        {cli:90,mg:14.1,v_plan:14,v_real:10},
+  "Carla Sotomayor":    {cli:60,mg:13.2,v_plan:12,v_real:11},
+};
+
+// Devoluciones del mes — detalle por SKU y cliente
+const DEV_DETALLE = {
+  "Gustavo Fernandez":  [{f:"Botica Independiente Renca",     sku:"TAPSIN DIA",          und:12,monto:0.8,motivo:"Sobrestock"},
+                         {f:"Farmacia Cruz Verde Quilicura",  sku:"CONCERTA 36 MG",       und:6, monto:1.5,motivo:"Vencimiento próximo"}],
+  "Leonardo Bardi":     [{f:"Farmacia San Camilo Valpo",      sku:"CONCERTA 36 MG x30",   und:24,monto:3.2,motivo:"Vencimiento próximo"},
+                         {f:"Botica Costa Viña del Mar",      sku:"TAPSIN CALIENTE NOCHE",und:18,monto:1.8,motivo:"Sobrestock"}],
+  "Leonardo Hernandez": [{f:"Botica Popular La Pintana",      sku:"TAPSIN DIA",           und:18,monto:1.1,motivo:"Defecto embalaje"}],
+  "Cesar Reyes":        [{f:"Farmacia Bío Bío Central",       sku:"TAPSIN DIA",           und:30,monto:2.1,motivo:"Sobrestock"},
+                         {f:"Botica Sur Chiguayante",         sku:"CLEXANE 40 MG",        und:12,monto:2.5,motivo:"Daño en transporte"}],
+  "Nestor Navarro":     [{f:"Veterinaria Rural Cautín",       sku:"IVERMECTINA 1% VET",   und:24,monto:1.8,motivo:"Sobrestock temporada"},
+                         {f:"Petshop & Pharma Temuco",        sku:"MELOXICAM 1.5MG VET",  und:12,monto:1.4,motivo:"Orden duplicada"}],
+  "Maria Jose Ramirez": [{f:"Farmacia Animal Valdivia",       sku:"AMOXICILINA VET",      und:18,monto:1.2,motivo:"Sobrestock"}],
+  "Daniela Araneda":    [{f:"Botica Rancagua Centro",         sku:"TAPSIN CALIENTE NOCHE",und:24,monto:1.5,motivo:"Baja rotación"}],
+  "Andrea Ruiz":        [{f:"Farmacia Talca Norte",           sku:"TAPSIN CALIENTE NOCHE",und:36,monto:2.2,motivo:"Sobrestock"},
+                         {f:"Botica Maule Centro",            sku:"CLEXANE 40 MG",        und:8, monto:1.8,motivo:"Vencimiento próximo"}],
+  "Maria Corina Garcia":[{f:"Farmacia Popular Antofagasta",   sku:"CONCERTA 36 MG x30",   und:12,monto:1.6,motivo:"Baja rotación"}],
+};
+
+// Alertas de caducidad de stock (productos próximos a vencer en stock cliente)
+const CADUCIDAD_RETAIL = {
+  "Gustavo Fernandez":  [{f:"Farmacia Cruz Verde Quilicura", sku:"TAPSIN CALIENTE NOCHE",und:48,vence_dias:38,accion:"Proponer rotación urgente — rebate vol."},
+                         {f:"Farmacia Popular Lo Prado",    sku:"BAVENCIO 20 MG",        und:2, vence_dias:22,accion:"Retirar o transferir hoy"}],
+  "Leonardo Bardi":     [{f:"Botica Costa Viña del Mar",    sku:"TAPSIN CALIENTE DIA",   und:72,vence_dias:45,accion:"Rebate por volumen esta semana"}],
+  "Cesar Reyes":        [{f:"Farmacia Bío Bío Central",     sku:"CONCERTA 36 MG x30",    und:30,vence_dias:35,accion:"Transferir a farmacia con más rotación"}],
+  "Nestor Navarro":     [{f:"Veterinaria Rural Cautín",      sku:"IVERMECTINA 1% VET",   und:24,vence_dias:40,accion:"Uso antes fin temporada ectoparásitos"}],
+  "Maria Jose Ramirez": [{f:"Farmacia Animal Valdivia",      sku:"DEXAMETASONA VET",     und:12,vence_dias:30,accion:"Proponer retiro o canje urgente"}],
+  "Daniela Araneda":    [{f:"Botica Rancagua Centro",        sku:"TAPSIN DIA",            und:60,vence_dias:42,accion:"Descuento rotación en próxima visita"}],
+  "Andrea Ruiz":        [{f:"Farmacia Talca Norte",          sku:"TAPSIN CALIENTE NOCHE",und:36,vence_dias:28,accion:"⚠️ Urgente — proponer retiro hoy"},
+                         {f:"Botica Maule Centro",           sku:"CONCERTA 36 MG x30",   und:15,vence_dias:50,accion:"Monitorear — aún en margen OK"}],
+};
+
+const DIAS_T=17, DIAS_M=22, DIAS_R=5;
+const today=new Date();
+const DS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],MS=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+document.getElementById('dtag').textContent=`${DS[today.getDay()]} ${today.getDate()} ${MS[today.getMonth()]} ${today.getFullYear()}`;
+const vsel=document.getElementById('vsel');
+const rnk=VRETAIL.slice().sort((a,b)=>b.rev-a.rev);
+rnk.forEach((v,i)=>{const o=document.createElement('option');o.value=VRETAIL.indexOf(v);const ico=v.seg_tipo==='Veterinaria'?'🐾 ':v.seg_tipo==='Mixto'?'🏪🐾 ':'🏪 ';o.textContent=`${ico}${v.n}  ·  #${i+1}  ·  ${v.zona}`;vsel.appendChild(o);});
+let AC={};
+function kill(){Object.values(AC).forEach(c=>{try{c.destroy();}catch(e){}});AC={};}
+
+function winBackColor(p){return p>=80?'cg':p>=60?'cy':'cr';}
+function compColor(c){return c>=4?'cr':c>=3?'cy':'cg';}
+function compLabel(c){return c>=4?'Alta':c>=3?'Media':'Baja';}
+function segBadge(s){return s==='CRECIENDO'?'bg':s==='ESTABLE'?'bt':s==='RIESGO'?'by':'br';}
+function predMeta(proyMar,metaMes){
+  const p=(proyMar/metaMes)*100;
+  if(p>=95)return{label:'✅ CERRARÁ LA META',cls:'cg',desc:'Ritmo actual alcanza el objetivo.'};
+  if(p>=80)return{label:'⚡ CON ESFUERZO',cls:'cy',desc:`Falta $${(metaMes-proyMar).toFixed(0)}M. +${((metaMes-proyMar)/DIAS_R).toFixed(1)}M/día.`};
+  return{label:'⚠️ META EN RIESGO',cls:'cr',desc:`Brecha $${(metaMes-proyMar).toFixed(0)}M. Necesita +${((metaMes-proyMar)/DIAS_R).toFixed(1)}M/día.`};
+}
+function diasPromPedido(v){return v.dias_prom||Math.round(v.r1/v.cli/22*30)||10;}
+
+function render(){
+  kill();
+  const v=VRETAIL[parseInt(vsel.value)];
+  if(!v)return;
+  const rate3=v.r3/DIAS_T, rate2=v.r2/20;
+  const proyMar=+(rate3*DIAS_M).toFixed(1);
+  const velPct=(rate2>0?(((rate3-rate2)/rate2)*100).toFixed(1):0);
+  const vColor=+velPct>=0?'cg':'cr';
+  const rankN=rnk.findIndex(x=>x.n===v.n)+1;
+  const efic=Math.round(((v.cli-v.caidos)/v.cli)*100);
+  const ticketProm=v.cli>0?(v.rev/v.cli).toFixed(0):0;
+  const pctMeta=Math.round((proyMar/v.meta_mes)*100);
+  const isVet=v.seg_tipo==='Veterinaria';
+  const isMixto=v.seg_tipo==='Mixto';
+  const farmaBase=FARMACIAS[v.n]||FARMACIAS["default"];
+  const vetBase=VETERINARIAS[v.n]||VETERINARIAS["default"];
+  const farmasRaw=isMixto?[...farmaBase,...vetBase]:isVet?vetBase:farmaBase;
+  const farmas=farmasRaw.map(f=>({...f,credito:(CREDITO_DB[f.n]||{credito:30}).credito,deuda:(CREDITO_DB[f.n]||{deuda:0}).deuda}));
+  const totalDeuda=farmas.reduce((s,f)=>s+(f.deuda||0),0).toFixed(1);
+  const clientesDeuda=farmas.filter(f=>(f.deuda||0)>0).length;
+  const visEfic=Math.round((v.v_real/v.v_plan)*100);
+  const movNeto=v.altas-v.bajas;
+  // Deltas vs mes anterior (Feb-26)
+  const prevD=PREV_DATA_RETAIL[v.n]||{cli:v.cli,mg:v.mg,v_plan:v.v_plan,v_real:v.v_real};
+  const deltaCli=v.cli-prevD.cli;
+  const deltaMg=(v.mg-prevD.mg).toFixed(1);
+  const prevVisEfic=Math.round((prevD.v_real/prevD.v_plan)*100);
+  const deltaVisEfic=visEfic-prevVisEfic;
+  // Devoluciones y caducidad
+  const devItems=DEV_DETALLE[v.n]||[];
+  const cadItems=CADUCIDAD_RETAIL[v.n]||[];
+  const montoTotalDev=devItems.reduce((s,d)=>s+d.monto,0).toFixed(1);
+  const skuDevFrecuente=devItems.length>0?devItems.reduce((a,b)=>a.monto>b.monto?a:b).sku:'—';
+  const skuList=isVet?SKU_VET:SKU_RETAIL;
+  const SA=isVet?SEASON_ALERT_VET:SEASON_ALERT;
+  const tipoLabel=isVet?'Clínicas Vet':isMixto?'Farmacias + Vet':'Farmacias';
+  const tipoIcon=isVet?'🐾':isMixto?'🏪🐾':'🏪';
+  const reactivar=farmas.filter(f=>f.dscp>0).sort((a,b)=>b.dscp-a.dscp);
+  const creciendo=farmas.filter(f=>f.delta.startsWith('+'));
+  const pred=predMeta(proyMar,v.meta_mes);
+  const diasProm=diasPromPedido(v);
+  const brechaRev=(v.meta_mes-proyMar).toFixed(1);
+  const altaComp=farmas.filter(f=>f.comp>=4).length;
+  const proxPedidoFarma=farmas.map(f=>({...f,prox:f.dscp===0?diasProm:Math.max(0,diasProm-f.dscp)}));
+  // Farmacias "a punto de pedir" (próximos 2-3 días)
+  const aptoPedir=proxPedidoFarma.filter(f=>f.prox>=0&&f.prox<=3&&f.dscp>0);
+
+  // ── RUTA SUGERIDA ──
+  const tkP=ticketProm/1000;
+  const routeData=farmas.map(f=>{
+    let prio,accion,esperado,urgColor,motivo;
+    if(f.dscp>21){prio='URGENTE';accion='Reactivar — script recuperación';esperado=(tkP*f.win_back/100*0.95).toFixed(1);urgColor='br';motivo='Sin compra '+f.dscp+'d — alto riesgo pérdida';}
+    else if(f.dscp>10){prio='RIESGO';accion='Visita preventiva — ofrecer alternativa';esperado=(tkP*0.75).toFixed(1);urgColor='by';motivo='Sin compra '+f.dscp+'d — señal de alerta';}
+    else if(f.dscp>0){prio='SEGUIMIENTO';accion='Confirmar pedido + pitch invierno';esperado=(tkP*0.6).toFixed(1);urgColor='by';motivo='Sin compra '+f.dscp+'d — recordar';}
+    else if(f.delta&&f.delta.startsWith('+')){prio='AMPLIAR';accion='Ampliar volumen + pedido anticipado TAPSIN';esperado=(tkP*0.35).toFixed(1);urgColor='bg';motivo='Creciendo '+f.delta+' — aprovechar momentum';}
+    else{prio='MANTENER';accion='Check-in + propuesta stock invierno';esperado=(tkP*0.15).toFixed(1);urgColor='bt';motivo='Activo — fidelizar + upsell';}
+    return{...f,prio,accion,esperado,urgColor,motivo};
+  }).sort((a,b)=>{const o={URGENTE:0,RIESGO:1,SEGUIMIENTO:2,AMPLIAR:3,MANTENER:4};return o[a.prio]-o[b.prio];});
+  const totalRuta=routeData.reduce((s,f)=>s+parseFloat(f.esperado),0).toFixed(1);
+  const metaDiaria=(v.meta_mes/DIAS_M).toFixed(1);
+
+  document.getElementById('root').innerHTML=`
+<div class="pg">
+  <!-- KPI STRIP 7 columnas -->
+  <div class="ks">
+    <div class="kp"><div class="kl">Revenue Q1-26</div><div class="kv cg">$${(v.rev/1000).toFixed(2)}B</div><div class="ksb">#${rankN}/17 · <span style="color:${+velPct>=0?'var(--g)':'var(--r);'}font-weight:700">${+velPct>=0?'↑+':'↓'}${Math.abs(velPct)}% vs Feb</span></div></div>
+    <div class="kp"><div class="kl">Proy. Cierre Mar</div><div class="kv ${proyMar>=v.meta_mes*0.9?'cg':proyMar>=v.meta_mes*0.75?'cy':'cr'}">$${proyMar}M</div><div class="ksb">meta $${v.meta_mes}M → ${pctMeta}%</div></div>
+    <div class="kp"><div class="kl">Predicción Meta</div><div class="kv ${pred.cls}" style="font-size:11px;margin-top:2px">${pred.label}</div><div class="ksb">${pred.desc}</div></div>
+    <div class="kp"><div class="kl">Meta Diaria</div><div class="kv cy">$${(v.meta_mes/DIAS_M).toFixed(1)}M</div><div class="ksb">${DIAS_R} días restantes</div></div>
+    <div class="kp"><div class="kl">Velocidad</div><div class="kv ${vColor}">${velPct>0?'+':''}${velPct}%</div><div class="ksb">Mar vs Feb diario</div></div>
+    <div class="kp"><div class="kl">Farmacias activas</div><div class="kv ct">${v.cli-v.caidos}</div><div class="ksb">${v.caidos} sin compra · <span style="color:${deltaCli>0?'var(--g)':deltaCli<0?'var(--r)':'var(--mu)'};font-weight:700">${deltaCli>0?'↑+':deltaCli<0?'↓':'='}${deltaCli!==0?Math.abs(deltaCli)+' vs Feb':'igual Feb'}</span></div></div>
+    <div class="kp"><div class="kl">Días prom pedido</div><div class="kv">${diasProm}d</div><div class="ksb">frecuencia cartera</div></div>
+  </div>
+
+  <!-- KPI FILA 2: Operacional + Financiero -->
+  <div style="grid-column:span 3;display:grid;grid-template-columns:repeat(5,1fr);gap:8px">
+    <div class="kp"><div class="kl">OC en Tránsito</div><div class="kv ct">$${v.oc_trans}M</div><div class="ksb">emitidas, no recibidas aún</div></div>
+    <div class="kp"><div class="kl">Movimiento Cartera</div><div class="kv ${movNeto>=0?'cg':'cr'}">${movNeto>=0?'+':''}${movNeto}</div><div class="ksb">+${v.altas} altas · -${v.bajas} bajas (mar)</div></div>
+    <div class="kp"><div class="kl">Tasa Devolución</div><div class="kv ${v.tasa_dev<=1.5?'cg':v.tasa_dev<=3?'cy':'cr'}">${v.tasa_dev}%</div><div class="ksb">${v.tasa_dev<=1.5?'Normal — bajo control':v.tasa_dev<=3?'Revisar motivos':'⚠️ Alto — $'+Math.round(v.rev*v.tasa_dev/100)+'M devuelto'}</div></div>
+    <div class="kp"><div class="kl">Eficiencia Visitas</div><div class="kv ${visEfic>=85?'cg':visEfic>=70?'cy':'cr'}">${visEfic}%</div><div class="ksb">${v.v_real}/${v.v_plan} · <span style="color:${deltaVisEfic>0?'var(--g)':deltaVisEfic<0?'var(--r)':'var(--mu)'};font-weight:700">${deltaVisEfic>0?'↑+':deltaVisEfic<0?'↓':''}${deltaVisEfic!==0?Math.abs(deltaVisEfic)+'pp vs Feb':'igual Feb'}</span></div></div>
+    <div class="kp"><div class="kl">Deuda Vencida</div><div class="kv ${+totalDeuda===0?'cg':+totalDeuda<10?'cy':'cr'}">$${totalDeuda}M</div><div class="ksb">${clientesDeuda} cliente${clientesDeuda!==1?'s':''} con deuda</div></div>
+  </div>
+
+  <!-- ALERTA TEMPORADA -->
+  <div class="card s3">
+    <div class="ch p">${isVet?'🐾':'🌿'} Inteligencia de Temporada · ${isVet?'Ectoparásitos Otoño ('+SA.semanas_ecto+' semanas)':'Invierno se Acerca ('+SA.semanas_invierno+' semanas)'}</div>
+    <div class="cb">
+      <div class="season-banner">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div style="font-size:22px">${isVet?'🦟':'🌧️'}</div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700;color:var(--p)">PREDICCIÓN ESTACIONAL · ${isVet?'Marzo–Mayo 2026 (Otoño Vet)':'Abril–Junio 2026 (Invierno)'}</div>
+            <div style="font-size:11px;color:var(--li);margin-top:3px">${isVet?'Temporada alta ectoparásitos. <strong style="color:var(--p)">IVERMECTINA 1% VET / ENROFLOXACINA</strong> subirán':'Los SKUs respiratorios entran en temporada alta. <strong style="color:var(--p)">TAPSIN CALIENTE NOCHE/DIA</strong> subirán'} <strong style="color:var(--g)">${SA.pred_aumento}</strong> en despachos.</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:9px;color:var(--mu)">ACCIÓN RECOMENDADA</div>
+            <div style="font-size:10px;color:var(--li);max-width:220px;text-align:right">${SA.accion}</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:4px;">
+        <div style="background:var(--c2);border:1px solid var(--bd);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:var(--mu)">ABRIL</div>
+          <div style="font-size:14px;font-weight:800;color:var(--y)">+20%</div>
+          <div style="font-size:9px;color:var(--mu)">inicio otoño</div>
+        </div>
+        <div style="background:var(--c2);border:1px solid var(--bd);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:var(--mu)">MAYO</div>
+          <div style="font-size:14px;font-weight:800;color:var(--o)">+45%</div>
+          <div style="font-size:9px;color:var(--mu)">ola de frío</div>
+        </div>
+        <div style="background:var(--c2);border:1px solid var(--bd);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:var(--mu)">JUNIO</div>
+          <div style="font-size:14px;font-weight:800;color:var(--r)">+80%</div>
+          <div style="font-size:9px;color:var(--mu)">peak invierno</div>
+        </div>
+        <div style="background:rgba(63,185,80,.07);border:1px solid rgba(63,185,80,.3);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:var(--mu)">PEDIDO ANTICIPADO</div>
+          <div style="font-size:14px;font-weight:800;color:var(--g)">AHORA</div>
+          <div style="font-size:9px;color:var(--mu)">mejor precio + stock asegurado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVOLUCIÓN -->
+  <div class="card s3">
+    <div class="ch g">📈 Evolución Mensual + Proyección Cierre (${v.zona}) · Predicción: <span style="color:${pred.cls==='cg'?'var(--g)':pred.cls==='cy'?'var(--y)':'var(--r)'}">${pred.label}</span></div>
+    <div class="cb">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px;text-align:center;">
+        <div><div style="font-size:9px;color:var(--mu)">ENE-26</div><div style="font-size:20px;font-weight:800;color:var(--t)">$${v.r1}M</div><div style="font-size:9px;color:var(--mu)">${(v.r1/22).toFixed(1)}M/día</div></div>
+        <div><div style="font-size:9px;color:var(--mu)">FEB-26</div><div style="font-size:20px;font-weight:800;color:var(--t)">$${v.r2}M</div><div style="font-size:9px;color:var(--mu)">${(v.r2/20).toFixed(1)}M/día</div></div>
+        <div><div style="font-size:9px;color:var(--mu)">MAR-26 (${DIAS_T}d)</div><div style="font-size:20px;font-weight:800;color:var(--g)">$${v.r3}M</div><div style="font-size:9px;color:${+velPct>=0?'var(--g)':'var(--r)'}">${rate3.toFixed(1)}M/día · ${velPct>0?'+':''}${velPct}%</div></div>
+        <div style="border:1px dashed var(--bd);border-radius:6px;padding:4px;opacity:.8"><div style="font-size:9px;color:var(--mu)">PROYECCIÓN</div><div style="font-size:20px;font-weight:800;color:var(--y)">$${proyMar}M</div><div style="font-size:9px;color:var(--mu)">a ritmo actual</div></div>
+        <div style="border:1px solid rgba(63,185,80,.3);border-radius:6px;padding:4px;background:rgba(63,185,80,.05)"><div style="font-size:9px;color:var(--mu)">META MES</div><div style="font-size:20px;font-weight:800;color:var(--g)">$${v.meta_mes}M</div><div style="font-size:9px;color:${pctMeta>=90?'var(--g)':pctMeta>=75?'var(--y)':'var(--r)'};font-weight:700">${pctMeta}%</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="font-size:10px;color:var(--mu);">Eficiencia cartera</div>
+        <div class="bar-bg"><div class="bar-f" style="width:${efic}%;background:${efic>=80?'var(--g)':efic>=65?'var(--y)':'var(--r)'}"></div></div>
+        <div style="font-size:11px;font-weight:700;color:${efic>=80?'var(--g)':efic>=65?'var(--y)':'var(--r)'};">${efic}% (${v.cli-v.caidos}/${v.cli} comprando)</div>
+        ${+brechaRev>0?`<div style="margin-left:12px;font-size:10px;color:var(--mu)">Brecha:</div><div style="font-size:11px;font-weight:700;color:var(--r)">$${brechaRev}M → +${((v.meta_mes-proyMar)/DIAS_R).toFixed(1)}M/día en ${DIAS_R}d</div>`:''}
+      </div>
+    </div>
+  </div>
+
+  <!-- INTELIGENCIA PREDICTIVA -->
+  <div class="card">
+    <div class="ch p">🧠 Inteligencia Predictiva</div>
+    <div class="cb">
+      <div class="pred-box">
+        <div class="pred-label">¿Cerrará la meta?</div>
+        <div class="pred-val ${pred.cls}">${pred.label}</div>
+        <div class="pred-sub">${pred.desc}</div>
+      </div>
+      <div class="pred-box">
+        <div class="pred-label">${tipoLabel} a punto de pedir (hoy-mañana)</div>
+        ${aptoPedir.length>0
+          ? aptoPedir.map(f=>`<div style="font-size:11px;color:var(--li);margin-bottom:3px">📦 <strong>${f.n.split(' ').slice(0,3).join(' ')}</strong> · ${f.sig_sku} · prob reorder alta</div>`).join('')
+          : `<div style="font-size:11px;color:var(--mu)">Calcular próximo ciclo de cada farmacia: cada ~${diasProm} días.</div>`
+        }
+      </div>
+      <div class="pred-box">
+        <div class="pred-label">Predicción siguiente semana</div>
+        <div class="pred-val cy">$${(rate3*5).toFixed(0)}M</div>
+        <div class="pred-sub">5 días hábiles × ${rate3.toFixed(1)}M/día. ${+velPct>0?`Si aceleración sigue: $${(rate3*1.05*5).toFixed(0)}M (+5%).`:`Si el ritmo mejora +10%: $${(rate3*1.1*5).toFixed(0)}M.`}</div>
+      </div>
+      <div class="pred-box">
+        <div class="pred-label">Presión competitiva zona ${v.zona}</div>
+        <div class="pred-val ${compColor(v.comp_zona)}">${compLabel(v.comp_zona)}</div>
+        <div class="pred-sub">${v.comp_zona>=4?'Alta presencia de cadenas (Cruz Verde / Ahumada). Priorizar farmacias independientes y buen precio.':v.comp_zona>=3?'Zona mixta. Independientes son el canal más fiel.':'Zona de baja competencia. Ventaja de distribuidor preferente.'}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FARMACIAS CRECIENDO -->
+  <div class="card">
+    <div class="ch g">${tipoIcon} ${tipoLabel} con Momentum — Push + Cross-sell</div>
+    <div class="cb">
+      ${creciendo.length===0?`<div class="al">Sin puntos en alza esta semana.</div>`:''}
+      <table class="tbl">
+        <thead><tr><th>Farmacia</th><th>SKU Activo</th><th>Var.</th><th>Cross-sell</th></tr></thead>
+        <tbody>
+          ${creciendo.map(f=>`<tr>
+            <td><strong>${f.n.split(' ').slice(0,3).join(' ')}</strong></td>
+            <td style="font-size:10px;color:var(--t)">${f.sku}</td>
+            <td class="r"><span class="b bg">${f.delta}</span></td>
+            <td style="font-size:10px;color:var(--g)">${f.sig_sku}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      ${creciendo.length>0?`<div class="al g" style="margin-top:7px"><strong>Invierno approach:</strong> Ampliar pedido + proponer TAPSIN NOCH/DIA en volumen anticipado (stock de temporada).</div>`:''}
+    </div>
+  </div>
+
+  <!-- FARMACIAS REACTIVAR -->
+  <div class="card">
+    <div class="ch r">🔴 ${tipoLabel} sin Pedido — Reactivar + Probabilidad</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>Farmacia</th><th>Último SKU</th><th>Días</th><th>Prob. Recuperar</th><th>Intro con</th></tr></thead>
+        <tbody>
+          ${reactivar.map((f,i)=>`
+            <tr>
+              <td><strong>${f.n.split(' ').slice(0,3).join(' ')}</strong></td>
+              <td style="font-size:10px;color:var(--mu)">${f.sku}</td>
+              <td class="r"><span class="b ${f.dscp>14?'br':'by'}">${f.dscp}d</span></td>
+              <td class="r"><span class="b ${winBackColor(f.win_back)}">${f.win_back}%</span></td>
+              <td style="font-size:10px;color:var(--t)">${f.sig_sku}</td>
+            </tr>`).join('')}
+          ${reactivar.length===0?`<tr><td colspan="5" style="text-align:center;color:var(--mu);padding:12px">✅ Todas las farmacias compraron esta semana</td></tr>`:''}
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:10px;color:var(--mu)">Recuperable estimado: <strong style="color:var(--r)">$${v.riesgo}M</strong> · Prob. promedio: <strong style="color:var(--y)">${reactivar.length>0?Math.round(reactivar.reduce((s,f)=>s+f.win_back,0)/reactivar.length):100}%</strong></div>
+    </div>
+  </div>
+
+  <!-- SCRIPT DE REACTIVACIÓN -->
+  <div class="card">
+    <div class="ch t">📞 Script Reactivación + Invierno</div>
+    <div class="cb">
+      <div style="font-size:10px;color:var(--mu);margin-bottom:6px">Para: <strong style="color:var(--tx)">${reactivar[0]?reactivar[0].n:'Primera farmacia inactiva'}</strong> ${reactivar[0]?`· ${reactivar[0].dscp} días · Prob recuperar: ${reactivar[0].win_back}%`:''}</div>
+      <div class="scr"><div class="stag">APERTURA</div><br>"Hola, ${v.n.split(' ')[0]} de Clinical Market. Llevan ${reactivar[0]?reactivar[0].dscp:'varios'} días sin pedido — ¿se les terminó el stock de <strong>${reactivar[0]?reactivar[0].sku:'TAPSIN'}</strong>? Tenemos despacho en 24h."</div>
+      <div class="scr"><div class="stag">GANCHO TEMPORADA</div><br>"Y ya que hablo — con el frío que se viene en mayo-junio, el <strong>TAPSIN CALIENTE NOCHE/DIA</strong> se va a disparar. Los que piden ahora aseguran precio y no se quedan sin stock. ¿Le armo el pedido anticipado?"</div>
+      <div class="scr"><div class="stag">CIERRE RÁPIDO</div><br>"¿Le genero la OC ahora con los dos TAPSIN + ${reactivar[0]?reactivar[0].sig_sku:'CLEXANE 40'} y lo dejo programado para mañana primera hora?"</div>
+    </div>
+  </div>
+
+  <!-- SKU PUSH -->
+  <div class="card">
+    <div class="ch y">💊 SKUs Push Esta Semana</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>Producto</th><th>Tend.</th><th>Mg</th><th>Tip</th></tr></thead>
+        <tbody>
+          ${skuList.map(s=>`
+            <tr>
+              <td><strong>${s.sku}</strong></td>
+              <td><span class="b ${s.tend.startsWith('+')?'bg':'br'}">${s.tend}</span></td>
+              <td style="color:${+s.mg.replace('%','')>15?'var(--g)':'var(--mu)'};font-weight:700">${s.mg}</td>
+              <td style="font-size:10px;color:var(--mu)">${s.tip}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ANÁLISIS DE CARTERA COMPLETO -->
+  <div class="card s2">
+    <div class="ch y">🗺️ Mapa de Cartera ${tipoIcon} — Segmentación por Estado (${tipoLabel})</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>Farmacia</th><th>Segmento</th><th>SKU Activo</th><th>Var.</th><th>Comp.</th><th>Próximo paso</th></tr></thead>
+        <tbody>
+          ${farmas.map(f=>`<tr>
+            <td style="font-size:10px"><strong>${f.n.split(' ').slice(0,3).join(' ')}</strong></td>
+            <td><span class="b ${segBadge(f.seg)}">${f.seg}</span></td>
+            <td style="font-size:10px;color:var(--t)">${f.sku}</td>
+            <td><span class="b ${f.delta.startsWith('+')?'bg':'br'}">${f.delta}</span></td>
+            <td><span class="b ${compColor(f.comp)}" style="font-size:8px">${compLabel(f.comp)}</span></td>
+            <td style="font-size:10px;color:var(--mu)">${f.seg==='CRECIENDO'?'Ampliar + '+f.sig_sku:f.seg==='ESTABLE'?'Mantener + invierno prep':f.seg==='RIESGO'?'Llamar esta semana · '+f.sig_sku:'REACTIVAR URGENTE · '+f.sig_sku}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PORTFOLIO -->
+  <div class="card">
+    <div class="ch y">💊 Portfolio — Vendiendo / Dejaste de Vender / Oportunidad</div>
+    <div class="cb">
+      <div style="margin-bottom:8px">
+        <div style="font-size:9px;font-weight:700;color:var(--g);margin-bottom:5px">✅ VENDIENDO AHORA</div>
+        ${["TAPSIN CALIENTE NOCHE","TAPSIN CALIENTE DIA","CONCERTA 36 MG"].map(s=>`<div class="pill v"><span style="color:var(--g)">●</span>${s}</div>`).join('')}
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="font-size:9px;font-weight:700;color:var(--r);margin-bottom:5px">⚠️ DEJASTE DE VENDER</div>
+        ${["BAVENCIO 20 MG","CLEXANE 40 MG (cayó)"].map(s=>`<div class="pill p"><span style="color:var(--r)">●</span>${s}</div>`).join('')}
+        <div style="font-size:9px;color:var(--mu);margin-top:4px">Re-introducir — el cliente ya lo conoce. Oferta puntual.</div>
+      </div>
+      <div>
+        <div style="font-size:9px;font-weight:700;color:var(--p);margin-bottom:5px">🌧️ OPORTUNIDAD INVIERNO</div>
+        ${["TAPSIN NACH x24u (pack)","BRUKINSA 80 MG (Rx, mg alto)"].map(s=>`<div class="pill n"><span style="color:var(--t)">●</span>${s}</div>`).join('')}
+        <div style="font-size:9px;color:var(--mu);margin-top:4px">Packs de temporada + Rx alto ticket.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MÉTRICAS -->
+  <div class="card">
+    <div class="ch">📊 Métricas de Cartera</div>
+    <div class="cb">
+      <div class="mrow"><div class="ml">Eficiencia cartera</div><div class="bar-bg"><div class="bar-f" style="width:${efic}%;background:${efic>=80?'var(--g)':efic>=65?'var(--y)':'var(--r)'}"></div></div><div class="mv ${efic>=80?'cg':efic>=65?'cy':'cr'}">${efic}%</div></div>
+      <div class="mrow"><div class="ml">Avance vs meta mes</div><div class="bar-bg"><div class="bar-f" style="width:${Math.min(pctMeta,100)}%;background:${pctMeta>=90?'var(--g)':pctMeta>=75?'var(--y)':'var(--r)'}"></div></div><div class="mv ${pctMeta>=90?'cg':pctMeta>=75?'cy':'cr'}">${pctMeta}%</div></div>
+      <div class="mrow"><div class="ml">Margen promedio</div><div class="bar-bg"><div class="bar-f" style="width:${Math.min((v.mg/20)*100,100)}%;background:${v.mg>=14?'var(--g)':v.mg>=11?'var(--y)':'var(--r)'}"></div></div><div class="mv ${v.mg>=14?'cg':v.mg>=11?'cy':'cr'}">${v.mg}%</div><span style="font-size:9px;color:${+deltaMg>=0?'var(--g)':'var(--r)'};margin-left:4px">${+deltaMg>=0?'↑+':'↓'}${Math.abs(deltaMg)}pp</span></div>
+      <div class="mrow"><div class="ml">$M en riesgo</div><div class="bar-bg"><div class="bar-f" style="width:${Math.min((v.riesgo/100)*100,100)}%;background:var(--r)"></div></div><div class="mv cr">$${v.riesgo}M</div></div>
+      <div class="mrow"><div class="ml">Presión competitiva zona</div><div class="bar-bg"><div class="bar-f" style="width:${v.comp_zona*20}%;background:${v.comp_zona>=4?'var(--r)':v.comp_zona>=3?'var(--y)':'var(--g)'}"></div></div><div class="mv ${compColor(v.comp_zona)}">${compLabel(v.comp_zona)}</div></div>
+    </div>
+  </div>
+
+  <!-- RANKING -->
+  <div class="card">
+    <div class="ch">👥 Ranking Equipo Retail Q1-26 — ${rnk.length} vendedores</div>
+    <div class="cb" style="padding:8px 10px">
+      ${rnk.map((x,i)=>{
+        const max=rnk[0].rev;
+        const isMe=x.n===v.n;
+        const segIco=x.seg_tipo==='Veterinaria'?'🐾':x.seg_tipo==='Mixto'?'🏪🐾':'🏪';
+        const xRate3=x.r3/DIAS_T, xRate2=x.r2/20;
+        const xVelPct=xRate2>0?(((xRate3-xRate2)/xRate2)*100).toFixed(0):0;
+        return `<div class="rk-row">
+          <div class="rk-n" style="color:${i<3?'var(--y)':'var(--mu)'};font-size:9px">#${i+1}</div>
+          <div style="font-size:9px;margin-right:2px">${segIco}</div>
+          <div class="rk-name" style="font-size:10px;font-weight:${isMe?700:400};color:${isMe?'var(--g)':'var(--li)'}">${x.n.split(' ').slice(0,2).join(' ')}${isMe?' ←':''}</div>
+          <span style="font-size:8px;color:${+xVelPct>=0?'var(--g)':'var(--r)'};margin-right:4px;font-weight:700">${+xVelPct>=0?'↑':'↓'}${Math.abs(xVelPct)}%</span>
+          <div class="rk-bar-bg"><div class="rk-bar-f" style="width:${(x.rev/max)*100}%;background:${isMe?'var(--g)':'rgba(46,168,204,.4)'}"></div></div>
+          <div class="rk-val" style="font-size:10px;color:${isMe?'var(--g)':'var(--li)'}">$${x.rev}M</div>
+        </div>`;
+      }).join('')}
+      <div style="margin-top:6px;font-size:9px;color:var(--mu)">🏪 Farmacia · 🐾 Vet · 🏪🐾 Mixto · Flecha = velocidad Mar vs Feb</div>
+    </div>
+  </div>
+
+  <!-- ALERTAS -->
+  <div class="card">
+    <div class="ch ${v.riesgo>50||v.caidos>15?'r':v.caidos>5?'y':'g'}">⚡ Alertas del Día</div>
+    <div class="cb">
+      ${v.caidos>0?`<div class="al r"><strong>🔴 ${v.caidos} farmacias sin pedido</strong> · Pérdida estimada $${(v.caidos*(ticketProm/1000/3)).toFixed(0)}M/mes. Probabilidad promedio recuperar: ${Math.round(reactivar.reduce((s,f)=>s+f.win_back,0)/(reactivar.length||1))}%.</div>`:''}
+      ${v.riesgo>0?`<div class="al"><strong>⚠️ $${v.riesgo}M en riesgo</strong> · Baja frecuencia de compra. ¿Tienen stock propio excesivo? Revisar.</div>`:''}
+      ${+velPct<-10?`<div class="al r"><strong>▼ Velocidad cayó ${Math.abs(velPct)}%</strong> · Necesitas +${(rate2-rate3).toFixed(1)}M/día para igualar Feb. Invierno puede ayudar si preparas bien.</div>`:''}
+      ${+velPct>=5?`<div class="al g"><strong>▲ Acelerando +${velPct}%</strong> · Ritmo Mar supera Feb. Manten y amplía cartera para invierno.</div>`:''}
+      <div class="al p"><strong>🌧️ Temporada:</strong> Faltan ~10 semanas para el peak de invierno. TAPSIN NOCH/DIA subirán +80% en junio. Proponer pedido anticipado HOY en tus farmacias activas.</div>
+      <div class="al t"><strong>💡 Margen:</strong> Tu margen (${v.mg}%) ${v.mg<12?'está bajo. Priorizar CLEXANE 40 (18%) y BAVENCIO (25%+) sobre volumen puro.':v.mg>=14?'es bueno. Ampliar con specialty si tienes acceso.':'está en rango. Mejorar con productos Rx.'}</div>
+      ${altaComp>0?`<div class="al r"><strong>🏪 ${altaComp} farmacias con alta presión de cadenas</strong> · Diferenciarse por precio, servicio y velocidad de despacho.</div>`:''}
+    </div>
+  </div>
+
+  <!-- PLAN ACCIÓN -->
+  <div class="card s2">
+    <div class="ch y">🎯 Plan de Acción Hoy — ${DS[today.getDay()]} ${today.getDate()} ${MS[today.getMonth()]}</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Acción</th><th>Punto de Venta</th><th>Producto</th><th>Impacto Est.</th><th>Estado</th></tr></thead>
+        <tbody>
+          ${reactivar[0]?`<tr><td>1</td><td>🔴 Reactivar urgente</td><td>${reactivar[0].n.split(' ').slice(0,3).join(' ')}</td><td style="font-size:10px">${reactivar[0].sig_sku} · ${reactivar[0].win_back}% prob.</td><td class="r">$${(v.meta_mes/DIAS_M*0.4).toFixed(0)}M</td><td><span class="b br">HOY</span></td></tr>`:''}
+          ${reactivar[1]?`<tr><td>2</td><td>🔴 Reactivar</td><td>${reactivar[1].n.split(' ').slice(0,3).join(' ')}</td><td style="font-size:10px">${reactivar[1].sig_sku} · ${reactivar[1].win_back}% prob.</td><td class="r">$${(v.meta_mes/DIAS_M*0.3).toFixed(0)}M</td><td><span class="b br">HOY</span></td></tr>`:''}
+          ${creciendo[0]?`<tr><td>3</td><td>🚀 Ampliar pedido</td><td>${creciendo[0].n.split(' ').slice(0,3).join(' ')}</td><td style="font-size:10px">TAPSIN NACH + DIA (volumen invierno)</td><td class="r">$${(v.meta_mes/DIAS_M*0.25).toFixed(0)}M</td><td><span class="b bg">AMPLIAR</span></td></tr>`:''}
+          <tr><td>${reactivar.length>0?reactivar.length+1:1}</td><td>🌧️ Pedido anticipado invierno</td><td>Top 3 farmacias activas</td><td style="font-size:10px">TAPSIN NACH/DIA — stock May-Jun</td><td class="r">$${(v.meta_mes/DIAS_M*0.3).toFixed(0)}M</td><td><span class="b bp">PROPONER</span></td></tr>
+          <tr><td>${reactivar.length>0?reactivar.length+2:2}</td><td>💰 Recuperar margen</td><td>Cualquier farmacia activa</td><td style="font-size:10px">BAVENCIO (25%mg) / CLEXANE (18%mg)</td><td class="r">Mg +18-25%</td><td><span class="b bt">SEMANA</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RUTA SUGERIDA -->
+  <div class="card s3">
+    <div class="ch o">🗺️ Ruta Sugerida del Día — ${v.zona} · ${farmas.length} ${tipoLabel.toLowerCase()} · <span style="color:var(--y)">Esperado: $${totalRuta}M</span> <span style="color:var(--mu);font-size:9px;font-weight:400;margin-left:8px">Meta diaria: $${metaDiaria}M · Cobertura: ${Math.round((totalRuta/metaDiaria)*100)}%</span></div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Farmacia</th><th>Prioridad</th><th>Motivo</th><th>Acción</th><th>Ofrecer HOY</th><th>Dejó de comprar</th><th>Esperado</th></tr></thead>
+        <tbody>
+          ${routeData.map((f,i)=>`<tr>
+            <td style="font-weight:800;color:var(--mu);font-size:12px">${i+1}</td>
+            <td>
+              <strong>${f.n}</strong>
+              <div style="font-size:9px;color:var(--mu);margin-top:1px">${compLabel(f.comp)} competencia · ${f.seg}</div>
+            </td>
+            <td><span class="b ${f.urgColor}">${f.prio}</span></td>
+            <td style="font-size:10px;color:var(--mu);max-width:120px">${f.motivo}</td>
+            <td style="font-size:10px;color:var(--li)">${f.accion}</td>
+            <td>
+              <span style="font-size:10px;color:var(--g);font-weight:700">${f.sig_sku}</span>
+              ${f.prio==='AMPLIAR'?'<div style="font-size:9px;color:var(--p)">+ TAPSIN NOCH (invierno)</div>':''}
+            </td>
+            <td>
+              ${f.dscp>0
+                ?`<span style="font-size:10px;color:var(--r)">${f.sku}</span><div style="font-size:9px;color:var(--mu)">${f.dscp}d sin pedir</div>`
+                :'<span style="font-size:10px;color:var(--mu)">—</span>'}
+            </td>
+            <td class="r">
+              <span style="font-size:14px;font-weight:800;color:var(--y)">$${f.esperado}M</span>
+              ${f.win_back&&f.dscp>0?`<div style="font-size:9px;color:var(--mu)">${f.win_back}% prob.</div>`:''}
+            </td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid var(--bd);flex-wrap:wrap;gap:8px">
+        <div style="display:flex;gap:14px;font-size:10px;color:var(--mu)">
+          <span>🔴 Urgente: ${routeData.filter(f=>f.prio==='URGENTE').length}</span>
+          <span>⚡ Riesgo: ${routeData.filter(f=>f.prio==='RIESGO'||f.prio==='SEGUIMIENTO').length}</span>
+          <span>🚀 Ampliar: ${routeData.filter(f=>f.prio==='AMPLIAR').length}</span>
+          <span>✅ Mantener: ${routeData.filter(f=>f.prio==='MANTENER').length}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:10px;color:var(--mu)">Total esperado:</div>
+          <div style="font-size:22px;font-weight:900;color:${parseFloat(totalRuta)>=parseFloat(metaDiaria)?'var(--g)':parseFloat(totalRuta)>=parseFloat(metaDiaria)*0.8?'var(--y)':'var(--r)'}">$${totalRuta}M</div>
+          <div style="font-size:10px;color:var(--mu)">/ meta $${metaDiaria}M</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARTERA FINANCIERA -->
+  <div class="card s3">
+    <div class="ch ${+totalDeuda>10?'r':+totalDeuda>0?'y':'g'}">💳 Estado Financiero Cartera — Crédito y Deuda Vencida · ${tipoLabel}</div>
+    <div class="cb">
+      <table class="tbl">
+        <thead><tr><th>${tipoLabel}</th><th>Plazo Crédito</th><th>Deuda Vencida</th><th>Estado Cobro</th><th>Recomendación</th></tr></thead>
+        <tbody>
+          ${farmas.map(f=>`<tr>
+            <td><strong>${f.n.split(' ').slice(0,3).join(' ')}</strong><div style="font-size:9px;color:var(--mu)">${f.seg}</div></td>
+            <td><span class="b ${f.credito<=30?'bg':f.credito<=60?'by':'br'}">${f.credito}d</span></td>
+            <td class="r">${(f.deuda||0)>0?`<span class="b ${f.deuda>5?'br':'by'}">$${f.deuda}M</span>`:'<span class="b bg">Al día</span>'}</td>
+            <td>${(f.deuda||0)>5?'<span class="b br">COBRAR HOY</span>':(f.deuda||0)>0?'<span class="b by">COBRAR</span>':'<span class="b bg">OK</span>'}</td>
+            <td style="font-size:10px;color:var(--mu)">${(f.deuda||0)>5?'No despachar sin pago. Contactar hoy.':(f.deuda||0)>0?'Acordar pago en próxima visita.':'Condiciones normales. Mantener.'}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      ${+totalDeuda>0?`<div class="al r" style="margin-top:8px">⚠️ Deuda total cartera: <strong>$${totalDeuda}M</strong> en ${clientesDeuda} cliente${clientesDeuda!==1?'s':''}. Coordinar con cobranza antes del próximo despacho.</div>`:'<div class="al g" style="margin-top:6px">✅ Cartera al día — sin deuda vencida. Excelente salud financiera.</div>'}
+    </div>
+  </div>
+
+  <!-- DEVOLUCIONES DETALLE -->
+  <div class="card s2">
+    <div class="ch ${+montoTotalDev>3?'r':+montoTotalDev>0?'y':'g'}">↩️ Devoluciones del Mes — Detalle por SKU y Cliente · Total devuelto: $${montoTotalDev}M</div>
+    <div class="cb">
+      ${devItems.length===0
+        ?'<div class="al g">✅ Sin devoluciones registradas este mes. Excelente gestión de inventario de clientes.</div>'
+        :`<table class="tbl">
+          <thead><tr><th>Cliente</th><th>SKU Devuelto</th><th>Und.</th><th>Monto</th><th>Motivo</th><th>Acción</th></tr></thead>
+          <tbody>
+            ${devItems.map(d=>`<tr>
+              <td><strong style="font-size:10px">${d.f.split(' ').slice(0,4).join(' ')}</strong></td>
+              <td style="font-size:10px;color:var(--r);font-weight:600">${d.sku}</td>
+              <td class="r" style="font-size:10px;color:var(--mu)">${d.und} u.</td>
+              <td class="r"><span class="b br">$${d.monto}M</span></td>
+              <td style="font-size:10px;color:var(--mu)">${d.motivo}</td>
+              <td style="font-size:10px;color:var(--y)">${d.motivo.includes('Sobrestock')?'Revisar política consignación':d.motivo.includes('Vencimiento')?'Ajustar tamaño pedido':'Verificar con logística'}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+        <div class="al ${+montoTotalDev>3?'r':''}" style="margin-top:7px">⚠️ SKU con mayor devolución: <strong>${skuDevFrecuente}</strong> · Total: <strong>$${montoTotalDev}M</strong>. ${+montoTotalDev>3?'Revisar política de consignación y ajustar volúmenes en próximas OC.':'Nivel dentro de rango aceptable (&lt;2% revenue).'}</div>`
+      }
+    </div>
+  </div>
+
+  <!-- ALERTAS CADUCIDAD STOCK -->
+  <div class="card">
+    <div class="ch ${cadItems.length>1?'r':cadItems.length===1?'y':'g'}">⏰ Alertas de Caducidad de Stock en Clientes</div>
+    <div class="cb">
+      ${cadItems.length===0
+        ?'<div class="al g">✅ Sin alertas de caducidad detectadas en cartera activa este mes.</div>'
+        :cadItems.map(c=>`<div class="al r" style="margin-bottom:6px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">
+            <div>
+              <strong style="font-size:11px">${c.f.split(' ').slice(0,4).join(' ')}</strong>
+              <div style="font-size:11px;color:var(--r);font-weight:700;margin-top:1px">${c.sku}</div>
+              <div style="font-size:10px;color:var(--mu);margin-top:2px">${c.und} unidades · vence en <strong style="color:${c.vence_dias<=30?'var(--r)':'var(--y)'}">${c.vence_dias} días</strong></div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <span class="b ${c.vence_dias<=30?'br':'by'}" style="display:block;margin-bottom:3px">${c.vence_dias}d</span>
+              <span style="font-size:9px;color:var(--mu)">→ ${c.accion}</span>
+            </div>
+          </div>
+        </div>`).join('')
+      }
+    </div>
+  </div>
+
+  <!-- NOTAS -->
+  <div class="card">
+    <div class="ch">📝 Notas del Día</div>
+    <div class="cb">
+      <textarea placeholder="Acuerdos, OC pendientes, seguimientos..."></textarea>
+      <div style="margin-top:6px"><div style="font-size:9px;color:var(--mu);margin-bottom:3px">PRIORIDADES MAÑANA</div><textarea placeholder="1.&#10;2.&#10;3." style="min-height:45px"></textarea></div>
+    </div>
+  </div>
+</div>`;
+}
+render();
+</script>
+</body>
+</html>
