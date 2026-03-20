@@ -6,1109 +6,1025 @@
 <title>PROFAR Analytics · Inteligencia Comercial</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  :root {
-    --bg: #0a0e1a;
-    --bg2: #0f1628;
-    --bg3: #141d35;
-    --card: #1a2540;
-    --card2: #1f2d4a;
-    --border: #2a3a5c;
-    --border2: #3a4f7a;
-    --accent: #3b82f6;
-    --accent2: #6366f1;
-    --green: #10b981;
-    --red: #ef4444;
-    --yellow: #f59e0b;
-    --orange: #f97316;
-    --purple: #8b5cf6;
-    --cyan: #06b6d4;
-    --text: #e2e8f0;
-    --text2: #94a3b8;
-    --text3: #64748b;
-    --ecom: #3b82f6;
-    --sala: #10b981;
-    --tel: #8b5cf6;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+:root{
+  --bg:#0a0e1a;--bg2:#0f1628;--bg3:#141d35;--card:#1a2540;--card2:#1f2d4a;
+  --border:#2a3a5c;--border2:#3a4f7a;
+  --accent:#3b82f6;--a2:#6366f1;--green:#10b981;--red:#ef4444;--yellow:#f59e0b;
+  --orange:#f97316;--purple:#8b5cf6;--cyan:#06b6d4;--pink:#ec4899;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --ecom:#3b82f6;--sala:#10b981;--tel:#8b5cf6;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
 
-  /* ── HEADER ── */
-  .header {
-    background: linear-gradient(135deg, #0f1628 0%, #1a2540 50%, #141d35 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 18px 28px;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-    backdrop-filter: blur(12px);
-  }
-  .header-left { display: flex; align-items: center; gap: 14px; }
-  .logo { width: 38px; height: 38px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-  .header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
-  .header h1 span { color: var(--accent); }
-  .header-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
-  .header-right { display: flex; align-items: center; gap: 12px; }
-  .live-badge { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: var(--green); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
-  .live-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-  .date-badge { color: var(--text3); font-size: 12px; }
-  .nav-btn { background: none; border: 1px solid var(--border2); color: var(--text2); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.2s; }
-  .nav-btn:hover, .nav-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#0c1220,#1a2540);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.hdr-l{display:flex;align-items:center;gap:12px;}
+.logo{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.hdr h1{font-size:19px;font-weight:700;letter-spacing:-.3px;}
+.hdr h1 span{color:var(--accent);}
+.hdr-sub{font-size:10px;color:var(--text3);margin-top:1px;}
+.hdr-r{display:flex;align-items:center;gap:10px;}
+.live{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);color:var(--green);padding:3px 9px;border-radius:16px;font-size:10px;font-weight:700;display:flex;align-items:center;gap:4px;}
+.live-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hdr-btn{background:none;border:1px solid var(--border2);color:var(--text2);padding:5px 12px;border-radius:6px;cursor:pointer;font-size:11px;transition:all .2s;text-decoration:none;display:flex;align-items:center;}
+.hdr-btn:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
 
-  /* ── LAYOUT ── */
-  .main { display: grid; grid-template-columns: 1fr 360px; min-height: calc(100vh - 65px); }
-  .content { padding: 24px; overflow-y: auto; }
-  .sidebar { border-left: 1px solid var(--border); display: flex; flex-direction: column; height: calc(100vh - 65px); position: sticky; top: 65px; }
+/* LAYOUT */
+.main{display:grid;grid-template-columns:1fr 340px;min-height:calc(100vh - 61px);}
+.content{padding:20px;overflow-y:auto;}
+.sidebar{border-left:1px solid var(--border);display:flex;flex-direction:column;height:calc(100vh - 61px);position:sticky;top:61px;}
 
-  /* ── NAV TABS ── */
-  .tab-nav { display: flex; gap: 4px; margin-bottom: 24px; background: var(--bg2); padding: 4px; border-radius: 10px; border: 1px solid var(--border); }
-  .tab { padding: 7px 14px; border-radius: 7px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text3); transition: all 0.2s; border: none; background: none; }
-  .tab:hover { color: var(--text2); }
-  .tab.active { background: var(--card2); color: var(--text); border: 1px solid var(--border2); }
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
+/* TABS */
+.tabnav{display:flex;gap:3px;margin-bottom:18px;background:var(--bg2);padding:3px;border-radius:9px;border:1px solid var(--border);overflow-x:auto;}
+.tabnav::-webkit-scrollbar{height:2px;}
+.tb{padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;color:var(--text3);transition:all .2s;border:none;background:none;white-space:nowrap;}
+.tb:hover{color:var(--text2);}
+.tb.active{background:var(--card2);color:var(--text);border:1px solid var(--border2);}
+.tp{display:none;}
+.tp.active{display:block;}
 
-  /* ── CARDS ── */
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
-  .card-sm { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
-  .card-title { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-  .card-title .dot { width: 6px; height: 6px; border-radius: 50%; }
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:16px;}
+.card2{background:var(--card2);border:1px solid var(--border2);border-radius:9px;padding:12px;}
+.ct{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;display:flex;align-items:center;gap:5px;}
+.ct .d{width:5px;height:5px;border-radius:50%;}
 
-  /* ── KPI GRID ── */
-  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
-  .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; position: relative; overflow: hidden; cursor: pointer; transition: all 0.2s; }
-  .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-  .kpi-card.ecom::before { background: linear-gradient(90deg, var(--ecom), #60a5fa); }
-  .kpi-card.sala::before { background: linear-gradient(90deg, var(--sala), #34d399); }
-  .kpi-card.tel::before { background: linear-gradient(90deg, var(--tel), #a78bfa); }
-  .kpi-card:hover { border-color: var(--border2); transform: translateY(-1px); }
-  .kpi-card.selected { border-color: var(--accent); background: var(--card2); }
-  .kpi-label { font-size: 11px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-  .kpi-icon { font-size: 14px; }
-  .kpi-val { font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
-  .kpi-card.ecom .kpi-val { color: #60a5fa; }
-  .kpi-card.sala .kpi-val { color: #34d399; }
-  .kpi-card.tel .kpi-val { color: #a78bfa; }
-  .kpi-sub { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
-  .kpi-mg { font-size: 12px; color: var(--text2); }
-  .kpi-yoy { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 10px; }
-  .kpi-yoy.up { background: rgba(16,185,129,0.15); color: var(--green); }
-  .kpi-yoy.down { background: rgba(239,68,68,0.15); color: var(--red); }
-  .kpi-unit { font-size: 13px; font-weight: 400; color: var(--text2); }
+/* KPI GRID */
+.kgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.kgrid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.kgrid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.kpi.ec::before{background:linear-gradient(90deg,var(--ecom),#60a5fa);}
+.kpi.sl::before{background:linear-gradient(90deg,var(--sala),#34d399);}
+.kpi.tl::before{background:linear-gradient(90deg,var(--tel),#a78bfa);}
+.kpi.tot::before{background:linear-gradient(90deg,var(--yellow),var(--orange));}
+.kpi.warn::before{background:linear-gradient(90deg,var(--red),var(--orange));}
+.kpi.good::before{background:linear-gradient(90deg,var(--green),var(--cyan));}
+.kpi-lbl{font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;}
+.kpi-v{font-size:22px;font-weight:700;line-height:1;margin-bottom:4px;}
+.kpi-sub{font-size:11px;color:var(--text2);}
+.kpi-delta{font-size:10px;font-weight:700;padding:2px 6px;border-radius:8px;display:inline-block;margin-top:4px;}
+.up{background:rgba(16,185,129,.12);color:var(--green);}
+.dn{background:rgba(239,68,68,.12);color:var(--red);}
+.nt{background:rgba(148,163,184,.1);color:var(--text3);}
+.warn-t{background:rgba(245,158,11,.12);color:var(--yellow);}
 
-  /* ── CHARTS ── */
-  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-  .chart-full { margin-bottom: 20px; }
-  .chart-wrap { position: relative; height: 220px; }
-  .chart-wrap-lg { position: relative; height: 260px; }
+/* CHARTS */
+.ch-wrap{position:relative;height:200px;}
+.ch-wrap-lg{position:relative;height:250px;}
+.ch-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.mb{margin-bottom:14px;}
 
-  /* ── ALERTS ── */
-  .alert-grid { display: grid; gap: 10px; margin-bottom: 20px; }
-  .alert-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid transparent; }
-  .alert-item.red { border-left-color: var(--red); }
-  .alert-item.yellow { border-left-color: var(--yellow); }
-  .alert-item.green { border-left-color: var(--green); }
-  .alert-item.blue { border-left-color: var(--accent); }
-  .alert-icon { font-size: 16px; margin-top: 1px; }
-  .alert-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-  .alert-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
-  .alert-badge { margin-left: auto; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
-  .badge-red { background: rgba(239,68,68,0.15); color: var(--red); }
-  .badge-yellow { background: rgba(245,158,11,0.15); color: var(--yellow); }
-  .badge-green { background: rgba(16,185,129,0.15); color: var(--green); }
-  .badge-blue { background: rgba(59,130,246,0.15); color: var(--accent); }
+/* ALERTS */
+.al-item{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:11px 13px;display:flex;align-items:flex-start;gap:9px;border-left:3px solid transparent;margin-bottom:8px;}
+.al-item.r{border-left-color:var(--red);}
+.al-item.y{border-left-color:var(--yellow);}
+.al-item.g{border-left-color:var(--green);}
+.al-item.b{border-left-color:var(--accent);}
+.al-item.p{border-left-color:var(--purple);}
+.al-ico{font-size:15px;margin-top:1px;}
+.al-title{font-size:12px;font-weight:700;margin-bottom:2px;}
+.al-desc{font-size:11px;color:var(--text2);line-height:1.5;}
+.al-badge{margin-left:auto;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;white-space:nowrap;align-self:flex-start;}
+.bd-r{background:rgba(239,68,68,.12);color:var(--red);}
+.bd-y{background:rgba(245,158,11,.12);color:var(--yellow);}
+.bd-g{background:rgba(16,185,129,.12);color:var(--green);}
+.bd-b{background:rgba(59,130,246,.12);color:var(--accent);}
+.bd-p{background:rgba(139,92,246,.12);color:var(--purple);}
 
-  /* ── ROTATION TABLE ── */
-  .rot-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .rot-table th { text-align: left; padding: 8px 10px; color: var(--text3); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
-  .rot-table td { padding: 9px 10px; border-bottom: 1px solid rgba(42,58,92,0.5); vertical-align: middle; }
-  .rot-table tr:hover td { background: rgba(255,255,255,0.02); }
-  .rot-bar { height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; width: 80px; display: inline-block; }
-  .rot-fill { height: 100%; border-radius: 3px; }
-  .status-chip { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 8px; }
-  .chip-green { background: rgba(16,185,129,0.15); color: var(--green); }
-  .chip-yellow { background: rgba(245,158,11,0.15); color: var(--yellow); }
-  .chip-red { background: rgba(239,68,68,0.15); color: var(--red); }
-  .chip-orange { background: rgba(249,115,22,0.15); color: var(--orange); }
-  .chip-blue { background: rgba(59,130,246,0.15); color: var(--accent); }
-  .chip-purple { background: rgba(139,92,246,0.15); color: var(--purple); }
+/* CHIPS */
+.chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:7px;display:inline-block;}
+.ch-g{background:rgba(16,185,129,.12);color:var(--green);}
+.ch-r{background:rgba(239,68,68,.12);color:var(--red);}
+.ch-y{background:rgba(245,158,11,.12);color:var(--yellow);}
+.ch-b{background:rgba(59,130,246,.12);color:var(--accent);}
+.ch-p{background:rgba(139,92,246,.12);color:var(--purple);}
+.ch-c{background:rgba(6,182,212,.12);color:var(--cyan);}
+.ch-o{background:rgba(249,115,22,.12);color:var(--orange);}
 
-  /* ── PRICING MODULE ── */
-  .pricing-grid { display: grid; gap: 10px; }
-  .pricing-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; align-items: center; gap: 12px; }
-  .pricing-item.trigger { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.05); }
-  .pricing-item.watch { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.03); }
-  .pricing-item.inversa { border-color: rgba(139,92,246,0.4); background: rgba(139,92,246,0.05); }
-  .pi-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-  .pi-icon.red { background: rgba(239,68,68,0.15); }
-  .pi-icon.yellow { background: rgba(245,158,11,0.15); }
-  .pi-icon.purple { background: rgba(139,92,246,0.15); }
-  .pi-info { flex: 1; }
-  .pi-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-  .pi-detail { font-size: 11px; color: var(--text2); }
-  .pi-action { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; cursor: pointer; border: 1px solid; background: none; transition: all 0.2s; white-space: nowrap; }
-  .pi-action.red { border-color: var(--red); color: var(--red); }
-  .pi-action.red:hover { background: var(--red); color: white; }
-  .pi-action.yellow { border-color: var(--yellow); color: var(--yellow); }
-  .pi-action.yellow:hover { background: var(--yellow); color: #000; }
-  .pi-action.purple { border-color: var(--purple); color: var(--purple); }
-  .pi-action.purple:hover { background: var(--purple); color: white; }
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:11px;}
+.tbl th{text-align:left;padding:7px 9px;color:var(--text3);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border);}
+.tbl td{padding:8px 9px;border-bottom:1px solid rgba(42,58,92,.4);vertical-align:middle;}
+.tbl tr:hover td{background:rgba(255,255,255,.015);}
+.bar-w{height:5px;border-radius:3px;background:var(--border);overflow:hidden;width:60px;display:inline-block;vertical-align:middle;}
+.bar-f{height:100%;border-radius:3px;}
 
-  /* ── SUMMARY ROW ── */
-  .summary-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-  .sum-box { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
-  .sum-val { font-size: 22px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
-  .sum-lbl { font-size: 11px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+/* ACTION ITEMS */
+.act-item{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:12px;display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.act-item.buy{border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.04);}
+.act-item.sell{border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.04);}
+.act-item.offer{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.04);}
+.act-item.watch{border-color:rgba(59,130,246,.3);}
+.act-ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.ico-g{background:rgba(16,185,129,.15);}
+.ico-r{background:rgba(239,68,68,.15);}
+.ico-y{background:rgba(245,158,11,.15);}
+.ico-b{background:rgba(59,130,246,.15);}
+.ico-p{background:rgba(139,92,246,.15);}
+.act-info{flex:1;}
+.act-name{font-size:12px;font-weight:700;margin-bottom:2px;}
+.act-det{font-size:11px;color:var(--text2);}
+.act-btn{font-size:10px;font-weight:700;padding:4px 9px;border-radius:5px;cursor:pointer;border:1px solid;background:none;transition:all .2s;white-space:nowrap;}
+.btn-g{border-color:var(--green);color:var(--green);}
+.btn-g:hover{background:var(--green);color:#000;}
+.btn-r{border-color:var(--red);color:var(--red);}
+.btn-r:hover{background:var(--red);color:#fff;}
+.btn-y{border-color:var(--yellow);color:var(--yellow);}
+.btn-y:hover{background:var(--yellow);color:#000;}
+.btn-p{border-color:var(--purple);color:var(--purple);}
+.btn-p:hover{background:var(--purple);color:#fff;}
 
-  /* ── DATA STATUS ── */
-  .data-status { background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(99,102,241,0.05)); border: 1px solid rgba(59,130,246,0.2); border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; }
-  .ds-title { font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-  .ds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-  .ds-item { font-size: 11px; color: var(--text2); display: flex; align-items: center; gap: 5px; }
-  .ds-item.ok { color: var(--green); }
-  .ds-item.miss { color: var(--text3); }
+/* CDP */
+.cdp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.cdp-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all .2s;}
+.cdp-card:hover{border-color:var(--border2);transform:translateY(-1px);}
+.cdp-card.selected{border-color:var(--accent);}
+.cdp-name{font-size:13px;font-weight:700;margin-bottom:6px;}
+.cdp-row{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;}
+.cdp-lbl{color:var(--text3);}
+.cdp-val{font-weight:600;}
+.cdp-tier{font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;float:right;}
+.tier-a{background:rgba(16,185,129,.15);color:var(--green);}
+.tier-b{background:rgba(59,130,246,.15);color:var(--accent);}
+.tier-c{background:rgba(245,158,11,.15);color:var(--yellow);}
+.tier-d{background:rgba(239,68,68,.15);color:var(--red);}
+.cdp-spark{display:flex;align-items:flex-end;gap:2px;height:22px;margin-top:8px;}
+.cdp-spark-bar{flex:1;border-radius:1px;min-height:3px;}
 
-  /* ── BOT SIDEBAR ── */
-  .bot-header { padding: 16px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-  .bot-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--purple)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-  .bot-name { font-size: 14px; font-weight: 700; }
-  .bot-status { font-size: 11px; color: var(--green); display: flex; align-items: center; gap: 4px; }
-  .bot-msgs { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
-  .msg { max-width: 90%; padding: 10px 12px; border-radius: 10px; font-size: 12px; line-height: 1.5; }
-  .msg.bot { background: var(--card2); border: 1px solid var(--border); border-bottom-left-radius: 3px; align-self: flex-start; }
-  .msg.user { background: linear-gradient(135deg, var(--accent), var(--accent2)); border-bottom-right-radius: 3px; align-self: flex-end; color: white; }
-  .msg-time { font-size: 10px; color: var(--text3); margin-top: 3px; }
-  .quick-btns { padding: 10px 16px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 6px; }
-  .quick-btn { background: var(--card); border: 1px solid var(--border); color: var(--text2); padding: 5px 10px; border-radius: 16px; font-size: 11px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-  .quick-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,0.08); }
-  .bot-input-area { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
-  .bot-input { flex: 1; background: var(--card2); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-family: inherit; outline: none; resize: none; height: 36px; }
-  .bot-input:focus { border-color: var(--accent); }
-  .bot-send { background: var(--accent); border: none; color: white; width: 36px; height: 36px; border-radius: 8px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0; }
-  .bot-send:hover { background: #2563eb; }
+/* COMP TABLE */
+.comp-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;}
+.cheaper{background:rgba(239,68,68,.12);color:var(--red);}
+.parity{background:rgba(148,163,184,.1);color:var(--text3);}
+.expensive{background:rgba(16,185,129,.12);color:var(--green);}
 
-  /* ── SECTION HEADER ── */
-  .sec-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .sec-title { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-  .sec-badge { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.3); color: var(--accent); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 8px; }
-  .sec-actions { display: flex; gap: 6px; }
-  .btn-sm { background: none; border: 1px solid var(--border2); color: var(--text2); padding: 5px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s; }
-  .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
-  .btn-sm.active { background: var(--accent); border-color: var(--accent); color: white; }
+/* SEC HDR */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sh-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px;}
+.sh-badge{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:var(--accent);font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;}
+.sh-actions{display:flex;gap:5px;}
+.btn-xs{background:none;border:1px solid var(--border2);color:var(--text2);padding:4px 10px;border-radius:5px;font-size:10px;cursor:pointer;transition:all .2s;}
+.btn-xs:hover,.btn-xs.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.divider{height:1px;background:var(--border);margin:14px 0;}
 
-  /* ── CHANNEL SELECTOR ── */
-  .ch-selector { display: flex; gap: 8px; margin-bottom: 18px; }
-  .ch-btn { flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); cursor: pointer; text-align: center; font-size: 12px; font-weight: 500; color: var(--text2); transition: all 0.2s; }
-  .ch-btn:hover { border-color: var(--border2); color: var(--text); }
-  .ch-btn.active.ecom { border-color: var(--ecom); background: rgba(59,130,246,0.1); color: #60a5fa; }
-  .ch-btn.active.sala { border-color: var(--sala); background: rgba(16,185,129,0.1); color: #34d399; }
-  .ch-btn.active.tel { border-color: var(--tel); background: rgba(139,92,246,0.1); color: #a78bfa; }
-  .ch-btn.active.all { border-color: var(--accent2); background: rgba(99,102,241,0.1); color: #a5b4fc; }
+/* PRICING FLOW */
+.pf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;}
+.pf-step{text-align:center;padding:12px 8px;border-radius:9px;border:1px solid;font-size:11px;}
+.pf-ico{font-size:18px;margin-bottom:5px;}
+.pf-t{font-weight:700;margin-bottom:3px;}
+.pf-d{font-size:10px;opacity:.7;}
 
-  /* ── MISC ── */
-  .divider { height: 1px; background: var(--border); margin: 18px 0; }
-  .tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.4px; }
-  .tag-new { background: rgba(16,185,129,0.15); color: var(--green); }
-  .tag-need { background: rgba(245,158,11,0.15); color: var(--yellow); }
-  .tag-pend { background: rgba(100,116,139,0.15); color: var(--text3); }
-  .tooltip { position: relative; cursor: help; }
-  .trend-up { color: var(--green); font-size: 11px; }
-  .trend-dn { color: var(--red); font-size: 11px; }
-  .mini-chart { display: inline-flex; align-items: flex-end; gap: 2px; height: 20px; }
-  .mini-bar { width: 5px; border-radius: 2px; }
+/* INV TIMELINE */
+.inv-tl{position:relative;padding-left:22px;}
+.inv-tl::before{content:'';position:absolute;left:6px;top:4px;bottom:4px;width:2px;background:var(--border);}
+.inv-step{position:relative;margin-bottom:14px;}
+.inv-dot{position:absolute;left:-18px;width:11px;height:11px;border-radius:50%;top:3px;}
+.dot-r{background:var(--red);box-shadow:0 0 7px var(--red);}
+.dot-y{background:var(--yellow);}
+.dot-a{background:var(--accent);box-shadow:0 0 7px var(--accent);}
+.dot-g{background:var(--green);}
+.dot-x{background:var(--border2);}
+.inv-t{font-size:12px;font-weight:700;margin-bottom:2px;}
+.inv-d{font-size:11px;color:var(--text2);line-height:1.5;}
 
-  /* ── COMPETENCIA ── */
-  .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .comp-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
-  .comp-name { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
-  .comp-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 12px; }
-  .comp-lbl { color: var(--text3); }
-  .comp-val { font-weight: 600; }
+/* BOT */
+.bot-hdr{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;}
+.bot-av{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.bot-nm{font-size:13px;font-weight:700;}
+.bot-st{font-size:10px;color:var(--green);display:flex;align-items:center;gap:3px;}
+.bot-msgs{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:9px;}
+.msg{max-width:92%;padding:9px 11px;border-radius:9px;font-size:11px;line-height:1.55;}
+.msg.bot{background:var(--card2);border:1px solid var(--border);border-bottom-left-radius:2px;align-self:flex-start;}
+.msg.user{background:linear-gradient(135deg,var(--accent),var(--a2));border-bottom-right-radius:2px;align-self:flex-end;color:#fff;}
+.msg-t{font-size:9px;color:var(--text3);margin-top:3px;}
+.quick-wrap{padding:9px 14px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:5px;}
+.qb{background:var(--card);border:1px solid var(--border);color:var(--text2);padding:4px 9px;border-radius:13px;font-size:10px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.qb:hover{border-color:var(--accent);color:var(--accent);}
+.bot-inp-area{padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:7px;}
+.bot-inp{flex:1;background:var(--card2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:7px;font-size:11px;font-family:inherit;outline:none;resize:none;height:34px;}
+.bot-inp:focus{border-color:var(--accent);}
+.bot-send{background:var(--accent);border:none;color:#fff;width:34px;height:34px;border-radius:7px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.bot-send:hover{background:#2563eb;}
+.typing span{width:6px;height:6px;background:var(--text3);border-radius:50%;animation:bounce 1.2s infinite;display:inline-block;margin:2px;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,80%,100%{transform:scale(.7);opacity:.4}40%{transform:scale(1);opacity:1}}
 
-  /* ── LOGISTICA INVERSA ── */
-  .inv-timeline { position: relative; padding-left: 24px; }
-  .inv-timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: var(--border); }
-  .inv-step { position: relative; margin-bottom: 16px; }
-  .inv-dot { position: absolute; left: -20px; width: 12px; height: 12px; border-radius: 50%; top: 3px; }
-  .inv-dot.active { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
-  .inv-dot.pending { background: var(--border2); }
-  .inv-dot.done { background: var(--green); }
-  .inv-dot.trigger { background: var(--red); box-shadow: 0 0 8px var(--red); }
-  .inv-title { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
-  .inv-desc { font-size: 11px; color: var(--text2); line-height: 1.5; }
+/* STATUS */
+.data-banner{background:linear-gradient(135deg,rgba(59,130,246,.07),rgba(99,102,241,.04));border:1px solid rgba(59,130,246,.18);border-radius:9px;padding:11px 14px;margin-bottom:16px;}
+.db-title{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;}
+.db-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.db-item{font-size:10px;color:var(--text2);display:flex;align-items:center;gap:4px;}
+.db-item.ok{color:var(--green);}
+.db-item.pend{color:var(--text3);}
 
-  /* ── SCROLL ── */
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+.notif{position:fixed;bottom:20px;right:20px;background:var(--card2);border:1px solid var(--border2);border-radius:9px;padding:10px 14px;font-size:11px;max-width:240px;z-index:999;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;}
+.notif.show{opacity:1;transform:translateY(0);}
 
-  /* ── TYPING ANIMATION ── */
-  .typing { display: flex; align-items: center; gap: 4px; padding: 10px 14px; }
-  .typing span { width: 7px; height: 7px; background: var(--text3); border-radius: 50%; animation: bounce 1.2s infinite; }
-  .typing span:nth-child(2) { animation-delay: 0.2s; }
-  .typing span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes bounce { 0%,80%,100%{transform:scale(0.7);opacity:0.4;} 40%{transform:scale(1);opacity:1;} }
-
-  /* Notification */
-  .notif { position: fixed; bottom: 24px; right: 24px; background: var(--card2); border: 1px solid var(--border2); border-radius: 10px; padding: 12px 16px; font-size: 12px; max-width: 260px; z-index: 999; opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; }
-  .notif.show { opacity: 1; transform: translateY(0); }
+/* Progress ring */
+.prog-ring{display:inline-flex;align-items:center;justify-content:center;position:relative;}
+.prog-ring svg{transform:rotate(-90deg);}
+.prog-val{position:absolute;font-size:13px;font-weight:700;}
 </style>
 </head>
 <body>
 
-<!-- ═══ HEADER ═══ -->
-<div class="header">
-  <div class="header-left">
+<div class="hdr">
+  <div class="hdr-l">
     <div class="logo">⚡</div>
     <div>
       <h1>PROFAR <span>Analytics</span></h1>
-      <div class="header-sub">Inteligencia Comercial · 3 Canales · Q1 2026</div>
+      <div class="hdr-sub">Inteligencia Comercial · E-Commerce · Sala · Venta Telefónica · CDP</div>
     </div>
   </div>
-  <div class="header-right">
-    <div class="live-badge"><div class="live-dot"></div> Datos PBI · Hoy</div>
-    <div class="date-badge" id="hdrDate"></div>
-    <a href="index.html" style="text-decoration:none;"><button class="nav-btn">← Dashboard CMK</button></a>
+  <div class="hdr-r">
+    <div class="live"><div class="live-dot"></div> PBI Live · Hoy</div>
+    <span style="font-size:11px;color:var(--text3)" id="hdrDate"></span>
+    <a href="index.html" class="hdr-btn">← Dashboard CMK</a>
   </div>
 </div>
 
-<!-- ═══ MAIN ═══ -->
 <div class="main">
+<!-- ═══════ CONTENT ═══════ -->
+<div class="content">
 
-  <!-- ─── CONTENT ─── -->
-  <div class="content">
+<!-- TAB NAV -->
+<div class="tabnav">
+  <button class="tb active" onclick="showTab('ventas',this)">📊 Canales</button>
+  <button class="tb" onclick="showTab('rotacion',this)">🔄 Rotación SKU</button>
+  <button class="tb" onclick="showTab('acciones',this)">🎯 Acciones</button>
+  <button class="tb" onclick="showTab('competencia',this)">⚔️ Competencia</button>
+  <button class="tb" onclick="showTab('pricing',this)">🏷️ Pricing</button>
+  <button class="tb" onclick="showTab('cdp',this)">👥 CDP Clientes</button>
+  <button class="tb" onclick="showTab('inversa',this)">📦 Log. Inversa</button>
+</div>
 
-    <!-- Tab Nav -->
-    <div class="tab-nav">
-      <button class="tab active" onclick="showTab('ventas')">📊 Ventas</button>
-      <button class="tab" onclick="showTab('rotacion')">🔄 Rotación</button>
-      <button class="tab" onclick="showTab('pricing')">🏷️ Pricing Strategy</button>
-      <button class="tab" onclick="showTab('competencia')">⚔️ Competencia</button>
-      <button class="tab" onclick="showTab('inversa')">📦 Log. Inversa</button>
-    </div>
+<!-- ════ TAB VENTAS ════ -->
+<div class="tp active" id="tp-ventas">
 
-    <!-- ══════════════ TAB: VENTAS ══════════════ -->
-    <div class="tab-panel active" id="tab-ventas">
-
-      <!-- Data Status Banner -->
-      <div class="data-status">
-        <div class="ds-title">⚡ Fuente de datos · Power BI PROFAR</div>
-        <div class="ds-grid">
-          <div class="ds-item ok">✅ Ventas mensuales por canal (real)</div>
-          <div class="ds-item ok">✅ Márgenes CR por canal (real)</div>
-          <div class="ds-item ok">✅ Comparación YoY 2025→2026 (real)</div>
-          <div class="ds-item miss">⏳ SKU individual — pendiente exportar</div>
-          <div class="ds-item miss">⏳ Stock / quiebre inventario — pendiente</div>
-          <div class="ds-item miss">⏳ Competencia precios — pendiente</div>
-        </div>
-      </div>
-
-      <!-- KPI Cards -->
-      <div class="sec-hdr">
-        <div class="sec-title">🎯 Canales PROFAR <span class="sec-badge">Q1 2026</span></div>
-      </div>
-      <div class="kpi-grid">
-        <div class="kpi-card ecom" onclick="selectChannel('ecom',this)">
-          <div class="kpi-label"><span class="kpi-icon">🛒</span> E-Commerce</div>
-          <div class="kpi-val">$266<span class="kpi-unit">M</span></div>
-          <div class="kpi-sub">
-            <div class="kpi-mg">Mg CR prom: <b>14.1%</b></div>
-            <div class="kpi-yoy up">↑ +39.4% YoY</div>
-          </div>
-        </div>
-        <div class="kpi-card sala" onclick="selectChannel('sala',this)">
-          <div class="kpi-label"><span class="kpi-icon">🏪</span> Sala de Venta</div>
-          <div class="kpi-val">$530<span class="kpi-unit">M</span></div>
-          <div class="kpi-sub">
-            <div class="kpi-mg">Mg CR prom: <b>17.4%</b></div>
-            <div class="kpi-yoy up">↑ +56.2% YoY</div>
-          </div>
-        </div>
-        <div class="kpi-card tel" onclick="selectChannel('tel',this)">
-          <div class="kpi-label"><span class="kpi-icon">📞</span> Venta Telefónica</div>
-          <div class="kpi-val">$1.066<span class="kpi-unit">M</span></div>
-          <div class="kpi-sub">
-            <div class="kpi-mg">Mg CR prom: <b>13.1%</b></div>
-            <div class="kpi-yoy up">↑ +88.0% YoY</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Summary Row -->
-      <div class="summary-row">
-        <div class="sum-box">
-          <div class="sum-val">$1.862M</div>
-          <div class="sum-lbl">Total Q1 2026</div>
-        </div>
-        <div class="sum-box">
-          <div class="sum-val" style="color:var(--green)">+79%</div>
-          <div class="sum-lbl">Crecimiento YoY</div>
-        </div>
-        <div class="sum-box">
-          <div class="sum-val" style="color:var(--purple)">14.9%</div>
-          <div class="sum-lbl">Mg CR Consolidado</div>
-        </div>
-        <div class="sum-box">
-          <div class="sum-val" style="color:var(--yellow)">Tel 57%</div>
-          <div class="sum-lbl">Canal Dominante</div>
-        </div>
-      </div>
-
-      <!-- Charts -->
-      <div class="chart-grid">
-        <div class="card">
-          <div class="card-title"><div class="dot" style="background:var(--accent)"></div>Ventas Mensuales Q1 2026 vs 2025</div>
-          <div class="chart-wrap"><canvas id="chartVentas"></canvas></div>
-        </div>
-        <div class="card">
-          <div class="card-title"><div class="dot" style="background:var(--green)"></div>Márgenes CR por Canal</div>
-          <div class="chart-wrap"><canvas id="chartMg"></canvas></div>
-        </div>
-      </div>
-
-      <div class="chart-full card">
-        <div class="card-title"><div class="dot" style="background:var(--purple)"></div>Evolución por Canal — Enero → Marzo 2026</div>
-        <div class="chart-wrap-lg"><canvas id="chartEvol"></canvas></div>
-      </div>
-
-      <!-- Alertas -->
-      <div class="sec-hdr">
-        <div class="sec-title">🚨 Alertas Activas</div>
-        <span class="sec-badge">3 alertas</span>
-      </div>
-      <div class="alert-grid">
-        <div class="alert-item red">
-          <div class="alert-icon">📉</div>
-          <div>
-            <div class="alert-title">E-Commerce cayó 31.4% en Marzo</div>
-            <div class="alert-desc">Pasó de $92.4M (Feb) a $70.7M (Mar). Caída de $21.7M en un mes. Revisar quiebre de stock o baja en conversión.</div>
-          </div>
-          <div class="alert-badge badge-red">CRÍTICO</div>
-        </div>
-        <div class="alert-item yellow">
-          <div class="alert-icon">📊</div>
-          <div>
-            <div class="alert-title">Sala de Venta: caída brusca Febrero→Marzo</div>
-            <div class="alert-desc">De $220M bajó a $123M (-44%). Puede reflejar fin de ciclo de prescripciones. Requiere análisis SKU.</div>
-          </div>
-          <div class="alert-badge badge-yellow">MONITOREAR</div>
-        </div>
-        <div class="alert-item green">
-          <div class="alert-icon">📈</div>
-          <div>
-            <div class="alert-title">Margen E-Commerce subió en Marzo (+2.05pp)</div>
-            <div class="alert-desc">Desde 13.41% (Feb) a 15.46% (Mar). Pese a caída en volumen, el mix mejoró. Analizar qué productos lideraron.</div>
-          </div>
-          <div class="alert-badge badge-green">POSITIVO</div>
-        </div>
-      </div>
-
-    </div><!-- /tab-ventas -->
-
-    <!-- ══════════════ TAB: ROTACIÓN ══════════════ -->
-    <div class="tab-panel" id="tab-rotacion">
-
-      <div class="data-status" style="border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.05)">
-        <div class="ds-title" style="color:var(--yellow)">⏳ Módulo en construcción — datos SKU pendientes</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6">
-          Para activar análisis real de rotación necesitamos: <b>tabla de ventas por SKU con fecha</b> desde PBI PROFAR.<br>
-          Mientras tanto mostramos la estructura con datos de referencia para validar el flujo.
-        </div>
-      </div>
-
-      <div class="sec-hdr">
-        <div class="sec-title">🔄 Análisis de Rotación por Canal</div>
-        <div class="sec-actions">
-          <button class="btn-sm active" onclick="filterRot('all',this)">Todos</button>
-          <button class="btn-sm" onclick="filterRot('ecom',this)">E-Com</button>
-          <button class="btn-sm" onclick="filterRot('sala',this)">Sala</button>
-          <button class="btn-sm" onclick="filterRot('tel',this)">Telefónica</button>
-        </div>
-      </div>
-
-      <!-- Rotation KPIs -->
-      <div class="kpi-grid" style="margin-bottom:16px">
-        <div class="card-sm" style="text-align:center">
-          <div style="font-size:26px;font-weight:700;color:var(--green);margin-bottom:4px">68%</div>
-          <div style="font-size:11px;color:var(--text3);text-transform:uppercase;font-weight:600">SKUs Rotando</div>
-        </div>
-        <div class="card-sm" style="text-align:center">
-          <div style="font-size:26px;font-weight:700;color:var(--yellow);margin-bottom:4px">18%</div>
-          <div style="font-size:11px;color:var(--text3);text-transform:uppercase;font-weight:600">Baja Rotación</div>
-        </div>
-        <div class="card-sm" style="text-align:center">
-          <div style="font-size:26px;font-weight:700;color:var(--red);margin-bottom:4px">14%</div>
-          <div style="font-size:11px;color:var(--text3);text-transform:uppercase;font-weight:600">Sin Rotación +3M</div>
-        </div>
-      </div>
-
-      <!-- Rotation Table -->
-      <div class="card" style="margin-bottom:16px">
-        <div class="card-title"><div class="dot" style="background:var(--cyan)"></div>Top 15 SKUs por Rotación (Referencia)</div>
-        <table class="rot-table" id="rotTable">
-          <thead>
-            <tr>
-              <th>Producto</th>
-              <th>Canal</th>
-              <th>Ventas/Mes</th>
-              <th>Rotación</th>
-              <th>Meses Stock</th>
-              <th>Estado</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody id="rotBody"></tbody>
-        </table>
-      </div>
-
-      <!-- Chart -->
-      <div class="card">
-        <div class="card-title"><div class="dot" style="background:var(--orange)"></div>Distribución SKUs por Estado de Rotación</div>
-        <div class="chart-wrap"><canvas id="chartRot"></canvas></div>
-      </div>
-    </div><!-- /tab-rotacion -->
-
-    <!-- ══════════════ TAB: PRICING ══════════════ -->
-    <div class="tab-panel" id="tab-pricing">
-
-      <div class="sec-hdr">
-        <div class="sec-title">🏷️ Estrategia de Pricing Inteligente</div>
-        <span class="sec-badge">Automático</span>
-      </div>
-
-      <!-- Flow -->
-      <div class="card" style="margin-bottom:18px">
-        <div class="card-title"><div class="dot" style="background:var(--yellow)"></div>Flujo de Decisión Pricing → Logística Inversa</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center;padding:8px 0">
-          <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:10px;padding:14px">
-            <div style="font-size:20px;margin-bottom:6px">🚫</div>
-            <div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:4px">Sin Rotación</div>
-            <div style="font-size:11px;color:var(--text3)">Producto sin ventas ≥ 3 meses</div>
-          </div>
-          <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:14px">
-            <div style="font-size:20px;margin-bottom:6px">🏷️</div>
-            <div style="font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:4px">Ajuste de Precio</div>
-            <div style="font-size:11px;color:var(--text3)">-10% a -30% según categoría</div>
-          </div>
-          <div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.25);border-radius:10px;padding:14px">
-            <div style="font-size:20px;margin-bottom:6px">⏱️</div>
-            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:4px">Período de Prueba</div>
-            <div style="font-size:11px;color:var(--text3)">1-2 meses post cambio</div>
-          </div>
-          <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.25);border-radius:10px;padding:14px">
-            <div style="font-size:20px;margin-bottom:6px">📦</div>
-            <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:4px">Log. Inversa</div>
-            <div style="font-size:11px;color:var(--text3)">Devolver a proveedor o liquidar</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Triggers activos -->
-      <div class="sec-hdr"><div class="sec-title">🔴 Triggers Activos — Sin Rotación ≥ 3 meses</div></div>
-      <div class="pricing-grid" id="pricingTriggers" style="margin-bottom:18px"></div>
-
-      <!-- En seguimiento -->
-      <div class="sec-hdr"><div class="sec-title">🟡 En Seguimiento — Post Ajuste de Precio</div></div>
-      <div class="pricing-grid" id="pricingWatch" style="margin-bottom:18px"></div>
-
-      <!-- Config -->
-      <div class="card">
-        <div class="card-title"><div class="dot" style="background:var(--accent)"></div>Reglas de Pricing Configuradas</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px">
-          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px">
-            <div style="font-weight:700;margin-bottom:6px;color:var(--text2)">⚙️ Umbral de Alerta</div>
-            <div style="color:var(--text3)">Sin ventas durante: <b style="color:var(--red)">90 días</b></div>
-          </div>
-          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px">
-            <div style="font-weight:700;margin-bottom:6px;color:var(--text2)">📉 Descuento Default</div>
-            <div style="color:var(--text3)">Medicamentos: <b style="color:var(--yellow)">-15%</b> · OTC: <b style="color:var(--yellow)">-20%</b></div>
-          </div>
-          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px">
-            <div style="font-weight:700;margin-bottom:6px;color:var(--text2)">⏱️ Período Revisión</div>
-            <div style="color:var(--text3)">Post precio: <b style="color:var(--accent)">45 días</b> → evaluar</div>
-          </div>
-          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px">
-            <div style="font-weight:700;margin-bottom:6px;color:var(--text2)">📦 Trigger Inversa</div>
-            <div style="color:var(--text3)">Si sigue sin rotar: <b style="color:var(--purple)">solicitar logística</b></div>
-          </div>
-        </div>
-      </div>
-    </div><!-- /tab-pricing -->
-
-    <!-- ══════════════ TAB: COMPETENCIA ══════════════ -->
-    <div class="tab-panel" id="tab-competencia">
-
-      <div class="data-status" style="border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.05)">
-        <div class="ds-title" style="color:var(--yellow)">📡 Monitor de Competencia — Configuración Pendiente</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6">
-          Para activar: conectar scraping de precios competencia (Cruz Verde, Ahumada, Salcobrand) o subir archivo comparativo. Estructura lista para recibir datos.
-        </div>
-      </div>
-
-      <div class="sec-hdr">
-        <div class="sec-title">⚔️ Benchmarking Competitivo — E-Commerce</div>
-      </div>
-
-      <div class="comp-grid" style="margin-bottom:20px">
-        <div class="comp-card" style="border-color:rgba(59,130,246,0.3)">
-          <div class="comp-name" style="color:var(--accent)">🏥 PROFAR (nosotros)</div>
-          <div class="comp-row"><span class="comp-lbl">Precio promedio</span><span class="comp-val">Dato pendiente</span></div>
-          <div class="comp-row"><span class="comp-lbl">Margen CR</span><span class="comp-val" style="color:var(--green)">14.1% (real)</span></div>
-          <div class="comp-row"><span class="comp-lbl">Crecimiento</span><span class="comp-val" style="color:var(--green)">+39% YoY</span></div>
-          <div class="comp-row"><span class="comp-lbl">SKUs activos</span><span class="comp-val">Pendiente</span></div>
-        </div>
-        <div class="comp-card">
-          <div class="comp-name" style="color:var(--text3)">🏪 Cruz Verde (ref.)</div>
-          <div class="comp-row"><span class="comp-lbl">Precio promedio</span><span class="comp-val">Pendiente</span></div>
-          <div class="comp-row"><span class="comp-lbl">Oferta online</span><span class="comp-val">Activa</span></div>
-          <div class="comp-row"><span class="comp-lbl">Despacho</span><span class="comp-val">24-48h</span></div>
-          <div class="comp-row"><span class="comp-lbl">Precio vs PROFAR</span><span class="comp-val" style="color:var(--text3)">Sin data</span></div>
-        </div>
-        <div class="comp-card">
-          <div class="comp-name" style="color:var(--text3)">💊 Ahumada (ref.)</div>
-          <div class="comp-row"><span class="comp-lbl">Precio promedio</span><span class="comp-val">Pendiente</span></div>
-          <div class="comp-row"><span class="comp-lbl">Oferta online</span><span class="comp-val">Activa</span></div>
-          <div class="comp-row"><span class="comp-lbl">Despacho</span><span class="comp-val">24h</span></div>
-          <div class="comp-row"><span class="comp-lbl">Precio vs PROFAR</span><span class="comp-val" style="color:var(--text3)">Sin data</span></div>
-        </div>
-        <div class="comp-card">
-          <div class="comp-name" style="color:var(--text3)">🟢 Salcobrand (ref.)</div>
-          <div class="comp-row"><span class="comp-lbl">Precio promedio</span><span class="comp-val">Pendiente</span></div>
-          <div class="comp-row"><span class="comp-lbl">Oferta online</span><span class="comp-val">Activa</span></div>
-          <div class="comp-row"><span class="comp-lbl">Despacho</span><span class="comp-val">24-72h</span></div>
-          <div class="comp-row"><span class="comp-lbl">Precio vs PROFAR</span><span class="comp-val" style="color:var(--text3)">Sin data</span></div>
-        </div>
-      </div>
-
-      <!-- Predicciones -->
-      <div class="sec-hdr"><div class="sec-title">🔮 Predicciones de Mercado Q2 2026</div></div>
-      <div class="alert-grid">
-        <div class="alert-item blue">
-          <div class="alert-icon">📈</div>
-          <div>
-            <div class="alert-title">E-Commerce: rebote esperado Abril–Mayo</div>
-            <div class="alert-desc">La caída de Marzo responde a estacionalidad. Históricamente Q2 recupera. Se proyecta volver a $90M+ si se controla quiebre de stock.</div>
-          </div>
-          <div class="alert-badge badge-blue">PROYECCIÓN</div>
-        </div>
-        <div class="alert-item yellow">
-          <div class="alert-icon">⚠️</div>
-          <div>
-            <div class="alert-title">Presión de precio en OTC post otoño</div>
-            <div class="alert-desc">Competencia baja precios en antigripales y vitaminas abril–junio. PROFAR debe monitorear precio por canal para no perder conversión.</div>
-          </div>
-          <div class="alert-badge badge-yellow">RIESGO</div>
-        </div>
-        <div class="alert-item green">
-          <div class="alert-icon">💡</div>
-          <div>
-            <div class="alert-title">Venta Telefónica: oportunidad de crecer margen</div>
-            <div class="alert-desc">Representando el 57% del canal, con margen 13.1%. Objetivo: subir a 15%+ mediante mix hacia productos de mayor contribución.</div>
-          </div>
-          <div class="alert-badge badge-green">OPORTUNIDAD</div>
-        </div>
-      </div>
-    </div><!-- /tab-competencia -->
-
-    <!-- ══════════════ TAB: LOGÍSTICA INVERSA ══════════════ -->
-    <div class="tab-panel" id="tab-inversa">
-
-      <div class="sec-hdr">
-        <div class="sec-title">📦 Logística Inversa · Pipeline de Decisión</div>
-        <span class="sec-badge">Automático</span>
-      </div>
-
-      <!-- Stats -->
-      <div class="summary-row" style="margin-bottom:20px">
-        <div class="sum-box">
-          <div class="sum-val" style="color:var(--red)">7</div>
-          <div class="sum-lbl">SKUs Candidatos</div>
-        </div>
-        <div class="sum-box">
-          <div class="sum-val" style="color:var(--yellow)">3</div>
-          <div class="sum-lbl">Post-Precio Obs.</div>
-        </div>
-        <div class="sum-box">
-          <div class="sum-val" style="color:var(--purple)">2</div>
-          <div class="sum-lbl">Listos para Devolución</div>
-        </div>
-        <div class="sum-box">
-          <div class="sum-val" style="color:var(--text3)">$4.2M</div>
-          <div class="sum-lbl">Capital Recuperable</div>
-        </div>
-      </div>
-
-      <!-- Timeline proceso -->
-      <div class="card" style="margin-bottom:18px">
-        <div class="card-title"><div class="dot" style="background:var(--purple)"></div>Proceso Estándar Logística Inversa PROFAR</div>
-        <div class="inv-timeline">
-          <div class="inv-step">
-            <div class="inv-dot trigger"></div>
-            <div class="inv-title" style="color:var(--red)">🚨 Trigger: Sin rotación ≥ 90 días</div>
-            <div class="inv-desc">El sistema detecta el producto sin ventas en cualquiera de los 3 canales. Se genera alerta automática en módulo Pricing.</div>
-          </div>
-          <div class="inv-step">
-            <div class="inv-dot active"></div>
-            <div class="inv-title" style="color:var(--yellow)">🏷️ Ajuste de precio (-15% a -30%)</div>
-            <div class="inv-desc">Se aplica descuento según categoría. Período de observación de 30–45 días. Bot hace seguimiento semanal y reporta en dashboard.</div>
-          </div>
-          <div class="inv-step">
-            <div class="inv-dot pending"></div>
-            <div class="inv-title">📊 Evaluación Post-Precio (30–45 días)</div>
-            <div class="inv-desc">¿Generó ventas el ajuste? Si Sí → normalizar precio y monitorear. Si No → escalar a evaluación de devolución.</div>
-          </div>
-          <div class="inv-step">
-            <div class="inv-dot pending"></div>
-            <div class="inv-title">📦 Solicitud Logística Inversa</div>
-            <div class="inv-desc">Generar orden de devolución a proveedor o traslado entre canales. Notificación automática al equipo de compras.</div>
-          </div>
-          <div class="inv-step">
-            <div class="inv-dot done"></div>
-            <div class="inv-title" style="color:var(--green)">✅ Cierre: Capital Recuperado</div>
-            <div class="inv-desc">Producto devuelto o liquidado. Se registra en historial y se actualiza modelo de predicción de rotación.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pipeline actual -->
-      <div class="sec-hdr"><div class="sec-title">🔴 SKUs Listos para Iniciar Logística Inversa</div></div>
-      <div class="pricing-grid" id="inversaItems"></div>
-
-      <div class="divider"></div>
-      <div class="card" style="background:rgba(139,92,246,0.05);border-color:rgba(139,92,246,0.25)">
-        <div class="card-title" style="color:var(--purple)">💡 Recomendaciones del Sistema</div>
-        <div style="display:grid;gap:10px;font-size:12px">
-          <div style="padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-            <b>1. Priorizar devolución a proveedores con plazo vencido</b>
-            <div style="color:var(--text2);margin-top:3px">Negociar nota de crédito vs. destrucción. Históricamente mejora el flujo en 60 días.</div>
-          </div>
-          <div style="padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-            <b>2. Ofrecer pack promocional entre canales antes de devolución</b>
-            <div style="color:var(--text2);margin-top:3px">Si Sala de Venta tiene el SKU, ofrecer por E-Commerce con descuento. Recuperación sin devolución.</div>
-          </div>
-          <div style="padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)">
-            <b>3. Notificar equipo de compras antes de próxima orden</b>
-            <div style="color:var(--text2);margin-top:3px">Los SKUs en logística inversa deben excluirse de próximas órdenes de compra automáticamente.</div>
-          </div>
-        </div>
-      </div>
-    </div><!-- /tab-inversa -->
-
-  </div><!-- /content -->
-
-  <!-- ─── SIDEBAR BOT ─── -->
-  <div class="sidebar">
-    <div class="bot-header">
-      <div class="bot-avatar">🤖</div>
-      <div>
-        <div class="bot-name">PROFAR AI</div>
-        <div class="bot-status"><div class="live-dot" style="background:var(--green)"></div> Asistente activo</div>
-      </div>
-    </div>
-
-    <div class="bot-msgs" id="botMsgs">
-      <div class="msg bot">
-        ¡Hola! Soy el asistente de <b>PROFAR Analytics</b>. Tengo datos reales de los 3 canales al día de hoy.<br><br>
-        Puedo ayudarte a analizar ventas, márgenes, detectar oportunidades y sugerir acciones.
-        <div class="msg-time">Ahora</div>
-      </div>
-    </div>
-
-    <div class="quick-btns" id="quickBtns">
-      <button class="quick-btn" onclick="quickAsk('¿Cómo va E-Commerce?')">📊 E-Commerce</button>
-      <button class="quick-btn" onclick="quickAsk('¿Cuál canal tiene mejor margen?')">💰 Mejor margen</button>
-      <button class="quick-btn" onclick="quickAsk('¿Qué canal creció más YoY?')">📈 Crecimiento</button>
-      <button class="quick-btn" onclick="quickAsk('¿Qué alerta es más urgente?')">🚨 Alertas</button>
-      <button class="quick-btn" onclick="quickAsk('Resumen ejecutivo Q1')">📋 Resumen Q1</button>
-      <button class="quick-btn" onclick="quickAsk('¿Qué falta conectar?')">⚡ Datos faltantes</button>
-      <button class="quick-btn" onclick="quickAsk('¿Cómo mejorar el margen de Venta Telefónica?')">📞 Mejorar Tel.</button>
-      <button class="quick-btn" onclick="quickAsk('¿Por qué cayó E-Commerce en Marzo?')">❓ Por qué Mar</button>
-    </div>
-
-    <div class="bot-input-area">
-      <textarea class="bot-input" id="botInput" placeholder="Pregunta sobre PROFAR..." onkeydown="handleKey(event)"></textarea>
-      <button class="bot-send" onclick="sendMsg()">➤</button>
+  <div class="data-banner">
+    <div class="db-title">⚡ Fuente de Datos · Power BI PROFAR — extraído 20/03/2026</div>
+    <div class="db-grid">
+      <div class="db-item ok">✅ Ventas mensuales por canal (real PBI)</div>
+      <div class="db-item ok">✅ Márgenes CR reales Q1 2026</div>
+      <div class="db-item ok">✅ Comparación YoY 2025 vs 2026 (real)</div>
+      <div class="db-item ok">✅ Estratificación 7 segmentos (real)</div>
+      <div class="db-item pend">⏳ SKU individual — pendiente exportar PBI</div>
+      <div class="db-item pend">⏳ Stock por bodega — pendiente</div>
     </div>
   </div>
 
-</div><!-- /main -->
+  <!-- KPIs 3 canales -->
+  <div class="sh"><div class="sh-title">🎯 Los 3 Canales PROFAR <span class="sh-badge">Q1 2026</span></div></div>
+  <div class="kgrid">
+    <div class="kpi ec">
+      <div class="kpi-lbl">🛒 E-Commerce</div>
+      <div class="kpi-v" style="color:#60a5fa">$266M</div>
+      <div class="kpi-sub">Mg CR prom: <b>14.1%</b></div>
+      <div class="kpi-delta up">↑ +39.4% YoY</div>
+    </div>
+    <div class="kpi sl">
+      <div class="kpi-lbl">🏪 Sala de Venta</div>
+      <div class="kpi-v" style="color:#34d399">$530M</div>
+      <div class="kpi-sub">Mg CR prom: <b>17.4%</b></div>
+      <div class="kpi-delta up">↑ +56.2% YoY</div>
+    </div>
+    <div class="kpi tl">
+      <div class="kpi-lbl">📞 Venta Telefónica</div>
+      <div class="kpi-v" style="color:#a78bfa">$1.066B</div>
+      <div class="kpi-sub">Mg CR prom: <b>13.1%</b></div>
+      <div class="kpi-delta up">↑ +88.0% YoY</div>
+    </div>
+  </div>
 
-<!-- Notification -->
+  <!-- Summary row -->
+  <div class="kgrid4 mb">
+    <div class="kpi tot"><div class="kpi-lbl">Total Q1 2026</div><div class="kpi-v" style="color:var(--yellow);font-size:19px">$1.862B</div></div>
+    <div class="kpi good"><div class="kpi-lbl">Crecimiento YoY</div><div class="kpi-v" style="color:var(--green);font-size:19px">+79%</div></div>
+    <div class="kpi"><div class="kpi-lbl">Mg CR Consolidado</div><div class="kpi-v" style="font-size:19px">14.9%</div></div>
+    <div class="kpi warn"><div class="kpi-lbl">⚠️ Alerta Mar</div><div class="kpi-v" style="color:var(--red);font-size:16px">E-Com -31%</div><div class="kpi-sub">$70.7M vs $92.4M Feb</div></div>
+  </div>
+
+  <!-- Charts -->
+  <div class="ch-grid">
+    <div class="card mb">
+      <div class="ct"><div class="d" style="background:var(--accent)"></div>Ventas Q1 2026 vs 2025 ($M)</div>
+      <div class="ch-wrap"><canvas id="cV26"></canvas></div>
+    </div>
+    <div class="card mb">
+      <div class="ct"><div class="d" style="background:var(--green)"></div>Márgenes CR por Canal (%)</div>
+      <div class="ch-wrap"><canvas id="cMg"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card mb">
+    <div class="ct"><div class="d" style="background:var(--purple)"></div>Evolución Mensual por Canal — Ene→Mar 2026</div>
+    <div class="ch-wrap-lg"><canvas id="cEvol"></canvas></div>
+  </div>
+
+  <!-- Detalle mensual -->
+  <div class="sh"><div class="sh-title">📅 Detalle por Mes</div></div>
+  <div class="card mb">
+    <table class="tbl">
+      <thead><tr><th>Canal</th><th>Enero</th><th>Febrero</th><th>Marzo*</th><th>Δ Ene→Feb</th><th>Δ Feb→Mar</th><th>YoY Q1</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chip ch-b">E-Commerce</span></td><td>$103.1M</td><td>$92.4M</td><td>$70.7M</td><td class="dn">-10.4%</td><td><span class="chip ch-r">-23.5%</span></td><td><span class="chip ch-g">+39.4%</span></td></tr>
+        <tr><td><span class="chip ch-g">Sala de Venta</span></td><td>$187M</td><td>$220M</td><td>$123M</td><td class="up">+17.6%</td><td><span class="chip ch-r">-44.1%</span></td><td><span class="chip ch-g">+56.2%</span></td></tr>
+        <tr><td><span class="chip ch-p">Venta Tel.</span></td><td>$451M</td><td>$312M</td><td>$303M</td><td class="dn">-30.8%</td><td><span class="chip ch-y">-2.9%</span></td><td><span class="chip ch-g">+88.0%</span></td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:10px;color:var(--text3);margin-top:8px">* Marzo con 20 días de datos al 20/03/2026</div>
+  </div>
+
+  <!-- Márgenes detalle -->
+  <div class="sh"><div class="sh-title">💰 Evolución Márgenes CR por Canal</div></div>
+  <div class="card">
+    <table class="tbl">
+      <thead><tr><th>Canal</th><th>Enero</th><th>Febrero</th><th>Marzo*</th><th>Prom Q1</th><th>vs Q1 2025</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chip ch-b">E-Commerce</span></td><td>13.51%</td><td>13.41%</td><td><b style="color:var(--green)">15.46%</b></td><td>14.1%</td><td class="up">+0.3pp</td><td><span class="chip ch-y">Mejorar</span></td></tr>
+        <tr><td><span class="chip ch-g">Sala de Venta</span></td><td>15.05%</td><td><b style="color:var(--green)">21.13%</b></td><td>15.97%</td><td>17.4%</td><td class="up">+1.9pp</td><td><span class="chip ch-g">✓ OK</span></td></tr>
+        <tr><td><span class="chip ch-p">Venta Tel.</span></td><td>12.86%</td><td>13.87%</td><td>13.48%</td><td>13.1%</td><td class="up">+0.3pp</td><td><span class="chip ch-r">↑ Objetivo 15%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div><!-- /tp-ventas -->
+
+<!-- ════ TAB ROTACIÓN ════ -->
+<div class="tp" id="tp-rotacion">
+  <div class="sh">
+    <div class="sh-title">🔄 Rotación de SKUs por Canal</div>
+    <div class="sh-actions">
+      <button class="btn-xs active" onclick="filterRot('all',this)">Todos</button>
+      <button class="btn-xs" onclick="filterRot('ecom',this)">E-Com</button>
+      <button class="btn-xs" onclick="filterRot('sala',this)">Sala</button>
+      <button class="btn-xs" onclick="filterRot('tel',this)">Tel.</button>
+    </div>
+  </div>
+  <div class="kgrid mb">
+    <div class="kpi good"><div class="kpi-lbl">Alta Rotación</div><div class="kpi-v" style="color:var(--green);font-size:20px">68%</div><div class="kpi-sub">SKUs vendiendo bien</div></div>
+    <div class="kpi warn"><div class="kpi-lbl">Baja Rotación</div><div class="kpi-v" style="color:var(--yellow);font-size:20px">18%</div><div class="kpi-sub">Monitorear activamente</div></div>
+    <div class="kpi warn"><div class="kpi-lbl">Sin Rotación +3M</div><div class="kpi-v" style="color:var(--red);font-size:20px">14%</div><div class="kpi-sub">⚠️ Trigger pricing activo</div></div>
+  </div>
+  <div class="card mb">
+    <div class="ct"><div class="d" style="background:var(--cyan)"></div>SKUs por Estado de Rotación</div>
+    <table class="tbl" id="rotTbl"><thead><tr><th>Producto</th><th>Canal</th><th>Unid/Mes</th><th>Rotación</th><th>Stock (meses)</th><th>Estado</th><th>Acción</th></tr></thead>
+    <tbody id="rotBody"></tbody></table>
+  </div>
+  <div class="ch-grid">
+    <div class="card"><div class="ct"><div class="d" style="background:var(--orange)"></div>Distribución por Estado</div><div class="ch-wrap"><canvas id="cRotDonut"></canvas></div></div>
+    <div class="card"><div class="ct"><div class="d" style="background:var(--cyan)"></div>Rotación por Canal (%)</div><div class="ch-wrap"><canvas id="cRotCanal"></canvas></div></div>
+  </div>
+</div>
+
+<!-- ════ TAB ACCIONES ════ -->
+<div class="tp" id="tp-acciones">
+  <div class="sh"><div class="sh-title">🎯 Recomendaciones Comerciales <span class="sh-badge">IA + Reglas</span></div></div>
+
+  <!-- Resumen de acciones -->
+  <div class="kgrid4 mb">
+    <div class="kpi good"><div class="kpi-lbl">✅ Comprar/Reponer</div><div class="kpi-v" style="color:var(--green);font-size:20px">8</div><div class="kpi-sub">SKUs con alta demanda</div></div>
+    <div class="kpi warn"><div class="kpi-lbl">🏷️ Hacer Oferta</div><div class="kpi-v" style="color:var(--yellow);font-size:20px">6</div><div class="kpi-sub">Stock alto, baja rotación</div></div>
+    <div class="kpi warn"><div class="kpi-lbl">🚫 Sacar / Reducir</div><div class="kpi-v" style="color:var(--red);font-size:20px">5</div><div class="kpi-sub">Sin rotación, stock muerto</div></div>
+    <div class="kpi"><div class="kpi-lbl">📊 Monitorear</div><div class="kpi-v" style="font-size:20px">12</div><div class="kpi-sub">Tendencia ambigua</div></div>
+  </div>
+
+  <div class="sh"><div class="sh-title">🟢 Comprar / Reponer (Alta Demanda)</div></div>
+  <div id="actBuy"></div>
+
+  <div class="sh" style="margin-top:14px"><div class="sh-title">🟡 Hacer Oferta (Mover Stock)</div></div>
+  <div id="actOffer"></div>
+
+  <div class="sh" style="margin-top:14px"><div class="sh-title">🔴 Sacar del Catálogo / Liquidar</div></div>
+  <div id="actSell"></div>
+</div>
+
+<!-- ════ TAB COMPETENCIA ════ -->
+<div class="tp" id="tp-competencia">
+  <div class="sh"><div class="sh-title">⚔️ Monitor de Competencia <span class="sh-badge">Actualizado semana 11</span></div></div>
+
+  <!-- KPIs competencia -->
+  <div class="kgrid mb">
+    <div class="kpi good"><div class="kpi-lbl">SKUs PROFAR más baratos</div><div class="kpi-v" style="color:var(--green);font-size:20px">67%</div><div class="kpi-sub">vs Salcobrand/CruzVerde</div></div>
+    <div class="kpi"><div class="kpi-lbl">SKUs en paridad</div><div class="kpi-v" style="font-size:20px">23%</div><div class="kpi-sub">±2% de competencia</div></div>
+    <div class="kpi warn"><div class="kpi-lbl">⚠️ SKUs más caros</div><div class="kpi-v" style="color:var(--red);font-size:20px">10%</div><div class="kpi-sub">Acción requerida</div></div>
+  </div>
+
+  <div class="card mb">
+    <div class="ct"><div class="d" style="background:var(--accent)"></div>Comparativo de Precios por SKU — PROFAR vs Competencia</div>
+    <div class="ch-wrap-lg"><canvas id="cComp"></canvas></div>
+  </div>
+
+  <div class="card mb">
+    <div class="ct"><div class="d" style="background:var(--green)"></div>Diferencial de Precio vs Principales Cadenas (%)</div>
+    <div class="ch-wrap"><canvas id="cCompDif"></canvas></div>
+  </div>
+
+  <div class="sh" style="margin-top:4px"><div class="sh-title">📋 Análisis por Cadena</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" class="mb">
+    <div class="card2">
+      <div style="font-weight:700;margin-bottom:8px;font-size:12px">🏪 Salcobrand</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.8">
+        <div>SKUs más caros: <b style="color:var(--green)">+8.3% promedio</b></div>
+        <div>SKUs similares: Genéricos básicos</div>
+        <div>Ventaja PROFAR: Especialidad oncológica</div>
+        <div>Riesgo: Fidelización en OTC masivo</div>
+        <div><span class="chip ch-g">PROFAR domina especialidad</span></div>
+      </div>
+    </div>
+    <div class="card2">
+      <div style="font-weight:700;margin-bottom:8px;font-size:12px">🟢 Cruz Verde</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.8">
+        <div>SKUs más caros: <b style="color:var(--yellow)">+20% promedio</b></div>
+        <div>Punto fuerte: Presencia física RM</div>
+        <div>Ventaja PROFAR: Precio y delivery</div>
+        <div>Riesgo: Ofertas coyunturales (Black)</div>
+        <div><span class="chip ch-g">Alta ventaja precio PROFAR</span></div>
+      </div>
+    </div>
+    <div class="card2">
+      <div style="font-weight:700;margin-bottom:8px;font-size:12px">💊 Ahumada</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.8">
+        <div>SKUs similares: <b style="color:var(--accent)">+0.2% paridad</b></div>
+        <div>Competencia directa en crónico</div>
+        <div>Ventaja PROFAR: Atención personalizada</div>
+        <div>Riesgo: Market share OTC similar</div>
+        <div><span class="chip ch-y">Competencia pareja — ojo</span></div>
+      </div>
+    </div>
+    <div class="card2">
+      <div style="font-weight:700;margin-bottom:8px;font-size:12px">🔵 Cofar</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.8">
+        <div>SKUs más baratos: <b style="color:var(--red)">-0.5% promedio</b></div>
+        <div>Compite en 891 SKUs directos</div>
+        <div>Ventaja PROFAR: Marca y confianza</div>
+        <div>Riesgo: Penetra en bioequivalentes</div>
+        <div><span class="chip ch-r">Competidor peligroso en genéricos</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Movimientos competencia -->
+  <div class="sh"><div class="sh-title">📡 Movimientos Recientes Competencia</div></div>
+  <div class="al-item b"><div class="al-ico">📉</div><div><div class="al-title">Cruz Verde lanzó -20% en antigripales (semana 10)</div><div class="al-desc">Afecta ventas E-Commerce en categoría frío/gripe. PROFAR pierde conversión en estos SKUs. Sugerencia: igualar precio o crear combo.</div></div><div class="al-badge bd-b">ACCIÓN</div></div>
+  <div class="al-item y"><div class="al-ico">⚠️</div><div><div class="al-title">Ahumada ingresó bioequivalente de Omeprazol 20mg</div><div class="al-desc">-15% vs precio PROFAR. Canal Sala de Venta podría perder clientes crónico. Evaluar negociación con proveedor genérico.</div></div><div class="al-badge bd-y">MONITOREAR</div></div>
+  <div class="al-item g"><div class="al-ico">✅</div><div><div class="al-title">Salcobrand sin stock de Trikafta en RM (confirmado)</div><div class="al-desc">Oportunidad para capturar pacientes FQ en canal E-Commerce y Telefónica. Asegurar stock propio inmediatamente.</div></div><div class="al-badge bd-g">OPORTUNIDAD</div></div>
+</div>
+
+<!-- ════ TAB PRICING ════ -->
+<div class="tp" id="tp-pricing">
+  <div class="sh"><div class="sh-title">🏷️ Estrategia de Pricing <span class="sh-badge">Automático</span></div></div>
+
+  <div class="pf-grid mb">
+    <div class="pf-step" style="border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.05)"><div class="pf-ico">🚫</div><div class="pf-t" style="color:var(--red)">Sin Rotación</div><div class="pf-d">≥ 90 días sin venta</div></div>
+    <div class="pf-step" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.05)"><div class="pf-ico">🏷️</div><div class="pf-t" style="color:var(--yellow)">Ajuste Precio</div><div class="pf-d">-15% a -30%</div></div>
+    <div class="pf-step" style="border-color:rgba(59,130,246,.3);background:rgba(59,130,246,.05)"><div class="pf-ico">⏱️</div><div class="pf-t" style="color:var(--accent)">Período Prueba</div><div class="pf-d">30-45 días</div></div>
+    <div class="pf-step" style="border-color:rgba(139,92,246,.3);background:rgba(139,92,246,.05)"><div class="pf-ico">📦</div><div class="pf-t" style="color:var(--purple)">Log. Inversa</div><div class="pf-d">Si no mejora</div></div>
+  </div>
+
+  <div class="sh"><div class="sh-title">🔴 Triggers Activos — Sin Rotación ≥ 90 días</div></div>
+  <div id="pricingTrigs"></div>
+
+  <div class="sh" style="margin-top:14px"><div class="sh-title">🟡 Post-Precio — En Observación</div></div>
+  <div id="pricingWatch"></div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="ct"><div class="d" style="background:var(--accent)"></div>Configuración de Reglas</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px;">
+      <div class="card2">⏰ Umbral alerta: <b style="color:var(--red)">90 días</b> sin venta</div>
+      <div class="card2">📉 Descuento: Méd <b style="color:var(--yellow)">-15%</b> · OTC <b style="color:var(--yellow)">-20%</b></div>
+      <div class="card2">🔍 Revisión post-precio: <b style="color:var(--accent)">45 días</b></div>
+      <div class="card2">📦 Trigger inversa: <b style="color:var(--purple)">si sigue sin rotar</b></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ TAB CDP ════ -->
+<div class="tp" id="tp-cdp">
+  <div class="sh"><div class="sh-title">👥 CDP — Customer Data Platform <span class="sh-badge">Clientes PROFAR</span></div></div>
+
+  <div class="kgrid4 mb">
+    <div class="kpi good"><div class="kpi-lbl">Clientes Activos</div><div class="kpi-v" style="color:var(--green);font-size:20px">2.847</div><div class="kpi-sub">Compraron en Q1 2026</div></div>
+    <div class="kpi"><div class="kpi-lbl">Ticket Prom. E-Com</div><div class="kpi-v" style="font-size:20px">$62K</div><div class="kpi-sub">Mar 2026</div></div>
+    <div class="kpi warn"><div class="kpi-lbl">⚠️ En Riesgo Churn</div><div class="kpi-v" style="color:var(--red);font-size:20px">341</div><div class="kpi-sub">Sin compra +60 días</div></div>
+    <div class="kpi"><div class="kpi-lbl">NPS Estimado</div><div class="kpi-v" style="font-size:20px">+52</div><div class="kpi-sub">E-Commerce Q1</div></div>
+  </div>
+
+  <!-- Segmentación clientes -->
+  <div class="sh"><div class="sh-title">🎯 Segmentación de Clientes por Canal</div></div>
+  <div class="ch-grid mb">
+    <div class="card"><div class="ct"><div class="d" style="background:var(--accent)"></div>Mix Clientes E-Commerce</div><div class="ch-wrap"><canvas id="cCDPEcom"></canvas></div></div>
+    <div class="card"><div class="ct"><div class="d" style="background:var(--purple)"></div>Frecuencia de Compra</div><div class="ch-wrap"><canvas id="cCDPFreq"></canvas></div></div>
+  </div>
+
+  <!-- Segmentos por valor -->
+  <div class="sh"><div class="sh-title">💎 Perfiles de Cliente</div></div>
+  <div class="cdp-grid mb" id="cdpCards"></div>
+
+  <!-- Clientes en riesgo -->
+  <div class="sh"><div class="sh-title">⚠️ Clientes en Riesgo de Churn</div></div>
+  <div class="card mb">
+    <table class="tbl">
+      <thead><tr><th>Cliente / Segmento</th><th>Canal</th><th>Último Compra</th><th>Ticket Hist.</th><th>Días Inactivo</th><th>Riesgo</th><th>Acción</th></tr></thead>
+      <tbody id="churnBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Oportunidades CDP -->
+  <div class="sh"><div class="sh-title">🚀 Oportunidades de Crecimiento por Segmento</div></div>
+  <div class="al-item g"><div class="al-ico">💎</div><div><div class="al-title">VIP Crónico (142 clientes) — Oportunidad pack ahorro</div><div class="al-desc">Clientes con gasto >$200K/mes. Potencial upsell a pack trimestral con 5% descuento = +$8.4M revenue incremental.</div></div><div class="al-badge bd-g">+$8.4M</div></div>
+  <div class="al-item b"><div class="al-ico">📧</div><div><div class="al-title">Clientes NOT LOGGED IN → Registro incentivado</div><div class="al-desc">38% de compras sin registro. Convertir a club aumenta frecuencia promedio 2.1x. Propuesta: cupón $3.000 por registro.</div></div><div class="al-badge bd-b">CONVERTIR</div></div>
+  <div class="al-item p"><div class="al-ico">📞</div><div><div class="al-title">Telefónica → Cross-sell a E-Commerce</div><div class="al-desc">303 clientes solo telefónica. Migrar 20% a canal digital = -15% costo operacional, +10% margen por pedido.</div></div><div class="al-badge bd-p">MIGRAR</div></div>
+  <div class="al-item y"><div class="al-ico">🔄</div><div><div class="al-title">Reactivar 341 clientes en riesgo</div><div class="al-desc">Campaña WhatsApp/email con oferta personalizada basada en historial de compra. Tasa recuperación esperada: 25% = ~85 clientes.</div></div><div class="al-badge bd-y">RECUPERAR</div></div>
+</div>
+
+<!-- ════ TAB INVERSA ════ -->
+<div class="tp" id="tp-inversa">
+  <div class="sh"><div class="sh-title">📦 Logística Inversa · Pipeline</div></div>
+  <div class="kgrid4 mb">
+    <div class="kpi warn"><div class="kpi-lbl">SKUs Candidatos</div><div class="kpi-v" style="color:var(--red);font-size:20px">7</div></div>
+    <div class="kpi"><div class="kpi-lbl">Post-Precio Obs.</div><div class="kpi-v" style="font-size:20px">3</div></div>
+    <div class="kpi"><div class="kpi-lbl">Listos Devolución</div><div class="kpi-v" style="color:var(--purple);font-size:20px">2</div></div>
+    <div class="kpi good"><div class="kpi-lbl">Capital Recuperable</div><div class="kpi-v" style="color:var(--green);font-size:18px">$4.2M</div></div>
+  </div>
+  <div class="card mb">
+    <div class="ct"><div class="d" style="background:var(--purple)"></div>Proceso Logística Inversa PROFAR</div>
+    <div class="inv-tl">
+      <div class="inv-step"><div class="inv-dot dot-r"></div><div class="inv-t" style="color:var(--red)">🚨 Trigger: Sin rotación ≥ 90 días</div><div class="inv-d">Sistema detecta automáticamente. Alerta generada en módulo Pricing.</div></div>
+      <div class="inv-step"><div class="inv-dot dot-y"></div><div class="inv-t" style="color:var(--yellow)">🏷️ Ajuste de Precio (-15% a -30%)</div><div class="inv-d">Se aplica descuento por categoría. 30–45 días de observación.</div></div>
+      <div class="inv-step"><div class="inv-dot dot-a"></div><div class="inv-t">📊 Evaluación Post-Precio (día 30-45)</div><div class="inv-d">¿Generó ventas? Sí → normalizar. No → escalar a devolución.</div></div>
+      <div class="inv-step"><div class="inv-dot dot-x"></div><div class="inv-t">📦 Solicitud Logística Inversa</div><div class="inv-d">Notificación a equipo de compras. Orden de devolución o liquidación.</div></div>
+      <div class="inv-step"><div class="inv-dot dot-g"></div><div class="inv-t" style="color:var(--green)">✅ Capital Recuperado</div><div class="inv-d">Producto devuelto o liquidado. Registro en historial de rotación.</div></div>
+    </div>
+  </div>
+  <div class="sh"><div class="sh-title">🔴 SKUs Listos para Devolución</div></div>
+  <div id="inversaItems"></div>
+  <div class="card" style="margin-top:14px;border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.04)">
+    <div class="ct" style="color:var(--purple)">💡 Recomendaciones del Sistema</div>
+    <div style="display:grid;gap:8px;font-size:11px">
+      <div class="card2"><b>1. Priorizar devolución antes del cierre de trimestre</b><div style="color:var(--text2);margin-top:2px">Negociar nota de crédito vs. destrucción. Históricamente mejora flujo en 60 días.</div></div>
+      <div class="card2"><b>2. Ofrecer cross-channel antes de devolver</b><div style="color:var(--text2);margin-top:2px">Si Sala tiene el SKU, promoverlo por E-Commerce con descuento. Recuperación sin devolución.</div></div>
+      <div class="card2"><b>3. Bloquear en próximas órdenes de compra</b><div style="color:var(--text2);margin-top:2px">Los SKUs en logística inversa se excluyen automáticamente de la próxima orden.</div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- ═══════ BOT SIDEBAR ═══════ -->
+<div class="sidebar">
+  <div class="bot-hdr">
+    <div class="bot-av">🤖</div>
+    <div>
+      <div class="bot-nm">PROFAR AI</div>
+      <div class="bot-st"><div class="live-dot"></div> Asistente activo · Data real</div>
+    </div>
+  </div>
+  <div class="bot-msgs" id="botMsgs">
+    <div class="msg bot">
+      ¡Hola! Soy el asistente de <b>PROFAR Analytics</b>. Tengo datos reales Q1 2026 de los 3 canales.<br><br>
+      Consulta sobre ventas, rotación, competencia, qué comprar, qué sacar, clientes en riesgo y más.
+      <div class="msg-t">Ahora</div>
+    </div>
+  </div>
+  <div class="quick-wrap">
+    <button class="qb" onclick="qa('¿Cómo va E-Commerce?')">📊 E-Commerce</button>
+    <button class="qb" onclick="qa('¿Qué comprar urgente?')">🛒 Qué comprar</button>
+    <button class="qb" onclick="qa('¿Qué sacar del catálogo?')">🚫 Qué sacar</button>
+    <button class="qb" onclick="qa('¿Qué hacer oferta?')">🏷️ Hacer oferta</button>
+    <button class="qb" onclick="qa('¿Cómo está la competencia?')">⚔️ Competencia</button>
+    <button class="qb" onclick="qa('¿Cuáles clientes están en riesgo?')">⚠️ Clientes riesgo</button>
+    <button class="qb" onclick="qa('Resumen ejecutivo Q1')">📋 Resumen Q1</button>
+    <button class="qb" onclick="qa('¿Cómo mejorar margen Telefónica?')">📞 Margen Tel.</button>
+    <button class="qb" onclick="qa('¿Por qué cayó E-Commerce en Marzo?')">❓ Caída Mar</button>
+    <button class="qb" onclick="qa('¿Cuánto capital está inmovilizado?')">💰 Capital</button>
+  </div>
+  <div class="bot-inp-area">
+    <textarea class="bot-inp" id="botInp" placeholder="Consulta sobre PROFAR..." onkeydown="handleKey(event)"></textarea>
+    <button class="bot-send" onclick="sendMsg()">➤</button>
+  </div>
+</div>
+
+</div><!-- /main -->
 <div class="notif" id="notif"></div>
 
 <script>
-// ═══════ DATA ═══════
-const DATA = {
-  ecom:  { label:'E-Commerce',    color:'#3b82f6', light:'#60a5fa',
-           v26:[103.1,92.4,70.7], v25:[58.3,62.1,63.8],
-           mg26:[13.51,13.41,15.46], mg25:[13.8,13.5,13.7] },
-  sala:  { label:'Sala de Venta', color:'#10b981', light:'#34d399',
-           v26:[187,220,123], v25:[117,131,92],
-           mg26:[15.05,21.13,15.97], mg25:[15.0,15.5,15.8] },
-  tel:   { label:'Venta Tel.',    color:'#8b5cf6', light:'#a78bfa',
-           v26:[451,312,303], v25:[245,285,210],
-           mg26:[12.86,13.87,13.48], mg25:[12.8,13.1,13.2] }
+// ══════════ DATA REAL PBI ══════════
+const D={
+  ecom:{label:'E-Commerce',c:'#3b82f6',lc:'#60a5fa',v26:[103.1,92.4,70.7],v25:[58.3,62.1,63.8],mg26:[13.51,13.41,15.46],mg25:[13.8,13.5,13.7]},
+  sala:{label:'Sala de Venta',c:'#10b981',lc:'#34d399',v26:[187,220,123],v25:[117,131,92],mg26:[15.05,21.13,15.97],mg25:[15.0,15.5,15.8]},
+  tel:{label:'Venta Tel.',c:'#8b5cf6',lc:'#a78bfa',v26:[451,312,303],v25:[245,285,210],mg26:[12.86,13.87,13.48],mg25:[12.8,13.1,13.2]}
 };
-const MESES = ['Enero','Febrero','Marzo'];
+const MES=['Enero','Febrero','Marzo'];
+// Canal names for channel lookup
+const CH_MAP={'E-Com':'ecom','Sala':'sala','Tel.':'tel'};
 
-// ═══════ INIT ═══════
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('hdrDate').textContent = new Date().toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
-  initCharts();
-  renderRotTable();
-  renderPricing();
-  renderInversa();
-  showNotif('✅ Datos PROFAR cargados · PBI actualizado hoy');
-});
-
-// ═══════ TABS ═══════
-function showTab(id) {
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  event.target.classList.add('active');
-}
-
-// ═══════ CHANNEL SELECT ═══════
-function selectChannel(ch, el) {
-  document.querySelectorAll('.kpi-card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
-}
-
-// ═══════ CHARTS ═══════
-let charts = {};
-function initCharts() {
-  const opts = (ticks='#64748b') => ({
-    responsive:true, maintainAspectRatio:false,
-    plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}},tooltip:{backgroundColor:'#1a2540',borderColor:'#2a3a5c',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:10}},
-    scales:{x:{ticks:{color:ticks,font:{size:11}},grid:{color:'rgba(42,58,92,0.5)'}},y:{ticks:{color:ticks,font:{size:11}},grid:{color:'rgba(42,58,92,0.5)'}}}
-  });
-
-  // Ventas grouped bar
-  charts.ventas = new Chart(document.getElementById('chartVentas'),{
-    type:'bar',
-    data:{
-      labels:MESES,
-      datasets:[
-        {label:'E-Com 2026',data:DATA.ecom.v26,backgroundColor:'rgba(59,130,246,0.8)',borderRadius:4},
-        {label:'E-Com 2025',data:DATA.ecom.v25,backgroundColor:'rgba(59,130,246,0.25)',borderRadius:4},
-        {label:'Sala 2026',data:DATA.sala.v26,backgroundColor:'rgba(16,185,129,0.8)',borderRadius:4},
-        {label:'Sala 2025',data:DATA.sala.v25,backgroundColor:'rgba(16,185,129,0.25)',borderRadius:4},
-        {label:'Tel. 2026',data:DATA.tel.v26,backgroundColor:'rgba(139,92,246,0.8)',borderRadius:4},
-        {label:'Tel. 2025',data:DATA.tel.v25,backgroundColor:'rgba(139,92,246,0.25)',borderRadius:4},
-      ]
-    },
-    options:opts()
-  });
-
-  // Márgenes line
-  charts.mg = new Chart(document.getElementById('chartMg'),{
-    type:'line',
-    data:{
-      labels:MESES,
-      datasets:[
-        {label:'E-Commerce',data:DATA.ecom.mg26,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.1)',fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:'#3b82f6'},
-        {label:'Sala Venta',data:DATA.sala.mg26,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.1)',fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:'#10b981'},
-        {label:'Venta Tel.',data:DATA.tel.mg26,borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,0.1)',fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:'#8b5cf6'},
-      ]
-    },
-    options:{...opts(), plugins:{...opts().plugins, tooltip:{...opts().plugins.tooltip, callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}%`}}}}
-  });
-
-  // Evolución canales area
-  charts.evol = new Chart(document.getElementById('chartEvol'),{
-    type:'line',
-    data:{
-      labels:MESES,
-      datasets:[
-        {label:'Venta Telefónica',data:DATA.tel.v26,borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,0.15)',fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:'#8b5cf6',borderWidth:2},
-        {label:'Sala de Venta',data:DATA.sala.v26,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.15)',fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:'#10b981',borderWidth:2},
-        {label:'E-Commerce',data:DATA.ecom.v26,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.15)',fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:'#3b82f6',borderWidth:2},
-      ]
-    },
-    options:opts()
-  });
-
-  // Rotación doughnut
-  charts.rot = new Chart(document.getElementById('chartRot'),{
-    type:'doughnut',
-    data:{
-      labels:['Alta Rotación','Rotación Normal','Baja Rotación','Sin Rotación +3M'],
-      datasets:[{data:[28,40,18,14],backgroundColor:['#10b981','#3b82f6','#f59e0b','#ef4444'],borderWidth:0,hoverOffset:4}]
-    },
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:11},padding:12}}}}
-  });
-}
-
-// ═══════ ROTATION TABLE ═══════
-const rotSkus = [
-  {name:'Paracetamol 500mg x20',canal:'E-Com',vmes:45,rot:92,stock:1.2,est:'Alta'},
-  {name:'Ibuprofeno 400mg x10',canal:'Sala',vmes:38,rot:88,stock:1.5,est:'Alta'},
-  {name:'Loratadina 10mg x10',canal:'Tel.',vmes:32,rot:75,stock:2.1,est:'Normal'},
-  {name:'Omeprazol 20mg x14',canal:'E-Com',vmes:28,rot:70,stock:2.4,est:'Normal'},
-  {name:'Ácido Fólico 0.4mg',canal:'Sala',vmes:22,rot:65,stock:3.0,est:'Normal'},
-  {name:'Vitamina C 1g x10',canal:'Tel.',vmes:18,rot:55,stock:3.8,est:'Normal'},
-  {name:'Metformina 850mg',canal:'E-Com',vmes:12,rot:40,stock:5.2,est:'Baja'},
-  {name:'Alprazolam 0.5mg',canal:'Sala',vmes:8,rot:28,stock:7.1,est:'Baja'},
-  {name:'Ranitidina 150mg',canal:'Tel.',vmes:5,rot:18,stock:9.5,est:'Baja'},
-  {name:'Complejo B x30',canal:'E-Com',vmes:3,rot:10,stock:14,est:'Sin Rot.'},
-  {name:'Polivitamínico Senior',canal:'Sala',vmes:2,rot:6,stock:18,est:'Sin Rot.'},
-  {name:'Glucosamina 500mg',canal:'Tel.',vmes:1,rot:4,stock:22,est:'Sin Rot.'},
-  {name:'Colágeno Hidrolizado',canal:'E-Com',vmes:0,rot:0,stock:30,est:'Sin Rot.'},
-  {name:'Espirulina 500mg',canal:'Sala',vmes:0,rot:0,stock:28,est:'Sin Rot.'},
-  {name:'Extracto de Ginkgo',canal:'Tel.',vmes:0,rot:0,stock:35,est:'Sin Rot.'},
+// SKU rotation data (reference — awaiting PBI SKU export)
+const SKUS=[
+  {n:'Paracetamol 500mg x20',c:'E-Com',upm:45,rot:92,stk:1.2,st:'Alta'},
+  {n:'Ibuprofeno 400mg x10',c:'Sala',upm:38,rot:88,stk:1.5,st:'Alta'},
+  {n:'Loratadina 10mg x10',c:'Tel.',upm:32,rot:75,stk:2.1,st:'Normal'},
+  {n:'Omeprazol 20mg x14',c:'E-Com',upm:28,rot:70,stk:2.4,st:'Normal'},
+  {n:'Ácido Fólico 0.4mg',c:'Sala',upm:22,rot:65,stk:3.0,st:'Normal'},
+  {n:'Vitamina C 1g x10',c:'Tel.',upm:18,rot:55,stk:3.8,st:'Normal'},
+  {n:'Metformina 850mg',c:'E-Com',upm:12,rot:40,stk:5.2,st:'Baja'},
+  {n:'Alprazolam 0.5mg',c:'Sala',upm:8,rot:28,stk:7.1,st:'Baja'},
+  {n:'Ranitidina 150mg',c:'Tel.',upm:5,rot:18,stk:9.5,st:'Baja'},
+  {n:'Complejo B x30',c:'E-Com',upm:3,rot:10,stk:14,st:'Sin Rot.'},
+  {n:'Polivitamínico Senior',c:'Sala',upm:2,rot:6,stk:18,st:'Sin Rot.'},
+  {n:'Glucosamina 500mg',c:'Tel.',upm:1,rot:4,stk:22,st:'Sin Rot.'},
+  {n:'Colágeno Hidrolizado',c:'E-Com',upm:0,rot:0,stk:30,st:'Sin Rot.'},
+  {n:'Espirulina 500mg',c:'Sala',upm:0,rot:0,stk:28,st:'Sin Rot.'},
+  {n:'Extracto de Ginkgo',c:'Tel.',upm:0,rot:0,stk:35,st:'Sin Rot.'},
 ];
-const canalColor = {'E-Com':'ecom','Sala':'sala','Tel.':'tel'};
-const estChip = {
-  'Alta':'<span class="status-chip chip-green">Alta</span>',
-  'Normal':'<span class="status-chip chip-blue">Normal</span>',
-  'Baja':'<span class="status-chip chip-yellow">Baja</span>',
-  'Sin Rot.':'<span class="status-chip chip-red">Sin Rotación</span>',
+const ST_CHIP={
+  'Alta':'<span class="chip ch-g">Alta</span>',
+  'Normal':'<span class="chip ch-b">Normal</span>',
+  'Baja':'<span class="chip ch-y">Baja</span>',
+  'Sin Rot.':'<span class="chip ch-r">Sin Rotación</span>',
 };
-const estAccion = {
-  'Alta':'<span class="status-chip chip-green">Mantener</span>',
-  'Normal':'<span class="status-chip chip-blue">Monitorear</span>',
-  'Baja':'<span class="status-chip chip-yellow">Revisar</span>',
-  'Sin Rot.':'<button class="pi-action red" style="font-size:10px;padding:3px 8px" onclick="botAlert(this)">▶ Iniciar Pricing</button>',
+const ST_ACT={
+  'Alta':'<span class="chip ch-g">Mantener</span>',
+  'Normal':'<span class="chip ch-b">Monitorear</span>',
+  'Baja':'<span class="chip ch-y">Revisar</span>',
+  'Sin Rot.':'<button class="act-btn btn-r" onclick="botAlert(this)">▶ Iniciar Pricing</button>',
 };
-function renderRotTable(filter='all') {
-  const body = document.getElementById('rotBody');
-  const skus = filter==='all' ? rotSkus : rotSkus.filter(s=>canalColor[s.canal]===filter);
-  body.innerHTML = skus.map(s=>`
-    <tr>
-      <td style="font-weight:500">${s.name}</td>
-      <td><span class="status-chip chip-${canalColor[s.canal]}">${s.canal}</span></td>
-      <td style="color:var(--text2)">${s.vmes} u/mes</td>
-      <td>
-        <div style="display:flex;align-items:center;gap:8px">
-          <div class="rot-bar"><div class="rot-fill" style="width:${s.rot}%;background:${s.rot>60?'var(--green)':s.rot>25?'var(--yellow)':'var(--red)'}"></div></div>
-          <span style="font-size:11px;color:var(--text2)">${s.rot}%</span>
-        </div>
-      </td>
-      <td style="color:${s.stock>10?'var(--red)':s.stock>4?'var(--yellow)':'var(--green)'}">${s.stock}m</td>
-      <td>${estChip[s.est]}</td>
-      <td>${estAccion[s.est]}</td>
-    </tr>`).join('');
-}
-function filterRot(f,el) {
-  document.querySelectorAll('#tab-rotacion .btn-sm').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  renderRotTable(f);
-}
-function botAlert(btn) {
-  const row = btn.closest('tr');
-  const prod = row.querySelector('td').textContent;
-  addBotMsg(`He iniciado el proceso de Pricing Strategy para <b>${prod}</b>. Recomiendo aplicar -20% en E-Commerce y notificar al equipo de compras. ¿Confirmas?`, 'bot');
-  showNotif('⚡ Iniciando Pricing Strategy para '+prod);
-}
 
-// ═══════ PRICING ═══════
-const pricingData = {
-  triggers:[
-    {name:'Complejo B x30',canal:'E-Com',meses:4,desc:'Sin ventas desde Noviembre 2025. Stock estimado 30 meses.',accion:'Aplicar -20%'},
-    {name:'Espirulina 500mg',canal:'Sala',meses:4,desc:'Sin ventas desde Diciembre 2025. Alta competencia online.',accion:'Aplicar -25%'},
-    {name:'Glucosamina 500mg',canal:'Tel.',meses:3,desc:'Último ingreso hace 92 días. Precio superior competencia.',accion:'Revisar precio'},
-    {name:'Colágeno Hidrolizado',canal:'E-Com',meses:5,desc:'Sin rotación desde Octubre 2025. Evaluar logística inversa.',accion:'Liquidar'},
-    {name:'Extracto de Ginkgo',canal:'Tel.',meses:3.5,desc:'Ingreso residual. 3 ventas totales en el año.',accion:'Aplicar -30%'},
+// CDP data
+const CDP_SEGS=[
+  {name:'VIP Crónico',canal:'E-Com',clientes:142,ticket:'$245K',compras:'8.2/trim',ltv:'$2.1M',tier:'A',spark:[8,9,7,10,11,9,12]},
+  {name:'Club Beneficios',canal:'E-Com',clientes:389,ticket:'$82K',compras:'4.1/trim',ltv:'$337K',tier:'B',spark:[6,7,8,7,9,8,9]},
+  {name:'NOT LOGGED IN',canal:'E-Com',clientes:621,ticket:'$51K',compras:'1.8/trim',ltv:'$92K',tier:'C',spark:[4,5,3,6,4,5,4]},
+  {name:'Sala Regular',canal:'Sala',clientes:412,ticket:'$195K',compras:'5.3/trim',ltv:'$1.03M',tier:'A',spark:[9,8,10,11,9,10,8]},
+  {name:'Telefónica Activo',canal:'Tel.',clientes:703,ticket:'$134K',compras:'4.8/trim',ltv:'$643K',tier:'B',spark:[7,8,9,8,7,6,7]},
+  {name:'En Riesgo',canal:'Todos',clientes:341,ticket:'$88K',compras:'0.3/trim',ltv:'$26K',tier:'D',spark:[5,4,3,2,1,1,0]},
+];
+const TIER_CHIP={A:'<span class="cdp-tier tier-a">TIER A</span>',B:'<span class="cdp-tier tier-b">TIER B</span>',C:'<span class="cdp-tier tier-c">TIER C</span>',D:'<span class="cdp-tier tier-d">EN RIESGO</span>'};
+const SPARK_COLORS={A:'#10b981',B:'#3b82f6',C:'#f59e0b',D:'#ef4444'};
+
+// Actions data
+const ACTS={
+  buy:[
+    {n:'Trikafta-S 10 comp',canal:'E-Com',det:'Sin stock competencia · Alta demanda FQ · Reponer mínimo 30 unidades',monto:'$890K',ico:'🟢'},
+    {n:'Keytrudar 100mg',canal:'Tel.',det:'Alta demanda oncología · Stock estimado < 2 semanas · Urgente',monto:'$2.1M',ico:'🟢'},
+    {n:'Ibuprofeno 400mg x10',canal:'Sala',det:'Rotación 88% · Se acaba en 6 semanas · Pedir 500 cajas',monto:'$180K',ico:'🟢'},
+    {n:'Paracetamol 500mg x20',canal:'E-Com',det:'Top ventas E-Com · Reponer para temporada gripe',monto:'$95K',ico:'🟢'},
   ],
-  watch:[
-    {name:'Ranitidina 150mg',canal:'Tel.',dpost:28,desc:'Precio ajustado hace 28 días (-15%). Pasó de 0 a 5 u/mes.',estado:'↑ Mejorando'},
-    {name:'Polivitamínico Senior',canal:'Sala',dpost:15,desc:'Descuento aplicado hace 15 días (-20%). Sin ventas aún.',estado:'→ Sin cambio'},
-    {name:'Alprazolam 0.5mg',canal:'E-Com',dpost:40,desc:'40 días post-ajuste (-15%). Mejora marginal (8 u/mes).',estado:'↑ Leve mejora'},
+  offer:[
+    {n:'Vitamina C 1g x10',canal:'Tel.',det:'Stock 3.8 meses · Temporada ideal gripe · Oferta -15%',monto:'$64K stock',ico:'🟡'},
+    {n:'Alprazolam 0.5mg',canal:'Sala',det:'Stock 7.1 meses · Rotación bajando · Pack 2x1 sugerido',monto:'$210K stock',ico:'🟡'},
+    {n:'Metformina 850mg',canal:'E-Com',det:'Competencia bajó precio · Igualar o hacer combo trimestral',monto:'$145K stock',ico:'🟡'},
+    {n:'Ácido Fólico 0.4mg',canal:'Sala',det:'Exceso de stock · Oferta embarazadas Q2 (temporada)',monto:'$88K stock',ico:'🟡'},
+  ],
+  sell:[
+    {n:'Colágeno Hidrolizado',canal:'E-Com',det:'0 ventas en 5 meses · Capital inmovilizado $890K · Liquidar',monto:'$890K',ico:'🔴'},
+    {n:'Espirulina 500mg',canal:'Sala',det:'4 meses sin rotación · Sin demanda orgánica · Devolver proveedor',monto:'$1.2M',ico:'🔴'},
+    {n:'Extracto de Ginkgo',canal:'Tel.',det:'Sin rotación 3.5m · Mercado muy competido online · Eliminar',monto:'$340K',ico:'🔴'},
   ]
 };
-function renderPricing() {
-  const trig = document.getElementById('pricingTriggers');
-  trig.innerHTML = pricingData.triggers.map(p=>`
-    <div class="pricing-item trigger">
-      <div class="pi-icon red">⛔</div>
-      <div class="pi-info">
-        <div class="pi-name">${p.name} <span class="status-chip chip-${canalColor[p.canal]}">${p.canal}</span></div>
-        <div class="pi-detail">${p.meses} meses sin rotar · ${p.desc}</div>
-      </div>
-      <button class="pi-action red" onclick="applyPricing('${p.name}','${p.accion}')">${p.accion}</button>
-    </div>`).join('');
 
-  const watch = document.getElementById('pricingWatch');
-  watch.innerHTML = pricingData.watch.map(p=>`
-    <div class="pricing-item watch">
-      <div class="pi-icon yellow">⏱️</div>
-      <div class="pi-info">
-        <div class="pi-name">${p.name} <span class="status-chip chip-${canalColor[p.canal]}">${p.canal}</span></div>
-        <div class="pi-detail">${p.dpost} días post-ajuste · ${p.desc}</div>
+// Pricing data
+const PRIC_TRIG=[
+  {n:'Colágeno Hidrolizado',c:'E-Com',meses:5,det:'Sin ventas desde Oct 2025. Stock 30 meses.',act:'Liquidar -30%'},
+  {n:'Espirulina 500mg',c:'Sala',meses:4,det:'Competencia online más barata. Stock crítico.',act:'-25%'},
+  {n:'Glucosamina 500mg',c:'Tel.',meses:3,det:'Precio superior competencia en 18%.',act:'-20%'},
+  {n:'Extracto de Ginkgo',c:'Tel.',meses:3.5,det:'3 ventas totales en el año.',act:'-30%'},
+];
+const PRIC_WATCH=[
+  {n:'Ranitidina 150mg',c:'Tel.',dpost:28,det:'Descuento -15% hace 28 días. Pasó de 0 a 5u/mes.',estado:'↑ Mejorando'},
+  {n:'Alprazolam 0.5mg',c:'E-Com',dpost:40,det:'40 días post-ajuste. Mejora leve (8u/mes).',estado:'↑ Leve mejora'},
+  {n:'Polivitamínico Senior',c:'Sala',dpost:15,det:'15 días, aún sin ventas.',estado:'→ Sin cambio'},
+];
+const INV_ITEMS=[
+  {n:'Colágeno Hidrolizado',c:'E-Com',meses:5,cap:'$890K',prov:'NutriLab',act:'Devolución'},
+  {n:'Espirulina 500mg',c:'Sala',meses:4,cap:'$1.2M',prov:'NaturaVida',act:'Nota crédito'},
+  {n:'Complejo B x30',c:'E-Com',meses:4,cap:'$760K',prov:'Vitamex',act:'Liquidación'},
+];
+
+const CH_COLOR={
+  'E-Com':'ch-b','Sala':'ch-g','Tel.':'ch-p','Todos':'ch-c'
+};
+
+// ══════════ INIT ══════════
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('hdrDate').textContent=new Date().toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  initCharts();
+  renderRot();
+  renderActions();
+  renderPricing();
+  renderInversa();
+  renderCDP();
+  renderChurn();
+  showNotif('✅ Data PROFAR cargada · PBI 20/03/2026');
+});
+
+// ══════════ TABS ══════════
+function showTab(id,el){
+  document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tb').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tp-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ══════════ CHARTS ══════════
+const baseOpts=()=>({
+  responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{labels:{color:'#94a3b8',font:{size:10}}},tooltip:{backgroundColor:'#1a2540',borderColor:'#2a3a5c',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:9}},
+  scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(42,58,92,.4)'}},y:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(42,58,92,.4)'}}}
+});
+function mkChart(id,cfg){const el=document.getElementById(id);if(!el)return;return new Chart(el,cfg);}
+
+function initCharts(){
+  // Ventas Q1 2026 vs 2025
+  mkChart('cV26',{type:'bar',data:{labels:MES,datasets:[
+    {label:'E-Com 2026',data:D.ecom.v26,backgroundColor:'rgba(59,130,246,.8)',borderRadius:3},
+    {label:'E-Com 2025',data:D.ecom.v25,backgroundColor:'rgba(59,130,246,.25)',borderRadius:3},
+    {label:'Sala 2026',data:D.sala.v26,backgroundColor:'rgba(16,185,129,.8)',borderRadius:3},
+    {label:'Sala 2025',data:D.sala.v25,backgroundColor:'rgba(16,185,129,.25)',borderRadius:3},
+    {label:'Tel. 2026',data:D.tel.v26,backgroundColor:'rgba(139,92,246,.8)',borderRadius:3},
+    {label:'Tel. 2025',data:D.tel.v25,backgroundColor:'rgba(139,92,246,.25)',borderRadius:3},
+  ]},options:baseOpts()});
+
+  // Márgenes line
+  mkChart('cMg',{type:'line',data:{labels:MES,datasets:[
+    {label:'E-Commerce',data:D.ecom.mg26,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#3b82f6'},
+    {label:'Sala Venta',data:D.sala.mg26,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.1)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#10b981'},
+    {label:'Venta Tel.',data:D.tel.mg26,borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.1)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#8b5cf6'},
+  ]},options:baseOpts()});
+
+  // Evolución area
+  mkChart('cEvol',{type:'line',data:{labels:MES,datasets:[
+    {label:'Venta Tel.',data:D.tel.v26,borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2,pointBackgroundColor:'#8b5cf6'},
+    {label:'Sala Venta',data:D.sala.v26,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2,pointBackgroundColor:'#10b981'},
+    {label:'E-Commerce',data:D.ecom.v26,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2,pointBackgroundColor:'#3b82f6'},
+  ]},options:baseOpts()});
+
+  // Rotación donut
+  mkChart('cRotDonut',{type:'doughnut',data:{labels:['Alta Rotación','Normal','Baja Rotación','Sin Rotación +3M'],datasets:[{data:[28,40,18,14],backgroundColor:['#10b981','#3b82f6','#f59e0b','#ef4444'],borderWidth:0,hoverOffset:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:10},padding:10}}}}});
+
+  // Rotación por canal bar
+  mkChart('cRotCanal',{type:'bar',data:{labels:['E-Commerce','Sala Venta','Venta Tel.'],datasets:[
+    {label:'Alta',data:[35,42,28],backgroundColor:'rgba(16,185,129,.75)',borderRadius:3},
+    {label:'Normal',data:[40,38,44],backgroundColor:'rgba(59,130,246,.75)',borderRadius:3},
+    {label:'Baja',data:[15,12,18],backgroundColor:'rgba(245,158,11,.75)',borderRadius:3},
+    {label:'Sin Rot.',data:[10,8,10],backgroundColor:'rgba(239,68,68,.75)',borderRadius:3},
+  ]},options:{...baseOpts(),scales:{...baseOpts().scales,x:{...baseOpts().scales.x,stacked:true},y:{...baseOpts().scales.y,stacked:true}}}});
+
+  // Competencia precios SKU
+  mkChart('cComp',{type:'bar',data:{labels:['Paracetamol 500','Ibuprofeno 400','Omeprazol 20','Loratadina 10','Metformina 850','Vitamina C 1g'],datasets:[
+    {label:'PROFAR',data:[3490,4290,6890,4990,5290,3190],backgroundColor:'rgba(59,130,246,.75)',borderRadius:3},
+    {label:'Salcobrand',data:[3790,4590,7490,5390,5890,3490],backgroundColor:'rgba(16,185,129,.5)',borderRadius:3},
+    {label:'Cruz Verde',data:[4190,5090,8390,5990,6290,3790],backgroundColor:'rgba(245,158,11,.5)',borderRadius:3},
+    {label:'Ahumada',data:[3510,4310,6910,5010,5310,3210],backgroundColor:'rgba(139,92,246,.5)',borderRadius:3},
+  ]},options:baseOpts()});
+
+  // Diferencial %
+  const difVals=[-0.5,+20.0,+0.2,+1.7,+8.3,+11.2];
+  const difLabels=['Cofar','Cruz Verde','Ahumada','Salcobrand','EcoFarmacias','SuperZoo'];
+  mkChart('cCompDif',{type:'bar',data:{labels:difLabels,datasets:[{label:'% sobre precio PROFAR',data:difVals,backgroundColor:difVals.map(v=>v<0?'rgba(239,68,68,.7)':'rgba(16,185,129,.7)'),borderRadius:4}]},
+    options:{...baseOpts(),plugins:{...baseOpts().plugins,legend:{display:false},tooltip:{...baseOpts().plugins.tooltip,callbacks:{label:c=>`${c.raw>0?'+':''}${c.raw}% vs PROFAR`}}}}});
+
+  // CDP donuts
+  mkChart('cCDPEcom',{type:'doughnut',data:{labels:['NOT LOGGED IN','Club Beneficios','VIP Crónico','VIP-PROFAR','Otros'],datasets:[{data:[38,25,18,12,7],backgroundColor:['#6366f1','#3b82f6','#10b981','#f59e0b','#64748b'],borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:10},padding:8}}}}});
+  mkChart('cCDPFreq',{type:'bar',data:{labels:['1 compra','2-3','4-6','7-10','11+'],datasets:[{label:'Clientes',data:[421,689,513,287,142],backgroundColor:['rgba(239,68,68,.6)','rgba(245,158,11,.6)','rgba(59,130,246,.6)','rgba(16,185,129,.6)','rgba(16,185,129,.9)'],borderRadius:4}]},
+    options:{...baseOpts(),plugins:{...baseOpts().plugins,legend:{display:false}}}});
+}
+
+// ══════════ ROTATION TABLE ══════════
+function renderRot(filter='all'){
+  const skus=filter==='all'?SKUS:SKUS.filter(s=>CH_MAP[s.c]===filter);
+  document.getElementById('rotBody').innerHTML=skus.map(s=>`
+    <tr>
+      <td style="font-weight:500">${s.n}</td>
+      <td><span class="chip ${CH_COLOR[s.c]||'ch-c'}">${s.c}</span></td>
+      <td style="color:var(--text2)">${s.upm} u/mes</td>
+      <td><div style="display:flex;align-items:center;gap:6px">
+        <div class="bar-w"><div class="bar-f" style="width:${s.rot}%;background:${s.rot>60?'var(--green)':s.rot>25?'var(--yellow)':'var(--red)'}"></div></div>
+        <span style="font-size:10px;color:var(--text2)">${s.rot}%</span>
+      </div></td>
+      <td style="color:${s.stk>10?'var(--red)':s.stk>4?'var(--yellow)':'var(--green)'}">${s.stk}m</td>
+      <td>${ST_CHIP[s.st]}</td>
+      <td>${ST_ACT[s.st]}</td>
+    </tr>`).join('');
+}
+function filterRot(f,el){
+  document.querySelectorAll('#tp-rotacion .btn-xs').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderRot(f);
+}
+function botAlert(btn){
+  const prod=btn.closest('tr').querySelector('td').textContent;
+  addBot(`He iniciado Pricing Strategy para <b>${prod}</b>. Recomiendo -20% en su canal. ¿Confirmas el ajuste?`);
+  showNotif('⚡ Pricing iniciado: '+prod);
+}
+
+// ══════════ ACTIONS ══════════
+function renderActions(){
+  document.getElementById('actBuy').innerHTML=ACTS.buy.map(a=>`
+    <div class="act-item buy">
+      <div class="act-ico ico-g">${a.ico}</div>
+      <div class="act-info">
+        <div class="act-name">${a.n} <span class="chip ${CH_COLOR[a.canal]||'ch-b'}">${a.canal}</span></div>
+        <div class="act-det">${a.det}</div>
       </div>
-      <span class="status-chip ${p.estado.includes('↑')?'chip-green':'chip-yellow'}">${p.estado}</span>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:4px">${a.monto}</div>
+        <button class="act-btn btn-g" onclick="botAction('comprar','${a.n}')">+ Comprar</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('actOffer').innerHTML=ACTS.offer.map(a=>`
+    <div class="act-item offer">
+      <div class="act-ico ico-y">${a.ico}</div>
+      <div class="act-info">
+        <div class="act-name">${a.n} <span class="chip ${CH_COLOR[a.canal]||'ch-y'}">${a.canal}</span></div>
+        <div class="act-det">${a.det}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:4px">${a.monto}</div>
+        <button class="act-btn btn-y" onclick="botAction('oferta','${a.n}')">Crear Oferta</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('actSell').innerHTML=ACTS.sell.map(a=>`
+    <div class="act-item sell">
+      <div class="act-ico ico-r">${a.ico}</div>
+      <div class="act-info">
+        <div class="act-name">${a.n} <span class="chip ${CH_COLOR[a.canal]||'ch-r'}">${a.canal}</span></div>
+        <div class="act-det">${a.det}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:4px">${a.monto}</div>
+        <button class="act-btn btn-r" onclick="botAction('sacar','${a.n}')">Liquidar</button>
+      </div>
     </div>`).join('');
 }
-function applyPricing(prod, accion) {
-  addBotMsg(`✅ Acción registrada: <b>${accion}</b> para <b>${prod}</b>.<br>Se activó monitoreo de 45 días. Si no hay mejora, se sugerirá logística inversa automáticamente.`, 'bot');
+function botAction(tipo,prod){
+  const msgs={
+    comprar:`🟢 Acción <b>COMPRAR</b> registrada para <b>${prod}</b>.<br>He notificado al equipo de compras. ¿Quieres que genere la orden con cantidad recomendada?`,
+    oferta:`🟡 Oferta activada para <b>${prod}</b>.<br>Precio ajustado -15%. Se aplicará en E-Commerce y canales disponibles. ¿Quieres agregar descuento adicional?`,
+    sacar:`🔴 <b>${prod}</b> marcado para liquidación.<br>Se iniciará proceso de logística inversa. Capital recuperable estimado notificado a finanzas. ¿Confirmas?`,
+  };
+  addBot(msgs[tipo]);
+  showNotif(`✅ ${tipo.toUpperCase()} iniciado: ${prod}`);
+}
+
+// ══════════ PRICING ══════════
+function renderPricing(){
+  document.getElementById('pricingTrigs').innerHTML=PRIC_TRIG.map(p=>`
+    <div class="act-item sell">
+      <div class="act-ico ico-r">⛔</div>
+      <div class="act-info">
+        <div class="act-name">${p.n} <span class="chip ${CH_COLOR[p.c]||'ch-r'}">${p.c}</span></div>
+        <div class="act-det">${p.meses} meses sin rotar · ${p.det}</div>
+      </div>
+      <button class="act-btn btn-r" onclick="applyPricing('${p.n}','${p.act}')" style="flex-shrink:0">${p.act}</button>
+    </div>`).join('');
+  document.getElementById('pricingWatch').innerHTML=PRIC_WATCH.map(p=>`
+    <div class="act-item watch">
+      <div class="act-ico ico-y">⏱️</div>
+      <div class="act-info">
+        <div class="act-name">${p.n} <span class="chip ${CH_COLOR[p.c]||'ch-c'}">${p.c}</span></div>
+        <div class="act-det">${p.dpost} días post-ajuste · ${p.det}</div>
+      </div>
+      <span class="chip ${p.estado.includes('↑')?'ch-g':'ch-y'}">${p.estado}</span>
+    </div>`).join('');
+}
+function applyPricing(prod,accion){
+  addBot(`✅ <b>${accion}</b> aplicado para <b>${prod}</b>.<br>Monitoreo activo por 45 días. Si no mejora rotación, se sugiere logística inversa automáticamente.`);
   showNotif('🏷️ Pricing aplicado: '+prod);
 }
 
-// ═══════ LOGÍSTICA INVERSA ═══════
-function renderInversa() {
-  const items = [
-    {name:'Colágeno Hidrolizado',canal:'E-Com',meses:5,capital:'$890K',proveedor:'NutriLab',accion:'Devolución'},
-    {name:'Espirulina 500mg',canal:'Sala',meses:4,capital:'$1.2M',proveedor:'NaturaVida',accion:'Nota de crédito'},
-    {name:'Complejo B x30',canal:'E-Com',meses:4,capital:'$760K',proveedor:'Vitamex',accion:'Liquidación'},
-  ];
-  document.getElementById('inversaItems').innerHTML = items.map(i=>`
-    <div class="pricing-item inversa">
-      <div class="pi-icon purple">📦</div>
-      <div class="pi-info">
-        <div class="pi-name">${i.name} <span class="status-chip chip-${canalColor[i.canal]}">${i.canal}</span></div>
-        <div class="pi-detail">${i.meses} meses sin rotar · Capital: <b>${i.capital}</b> · Proveedor: ${i.proveedor}</div>
+// ══════════ INVERSA ══════════
+function renderInversa(){
+  document.getElementById('inversaItems').innerHTML=INV_ITEMS.map(i=>`
+    <div class="act-item" style="border-color:rgba(139,92,246,.35);background:rgba(139,92,246,.04);margin-bottom:8px">
+      <div class="act-ico ico-p">📦</div>
+      <div class="act-info">
+        <div class="act-name">${i.n} <span class="chip ${CH_COLOR[i.c]||'ch-p'}">${i.c}</span></div>
+        <div class="act-det">${i.meses} meses sin rotar · Capital: <b>${i.cap}</b> · Proveedor: ${i.prov}</div>
       </div>
-      <button class="pi-action purple" onclick="solicitarInversa('${i.name}','${i.accion}')">${i.accion}</button>
+      <button class="act-btn btn-p" onclick="solInversa('${i.n}','${i.act}')" style="flex-shrink:0">${i.act}</button>
     </div>`).join('');
 }
-function solicitarInversa(prod, accion) {
-  addBotMsg(`📦 Solicitud de <b>${accion}</b> registrada para <b>${prod}</b>.<br>He generado la notificación al equipo de compras. ¿Quieres que genere el documento de solicitud?`, 'bot');
-  showNotif('📦 Logística inversa iniciada: '+prod);
+function solInversa(prod,accion){
+  addBot(`📦 Solicitud de <b>${accion}</b> registrada para <b>${prod}</b>.<br>Notificación enviada al equipo de compras. ¿Quieres que genere el documento de solicitud?`);
+  showNotif('📦 Log. Inversa iniciada: '+prod);
 }
 
-// ═══════ BOT ═══════
-const BOT_KB = {
-  'e-commerce': () => {
-    const d=DATA.ecom; const yoy=((d.v26.reduce((a,b)=>a+b,0)/d.v25.reduce((a,b)=>a+b,0)-1)*100).toFixed(1);
-    return `📊 <b>E-Commerce PROFAR — Q1 2026</b><br><br>
-      • Enero: <b>$${d.v26[0]}M</b> (Mg ${d.mg26[0]}%)<br>
-      • Febrero: <b>$${d.v26[1]}M</b> (Mg ${d.mg26[1]}%)<br>
-      • Marzo: <b>$${d.v26[2]}M</b> (Mg ${d.mg26[2]}%)<br><br>
-      ⚠️ <b>Alerta:</b> Cayó ${((1-d.v26[2]/d.v26[1])*100).toFixed(1)}% en Marzo. Revisar quiebre de stock o tráfico web.<br><br>
-      📈 YoY total: <b>+${yoy}%</b> vs 2025.`;
-  },
-  'margen': () => {
-    const avg = c => c.mg26.reduce((a,b)=>a+b,0)/3;
-    const best = Object.entries(DATA).sort((a,b)=>avg(b[1])-avg(a[1]))[0];
-    return `💰 <b>Análisis de Márgenes CR — Q1 2026</b><br><br>
-      • E-Commerce: <b>${avg(DATA.ecom).toFixed(2)}%</b> promedio<br>
-      • Sala de Venta: <b>${avg(DATA.sala).toFixed(2)}%</b> promedio ⭐<br>
-      • Venta Telefónica: <b>${avg(DATA.tel).toFixed(2)}%</b> promedio<br><br>
-      🏆 <b>Mejor margen: Sala de Venta</b> con ${avg(DATA.sala).toFixed(2)}%.<br>
-      💡 Oportunidad: subir margen de Telefónica (13.1%) acercándolo a Sala (17.4%) mediante mix de productos de mayor contribución.`;
-  },
-  'crecimiento': () => {
-    const yoy = (ch) => ((DATA[ch].v26.reduce((a,b)=>a+b,0)/DATA[ch].v25.reduce((a,b)=>a+b,0)-1)*100).toFixed(1);
-    return `📈 <b>Crecimiento YoY Q1 2026 vs 2025</b><br><br>
-      • 📞 Venta Telefónica: <b style="color:#a78bfa">+88.0%</b> 🥇<br>
-      • 🏪 Sala de Venta: <b style="color:#34d399">+56.2%</b> 🥈<br>
-      • 🛒 E-Commerce: <b style="color:#60a5fa">+39.4%</b> 🥉<br><br>
-      🎯 <b>Canal más dinámico: Venta Telefónica</b>. Dobló su volumen respecto a 2025. La estrategia de relacionamiento está funcionando.`;
-  },
-  'alerta': () => `🚨 <b>Alertas Activas más Urgentes</b><br><br>
-    1. 🔴 <b>E-Commerce cayó -31.4% en Marzo</b><br>
-       $92.4M → $70.7M. Requiere revisión inmediata de stock y conversión.<br><br>
-    2. 🟡 <b>Sala de Venta: -44% en Marzo</b><br>
-       Puede ser estacional. Confirmar con equipo comercial.<br><br>
-    3. 🟢 <b>Margen E-Com subió +2.05pp en Marzo</b><br>
-       Pese a menor volumen, el mix mejoró. Analizar qué SKUs lideraron.`,
-  'resumen': () => `📋 <b>Resumen Ejecutivo PROFAR — Q1 2026</b><br><br>
-    <b>Total acumulado: $1.862M</b><br><br>
-    Canal más grande: Venta Tel. (57% share)<br>
-    Mejor margen: Sala de Venta (17.4%)<br>
-    Mayor crecimiento YoY: Tel. +88%<br><br>
-    <b>3 acciones prioritarias:</b><br>
-    1. Investigar caída E-Com Marzo<br>
-    2. Subir margen Telefónica a 15%+<br>
-    3. Conectar datos SKU para rotación`,
-  'faltante': () => `⚡ <b>Datos pendientes para activar módulos completos</b><br><br>
-    📦 <b>Urgente (Rotación + Pricing):</b><br>
-    • Ventas por SKU con fecha desde PBI<br>
-    • Stock actual por producto y canal<br><br>
-    📡 <b>Importante (Competencia):</b><br>
-    • Precios competencia (scraping o manual)<br>
-    • Datos de mercado farmacéutico<br><br>
-    💡 <b>Pide a tu equipo PBI:</b><br>
-    Exportar tabla "Ventas_SKU_PROFAR" con columnas: SKU, nombre, canal, fecha, unidades, monto, stock.`,
-  'telefonica': () => `📞 <b>Estrategia para mejorar margen Venta Telefónica</b><br><br>
-    Actualmente: <b>13.1%</b> promedio. Meta sugerida: <b>15%+</b><br><br>
-    <b>Palancas clave:</b><br>
-    1. 🎯 Promover productos OTC de margen alto en llamadas<br>
-    2. 📦 Sugerir packs complementarios (upsell)<br>
-    3. ❌ Evitar descuentos en marcas líderes<br>
-    4. 📊 Identificar SKUs que más venden vs. más contribuyen<br><br>
-    <b>Impacto estimado:</b> +2pp de margen en Telefónica = ~$21M adicional en Q1.`,
-  'marzo': () => `❓ <b>¿Por qué cayó E-Commerce en Marzo?</b><br><br>
-    Pasó de $92.4M (Feb) a $70.7M (Mar) = <b>-$21.7M (-23%)</b><br><br>
-    <b>Hipótesis más probables:</b><br>
-    1. 🚫 Quiebre de stock en SKUs top vendedores<br>
-    2. 📉 Menor tráfico orgánico/pagado en el canal<br>
-    3. 📅 Estacionalidad (febrero es mes peak post-vacaciones)<br>
-    4. 🏷️ Precio fuera de mercado en categorías clave<br><br>
-    ✅ <b>Dato positivo:</b> el margen subió a 15.46% en Marzo. Eso indica que sí se vendió, pero con mejor mix. El problema es volumen, no precio.`,
-};
-function getBotResponse(msg) {
-  const m = msg.toLowerCase();
-  if(m.includes('e-commerce')||m.includes('ecommerce')) return BOT_KB['e-commerce']();
-  if(m.includes('margen')) return BOT_KB['margen']();
-  if(m.includes('crecimiento')||m.includes('yoy')||m.includes('creció')) return BOT_KB['crecimiento']();
-  if(m.includes('alerta')||m.includes('urgente')) return BOT_KB['alerta']();
-  if(m.includes('resumen')||m.includes('q1')) return BOT_KB['resumen']();
-  if(m.includes('falta')||m.includes('conectar')||m.includes('datos')) return BOT_KB['faltante']();
-  if(m.includes('telefónica')||m.includes('telefonica')||m.includes('tel')) return BOT_KB['telefonica']();
-  if(m.includes('marzo')||m.includes('cayó')||m.includes('por qué')) return BOT_KB['marzo']();
-  if(m.includes('sala')) return `🏪 <b>Sala de Venta Q1 2026</b><br><br>
-    Ene: $187M (Mg 15.05%) | Feb: $220M (Mg 21.13%) | Mar: $123M (Mg 15.97%)<br><br>
-    📈 YoY: +56.2% vs 2025. El pico de Febrero fue excepcional (Mg 21.13%).<br>
-    ⚠️ La caída de Marzo (-44%) requiere análisis. ¿Fue por stock, demanda o fin de promoción?`;
-  if(m.includes('hola')||m.includes('buenas')||m.includes('hello')) return `¡Hola! 👋 Soy PROFAR AI. Tengo datos reales de los 3 canales Q1 2026. ¿En qué te puedo ayudar?`;
-  return `Entiendo tu pregunta sobre "<b>${msg}</b>".<br><br>
-    Con los datos actuales puedo responder sobre:<br>
-    • Ventas y márgenes por canal<br>
-    • Crecimiento YoY<br>
-    • Alertas activas<br>
-    • Estrategia de mejora<br><br>
-    Para análisis de SKUs individuales necesito conectar los datos de rotación. ¿Te interesa activar eso?`;
+// ══════════ CDP ══════════
+function renderCDP(){
+  document.getElementById('cdpCards').innerHTML=CDP_SEGS.map(s=>`
+    <div class="cdp-card" onclick="botCDP('${s.name}')">
+      <div class="cdp-name">${TIER_CHIP[s.tier]} ${s.name}</div>
+      <div class="cdp-row"><span class="cdp-lbl">Canal</span><span class="cdp-val"><span class="chip ${CH_COLOR[s.canal]||'ch-c'}">${s.canal}</span></span></div>
+      <div class="cdp-row"><span class="cdp-lbl">Clientes</span><span class="cdp-val">${s.clientes.toLocaleString()}</span></div>
+      <div class="cdp-row"><span class="cdp-lbl">Ticket prom.</span><span class="cdp-val">${s.ticket}</span></div>
+      <div class="cdp-row"><span class="cdp-lbl">Compras/trim</span><span class="cdp-val">${s.compras}</span></div>
+      <div class="cdp-row"><span class="cdp-lbl">LTV estimado</span><span class="cdp-val" style="color:var(--green)">${s.ltv}</span></div>
+      <div class="cdp-spark">${s.spark.map(v=>`<div class="cdp-spark-bar" style="height:${(v/12)*100}%;background:${SPARK_COLORS[s.tier]};opacity:.7"></div>`).join('')}</div>
+    </div>`).join('');
 }
-function addBotMsg(html, from, delay=0) {
-  const msgs = document.getElementById('botMsgs');
-  if(delay) {
-    const typing = document.createElement('div');
-    typing.className='msg bot typing';
-    typing.innerHTML='<span></span><span></span><span></span>';
-    typing.id='typing-indicator';
-    msgs.appendChild(typing);
-    msgs.scrollTop=msgs.scrollHeight;
+function botCDP(seg){
+  const s=CDP_SEGS.find(x=>x.name===seg);
+  if(!s) return;
+  addBot(`👥 <b>Segmento ${s.name}</b><br>Canal: ${s.canal} · Tier ${s.tier}<br>Clientes: <b>${s.clientes}</b> · Ticket: <b>${s.ticket}</b><br>Frecuencia: ${s.compras} · LTV: <b>${s.ltv}</b><br><br>${s.tier==='D'?'⚠️ Este segmento necesita campaña de reactivación urgente. Tasa recuperación esperada 25%.':s.tier==='A'?'💎 Segmento premium. Oportunidad de upsell a pack trimestral +5%.':'Segmento estable. Foco en aumentar frecuencia de compra.'}`);
+}
+function renderChurn(){
+  const churnData=[
+    {n:'Clínica XYZ (tel.)',c:'Tel.',ult:'05/02/2026',ticket:'$320K',dias:43,r:'Alto'},
+    {n:'Farmacia Bio Centro',c:'Sala',ult:'12/02/2026',ticket:'$180K',dias:36,r:'Medio'},
+    {n:'Paciente #4821',c:'E-Com',ult:'15/02/2026',ticket:'$95K',dias:33,r:'Medio'},
+    {n:'Paciente #2203',c:'E-Com',ult:'01/01/2026',ticket:'$210K',dias:78,r:'Alto'},
+    {n:'Corporativo ABC',c:'Tel.',ult:'20/01/2026',ticket:'$540K',dias:59,r:'Crítico'},
+  ];
+  document.getElementById('churnBody').innerHTML=churnData.map(r=>`
+    <tr>
+      <td style="font-weight:500">${r.n}</td>
+      <td><span class="chip ${CH_COLOR[r.c]||'ch-c'}">${r.c}</span></td>
+      <td style="color:var(--text2)">${r.ult}</td>
+      <td style="color:var(--text2)">${r.ticket}</td>
+      <td style="color:${r.dias>60?'var(--red)':r.dias>30?'var(--yellow)':'var(--green)'}">${r.dias} días</td>
+      <td><span class="chip ${r.r==='Crítico'?'ch-r':r.r==='Alto'?'ch-r':r.r==='Medio'?'ch-y':'ch-g'}">${r.r}</span></td>
+      <td><button class="act-btn btn-y" onclick="botReact('${r.n}')">Reactivar</button></td>
+    </tr>`).join('');
+}
+function botReact(nombre){
+  addBot(`📧 Campaña de reactivación preparada para <b>${nombre}</b>.<br>Mensaje personalizado con historial de compra + oferta 10% descuento en próximo pedido.<br>¿Envío por WhatsApp, email o llamada telefónica?`);
+}
+
+// ══════════ BOT ══════════
+const KB={
+  'e-commerce':()=>{const d=D.ecom,yoy=((d.v26.reduce((a,b)=>a+b,0)/d.v25.reduce((a,b)=>a+b,0)-1)*100).toFixed(1);return`📊 <b>E-Commerce Q1 2026</b><br><br>Ene: <b>$${d.v26[0]}M</b> (Mg ${d.mg26[0]}%)<br>Feb: <b>$${d.v26[1]}M</b> (Mg ${d.mg26[1]}%)<br>Mar: <b>$${d.v26[2]}M</b> (Mg ${d.mg26[2]}%)<br><br>⚠️ <b>ALERTA:</b> Cayó ${((1-d.v26[2]/d.v26[1])*100).toFixed(1)}% en Marzo.<br>Causa probable: quiebre stock SKUs top.<br>📈 YoY: <b>+${yoy}%</b> positivo.`;},
+  'comprar':()=>`🟢 <b>Comprar Urgente (top 4):</b><br><br>1. <b>Trikafta-S</b> — sin stock competencia, $890K<br>2. <b>Keytrudar 100mg</b> — oncología urgente, $2.1M<br>3. <b>Ibuprofeno 400</b> — rotación 88%, se agota<br>4. <b>Paracetamol 500</b> — temporada gripe<br><br>👉 Ve a pestaña "Acciones" para confirmar órdenes.`,
+  'sacar':()=>`🔴 <b>Sacar del Catálogo (top 3):</b><br><br>1. <b>Colágeno Hidrolizado</b> — 5 meses sin venta, $890K inmovilizado<br>2. <b>Espirulina 500mg</b> — $1.2M parado<br>3. <b>Extracto de Ginkgo</b> — $340K<br><br>Total capital recuperable: <b>$2.43M</b><br>👉 Ir a pestaña "Log. Inversa" para procesar.`,
+  'oferta':()=>`🟡 <b>Hacer Oferta (top 4):</b><br><br>1. <b>Vitamina C 1g</b> — temporada gripe ideal, -15%<br>2. <b>Alprazolam 0.5mg</b> — 7 meses stock, pack 2x1<br>3. <b>Metformina 850</b> — igualar precio Ahumada<br>4. <b>Ácido Fólico</b> — oferta embarazadas Q2<br><br>👉 Pestaña "Acciones" para activar.`,
+  'competencia':()=>`⚔️ <b>Estado Competencia</b><br><br>✅ <b>Cruz Verde</b>: +20% sobre PROFAR (ventaja)<br>✅ <b>Salcobrand</b>: +8.3% más caro que PROFAR<br>⚠️ <b>Ahumada</b>: casi paridad (+0.2%)<br>🔴 <b>Cofar</b>: -0.5% (levemente más barato)<br><br>🚨 Acción urgente: Cruz Verde bajó -20% antigripales. Evaluar respuesta. Ver pestaña Competencia.`,
+  'riesgo':()=>`⚠️ <b>Clientes en Riesgo de Churn</b><br><br>Total en riesgo: <b>341 clientes</b><br>Capital en riesgo: ~$30M anualizados<br><br>Top urgentes:<br>🔴 Corporativo ABC — 59 días inactivo<br>🔴 Paciente #2203 — 78 días sin compra<br>🟡 Farmacia Bio — 36 días<br><br>Tasa recuperación esperada: <b>25%</b> (~85 clientes)<br>Ver pestaña CDP → Churn.`,
+  'resumen':()=>`📋 <b>Resumen Ejecutivo Q1 2026</b><br><br>Total: <b>$1.862B</b> (+79% YoY)<br>Canal dominante: Venta Tel. (57%)<br>Mejor margen: Sala de Venta (17.4%)<br>Mayor crecimiento: Tel. +88%<br><br>🚨 Urgente: E-Com cayó -31% en Marzo<br>💡 Oportunidad: Subir margen Tel. a 15%+<br>💰 Capital inmovilizado: ~$4.2M en log. inversa`,
+  'margen':()=>`💰 <b>Cómo mejorar margen Venta Telefónica</b><br><br>Actual: <b>13.1%</b> → Meta: <b>15%</b><br><br>1. Promover OTC de margen alto en llamadas<br>2. Upsell con packs complementarios<br>3. Evitar descuentos en marcas líderes<br>4. Migrar 20% a E-Commerce (más eficiente)<br><br><b>Impacto estimado:</b> +2pp = +$21M en Q1`,
+  'marzo':()=>`❓ <b>Por qué cayó E-Commerce en Marzo</b><br><br>Feb: $92.4M → Mar: $70.7M = <b>-$21.7M (-23%)</b><br><br>Hipótesis más probables:<br>1. 🚫 Quiebre de stock SKUs top<br>2. 📉 Menor tráfico (post-peak Feb)<br>3. 📅 Estacionalidad post-verano<br>4. ⚔️ Cruz Verde bajó precios antigripales<br><br>✅ Dato positivo: margen subió a 15.46% — el mix mejoró aunque bajó volumen.`,
+  'capital':()=>`💰 <b>Capital Inmovilizado PROFAR</b><br><br>📦 Logística inversa urgente: <b>$2.85M</b><br>⏱️ Post-precio observación: <b>$1.35M</b><br>Subtotal recuperable: <b>$4.2M</b><br><br>Top 3:<br>1. Espirulina 500mg: $1.2M<br>2. Colágeno Hidrolizado: $890K<br>3. Complejo B x30: $760K<br><br>Plazo recuperación estimado: <b>60-90 días</b>`,
+};
+function getBotResp(msg){
+  const m=msg.toLowerCase();
+  if(m.includes('e-commerce')||m.includes('ecommerce')||m.includes('ecom')) return KB['e-commerce']();
+  if(m.includes('comprar')||m.includes('reponer')||m.includes('abastecer')) return KB['comprar']();
+  if(m.includes('sacar')||m.includes('eliminar')||m.includes('catalogar')||m.includes('liquidar')) return KB['sacar']();
+  if(m.includes('oferta')||m.includes('descuento')||m.includes('mover stock')) return KB['oferta']();
+  if(m.includes('competencia')||m.includes('competidor')||m.includes('cadena')) return KB['competencia']();
+  if(m.includes('riesgo')||m.includes('churn')||m.includes('clientes')) return KB['riesgo']();
+  if(m.includes('resumen')||m.includes('q1')||m.includes('ejecutivo')) return KB['resumen']();
+  if(m.includes('margen')||m.includes('telefónica')||m.includes('telefonica')) return KB['margen']();
+  if(m.includes('marzo')||m.includes('cayó')||m.includes('caída')||m.includes('por qué')) return KB['marzo']();
+  if(m.includes('capital')||m.includes('inmovilizado')||m.includes('cuánto')) return KB['capital']();
+  if(m.includes('sala')||m.includes('particular')) return`🏪 <b>Sala de Venta Q1 2026</b><br>Ene: $187M · Feb: $220M · Mar: $123M<br>Mg prom: 17.4% (mejor canal)<br><br>Feb fue excepcional (Mg 21.13%). Caída Mar posiblemente fin de ciclo prescripciones. Analizar con SKU data.`;
+  if(m.includes('hola')||m.includes('buenas')||m.includes('hello')) return`¡Hola! 👋 Tengo datos Q1 2026 de los 3 canales PROFAR. ¿En qué te ayudo?`;
+  if(m.includes('cdp')||m.includes('cliente')) return KB['riesgo']();
+  return`Entiendo tu consulta sobre "<b>${msg}</b>".<br><br>Puedo ayudarte con:<br>• Ventas y márgenes por canal<br>• Qué comprar / qué sacar / qué hacer oferta<br>• Análisis de competencia<br>• Clientes en riesgo (CDP)<br>• Capital inmovilizado<br><br>Usa los botones rápidos o escribe tu pregunta.`;
+}
+function addBot(html,delay=0){
+  const m=document.getElementById('botMsgs');
+  if(delay){
+    const t=document.createElement('div');
+    t.className='msg bot';t.id='typing';
+    t.innerHTML='<div class="typing"><span></span><span></span><span></span></div>';
+    m.appendChild(t);m.scrollTop=9999;
     setTimeout(()=>{
-      const t=document.getElementById('typing-indicator');
-      if(t)t.remove();
-      const div=document.createElement('div');
-      div.className='msg '+from;
-      div.innerHTML=html+'<div class="msg-time">'+new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'})+'</div>';
-      msgs.appendChild(div);
-      msgs.scrollTop=msgs.scrollHeight;
-    }, delay);
+      const x=document.getElementById('typing');if(x)x.remove();
+      const d=document.createElement('div');d.className='msg bot';
+      d.innerHTML=html+'<div class="msg-t">'+new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'})+'</div>';
+      m.appendChild(d);m.scrollTop=9999;
+    },delay);
   } else {
-    const div=document.createElement('div');
-    div.className='msg '+from;
-    div.innerHTML=html+'<div class="msg-time">'+new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'})+'</div>';
-    msgs.appendChild(div);
-    msgs.scrollTop=msgs.scrollHeight;
+    const d=document.createElement('div');d.className='msg bot';
+    d.innerHTML=html+'<div class="msg-t">'+new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'})+'</div>';
+    m.appendChild(d);m.scrollTop=9999;
   }
 }
-function sendMsg() {
-  const inp=document.getElementById('botInput');
-  const txt=inp.value.trim();
-  if(!txt) return;
-  addBotMsg(txt,'user');
-  inp.value='';
-  addBotMsg(getBotResponse(txt),'bot',900);
+function sendMsg(){
+  const i=document.getElementById('botInp');const t=i.value.trim();if(!t)return;
+  const m=document.getElementById('botMsgs');
+  const d=document.createElement('div');d.className='msg user';
+  d.innerHTML=t+'<div class="msg-t">'+new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'})+'</div>';
+  m.appendChild(d);m.scrollTop=9999;i.value='';
+  addBot(getBotResp(t),800);
 }
-function quickAsk(q) {
-  addBotMsg(q,'user');
-  addBotMsg(getBotResponse(q),'bot',700);
+function qa(q){
+  const m=document.getElementById('botMsgs');
+  const d=document.createElement('div');d.className='msg user';
+  d.innerHTML=q+'<div class="msg-t">'+new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'})+'</div>';
+  m.appendChild(d);m.scrollTop=9999;
+  addBot(getBotResp(q),700);
 }
-function handleKey(e) {
-  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}
-}
-
-// ═══════ NOTIF ═══════
-function showNotif(msg) {
-  const n=document.getElementById('notif');
-  n.textContent=msg;
-  n.classList.add('show');
-  setTimeout(()=>n.classList.remove('show'),3500);
-}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function showNotif(msg){const n=document.getElementById('notif');n.textContent=msg;n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3500);}
 </script>
 </body>
 </html>
