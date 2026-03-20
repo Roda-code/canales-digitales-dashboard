@@ -170,6 +170,45 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 /* DATA SOURCE BADGE */
 .src-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700;}
 .src-mg{background:rgba(20,184,166,.1);color:var(--teal);}
+
+/* BOT FLOTANTE */
+.bot-fab{position:fixed;bottom:22px;right:22px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 20px rgba(59,130,246,.4);z-index:1000;transition:all .2s;}
+.bot-fab:hover{transform:scale(1.08);box-shadow:0 6px 25px rgba(59,130,246,.5);}
+.bot-panel{position:fixed;bottom:86px;right:22px;width:320px;height:460px;background:var(--card);border:1px solid var(--border2);border-radius:14px;display:flex;flex-direction:column;z-index:999;box-shadow:0 10px 40px rgba(0,0,0,.4);transform:scale(.95) translateY(10px);opacity:0;pointer-events:none;transition:all .25s;}
+.bot-panel.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
+.bot-hdr{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.bot-title{font-size:12px;font-weight:700;color:var(--text);}
+.bot-sub{font-size:10px;color:var(--text3);}
+.bot-close{margin-left:auto;background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:0 4px;}
+.bot-msgs{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;}
+.bot-msg{padding:8px 11px;border-radius:9px;font-size:11px;line-height:1.55;max-width:88%;}
+.bot-msg.bot{background:var(--card2);color:var(--text);align-self:flex-start;border-bottom-left-radius:3px;}
+.bot-msg.usr{background:rgba(59,130,246,.2);color:#93c5fd;align-self:flex-end;border-bottom-right-radius:3px;}
+.bot-qs{padding:6px 10px;display:flex;gap:5px;flex-wrap:wrap;border-top:1px solid var(--border);}
+.bot-q{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:#93c5fd;font-size:9px;padding:4px 8px;border-radius:5px;cursor:pointer;white-space:nowrap;}
+.bot-q:hover{background:rgba(59,130,246,.2);}
+.bot-inp{display:flex;gap:6px;padding:8px 10px;border-top:1px solid var(--border);}
+.bot-inp input{flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:6px 9px;font-size:11px;outline:none;}
+.bot-inp input:focus{border-color:var(--accent);}
+.bot-inp button{background:var(--accent);border:none;color:#fff;border-radius:7px;padding:6px 10px;cursor:pointer;font-size:12px;}
+
+/* EXPORT */
+.exp-btn{background:none;border:1px solid var(--border2);color:var(--text2);padding:4px 10px;border-radius:6px;font-size:10px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:4px;}
+.exp-btn:hover{background:rgba(16,185,129,.1);border-color:var(--green);color:var(--green);}
+
+/* ALERT LEVELS */
+.al-crit{border-left-color:var(--red)!important;background:rgba(239,68,68,.05)!important;}
+.al-warn{border-left-color:var(--yellow)!important;background:rgba(245,158,11,.04)!important;}
+.al-info{border-left-color:var(--accent)!important;}
+.al-ok{border-left-color:var(--green)!important;}
+
+/* MERCADO NATURAL */
+.mn-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;transition:border-color .2s;}
+.mn-card:hover{border-color:var(--border2);}
+.mn-pct{font-size:28px;font-weight:800;line-height:1;}
+.mn-lbl{font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;margin-bottom:4px;}
+.mn-rev{font-size:13px;font-weight:700;margin-top:5px;}
+.mn-avg{font-size:10px;color:var(--text3);margin-top:3px;}
 .src-pbi{background:rgba(59,130,246,.1);color:var(--accent);}
 .src-calc{background:rgba(139,92,246,.1);color:var(--purple);}
 </style>
@@ -210,6 +249,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <button class="tb" onclick="showTab('stock',this)">📦 Stock Crítico</button>
   <button class="tb" onclick="showTab('predicciones',this)">🔮 Predicciones IA</button>
   <button class="tb" onclick="showTab('campanas',this)">📢 Campañas</button>
+  <button class="tb" onclick="showTab('alertas',this)" id="tabAlertas">⚠️ Alertas <span id="alertBadge" style="background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:10px;margin-left:3px;font-weight:700">12</span></button>
 </div>
 
 <!-- ══════ RESUMEN ══════ -->
@@ -486,8 +526,82 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
   <div class="al g" style="margin-bottom:14px"><div class="ai">📢</div><div><div class="at">Pico de compras: Martes 10-11am — el mejor momento para activar campañas</div><div class="ad">Lunes tiene el menor volumen. Programar envío de emails y notificaciones para <b>lunes 8pm</b> (anticipa el pico martes AM) o <b>martes 9am</b> para máximo open rate. Evitar viernes PM y domingo.</div></div><div class="ab bg">TIMING</div></div>
 
+  <!-- Mercado Natural E-Commerce -->
+  <div class="sh">
+    <div class="sh-t">🌱 Mercado Natural E-Commerce <span class="sh-b2">General + Club + NOT LOGGED IN — clientes orgánicos del canal</span></div>
+    <button class="exp-btn" onclick="exportMercadoNatural()">⬇️ CSV</button>
+  </div>
+  <div style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:9px;padding:11px 14px;margin-bottom:12px;font-size:11px;color:var(--text2);line-height:1.7">
+    ⚡ <b>Mutual (92.4% de la base) = convenio B2B corporativo, se carga por batch desde el convenio.</b> No son clientes orgánicos de E-Commerce — acceden vía su empleador/mutual. Para la estrategia digital, el mercado real es: <b>General + Club Beneficios + NOT LOGGED IN</b>. Estos 3 generan el 89.7% del revenue E-Com con solo 6.7% de la base registrada.
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
+    <div class="mn-card" style="border-color:rgba(59,130,246,.35)">
+      <div class="mn-lbl">General</div>
+      <div class="mn-pct" style="color:#60a5fa">$151.3M</div>
+      <div style="font-size:10px;color:var(--text3)">786 órdenes · 6.5% base</div>
+      <div class="mn-avg">Avg ticket: <b style="color:#60a5fa">$192K</b></div>
+      <div style="margin-top:8px;font-size:10px;background:rgba(59,130,246,.1);padding:5px 8px;border-radius:5px;color:#93c5fd">💡 Power users: $192K avg · Alta recurrencia · <b>Fidelizar + sub-oferta</b></div>
+    </div>
+    <div class="mn-card" style="border-color:rgba(139,92,246,.35)">
+      <div class="mn-lbl">NOT LOGGED IN</div>
+      <div class="mn-pct" style="color:#a78bfa">$75.0M</div>
+      <div style="font-size:10px;color:var(--text3)">562 órdenes · sin registro</div>
+      <div class="mn-avg">Avg ticket: <b style="color:#a78bfa">$133K</b></div>
+      <div style="margin-top:8px;font-size:10px;background:rgba(139,92,246,.1);padding:5px 8px;border-radius:5px;color:#c4b5fd">🎯 Convertir a registrados → se vuelven General. <b>C3: cupón $3K al registrarse</b></div>
+    </div>
+    <div class="mn-card" style="border-color:rgba(20,184,166,.35)">
+      <div class="mn-lbl">Club Beneficios</div>
+      <div class="mn-pct" style="color:var(--teal)">$1.8M</div>
+      <div style="font-size:10px;color:var(--text3)">12 órdenes · 579 registrados</div>
+      <div class="mn-avg">Avg ticket: <b style="color:var(--teal)">$150K</b></div>
+      <div style="margin-top:8px;font-size:10px;background:rgba(20,184,166,.1);padding:5px 8px;border-radius:5px;color:#5eead4">📢 Bajo volumen pero alto potencial. 579 registrados, solo 12 órdenes. <b>Activar: comunicación directa</b></div>
+    </div>
+    <div class="mn-card" style="border-color:rgba(16,185,129,.35)">
+      <div class="mn-lbl">Mutual (B2B Convenio)</div>
+      <div class="mn-pct" style="color:#34d399">$24.1M</div>
+      <div style="font-size:10px;color:var(--text3)">130 órdenes · 142.874 registrados</div>
+      <div class="mn-avg">Avg ticket: <b style="color:#34d399">$185K</b></div>
+      <div style="margin-top:8px;font-size:10px;background:rgba(100,116,139,.1);padding:5px 8px;border-radius:5px;color:var(--text3)">⚙️ Cargado por batch vía convenio corporativo. No es canal digital orgánico.</div>
+    </div>
+  </div>
+
+  <!-- Revenue por cápita análisis -->
+  <div class="sh"><div class="sh-t">📊 Revenue por Cápita — Mutual vs Orgánico</div></div>
+  <div class="card mb">
+    <table class="tbl">
+      <thead><tr><th>Segmento</th><th>Base Registrada</th><th>Órdenes 60d</th><th>Revenue 60d</th><th>Rev/Cliente</th><th>% Base</th><th>% Revenue</th><th>Estrategia</th></tr></thead>
+      <tbody>
+        <tr style="background:rgba(59,130,246,.04)"><td><b>General</b></td><td>10.061</td><td>786</td><td><b>$151.3M</b></td><td style="color:#60a5fa;font-weight:700">$15.040/cliente</td><td>6.5%</td><td style="color:#60a5fa;font-weight:700">59.8%</td><td><span class="chip cg">Fidelizar ★</span></td></tr>
+        <tr style="background:rgba(139,92,246,.04)"><td><b>NOT LOGGED IN</b></td><td>—</td><td>562</td><td><b>$75.0M</b></td><td style="color:#a78bfa;font-weight:700">— (anónimo)</td><td>—</td><td style="color:#a78bfa;font-weight:700">29.7%</td><td><span class="chip cp">Registrar</span></td></tr>
+        <tr style="background:rgba(20,184,166,.04)"><td><b>Club Beneficios</b></td><td>579</td><td>12</td><td><b>$1.8M</b></td><td style="color:var(--teal);font-weight:700">$3.108/cliente</td><td>0.4%</td><td style="color:var(--teal)">0.7%</td><td><span class="chip ct2">Activar</span></td></tr>
+        <tr><td>Empleados</td><td>826</td><td>6</td><td>$0.16M</td><td style="color:var(--text3)">$200/cliente</td><td>0.5%</td><td style="color:var(--text3)">0.06%</td><td><span class="chip cy">Revisar</span></td></tr>
+        <tr style="background:rgba(16,185,129,.03)"><td><b>Mutual</b> (B2B)</td><td>142.874</td><td>130</td><td><b>$24.1M</b></td><td style="color:#34d399;font-weight:700">$169/cliente</td><td>92.4%</td><td style="color:var(--text3)">9.5%</td><td><span class="chip cy">Convenio</span></td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:10px;color:var(--text3);margin-top:8px;padding:0 4px">💡 Un cliente General genera <b style="color:#60a5fa">89x más revenue</b> que un cliente Mutual por E-Commerce. La estrategia digital debe enfocarse en activar los 10K+ General y convertir NOT LOGGED IN → General.</div>
+  </div>
+
+  <!-- Convenios activos en Magento -->
+  <div class="sh"><div class="sh-t">🗂️ Convenios / Grupos de Cliente en Magento <span class="sh-b2">Grupos activos configurados</span></div></div>
+  <div class="card mb">
+    <table class="tbl">
+      <thead><tr><th>ID Grupo</th><th>Nombre / Convenio</th><th>Tipo</th><th>Clientes Reg.</th><th>Revenue 60d</th><th>Órdenes</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td><b>NOT LOGGED IN</b></td><td>Guest</td><td>—</td><td>$75.0M</td><td>562</td><td><span class="chip cp">Activo · Convertir</span></td></tr>
+        <tr><td>1</td><td><b>General</b></td><td>Orgánico / Seguros</td><td>10.061</td><td>$151.3M</td><td>786</td><td><span class="chip cg">Activo ★</span></td></tr>
+        <tr><td>4</td><td><b>Empleados</b></td><td>Interno</td><td>826</td><td>$0.16M</td><td>6</td><td><span class="chip cy">Bajo uso</span></td></tr>
+        <tr><td>5</td><td><b>Club Beneficios</b></td><td>Fidelización</td><td>579</td><td>$1.8M</td><td>12</td><td><span class="chip ct2">Activar</span></td></tr>
+        <tr><td>9</td><td><b>Mutual</b></td><td>B2B Convenio Corporativo</td><td>142.874</td><td>$24.1M</td><td>130</td><td><span class="chip cb">Batch / Convenio</span></td></tr>
+        <tr style="background:rgba(100,116,139,.05)"><td colspan="7" style="color:var(--text3);font-size:10px;font-style:italic">Para agregar nuevos convenios (grupos) en Magento: Admin → Customers → Customer Groups → Add New Group. Cada grupo nuevo = nuevo segmento de precio y descuento automático.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
   <!-- Top clientes -->
-  <div class="sh"><div class="sh-t">🏆 Top 10 Clientes por Revenue (60d)</div></div>
+  <div class="sh">
+    <div class="sh-t">🏆 Top 10 Clientes por Revenue (60d)</div>
+    <button class="exp-btn" onclick="exportTopClientes()">⬇️ CSV Top Clientes</button>
+  </div>
   <div class="card mb">
     <table class="tbl">
       <thead><tr><th>#</th><th>Cliente</th><th>Órdenes</th><th>Revenue</th><th>Ticket Prom.</th><th>Segmento</th><th>Acción</th></tr></thead>
@@ -530,7 +644,10 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 
   <!-- Top SKUs suscripción con MRR -->
-  <div class="sh"><div class="sh-t">💊 Top SKUs en Suscripciones <span class="sh-b">Cantidad + MRR Estimado/mes</span></div></div>
+  <div class="sh">
+    <div class="sh-t">💊 Top SKUs en Suscripciones <span class="sh-b">Cantidad + MRR Estimado/mes</span></div>
+    <button class="exp-btn" onclick="exportSuscripciones()">⬇️ CSV</button>
+  </div>
   <div class="card mb">
     <table class="tbl">
       <thead><tr><th>SKU</th><th>Producto</th><th># Subs</th><th>MRR Est./mes</th><th>Avg/sub</th><th>Share MRR</th><th>Estado</th></tr></thead>
@@ -762,8 +879,78 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 </div><!-- /campañas -->
 
+<!-- ══════ ALERTAS ══════ -->
+<div class="tp" id="tp-alertas">
+  <div class="sh">
+    <div class="sh-t">⚠️ Centro de Alertas CDP <span class="sh-b3">E-Commerce · Magento Real · Hoy 20 Mar 2026</span></div>
+    <button class="exp-btn" onclick="exportAlertas()">⬇️ Exportar alertas</button>
+  </div>
+
+  <!-- Resumen -->
+  <div class="kg4 mb">
+    <div class="kpi rd"><div class="kl">🚨 Críticas</div><div class="kv" style="color:var(--red)">2</div><div class="ks">Acción inmediata</div><div class="kd dn">Hoy</div></div>
+    <div class="kpi yw"><div class="kl">🔴 Urgentes</div><div class="kv" style="color:var(--orange)">4</div><div class="ks">Esta semana</div><div class="kd wa">3-7 días</div></div>
+    <div class="kpi bl"><div class="kl">🟡 Atención</div><div class="kv" style="color:#60a5fa">4</div><div class="ks">Este mes</div><div class="kd nt">7-30 días</div></div>
+    <div class="kpi gr"><div class="kl">🟢 Oportunidades</div><div class="kv" style="color:var(--green)">4</div><div class="ks">Alto potencial</div><div class="kd up">Accionar</div></div>
+  </div>
+
+  <!-- 🚨 CRÍTICAS -->
+  <div class="sh"><div class="sh-t" style="color:var(--red)">🚨 Críticas — Pérdida activa ahora mismo</div></div>
+  <div class="al al-crit"><div class="ai">📦</div><div><div class="at">PASURTA 140mg — Stock 0 · 45 suscripciones sin entrega</div><div class="ad">45 pacientes con suscripción activa no pueden recibir su medicamento. Frecuencia típica 28-30 días. <b>Estimado: este ciclo vence en ~5-10 días.</b> Revenue en riesgo: $9.5M MRR + riesgo de cancelación permanente. Acción: contactar proveedor HOY + notificar a 45 pacientes.</div></div><div class="ab br">HOY</div></div>
+  <div class="al al-crit"><div class="ai">🔬</div><div><div class="at">ZEJULA 100mg x56 — Stock 0 · Oncología ($5M revenue 60d)</div><div class="ad">SKU crítico de oncología sin stock. Zejula (Niraparib) es para cáncer de ovario, los pacientes no pueden interrumpir tratamiento. Sin reposición inmediata = pérdida del paciente a cadena competidora. Acción: reponer urgente o redirigir a Sala de Venta mientras llega stock.</div></div><div class="ab br">HOY</div></div>
+
+  <!-- 🔴 URGENTES -->
+  <div class="sh" style="margin-top:6px"><div class="sh-t" style="color:var(--orange)">🔴 Urgentes — Resolver esta semana</div></div>
+  <div class="al al-warn"><div class="ai">⏸️</div><div><div class="at">82 suscripciones pausadas — $22M/mes detenidos esperando reactivación</div><div class="ad">21.8% tasa de pausa es anómala (industria: 8-12%). Probables causas: problema de pago (revisar tokupayment) o stock. C1: enviar email "Tu medicamento te espera + 1 clic para reactivar". <b>ROI estimado: $22M/mes recuperados.</b></div></div><div class="ab by">Esta semana</div></div>
+  <div class="al al-warn"><div class="ai">📉</div><div><div class="at">RYBELSUS 14mg — 59 suscripciones · solo 4 semanas de stock (111 unidades)</div><div class="ad">Con 59 subs activas y frecuencia 30 días, el stock actual dura ~2 ciclos. Si no se repone en 2 semanas, el tercer ciclo falla. <b>Pedir mínimo 200 unidades adicionales esta semana.</b> Revenue en riesgo: $4.5M MRR.</div></div><div class="ab by">Esta semana</div></div>
+  <div class="al al-warn"><div class="ai">📉</div><div><div class="at">RYBELSUS 3mg — 88 suscripciones · 5 semanas de stock (129 unidades)</div><div class="ad">Similar a Ryb 14mg. 88 subs × frecuencia 30d = necesita ~90 u/ciclo. Stock cubre ~1.4 ciclos. Pedir mínimo 180 unidades. <b>Coordinar con Ryb 7mg en el mismo pedido para descuento por volumen.</b></div></div><div class="ab by">Esta semana</div></div>
+  <div class="al al-warn"><div class="ai">⚠️</div><div><div class="at">CANCELACIÓN de órdenes 20.2% — doble del estándar farma (10-12%)</div><div class="ad">385 de 1,908 órdenes canceladas en 60d. Cada punto porcentual reducido = +$3.8M revenue. <b>Investigar causa: ¿stock? ¿precio? ¿proceso de pago? ¿tiempo de entrega?</b> Prioridad: revisar las últimas 50 cancelaciones manualmente.</div></div><div class="ab by">Esta semana</div></div>
+
+  <!-- 🟡 ATENCIÓN -->
+  <div class="sh" style="margin-top:6px"><div class="sh-t" style="color:#60a5fa">🟡 Atención — Este mes</div></div>
+  <div class="al al-info"><div class="ai">👥</div><div><div class="at">1.600 perfiles RFM "No se pueden perder" — comenzando a perder frecuencia</div><div class="ad">Estos clientes compraron bien pero su recencia/frecuencia está bajando. Ventana de reactivación: próximas 2-3 semanas. Después pasan a "En riesgo". <b>C5: Email personalizado con historial de productos.</b> Potencial: +$20M/trim.</div></div><div class="ab bb">Este mes</div></div>
+  <div class="al al-info"><div class="ai">🆘</div><div><div class="at">404 perfiles RFM "En riesgo" — compraron antes, sin actividad reciente</div><div class="ad">Ya en zona roja del RFM. Último recurso antes de perderlos definitivamente. <b>C6: "Te echamos de menos" + 10% descuento primera compra de vuelta.</b> Salvar: ~$8M en revenue potencial.</div></div><div class="ab bb">Este mes</div></div>
+  <div class="al al-info"><div class="ai">📊</div><div><div class="at">Revenue E-Commerce bajando: $127M → $111M → $83M (Mar parcial)</div><div class="ad">Tendencia descendente en los 3 meses. Marzo tiene datos parciales (al 20/3), pero si el ratio es similar = proyectado ~$110M para el mes completo, que sería una mejora. <b>Monitorear cierre de marzo para confirmar si es estacional o estructural.</b></div></div><div class="ab bb">Monitorear</div></div>
+  <div class="al al-info"><div class="ai">🔓</div><div><div class="at">562 órdenes sin login · $75M en revenue anónimo · Sin CRM data</div><div class="ad">29.7% del canal compra sin registrarse. No podemos rastrear su recurrencia ni hacer retargeting. <b>C3: Pop-up checkout "Regístrate y gana $3.000 en tu próxima compra".</b> Potencial: +200 registros/mes = +$26M/año identificados.</div></div><div class="ab bb">Este mes</div></div>
+
+  <!-- 🟢 OPORTUNIDADES -->
+  <div class="sh" style="margin-top:6px"><div class="sh-t" style="color:var(--green)">🟢 Oportunidades — Alto potencial</div></div>
+  <div class="al al-ok"><div class="ai">🌑</div><div><div class="at">197.500 perfiles registrados que nunca han comprado — 97.76% de la base</div><div class="ad">La mayor oportunidad del negocio. Si se activa el 0.5% = ~988 nuevos compradores × $181K avg ticket = <b>+$179M incremental.</b> Segmentar por convenio y enviar email de activación personalizado con producto más relevante para su convenio.</div></div><div class="ab bg">Gran oportunidad</div></div>
+  <div class="al al-ok"><div class="ai">💳</div><div><div class="at">Compradores Toku ($239K avg ticket) — 32% más que el promedio — candidatos a suscripción</div><div class="ad">Toku es la pasarela de suscripciones. Pero hay compradores Toku que no están en suscripción formal. Identificar estos casos y ofrecerles convertir a suscripción con 8% descuento. <b>C9: +$9M/año potencial.</b></div></div><div class="ab bg">C9</div></div>
+  <div class="al al-ok"><div class="ai">🚀</div><div><div class="at">Rybelsus domina el 61.9% de suscripciones — mercado GLP-1 en pleno crecimiento global</div><td><div class="ad">233 suscripciones activas de Rybelsus. La demanda de GLP-1 sigue creciendo a nivel global (Wegovy, Ozempic, Rybelsus). <b>Oportunidad: ampliar stock mínimo a 6 meses + crear pack anual con descuento 10% = +$8M LTV.</b></div></div><div class="ab bg">C4</div></div>
+  <div class="al al-ok"><div class="ai">📊</div><div><div class="at">Recurrentes 60.6% en últimos 30d — ratio muy superior al promedio e-commerce (25-35%)</div><div class="ad">60.6% de los compradores del mes ya habían comprado antes. Esto es clase mundial para e-commerce. <b>El modelo de suscripción + alto costo farmacéutico genera retención natural.</b> Objetivo: llevar a 70% con las campañas de retención.</div></div><div class="ab bg">Potenciar</div></div>
+</div><!-- /alertas -->
+
 </div><!-- /wrap -->
 <div class="notif" id="notif"></div>
+
+<!-- ══════ BOT FLOTANTE CDP ══════ -->
+<button class="bot-fab" onclick="toggleBot()" title="Asistente CDP">🧠</button>
+<div class="bot-panel" id="botPanel">
+  <div class="bot-hdr">
+    <div>🧬</div>
+    <div>
+      <div class="bot-title">Asistente CDP</div>
+      <div class="bot-sub">E-Commerce · Magento Real</div>
+    </div>
+    <button class="bot-close" onclick="toggleBot()">✕</button>
+  </div>
+  <div class="bot-msgs" id="botMsgs">
+    <div class="bot-msg bot">Hola 👋 Soy tu asistente del CDP. Tengo acceso a los datos reales de E-Commerce (Magento): <b>1.908 órdenes, 376 suscripciones, 154.646 clientes.</b><br><br>¿Qué quieres saber?</div>
+  </div>
+  <div class="bot-qs">
+    <span class="bot-q" onclick="botAsk('¿Qué alertas hay hoy?')">⚠️ Alertas hoy</span>
+    <span class="bot-q" onclick="botAsk('¿Cómo está el MRR?')">💰 MRR</span>
+    <span class="bot-q" onclick="botAsk('¿Qué segmentos atacar?')">🎯 Segmentos</span>
+    <span class="bot-q" onclick="botAsk('¿Cuántos clientes activos?')">👥 Clientes</span>
+    <span class="bot-q" onclick="botAsk('¿Qué convenio crece más?')">🤝 Convenios</span>
+    <span class="bot-q" onclick="botAsk('¿Dónde está el mayor potencial?')">🚀 Potencial</span>
+  </div>
+  <div class="bot-inp">
+    <input type="text" id="botInput" placeholder="Pregunta sobre el CDP..." onkeydown="if(event.key==='Enter')botSend()">
+    <button onclick="botSend()">→</button>
+  </div>
+</div>
 
 <script>
 // ══════ DATA REAL MAGENTO ══════
@@ -956,12 +1143,74 @@ function renderTopClientes(){
   document.getElementById('topClientes').innerHTML=TOP_CLIENTES.map((c,i)=>{
     const email=c.email.length>28?c.email.slice(0,14)+'...'+c.email.split('@')[1]:c.email;
     const seg=segs[c.rev]||'General';
-    return`<tr><td><b>${i+1}</b></td><td>${email}</td><td>${c.orders}</td><td><b>$${(c.rev/1000).toFixed(0)}K</b></td><td>$${(c.ticket/1000).toFixed(0)}K</td><td><span class="chip ${c.orders>=3?'cg':c.orders>=2?'cb':'cy'}">${seg}</span></td><td><button style="font-size:10px;padding:3px 8px;border-radius:5px;border:1px solid var(--teal);color:var(--teal);background:none;cursor:pointer" onclick="showNotif('Contactando ${email}')">Contactar</button></td></tr>`;
+    const mailBtn=`<div style="display:flex;gap:4px"><a href="mailto:${c.email}?subject=PROFAR+Clinical+Market+-+Tu+historial+de+compras&body=Estimado+cliente,%0A%0ATenemos+una+oferta+especial+para+ti+basada+en+tu+historial+de+compras." style="font-size:10px;padding:3px 8px;border-radius:5px;border:1px solid var(--teal);color:var(--teal);background:none;cursor:pointer;text-decoration:none">✉️ Email</a><button style="font-size:10px;padding:3px 8px;border-radius:5px;border:1px solid var(--border2);color:var(--text2);background:none;cursor:pointer" onclick="copyToClipboard('${c.email}')">📋</button></div>`;
+    return`<tr><td><b>${i+1}</b></td><td style="font-size:10px">${email}</td><td>${c.orders}</td><td><b>$${(c.rev/1000).toFixed(0)}K</b></td><td>$${(c.ticket/1000).toFixed(0)}K</td><td><span class="chip ${c.orders>=3?'cg':c.orders>=2?'cb':'cy'}">${seg}</span></td><td>${mailBtn}</td></tr>`;
   }).join('');
 }
 
 // ══════ NOTIF ══════
 function showNotif(m){const n=document.getElementById('notif');n.textContent=m;n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3500);}
+
+// ══════ CLIPBOARD ══════
+function copyToClipboard(text){navigator.clipboard.writeText(text).then(()=>showNotif('📋 Copiado: '+text)).catch(()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showNotif('📋 Copiado: '+text);});}
+
+// ══════ EXPORT CSV ══════
+function dlCSV(content,filename){const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(content);a.download=filename;a.click();}
+
+function exportTopClientes(){
+  let csv='#,Email,Ordenes,Revenue CLP,Ticket Prom CLP,Segmento\n';
+  TOP_CLIENTES.forEach((c,i)=>{const segs={6000506:'VIP Oncología',2591989:'VIP Alto Costo',2222981:'VIP Especialidad',2214081:'Recurrente',1746102:'Recurrente',1654202:'VIP 1er orden',1394014:'Leal 6 ord',1378979:'Recurrente',1345980:'Recurrente',1339980:'VIP Especialidad'};csv+=`${i+1},${c.email},${c.orders},${c.rev},${c.ticket},${segs[c.rev]||'General'}\n`;});
+  dlCSV(csv,'top-clientes-ecommerce-20mar2026.csv');showNotif('✅ Exportado: top-clientes-ecommerce-20mar2026.csv');
+}
+
+function exportSuscripciones(){
+  let csv='Producto,# Suscripciones,MRR Estimado CLP,Share MRR %,Estado\n';
+  const data=[['RYBELSUS 3mg',88,4300000000,'5.8%','Activo'],['RYBELSUS 7mg',86,5100000000,'6.8%','Activo'],['RYBELSUS 14mg',59,4500000000,'6.0%','Activo'],['NURTEC 75mg',55,24000000000,'32.2%','Top MRR'],['PASURTA 140mg',45,9500000000,'12.7%','STOCK 0'],['LENZETTO',23,2800000000,'3.8%','Monitorear'],['GENOTROPIN 36UI',19,3800000000,'5.1%','OK'],['OZEMPIC 4mg',8,2400000000,'3.2%','Stock bajo']];
+  data.forEach(r=>csv+=r.join(',')+'\n');
+  dlCSV(csv,'suscripciones-mrr-20mar2026.csv');showNotif('✅ Exportado: suscripciones-mrr.csv');
+}
+
+function exportMercadoNatural(){
+  const csv='Segmento,Tipo,Base Registrada,Ordenes 60d,Revenue 60d CLP,Rev por Cliente CLP,% Revenue\nGeneral,Orgánico,10061,786,151296916,15040,59.8%\nNOT LOGGED IN,Guest,0,562,74976089,0,29.7%\nClub Beneficios,Fidelización,579,12,1799717,3108,0.7%\nEmpleados,Interno,826,6,163832,198,0.06%\nMutual,B2B Convenio,142874,130,24065294,169,9.5%\n';
+  dlCSV(csv,'mercado-natural-ecommerce-20mar2026.csv');showNotif('✅ Exportado: mercado-natural.csv');
+}
+
+function exportAlertas(){
+  const csv='Nivel,Descripción,Impacto,Acción,Plazo\nCRÍTICO,PASURTA 140mg stock=0 con 45 subs activas,$9.5M MRR en riesgo,Contactar proveedor + notificar pacientes,HOY\nCRÍTICO,ZEJULA 100mg stock=0 oncología,$5M revenue 60d,Reponer urgente o redirigir,HOY\nURGENTE,82 suscripciones pausadas,$22M/mes detenidos,Email reactivación,Esta semana\nURGENTE,RYBELSUS 14mg solo 4 semanas stock,$4.5M MRR en riesgo,Pedir 200u adicionales,Esta semana\nURGENTE,RYBELSUS 3mg 5 semanas stock,$4.3M MRR en riesgo,Pedir 180u adicionales,Esta semana\nURGENTE,Cancelación órdenes 20.2%,$3.8M por punto reducido,Investigar causas top 50 cancelaciones,Esta semana\nATENCIÓN,1600 perfiles RFM No se pueden perder,$20M/trim potencial,C5: Email historial productos,Este mes\nATENCIÓN,404 perfiles RFM En riesgo,$8M a salvar,C6: Descuento 10% vuelta,Este mes\nATENCIÓN,Revenue bajando Ene $127M→Feb $111M→Mar $83M,Tendencia descendente,Monitorear cierre marzo,Este mes\nATENCIÓN,562 órdenes sin login $75M sin CRM,$26M/año si se convierten,C3: Pop-up cupón $3K,Este mes\nOPORTUNIDAD,197500 sin compras (97.76%),$179M incremental con 0.5% activación,Email activación por convenio,Este mes\nOPORTUNIDAD,Compradores Toku $239K avg,$9M/año si se suscriben,C9: Upsell suscripción,Próximo mes\n';
+  dlCSV(csv,'alertas-cdp-20mar2026.csv');showNotif('✅ Exportado: alertas-cdp.csv');
+}
+
+// ══════ BOT FLOTANTE ══════
+let botOpen=false;
+function toggleBot(){botOpen=!botOpen;document.getElementById('botPanel').classList.toggle('open',botOpen);}
+
+const BOT_KB=[
+  {k:['alert','alerta','hoy','urgente','críti'],r:'⚠️ <b>Alertas activas hoy:</b><br>🚨 CRÍTICAS (2): PASURTA stock=0 (45 subs, $9.5M MRR en riesgo) · ZEJULA stock=0<br>🔴 URGENTES (4): 82 subs pausadas ($22M/mes) · Rybelsus stock bajo · Cancelaciones 20.2%<br>🟡 ATENCIÓN (4): 1.600 "No perder" · 404 "En riesgo" · Revenue bajando · $75M anónimo<br><br><b>Ve al tab ⚠️ Alertas para el detalle completo.</b>'},
+  {k:['mrr','suscripci','recurrente'],r:'💰 <b>MRR Suscripciones:</b> $74.6M/mes con 279 subs activas.<br>Top: NURTEC $24M (32.2%) · Pasurta $9.5M (12.7%, stock 0!) · Rybelsus total $13.8M (18.5%)<br><br>82 pausadas = $22M/mes detenidos. Reactivarlas = la mayor palanca inmediata.'},
+  {k:['segment','atacar','target','priorid'],r:'🎯 <b>Segmentos a atacar por orden de prioridad:</b><br>1. <b>82 subs pausadas</b> → email HOY (+$22M/mes)<br>2. <b>45 Pasurta</b> → comunicar quiebre hoy (retener $9.5M)<br>3. <b>1.600 "No perder"</b> → esta semana<br>4. <b>NOT LOGGED IN</b> (562 órd, $75M) → convertir a registrados<br>5. <b>Club Beneficios</b> (579 reg, solo 12 órd) → activar'},
+  {k:['cliente','activo','cuánto','total'],r:'👥 <b>Clientes E-Commerce:</b><br>• 154.646 registrados (Magento)<br>• 1.229 compraron en los últimos 60d<br>• 611 compraron en los últimos 30d (252 únicos + 387 recurrentes 60.6%)<br>• 197.500 registrados nunca han comprado (97.76%) ← enorme oportunidad'},
+  {k:['convenio','mutual','general','club','grupo'],r:'🤝 <b>Convenios E-Commerce:</b><br>• General (ID 1): $151.3M · 786 órd · $15K/cliente · <b>Orgánico digital</b><br>• NOT LOGGED IN: $75M · 562 órd · Anónimo · Convertir<br>• Mutual (ID 9): $24.1M · 130 órd · Batch B2B · No digital<br>• Club Beneficios (ID 5): $1.8M · 12 órd · 579 reg · Activar<br><br>Mutual tiene 94% de la base pero solo 9.5% del revenue. Cada cliente General genera 89x más que Mutual.'},
+  {k:['potencial','oportunidad','crecimiento','mayor'],r:'🚀 <b>Mayor potencial:</b><br>1. <b>197.500 sin comprar</b>: activar 0.5% = +$179M incremental<br>2. <b>82 pausadas</b>: reactivar = +$22M/mes<br>3. <b>NOT LOGGED IN → registro</b>: +$26M/año identificados<br>4. <b>One-time → 2da compra</b>: 1.016 clientes = +$16M/año<br><br><b>Total campañas: +$68M/trimestre si se ejecutan todas.</b>'},
+  {k:['canal','ecommerce','sala','telefon','dato','real'],r:'📊 <b>Fuentes de datos:</b><br>• <b>Este CDP = 100% E-Commerce</b> (Magento, datos reales de las 4 URLs de export)<br>• Sala de Venta y Venta Telefónica → están en <b>PROFAR Analytics</b> (PBI)<br>• El ticket promedio $181.8K, stock, suscripciones = todos reales de Magento<br><br>Para cruzar los 3 canales: necesitamos exportar PBI data + unificar por SKU o fecha.'},
+  {k:['stock','inventario','crítico','reponer'],r:'📦 <b>Stock crítico (de Magento, 100% real):</b><br>🚨 PASURTA 140mg: 0 unidades · 45 subs activas<br>🚨 ZEJULA 100mg: 0 unidades · Oncología<br>⚠️ RYBELSUS 14mg: 111 u · 4 semanas para 59 subs<br>⚠️ RYBELSUS 3mg: 129 u · 5 semanas para 88 subs<br>⚠️ CIMZIA/CLEXANE/SOTYKTU: 5-13u · críticos<br><br>Revenue en riesgo total si no se repone: $58M+ en 30 días.'},
+  {k:['ticket','promedio','precio','real'],r:'💵 <b>Ticket promedio E-Commerce (real Magento):</b><br>• Últimos 30d: $181.8K por orden (+27% vs 2025)<br>• Toku (suscripciones): $239.9K avg — el más alto<br>• MercadoPago CC: $181.3K<br>• MercadoPago Pro: $149.3K<br><br>Todos son reales de Magento. El CDP es solo E-Commerce, no incluye Sala ni Tel.'},
+  {k:['ciudad','región','comunas','geografía','zona'],r:'🗺️ <b>Top comunas por revenue (60d):</b><br>1. Las Condes: $43.1M<br>2. Providencia: $25.6M<br>3. Lo Barnechea: $22.7M<br>4. Ñuñoa: $15.9M<br>5. Vitacura: $14.2M<br>6. Viña del Mar: $9.9M<br><br>Top 3 = $91.3M = 37.7% del revenue. Todas son RM NSE Alto. <b>Geo-targeting en esas 3 = máximo ROI de pauta.</b>'},
+  {k:['export','exportar','csv','descargar','base'],r:'⬇️ <b>Exportar datos:</b><br>• Tab Clientes → botón "CSV Top Clientes"<br>• Tab Clientes → botón "CSV Mercado Natural"<br>• Tab Suscripciones → próximamente<br>• Tab ⚠️ Alertas → botón "Exportar alertas"<br><br>Los CSV incluyen los datos reales de Magento en formato UTF-8.'},
+];
+
+function botAsk(q){document.getElementById('botInput').value=q;botSend();}
+function botSend(){
+  const inp=document.getElementById('botInput');
+  const q=inp.value.trim();if(!q)return;
+  inp.value='';
+  const msgs=document.getElementById('botMsgs');
+  msgs.innerHTML+=`<div class="bot-msg usr">${q}</div>`;
+  const ql=q.toLowerCase();
+  let resp='No tengo datos específicos para esa consulta aún. Puedo responder sobre: alertas, MRR, segmentos, clientes, convenios, stock, ticket promedio, ciudades o exportar datos.';
+  for(const kb of BOT_KB){if(kb.k.some(k=>ql.includes(k))){resp=kb.r;break;}}
+  setTimeout(()=>{msgs.innerHTML+=`<div class="bot-msg bot">${resp}</div>`;msgs.scrollTop=msgs.scrollHeight;},400);
+  msgs.scrollTop=msgs.scrollHeight;
+}
 </script>
 </body>
 </html>
