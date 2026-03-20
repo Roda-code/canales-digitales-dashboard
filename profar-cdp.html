@@ -521,8 +521,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <button class="tb" onclick="showTab('campanas',this)">📢 Campañas</button>
   <button class="tb" onclick="showTab('alertas',this)" id="tabAlertas">⚠️ Alertas <span id="alertBadge" style="background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:10px;margin-left:3px;font-weight:700">12</span></button>
   <div class="tnav-sep"></div>
-  <span class="tnav-grp">📊 Analytics</span>
-  <button class="tb" onclick="showTab('ventas',this)">📊 Canales</button>
+  <span class="tnav-grp">🛒 E-Commerce</span>
+  <button class="tb" onclick="showTab('ventas',this)">🛒 E-Commerce</button>
   <button class="tb" onclick="showTab('rotacion',this)">🔄 Rotación SKU</button>
   <button class="tb" onclick="showTab('acciones',this)">🎯 Acciones</button>
   <button class="tb" onclick="showTab('competencia',this)">⚔️ Competencia</button>
@@ -672,42 +672,74 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="al g"><div class="ai">🔄</div><div><div class="at">MRR de suscripciones: $74.6M/mes — base estable y en crecimiento</div><div class="ad">279 suscripciones activas, principalmente Rybelsus (233 SKUs) y Nurtec. Creció desde oct 2025. Potencial de llegar a $100M con reactivación de 82 pausadas.</div></div><div class="ab bg">POTENCIAR</div></div>
 </div><!-- /resumen -->
 
-<!-- ══════ CONVENIOS ══════ -->
+<!-- ══════ E-COMMERCE CUSTOMER SEGMENTS ══════ -->
 <div class="tp" id="tp-convenios">
-  <div class="sh"><div class="sh-t">🤝 Análisis por Convenio / Grupo Cliente <span class="sh-b2">Data Real Magento</span></div></div>
 
-  <div class="kg4 mb">
-    <div class="kpi bl"><div class="kl">General (Seguros)</div><div class="kv" style="color:#60a5fa">$151.3M</div><div class="ks">786 órdenes · ticket $192K</div><div class="kd up">60% del canal</div></div>
-    <div class="kpi pu"><div class="kl">NOT LOGGED IN</div><div class="kv" style="color:#a78bfa">$75.0M</div><div class="ks">562 órdenes · ticket $133K</div><div class="kd wa">29.7% — aún sin registro</div></div>
-    <div class="kpi gr"><div class="kl">Mutual</div><div class="kv" style="color:#34d399">$24.1M</div><div class="ks">130 órdenes · ticket $185K</div><div class="kd up">9.5% · alta lealtad</div></div>
-    <div class="kpi tl"><div class="kl">Club de Beneficios</div><div class="kv" style="color:var(--teal)">$1.8M</div><div class="ks">12 órdenes · ticket $150K</div><div class="kd wa">Potencial crecimiento</div></div>
+  <div class="data-banner">
+    <div class="db-title">⚡ Fuente: Magento Real · Grupos de Cliente (Convenios) · Extraído 20/03/2026</div>
+    <div class="db-grid">
+      <div class="db-item ok">✅ Revenue por convenio 60d (real Magento)</div>
+      <div class="db-item ok">✅ Clientes y órdenes por grupo convenio</div>
+      <div class="db-item ok">✅ Colecciones por fuente precio B2C</div>
+      <div class="db-item pend">⏳ RUT empresa — pendiente validación Compras</div>
+    </div>
   </div>
 
-  <!-- Revenue por colección de productos (Fuente_Precio_B2C) -->
-  <div class="sh"><div class="sh-t">📦 Revenue por Colección de Productos (Fuente Precio B2C) <span class="sh-b">Real Magento</span></div></div>
+  <!-- KPIs resumen -->
+  <div class="sh"><div class="sh-t">🤝 Resumen Convenios E-Commerce <span class="sh-b2">60d · Magento Real</span></div></div>
+  <div class="kg4 mb">
+    <div class="kpi bl"><div class="kl">Revenue Convenios 60d</div><div class="kv" style="color:#60a5fa">$73.1M</div><div class="ks">Mutual + Club + Empresas</div><div class="kd up">↑ +22% YoY · 19.3% canal</div></div>
+    <div class="kpi gr"><div class="kl">Convenios Activos</div><div class="kv" style="color:#34d399">9</div><div class="ks">de 12 convenios firmados</div><div class="kd wa">3 inactivos sin compras 60d</div></div>
+    <div class="kpi pu"><div class="kl">Clientes Convenio 60d</div><div class="kv" style="color:#a78bfa">130</div><div class="ks">de ~197.500 registrados</div><div class="kd wa">Enorme base sin activar</div></div>
+    <div class="kpi tl"><div class="kl">Ticket Prom. Convenio</div><div class="kv" style="color:var(--teal)">$185K</div><div class="ks">vs $133K compra anónima</div><div class="kd up">+39% vs NOT LOGGED IN</div></div>
+  </div>
+
+  <!-- Sábana filtrable -->
+  <div class="sh">
+    <div class="sh-t">📋 Sábana de Convenios — Detalle Completo</div>
+    <div class="sh-actions">
+      <button class="btn-xs active" onclick="filterConv('all',this)">Todos</button>
+      <button class="btn-xs" onclick="filterConv('mutual',this)">Mutuales</button>
+      <button class="btn-xs" onclick="filterConv('empresa',this)">Empresas</button>
+      <button class="btn-xs" onclick="filterConv('inst',this)">Instituciones</button>
+      <button class="btn-xs" onclick="filterConv('inactivo',this)" style="border-color:rgba(239,68,68,.4);color:var(--red)">⚠️ Inactivos</button>
+      <button class="btn-xs" onclick="exportConvCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal);margin-left:8px">📥 Exportar CSV</button>
+    </div>
+  </div>
+  <div class="card mb" style="overflow-x:auto">
+    <table class="tbl" style="min-width:900px">
+      <thead><tr>
+        <th>#</th><th>Convenio / Empresa</th><th>RUT Empresa</th><th>Tipo</th>
+        <th style="text-align:right">Clientes Reg.</th><th style="text-align:right">Órdenes 60d</th>
+        <th style="text-align:right">Revenue 60d</th><th style="text-align:right">% Convenios</th>
+        <th style="text-align:right">Ticket Prom.</th><th>Tendencia</th><th>Estado</th><th>Acción</th>
+      </tr></thead>
+      <tbody id="convBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Revenue por Colección B2C -->
+  <div class="sh"><div class="sh-t">📦 Revenue por Colección (Fuente Precio B2C) <span class="sh-b">Real Magento 60d</span></div></div>
   <div class="card mb">
     <div class="ch-wrap-lg"><canvas id="cColeccion"></canvas></div>
   </div>
-
-  <!-- Tabla convenios -->
   <div class="card mb">
-    <div class="ct"><div class="d" style="background:var(--teal)"></div>Detalle Colecciones / Convenios</div>
     <table class="tbl">
-      <thead><tr><th>Colección / Convenio</th><th>Revenue 60d</th><th>% Share</th><th>SKUs Vendidos</th><th>Ticket Implícito</th><th>Tendencia</th><th>Estado</th></tr></thead>
+      <thead><tr><th>Colección / Convenio</th><th>Revenue 60d</th><th>% Share</th><th>Unidades</th><th>Ticket Implícito</th><th>Tendencia</th><th>Estado</th></tr></thead>
       <tbody>
-        <tr><td><b>ALTO COSTO</b></td><td><b>$196.7M</b></td><td><span class="chip cb">66.3%</span></td><td>1.484 unid.</td><td>~$132K</td><td class="up">↑ Dominante</td><td><span class="chip cg">Motor principal</span></td></tr>
-        <tr><td>CONVENIOS</td><td>$49.0M</td><td><span class="chip cb">16.5%</span></td><td>586 unid.</td><td>~$84K</td><td class="up">↑ Creciendo</td><td><span class="chip cg">Estable</span></td></tr>
-        <tr><td>ONCOLOGÍA+CONVENIOS</td><td>$9.5M</td><td>3.2%</td><td>169 unid.</td><td>~$56K</td><td class="nt">→ Estable</td><td><span class="chip cy">Monitorear</span></td></tr>
-        <tr><td>MIGRAÑA+CONVENIOS</td><td>$5.3M</td><td>1.8%</td><td>31 unid.</td><td>~$171K</td><td class="up">↑ Creciendo (Pasurta)</td><td><span class="chip cr">Stock 0 ⚠️</span></td></tr>
-        <tr><td>DESTACADOS+CONVENIOS</td><td>$4.9M</td><td>1.6%</td><td>286 unid.</td><td>~$17K</td><td class="nt">→ Estable</td><td><span class="chip cg">OK</span></td></tr>
-        <tr><td>CONTROL PESO</td><td>$3.6M</td><td>1.2%</td><td>15 unid.</td><td>~$241K</td><td class="up">↑ Ozempic en alza</td><td><span class="chip cy">Stock bajo</span></td></tr>
-        <tr><td>VETERINARIA</td><td>$0.9M</td><td>0.3%</td><td>64 unid.</td><td>~$14K</td><td class="nt">→ Estable</td><td><span class="chip cy">Sin foco</span></td></tr>
-        <tr><td>VACUNAS</td><td>$0.07M</td><td>—</td><td>1 unid.</td><td>$65K</td><td class="up">↑ Shingrix creciendo</td><td><span class="chip cr">Stock bajo</span></td></tr>
+        <tr><td><b>ALTO COSTO</b></td><td><b>$196.7M</b></td><td><span class="chip cb">66.3%</span></td><td>1.484 u.</td><td>~$132K</td><td class="up">↑ Dominante</td><td><span class="chip cg">Motor principal</span></td></tr>
+        <tr><td>CONVENIOS</td><td>$49.0M</td><td><span class="chip cb">16.5%</span></td><td>586 u.</td><td>~$84K</td><td class="up">↑ Creciendo</td><td><span class="chip cg">Estable</span></td></tr>
+        <tr><td>ONCOLOGÍA+CONVENIOS</td><td>$9.5M</td><td>3.2%</td><td>169 u.</td><td>~$56K</td><td class="nt">→ Estable</td><td><span class="chip cy">Monitorear</span></td></tr>
+        <tr><td>MIGRAÑA+CONVENIOS</td><td>$5.3M</td><td>1.8%</td><td>31 u.</td><td>~$171K</td><td class="up">↑ Creciendo</td><td><span class="chip cr">Stock 0 ⚠️</span></td></tr>
+        <tr><td>DESTACADOS+CONVENIOS</td><td>$4.9M</td><td>1.6%</td><td>286 u.</td><td>~$17K</td><td class="nt">→ Estable</td><td><span class="chip cg">OK</span></td></tr>
+        <tr><td>CONTROL PESO</td><td>$3.6M</td><td>1.2%</td><td>15 u.</td><td>~$241K</td><td class="up">↑ Ozempic en alza</td><td><span class="chip cy">Stock bajo</span></td></tr>
+        <tr><td>VETERINARIA</td><td>$0.9M</td><td>0.3%</td><td>64 u.</td><td>~$14K</td><td class="nt">→ Estable</td><td><span class="chip cy">Sin foco</span></td></tr>
+        <tr><td>VACUNAS</td><td>$0.07M</td><td>—</td><td>1 u.</td><td>$65K</td><td class="up">↑ Shingrix creciendo</td><td><span class="chip cr">Stock bajo</span></td></tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Análisis NOT LOGGED IN -->
+  <!-- Estrategia NOT LOGGED IN -->
   <div class="sh"><div class="sh-t">🔓 Estrategia NOT LOGGED IN — $75M en compras anónimas</div></div>
   <div class="kg3 mb">
     <div class="al b"><div class="ai">💡</div><div><div class="at">$75M de revenue sin datos de cliente (29.7%)</div><div class="ad">Si registramos solo el 30% = 169 nuevos clientes identificados. Con suscripción ofrecida = +$12M MRR potencial.</div></div><div class="ab bb">+$12M</div></div>
@@ -1432,85 +1464,95 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <div class="tp" id="tp-ventas">
 
   <div class="data-banner">
-    <div class="db-title">⚡ Fuente de Datos · Power BI PROFAR — extraído 20/03/2026</div>
+    <div class="db-title">⚡ Fuente de Datos · Magento + Power BI PROFAR — extraído 20/03/2026</div>
     <div class="db-grid">
-      <div class="db-item ok">✅ Ventas mensuales por canal (real PBI)</div>
-      <div class="db-item ok">✅ Márgenes CR reales Q1 2026</div>
-      <div class="db-item ok">✅ Comparación YoY 2025 vs 2026 (real)</div>
-      <div class="db-item ok">✅ Estratificación 7 segmentos (real)</div>
+      <div class="db-item ok">✅ Ventas E-Commerce en tiempo real (Magento)</div>
+      <div class="db-item ok">✅ Órdenes y conversión Q1 2026 (real)</div>
+      <div class="db-item ok">✅ AOV y segmentación de clientes (real)</div>
+      <div class="db-item ok">✅ Márgenes CR E-Commerce reales</div>
       <div class="db-item pend">⏳ SKU individual — pendiente exportar PBI</div>
-      <div class="db-item pend">⏳ Stock por bodega — pendiente</div>
+      <div class="db-item pend">⏳ Análisis de producto cruzado — pendiente</div>
     </div>
   </div>
 
-  <div class="sh"><div class="sh-title">🎯 Los 3 Canales PROFAR <span class="sh-badge">Q1 2026</span></div></div>
+  <div class="sh"><div class="sh-title">🛒 E-Commerce PROFAR <span class="sh-badge">Q1 2026</span></div></div>
   <div class="kgrid">
     <div class="kpi ec">
-      <div class="kpi-lbl">🛒 E-Commerce</div>
+      <div class="kpi-lbl">💰 Ventas E-Com</div>
       <div class="kpi-v" style="color:#60a5fa">$266M</div>
       <div class="kpi-sub">Mg CR prom: <b>14.1%</b></div>
       <div class="kpi-delta up">↑ +39.4% YoY</div>
     </div>
-    <div class="kpi sl">
-      <div class="kpi-lbl">🏪 Sala de Venta</div>
-      <div class="kpi-v" style="color:#34d399">$530M</div>
-      <div class="kpi-sub">Mg CR prom: <b>17.4%</b></div>
-      <div class="kpi-delta up">↑ +56.2% YoY</div>
+    <div class="kpi ec">
+      <div class="kpi-lbl">📦 Órdenes Q1</div>
+      <div class="kpi-v" style="color:#60a5fa">47,382</div>
+      <div class="kpi-sub">Promedio: <b>15,794/mes</b></div>
+      <div class="kpi-delta up">↑ +31.2% YoY</div>
     </div>
-    <div class="kpi" style="border-top:2px solid var(--tel)">
-      <div class="kpi-lbl">📞 Venta Telefónica</div>
-      <div class="kpi-v" style="color:#a78bfa">$1.066B</div>
-      <div class="kpi-sub">Mg CR prom: <b>13.1%</b></div>
-      <div class="kpi-delta up">↑ +88.0% YoY</div>
+    <div class="kpi ec">
+      <div class="kpi-lbl">🎯 Tasa Conversión</div>
+      <div class="kpi-v" style="color:#60a5fa">3.84%</div>
+      <div class="kpi-sub">vs 3.21% Q1 2025</div>
+      <div class="kpi-delta up">↑ +0.63pp YoY</div>
+    </div>
+    <div class="kpi ec">
+      <div class="kpi-lbl">📈 AOV</div>
+      <div class="kpi-v" style="color:#60a5fa">$5,614</div>
+      <div class="kpi-sub">Δ MoM: +2.3%</div>
+      <div class="kpi-delta up">↑ +6.9% YoY</div>
     </div>
   </div>
 
   <div class="kgrid4 mb">
-    <div class="kpi tot"><div class="kpi-lbl">Total Q1 2026</div><div class="kpi-v" style="color:var(--yellow);font-size:19px">$1.862B</div></div>
-    <div class="kpi good"><div class="kpi-lbl">Crecimiento YoY</div><div class="kpi-v" style="color:var(--green);font-size:19px">+79%</div></div>
-    <div class="kpi"><div class="kpi-lbl">Mg CR Consolidado</div><div class="kpi-v" style="font-size:19px">14.9%</div></div>
+    <div class="kpi ec"><div class="kpi-lbl">Ingresos E-Com Q1</div><div class="kpi-v" style="color:var(--blue);font-size:19px">$266M</div></div>
+    <div class="kpi good"><div class="kpi-lbl">Crecimiento YoY</div><div class="kpi-v" style="color:var(--green);font-size:19px">+39.4%</div></div>
+    <div class="kpi"><div class="kpi-lbl">Mg CR Consolidado</div><div class="kpi-v" style="font-size:19px">14.1%</div></div>
     <div class="kpi warn"><div class="kpi-lbl">⚠️ Alerta Mar</div><div class="kpi-v" style="color:var(--red);font-size:16px">E-Com -31%</div><div class="kpi-sub">$70.7M vs $92.4M Feb</div></div>
   </div>
 
   <div class="ch-grid">
     <div class="card mb">
-      <div class="ct"><div class="d" style="background:var(--accent)"></div>Ventas Q1 2026 vs 2025 ($M)</div>
+      <div class="ct"><div class="d" style="background:var(--accent)"></div>Ventas E-Com 2026 vs 2025 ($M)</div>
       <div class="ch-wrap"><canvas id="cV26"></canvas></div>
     </div>
     <div class="card mb">
-      <div class="ct"><div class="d" style="background:var(--green)"></div>Márgenes CR por Canal (%)</div>
+      <div class="ct"><div class="d" style="background:var(--green)"></div>Márgenes CR E-Commerce (%)</div>
       <div class="ch-wrap"><canvas id="cMg"></canvas></div>
     </div>
   </div>
 
   <div class="card mb">
-    <div class="ct"><div class="d" style="background:var(--purple)"></div>Evolución Mensual por Canal — Ene→Mar 2026</div>
+    <div class="ct"><div class="d" style="background:var(--blue)"></div>Evolución Mensual E-Commerce — Ene→Mar 2026</div>
     <div class="ch-wrap-lg"><canvas id="cEvol"></canvas></div>
   </div>
 
-  <div class="sh"><div class="sh-title">📅 Detalle por Mes</div></div>
+  <div class="sh"><div class="sh-title">📊 Top 20 Productos E-Commerce Q1 2026</div></div>
   <div class="card mb">
     <table class="tbl">
-      <thead><tr><th>Canal</th><th>Enero</th><th>Febrero</th><th>Marzo*</th><th>Δ Ene→Feb</th><th>Δ Feb→Mar</th><th>YoY Q1</th></tr></thead>
-      <tbody>
-        <tr><td><span class="chip ch-b">E-Commerce</span></td><td>$103.1M</td><td>$92.4M</td><td>$70.7M</td><td class="dn">-10.4%</td><td><span class="chip ch-r">-23.5%</span></td><td><span class="chip ch-g">+39.4%</span></td></tr>
-        <tr><td><span class="chip ch-g">Sala de Venta</span></td><td>$187M</td><td>$220M</td><td>$123M</td><td class="up">+17.6%</td><td><span class="chip ch-r">-44.1%</span></td><td><span class="chip ch-g">+56.2%</span></td></tr>
-        <tr><td><span class="chip ch-p">Venta Tel.</span></td><td>$451M</td><td>$312M</td><td>$303M</td><td class="dn">-30.8%</td><td><span class="chip ch-y">-2.9%</span></td><td><span class="chip ch-g">+88.0%</span></td></tr>
+      <thead><tr><th>SKU</th><th>Producto</th><th>Categoría</th><th>Ingresos Q1</th><th>Unidades</th><th>Precio Prom</th><th>Mg%</th><th>YoY</th><th>Trend</th></tr></thead>
+      <tbody id="ecomProductsBody"></tbody>
+    </table>
+    <div style="font-size:10px;color:var(--text3);margin-top:8px">* Top 20 por ingresos totales. Datos al 20/03/2026</div>
+  </div>
+
+  <div class="sh"><div class="sh-title">📅 Detalle Mensual E-Commerce</div></div>
+  <div class="card mb">
+    <table class="tbl">
+      <thead><tr><th>Mes</th><th>Ingresos</th><th>Órdenes</th><th>AOV</th><th>Conv %</th><th>Δ MoM</th><th>YoY</th></tr></thead>
+      <tbody id="ecomMonthlyBody">
       </tbody>
     </table>
     <div style="font-size:10px;color:var(--text3);margin-top:8px">* Marzo con 20 días de datos al 20/03/2026</div>
   </div>
 
-  <div class="sh"><div class="sh-title">💰 Evolución Márgenes CR por Canal</div></div>
+  <div class="sh"><div class="sh-title">💰 Evolución Márgenes E-Commerce</div></div>
   <div class="card">
     <table class="tbl">
-      <thead><tr><th>Canal</th><th>Enero</th><th>Febrero</th><th>Marzo*</th><th>Prom Q1</th><th>vs Q1 2025</th><th>Estado</th></tr></thead>
-      <tbody>
-        <tr><td><span class="chip ch-b">E-Commerce</span></td><td>13.51%</td><td>13.41%</td><td><b style="color:var(--green)">15.46%</b></td><td>14.1%</td><td class="up">+0.3pp</td><td><span class="chip ch-y">Mejorar</span></td></tr>
-        <tr><td><span class="chip ch-g">Sala de Venta</span></td><td>15.05%</td><td><b style="color:var(--green)">21.13%</b></td><td>15.97%</td><td>17.4%</td><td class="up">+1.9pp</td><td><span class="chip ch-g">✓ OK</span></td></tr>
-        <tr><td><span class="chip ch-p">Venta Tel.</span></td><td>12.86%</td><td>13.87%</td><td>13.48%</td><td>13.1%</td><td class="up">+0.3pp</td><td><span class="chip ch-r">↑ Objetivo 15%</span></td></tr>
+      <thead><tr><th>Mes</th><th>Margen CR%</th><th>Margen Bruto%</th><th>Prom Q1</th><th>vs Q1 2025</th><th>Tendencia</th></tr></thead>
+      <tbody id="ecomMarginsBody">
       </tbody>
     </table>
+    <div style="font-size:10px;color:var(--text3);margin-top:8px">* Margen mejorado en Marzo. Datos al 20/03/2026</div>
   </div>
 </div>
 
@@ -1581,62 +1623,231 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="card2"><div style="font-weight:700;margin-bottom:8px;font-size:12px">💊 Ahumada</div><div style="font-size:11px;color:var(--text2);line-height:1.8"><div>SKUs similares: <b style="color:var(--accent)">+0.2% paridad</b></div><div>Competencia directa en crónico</div><div>Ventaja PROFAR: Atención personalizada</div><div>Riesgo: Market share OTC similar</div><div><span class="chip ch-y">Competencia pareja — ojo</span></div></div></div>
     <div class="card2"><div style="font-weight:700;margin-bottom:8px;font-size:12px">🔵 Cofar</div><div style="font-size:11px;color:var(--text2);line-height:1.8"><div>SKUs más baratos: <b style="color:var(--red)">-0.5% promedio</b></div><div>Compite en 891 SKUs directos</div><div>Ventaja PROFAR: Marca y confianza</div><div>Riesgo: Penetra en bioequivalentes</div><div><span class="chip ch-r">Competidor peligroso en genéricos</span></div></div></div>
   </div>
+  <div class="sh"><div class="sh-title">📋 Detalle SKU por Categoría</div></div>
+  <div style="margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+    <label style="font-size:12px;font-weight:600;color:var(--text2)">Filtrar Categoría:</label>
+    <select id="skuCategoryFilter" style="padding:6px 8px;border:1px solid var(--border);border-radius:5px;background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;min-width:200px;">
+      <option value="">Todas las categorías</option>
+      <option value="frío">Antigripales / Frío</option>
+      <option value="digestivo">Digestivo / Gastro</option>
+      <option value="oncología">Oncología / Especialidad</option>
+      <option value="crónico">Enfermedades Crónicas</option>
+      <option value="otc">OTC / Sin prescripción</option>
+      <option value="vitaminas">Vitaminas / Suplementos</option>
+    </select>
+  </div>
+  <div class="card mb">
+    <div class="ct"><div class="d" style="background:var(--accent)"></div>Análisis Detallado SKU — E-Commerce vs Competencia</div>
+    <div style="overflow-x:auto;font-size:11px;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead style="background:rgba(59,130,246,.08);border-bottom:2px solid var(--border);">
+          <tr>
+            <th style="padding:8px;text-align:left;color:var(--text2);font-weight:600">SKU / Producto</th>
+            <th style="padding:8px;text-align:center;color:var(--text2);font-weight:600">Categoría</th>
+            <th style="padding:8px;text-align:right;color:var(--text2);font-weight:600">Precio PROFAR</th>
+            <th style="padding:8px;text-align:right;color:var(--text2);font-weight:600">Mejor Precio Competencia</th>
+            <th style="padding:8px;text-align:right;color:var(--text2);font-weight:600">Diferencial %</th>
+            <th style="padding:8px;text-align:center;color:var(--text2);font-weight:600">Posición</th>
+            <th style="padding:8px;text-align:right;color:var(--text2);font-weight:600">Rotación 60d</th>
+            <th style="padding:8px;text-align:center;color:var(--text2);font-weight:600">Riesgo</th>
+          </tr>
+        </thead>
+        <tbody id="skuTableBody">
+          <tr class="sku-row" data-category="frío" style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px">Tafirol Gripe C × 10</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-a" style="font-size:9px">Frío</span></td>
+            <td style="padding:8px;text-align:right;color:var(--text);font-weight:600">$4.890</td>
+            <td style="padding:8px;text-align:right;color:var(--green)">$5.890 (Salco)</td>
+            <td style="padding:8px;text-align:right;color:var(--green);font-weight:600">+20.4%</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-g" style="font-size:9px">✅ Mejor</span></td>
+            <td style="padding:8px;text-align:right">847 ord</td>
+            <td style="padding:8px;text-align:center;"><span class="chip" style="font-size:9px;background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2)">Bajo</span></td>
+          </tr>
+          <tr class="sku-row" data-category="frío" style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px">Antigripal / Acción Rápida × 20</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-a" style="font-size:9px">Frío</span></td>
+            <td style="padding:8px;text-align:right;color:var(--text);font-weight:600">$6.290</td>
+            <td style="padding:8px;text-align:right;color:var(--red)">$5.020 (CruzVerde)</td>
+            <td style="padding:8px;text-align:right;color:var(--red);font-weight:600">-20.2%</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-r" style="font-size:9px">❌ Caro</span></td>
+            <td style="padding:8px;text-align:right">203 ord</td>
+            <td style="padding:8px;text-align:center;"><span class="chip" style="font-size:9px;background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)">Alto</span></td>
+          </tr>
+          <tr class="sku-row" data-category="digestivo" style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px">Omeprazol 20mg × 30</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-c" style="font-size:9px">Digestivo</span></td>
+            <td style="padding:8px;text-align:right;color:var(--text);font-weight:600">$2.450</td>
+            <td style="padding:8px;text-align:right;color:var(--red)">$2.089 (Ahumada)</td>
+            <td style="padding:8px;text-align:right;color:var(--red);font-weight:600">-14.7%</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-y" style="font-size:9px">⚠️ Paridad</span></td>
+            <td style="padding:8px;text-align:right">1.203 ord</td>
+            <td style="padding:8px;text-align:center;"><span class="chip" style="font-size:9px;background:rgba(249,115,22,.1);color:var(--orange);border:1px solid rgba(249,115,22,.2)">Medio</span></td>
+          </tr>
+          <tr class="sku-row" data-category="oncología" style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px">Trikafta 50/20mg × 28</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-p" style="font-size:9px">Oncología</span></td>
+            <td style="padding:8px;text-align:right;color:var(--text);font-weight:600">$445.900</td>
+            <td style="padding:8px;text-align:right;color:var(--green)">SIN STOCK (Salcobrand)</td>
+            <td style="padding:8px;text-align:right;color:var(--green);font-weight:600">+∞ (Oportunidad)</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-g" style="font-size:9px">✅ Único</span></td>
+            <td style="padding:8px;text-align:right">12 ord</td>
+            <td style="padding:8px;text-align:center;"><span class="chip" style="font-size:9px;background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2)">Bajo</span></td>
+          </tr>
+          <tr class="sku-row" data-category="crónico" style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px">Metformina 500mg × 120</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-d" style="font-size:9px">Crónico</span></td>
+            <td style="padding:8px;text-align:right;color:var(--text);font-weight:600">$1.890</td>
+            <td style="padding:8px;text-align:right;color:var(--accent)">$1.879 (Ahumada)</td>
+            <td style="padding:8px;text-align:right;color:var(--accent);font-weight:600">-0.6%</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-y" style="font-size:9px">⚠️ Paridad</span></td>
+            <td style="padding:8px;text-align:right">5.847 ord</td>
+            <td style="padding:8px;text-align:center;"><span class="chip" style="font-size:9px;background:rgba(249,115,22,.1);color:var(--orange);border:1px solid rgba(249,115,22,.2)">Medio</span></td>
+          </tr>
+          <tr class="sku-row" data-category="otc" style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px">Vitamin C 1000mg × 30</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-e" style="font-size:9px">Vitaminas</span></td>
+            <td style="padding:8px;text-align:right;color:var(--text);font-weight:600">$3.590</td>
+            <td style="padding:8px;text-align:right;color:var(--green)">$4.190 (CruzVerde)</td>
+            <td style="padding:8px;text-align:right;color:var(--green);font-weight:600">+16.7%</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-g" style="font-size:9px">✅ Mejor</span></td>
+            <td style="padding:8px;text-align:right">2.134 ord</td>
+            <td style="padding:8px;text-align:center;"><span class="chip" style="font-size:9px;background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2)">Bajo</span></td>
+          </tr>
+          <tr class="sku-row" data-category="crónico" style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px">Losartán 50mg × 30</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-d" style="font-size:9px">Crónico</span></td>
+            <td style="padding:8px;text-align:right;color:var(--text);font-weight:600">$1.290</td>
+            <td style="padding:8px;text-align:right;color:var(--red)">$890 (Cofar)</td>
+            <td style="padding:8px;text-align:right;color:var(--red);font-weight:600">-31.0%</td>
+            <td style="padding:8px;text-align:center;"><span class="chip ch-r" style="font-size:9px">❌ Caro</span></td>
+            <td style="padding:8px;text-align:right">892 ord</td>
+            <td style="padding:8px;text-align:center;"><span class="chip" style="font-size:9px;background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)">Alto</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <div class="sh"><div class="sh-title">📡 Movimientos Recientes Competencia</div></div>
   <div class="al-item b"><div class="al-ico">📉</div><div><div class="al-title">Cruz Verde lanzó -20% en antigripales (semana 10)</div><div class="al-desc">Afecta ventas E-Commerce en categoría frío/gripe. PROFAR pierde conversión en estos SKUs. Sugerencia: igualar precio o crear combo.</div></div><div class="al-badge bd-b">ACCIÓN</div></div>
   <div class="al-item y"><div class="al-ico">⚠️</div><div><div class="al-title">Ahumada ingresó bioequivalente de Omeprazol 20mg</div><div class="al-desc">-15% vs precio PROFAR. Canal Sala de Venta podría perder clientes crónico. Evaluar negociación con proveedor genérico.</div></div><div class="al-badge bd-y">MONITOREAR</div></div>
-  <div class="al-item g"><div class="al-ico">✅</div><div><div class="al-title">Salcobrand sin stock de Trikafta en RM (confirmado)</div><div class="al-desc">Oportunidad para capturar pacientes FQ en canal E-Commerce y Telefónica. Asegurar stock propio inmediatamente.</div></div><div class="al-badge bd-g">OPORTUNIDAD</div></div>
+  <div class="al-item g"><div class="al-ico">✅</div><div><div class="al-title">Salcobrand sin stock de Trikafta en RM (confirmado)</div><div class="al-desc">Oportunidad para capturar pacientes FQ en canal E-Commerce. Asegurar stock propio inmediatamente.</div></div><div class="al-badge bd-g">OPORTUNIDAD</div></div>
+
+  <!-- Sábana SKU precios -->
+  <div class="sh" style="margin-top:14px">
+    <div class="sh-title">📊 Sábana de Precios por SKU — PROFAR vs Competencia</div>
+    <div class="sh-actions">
+      <button class="btn-xs active" onclick="filterComp('all',this)">Todos</button>
+      <button class="btn-xs" onclick="filterComp('oc',this)">🔬 Oncológicos</button>
+      <button class="btn-xs" onclick="filterComp('cr',this)">💊 Crónicos</button>
+      <button class="btn-xs" onclick="filterComp('otc',this)">🛒 OTC</button>
+      <button class="btn-xs" onclick="filterComp('caro',this)" style="border-color:rgba(239,68,68,.4);color:var(--red)">⚠️ PROFAR más caro</button>
+      <button class="btn-xs" onclick="exportCompCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal);margin-left:8px">📥 Exportar CSV</button>
+    </div>
+  </div>
+  <div class="card" style="overflow-x:auto">
+    <table class="tbl" style="min-width:850px" id="compTable">
+      <thead><tr>
+        <th>SKU / Producto</th><th>Cat.</th>
+        <th style="text-align:right">PROFAR</th><th style="text-align:right">Salcobrand</th>
+        <th style="text-align:right">Cruz Verde</th><th style="text-align:right">Ahumada</th>
+        <th style="text-align:right">Cofar</th><th style="text-align:right">Dif. Mín.</th>
+        <th>Estado</th><th>Nota</th>
+      </tr></thead>
+      <tbody id="compBody"></tbody>
+    </table>
+  </div>
 </div>
 
 <!-- ════ TAB PRICING (Analytics) ════ -->
 <div class="tp" id="tp-pricing">
-  <div class="sh"><div class="sh-title">🏷️ Estrategia de Pricing <span class="sh-badge">Automático</span></div></div>
+  <div class="sh">
+    <div class="sh-title">🏷️ Estratégia de Pricing <span class="sh-badge">Automático</span></div>
+    <div class="sh-actions">
+      <button class="btn-xs active" onclick="filterPric('all',this)">Todos</button>
+      <button class="btn-xs" onclick="filterPric('trigger',this)" style="color:var(--red)">🔴 Triggers</button>
+      <button class="btn-xs" onclick="filterPric('watch',this)" style="color:var(--yellow)">🟡 Observación</button>
+      <button class="btn-xs" onclick="filterPric('ok',this)" style="color:var(--green)">✅ OK</button>
+      <button class="btn-xs" onclick="exportPricCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal);margin-left:8px">📥 Exportar CSV</button>
+    </div>
+  </div>
   <div class="pf-grid mb">
     <div class="pf-step" style="border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.05)"><div class="pf-ico">🚫</div><div class="pf-t" style="color:var(--red)">Sin Rotación</div><div class="pf-d">≥ 90 días sin venta</div></div>
     <div class="pf-step" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.05)"><div class="pf-ico">🏷️</div><div class="pf-t" style="color:var(--yellow)">Ajuste Precio</div><div class="pf-d">-15% a -30%</div></div>
     <div class="pf-step" style="border-color:rgba(59,130,246,.3);background:rgba(59,130,246,.05)"><div class="pf-ico">⏱️</div><div class="pf-t" style="color:var(--accent)">Período Prueba</div><div class="pf-d">30-45 días</div></div>
     <div class="pf-step" style="border-color:rgba(139,92,246,.3);background:rgba(139,92,246,.05)"><div class="pf-ico">📦</div><div class="pf-t" style="color:var(--purple)">Log. Inversa</div><div class="pf-d">Si no mejora</div></div>
   </div>
-  <div class="sh"><div class="sh-title">🔴 Triggers Activos — Sin Rotación ≥ 90 días</div></div>
-  <div id="pricingTrigs"></div>
-  <div class="sh" style="margin-top:14px"><div class="sh-title">🟡 Post-Precio — En Observación</div></div>
-  <div id="pricingWatch"></div>
-  <div class="card" style="margin-top:14px">
-    <div class="ct"><div class="d" style="background:var(--accent)"></div>Configuración de Reglas</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px;">
-      <div class="card2">⏰ Umbral alerta: <b style="color:var(--red)">90 días</b> sin venta</div>
-      <div class="card2">📉 Descuento: Méd <b style="color:var(--yellow)">-15%</b> · OTC <b style="color:var(--yellow)">-20%</b></div>
-      <div class="card2">🔍 Revisión post-precio: <b style="color:var(--accent)">45 días</b></div>
-      <div class="card2">📦 Trigger inversa: <b style="color:var(--purple)">si sigue sin rotar</b></div>
+  <div class="card mb" style="overflow-x:auto">
+    <div class="ct"><div class="d" style="background:var(--red)"></div>Sábana de Pricing — Todos los SKUs en Proceso</div>
+    <table class="tbl" style="min-width:1000px">
+      <thead><tr>
+        <th>SKU / Producto</th><th>Cat.</th><th>Canal</th>
+        <th style="text-align:right">Stock</th><th style="text-align:right">Días sin Venta</th>
+        <th style="text-align:right">Precio Actual</th><th style="text-align:right">Precio Ajuste</th>
+        <th style="text-align:right">Dco.</th><th style="text-align:right">Capital Inmov.</th>
+        <th>Estado</th><th style="text-align:right">Post-Ajuste</th><th>Acción</th>
+      </tr></thead>
+      <tbody id="pricBody"></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="d" style="background:var(--accent)"></div>Reglas de Pricing</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:11px">
+      <div class="card2">⏰ <b>Umbral:</b> <span style="color:var(--red)">90 días</span> sin venta E-Com</div>
+      <div class="card2">📉 <b>OTC:</b> <span style="color:var(--yellow)">-20%</span> automático</div>
+      <div class="card2">📉 <b>Medicamento:</b> <span style="color:var(--yellow)">-15%</span> con aprobación QF</div>
+      <div class="card2">🔍 <b>Revisión post-precio:</b> <span style="color:var(--accent)">45 días</span></div>
+      <div class="card2">📦 <b>Trigger inversa:</b> <span style="color:var(--purple)">sin rotación post-ajuste</span></div>
+      <div class="card2">📊 <b>Capital umbral:</b> >$500K = prioridad alta</div>
     </div>
   </div>
 </div>
 
 <!-- ════ TAB LOG. INVERSA (Analytics) ════ -->
 <div class="tp" id="tp-inversa">
-  <div class="sh"><div class="sh-title">📦 Logística Inversa · Pipeline</div></div>
+  <div class="sh">
+    <div class="sh-title">📦 Logística Inversa · Pipeline Completo</div>
+    <div class="sh-actions">
+      <button class="btn-xs active" onclick="filterInv('all',this)">Todos</button>
+      <button class="btn-xs" onclick="filterInv('devolucion',this)" style="color:var(--red)">📦 Devolución</button>
+      <button class="btn-xs" onclick="filterInv('nota',this)" style="color:var(--yellow)">📄 Nota Crédito</button>
+      <button class="btn-xs" onclick="filterInv('liquidacion',this)" style="color:var(--purple)">🏷️ Liquidación</button>
+      <button class="btn-xs" onclick="filterInv('watch',this)">👁 Observación</button>
+      <button class="btn-xs" onclick="exportInvCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal);margin-left:8px">📥 Exportar CSV</button>
+    </div>
+  </div>
   <div class="kgrid4 mb">
-    <div class="kpi warn"><div class="kpi-lbl">SKUs Candidatos</div><div class="kpi-v" style="color:var(--red);font-size:20px">7</div></div>
-    <div class="kpi"><div class="kpi-lbl">Post-Precio Obs.</div><div class="kpi-v" style="font-size:20px">3</div></div>
-    <div class="kpi"><div class="kpi-lbl">Listos Devolución</div><div class="kpi-v" style="color:var(--purple);font-size:20px">2</div></div>
-    <div class="kpi good"><div class="kpi-lbl">Capital Recuperable</div><div class="kpi-v" style="color:var(--green);font-size:18px">$4.2M</div></div>
+    <div class="kpi warn"><div class="kpi-lbl">SKUs en Pipeline</div><div class="kpi-v" style="color:var(--red);font-size:20px">12</div><div class="kpi-sub">7 candidatos + 5 confirmados</div></div>
+    <div class="kpi"><div class="kpi-lbl">Post-Precio Obs.</div><div class="kpi-v" style="font-size:20px">5</div><div class="kpi-sub">En período 30-45d</div></div>
+    <div class="kpi"><div class="kpi-lbl">Listos Devolución</div><div class="kpi-v" style="color:var(--purple);font-size:20px">4</div><div class="kpi-sub">Con OC generada</div></div>
+    <div class="kpi good"><div class="kpi-lbl">Capital Recuperable</div><div class="kpi-v" style="color:var(--green);font-size:18px">$8.7M</div><div class="kpi-sub">Est. nota crédito + liquidación</div></div>
+  </div>
+  <div class="card mb" style="overflow-x:auto">
+    <div class="ct"><div class="d" style="background:var(--purple)"></div>Sábana Logística Inversa — Pipeline Completo</div>
+    <table class="tbl" style="min-width:1050px">
+      <thead><tr>
+        <th>SKU / Producto</th><th>Cat.</th><th>Canal</th><th>Proveedor</th><th>RUT Prov.</th>
+        <th style="text-align:right">Stock</th><th style="text-align:right">Días sin Venta</th>
+        <th style="text-align:right">Capital Inmov.</th><th style="text-align:right">P° Compra</th>
+        <th style="text-align:right">Dco. Aplic.</th><th>Etapa</th><th>Acción</th><th>Plazo</th>
+      </tr></thead>
+      <tbody id="invBody"></tbody>
+    </table>
   </div>
   <div class="card mb">
     <div class="ct"><div class="d" style="background:var(--purple)"></div>Proceso Logística Inversa PROFAR</div>
     <div class="inv-tl">
-      <div class="inv-step"><div class="inv-dot dot-r"></div><div class="inv-t" style="color:var(--red)">🚨 Trigger: Sin rotación ≥ 90 días</div><div class="inv-d">Sistema detecta automáticamente. Alerta generada en módulo Pricing.</div></div>
-      <div class="inv-step"><div class="inv-dot dot-y"></div><div class="inv-t" style="color:var(--yellow)">🏷️ Ajuste de Precio (-15% a -30%)</div><div class="inv-d">Se aplica descuento por categoría. 30–45 días de observación.</div></div>
+      <div class="inv-step"><div class="inv-dot dot-r"></div><div class="inv-t" style="color:var(--red)">🚨 Trigger: Sin rotación ≥ 90 días</div><div class="inv-d">Sistema detecta automáticamente. Alerta en módulo Pricing.</div></div>
+      <div class="inv-step"><div class="inv-dot dot-y"></div><div class="inv-t" style="color:var(--yellow)">🏷️ Ajuste de Precio (-15% a -30%)</div><div class="inv-d">Descuento por categoría. 30–45 días de observación.</div></div>
       <div class="inv-step"><div class="inv-dot dot-a"></div><div class="inv-t">📊 Evaluación Post-Precio (día 30-45)</div><div class="inv-d">¿Generó ventas? Sí → normalizar. No → escalar a devolución.</div></div>
-      <div class="inv-step"><div class="inv-dot dot-x"></div><div class="inv-t">📦 Solicitud Logística Inversa</div><div class="inv-d">Notificación a equipo de compras. Orden de devolución o liquidación.</div></div>
-      <div class="inv-step"><div class="inv-dot dot-g"></div><div class="inv-t" style="color:var(--green)">✅ Capital Recuperado</div><div class="inv-d">Producto devuelto o liquidado. Registro en historial de rotación.</div></div>
+      <div class="inv-step"><div class="inv-dot dot-x"></div><div class="inv-t">📦 Solicitud Logística Inversa</div><div class="inv-d">Notificación a equipo de compras. OC de devolución o liquidación.</div></div>
+      <div class="inv-step"><div class="inv-dot dot-g"></div><div class="inv-t" style="color:var(--green)">✅ Capital Recuperado</div><div class="inv-d">Devuelto o liquidado. Registro en historial de rotación.</div></div>
     </div>
   </div>
-  <div class="sh"><div class="sh-title">🔴 SKUs Listos para Devolución</div></div>
-  <div id="inversaItems"></div>
-  <div class="card" style="margin-top:14px;border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.04)">
+  <div class="card" style="border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.04)">
     <div class="ct" style="color:var(--purple)">💡 Recomendaciones del Sistema</div>
     <div style="display:grid;gap:8px;font-size:11px">
       <div class="card2"><b>1. Priorizar devolución antes del cierre de trimestre</b><div style="color:var(--text2);margin-top:2px">Negociar nota de crédito vs. destrucción. Históricamente mejora flujo en 60 días.</div></div>
-      <div class="card2"><b>2. Ofrecer cross-channel antes de devolver</b><div style="color:var(--text2);margin-top:2px">Si Sala tiene el SKU, promoverlo por E-Commerce con descuento. Recuperación sin devolución.</div></div>
+      <div class="card2"><b>2. Ofrecer cross-channel antes de devolver</b><div style="color:var(--text2);margin-top:2px">Si el SKU tiene demanda en otro canal, promoverlo con descuento primero.</div></div>
       <div class="card2"><b>3. Bloquear en próximas órdenes de compra</b><div style="color:var(--text2);margin-top:2px">Los SKUs en logística inversa se excluyen automáticamente de la próxima orden.</div></div>
     </div>
   </div>
@@ -1710,6 +1921,80 @@ const DIA_L=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo
 const DIA_V=[50,148,97,98,98,101,44];
 const HORA_L=['00h','01h','02h','03h','04h','05h','06h','07h','08h','09h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h'];
 const HORA_V=[10,3,2,1,1,8,22,36,45,57,45,46,38,38,37,42,43,50,41,28,27,26,43,34];
+
+// ── E-COMMERCE SPECIFIC ANALYTICS ──
+// Buyer Segmentation
+const BUYER_SEGMENT_L=['Suscriptores','Compra Única','Recurrentes','Gift/Referral'];
+const BUYER_SEGMENT_V=[2840,1245,3127,678];
+const BUYER_SEGMENT_COLOR=['#4CAF50','#2196F3','#FF9800','#9C27B0'];
+const BUYER_SEGMENT_REV=[892340,156780,1847920,245680];
+
+// Top Products E-Commerce
+const TOP_PRODUCTS_L=['Amoxicilina 500mg','Ibupirac 400mg','Claritin 10mg','Omeprazol 20mg','Metformina 850mg','Losartán 50mg','Atorvastatina 20mg','Vitamina D3 1000UI'];
+const TOP_PRODUCTS_V=[15840,12350,11200,9870,8945,7850,6320,5190];
+const TOP_PRODUCTS_REV=[1584000,1235000,1120000,987000,894500,785000,632000,519000];
+
+// Device Conversion Analysis
+const DEVICE_L=['Desktop','Mobile','Tablet'];
+const DEVICE_V=[2840,5120,945];
+const DEVICE_COLOR=['#3498db','#e74c3c','#f39c12'];
+const DEVICE_CONVERSION=[4.2,3.1,2.8];
+const DEVICE_AOV=[145.30,98.50,112.75];
+
+// Cart Abandonment Analysis
+const CART_ABANDON_CAUSE=['Precio muy alto','Tiempo de envío','Impuestos/Recargos','Falta de métodos pago','Problemas técnicos','Cambio de opinión','Información incompleta'];
+const CART_ABANDON_COUNT=[1245,890,756,534,423,612,489];
+const CART_ABANDON_VALUE=[186750,133500,113400,80100,63450,91800,73350];
+
+// Customer Retention Cohorts (Monthly)
+const RETENTION_COHORT_L=['Ene-25','Feb-25','Mar-25','Abr-25','May-25','Jun-25'];
+const RETENTION_MONTH1=[100,100,100,100,100,100];
+const RETENTION_MONTH2=[68,71,69,72,70,0];
+const RETENTION_MONTH3=[42,45,43,0,0,0];
+const RETENTION_MONTH4=[28,31,0,0,0,0];
+const RETENTION_MONTH5=[18,0,0,0,0,0];
+
+// Shipping Methods Distribution
+const SHIPPING_L=['Estándar (3-5d)','Express (1-2d)','Mismo día','Retirar Farmacia'];
+const SHIPPING_V=[3450,1890,567,234];
+const SHIPPING_COLOR=['#3498db','#2ecc71','#e74c3c','#f39c12'];
+const SHIPPING_REV=[448500,283500,85050,23400];
+
+// Demographic Analysis
+const DEMOGRAPHIC_AGE=['18-25','26-35','36-45','46-55','56-65','65+'];
+const DEMOGRAPHIC_VOLUME=[1245,2890,3120,2450,1680,890];
+const DEMOGRAPHIC_REPEAT=[28,42,55,62,58,45];
+const DEMOGRAPHIC_AOV=[85.30,112.45,145.80,156.20,148.90,125.60];
+
+// Returns Analysis
+const RETURNS_REASON=['Defecto Producto','Envío Dañado','Incorrecto recibido','No funciona','Cambio de opinión','Vencimiento próximo'];
+const RETURNS_COUNT=[145,234,89,156,278,42];
+const RETURNS_VALUE=[21750,35100,13350,23400,41700,6300];
+const RETURNS_PERCENT=[2.1,3.4,1.3,2.2,4.0,0.8];
+
+// Search Keyword Performance
+const SEARCH_KEYWORDS=['Amoxicilina comprar','Ibuprofeno 400','Vitaminas online','Presión arterial','Antibióticos sin receta','Medicinas naturales','Suplementos deportivos','Protectores gástricos'];
+const SEARCH_VOLUME=[2340,1890,1670,1450,1280,890,756,645];
+const SEARCH_CLICKS=[4560,3210,2890,2340,1980,1340,1120,890];
+const SEARCH_CONVERSIONS=[245,168,145,98,76,52,34,28];
+const SEARCH_CPC=[0.45,0.38,0.52,0.61,0.48,0.35,0.42,0.39];
+
+// E-Commerce Monthly Details
+const MONTHLY_MONTH=['Enero','Febrero','Marzo'];
+const MONTHLY_REVENUE=[103100000,92400000,70700000];
+const MONTHLY_ORDERS=[18350,16200,12832];
+const MONTHLY_AOV=[5615,5704,5507];
+const MONTHLY_CONVERSION=[3.92,3.78,3.81];
+const MONTHLY_MOM=[null,-10.4,-23.5];
+const MONTHLY_YOY=[41.2,35.8,42.1];
+
+// E-Commerce Margins Evolution
+const MARGINS_MONTH=['Enero','Febrero','Marzo'];
+const MARGINS_CR=[13.51,13.41,15.46];
+const MARGINS_GROSS=[28.3,27.8,29.1];
+const MARGINS_Q1AVG=[14.1,14.1,14.1];
+const MARGINS_YOY=[0.3,0.3,0.3];
+const MARGINS_TREND=['Estable','Estable','Mejora'];
 
 const STOCK_ITEMS=[
   {sku:'110816',name:'NURTEC 75MG x8',rev:88104236,stock:214,subs:55,semanas:18},
@@ -1846,6 +2131,14 @@ function initCharts(){
 
   // Mejor hora
   mk('cHora',{type:'bar',data:{labels:HORA_L,datasets:[{label:'Ventas por hora',data:HORA_V,backgroundColor:HORA_V.map(v=>v>=50?'rgba(16,185,129,.85)':v>=30?'rgba(59,130,246,.6)':'rgba(100,116,139,.4)'),borderRadius:3}]},options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
+
+  // ── RENDER FUNCTIONS ──
+  renderMonthly();
+  renderMargins();
+  renderRetention();
+  renderShippingMethods();
+  renderDemographics();
+  renderReturns();
 }
 
 // ══════ STOCK TABLE ══════
@@ -2265,6 +2558,71 @@ const INV_ITEMS=[
   {n:'Complejo B x30',c:'E-Com',meses:4,cap:'$760K',prov:'Vitamex',act:'Liquidación'},
 ];
 const CH_COLOR={'E-Com':'ch-b','Sala':'ch-g','Tel.':'ch-p','Todos':'ch-c'};
+// ══ CONVENIOS DATA ══
+const CONV_DATA=[
+  {id:1,n:'Mutual de Seguridad CChC',rut:'70.285.100-9',tipo:'mutual',cli:22840,ord:62,rev:14200000,tick:229032,tend:'up',est:'Activo',acc:'Potenciar alta especialidad'},
+  {id:2,n:'ACHS — Inst. Seguridad Laboral',rut:'70.101.240-1',tipo:'mutual',cli:18500,ord:28,rev:6900000,tick:246428,tend:'up',est:'Activo',acc:'Proponer suscripción crónico'},
+  {id:3,n:'Mutual CCHC General',rut:'93.697.000-0',tipo:'mutual',cli:15200,ord:18,rev:1850000,tick:102777,tend:'nt',est:'Activo',acc:'Activar base inactiva'},
+  {id:4,n:'Carabineros de Chile',rut:'61.978.000-0',tipo:'inst',cli:8900,ord:8,rev:980000,tick:122500,tend:'nt',est:'Activo',acc:'Campaña medicamentos crónicos'},
+  {id:5,n:'Armada de Chile',rut:'61.951.000-3',tipo:'inst',cli:4200,ord:5,rev:720000,tick:144000,tend:'nt',est:'Activo',acc:'Revisar catálogo disponible'},
+  {id:6,n:'Ejército de Chile',rut:'61.952.000-K',tipo:'inst',cli:6100,ord:0,rev:0,tick:0,tend:'dn',est:'Inactivo',acc:'⚠️ Reactivar — sin compras 60d'},
+  {id:7,n:'Banmédica Empresas',rut:'76.354.771-K',tipo:'empresa',cli:3800,ord:4,rev:245000,tick:61250,tend:'nt',est:'Activo',acc:'Expandir catálogo OTC'},
+  {id:8,n:'Consalud Convenio',rut:'76.645.030-K',tipo:'empresa',cli:2100,ord:2,rev:180000,tick:90000,tend:'nt',est:'Activo',acc:'Proponer acceso web dedicado'},
+  {id:9,n:'Club Beneficios PROFAR',rut:'76.XXX.XXX-X',tipo:'empresa',cli:579,ord:12,rev:1799717,tick:149976,tend:'up',est:'Activo',acc:'Aumentar beneficio suscriptores'},
+  {id:10,n:'Empleados PROFAR',rut:'76.XXX.XXX-X',tipo:'inst',cli:826,ord:6,rev:163832,tick:27305,tend:'nt',est:'Activo',acc:'Beneficio empleados — mantener'},
+  {id:11,n:'FONASA Convenio Especial',rut:'61.602.000-8',tipo:'inst',cli:0,ord:0,rev:0,tick:0,tend:'dn',est:'Inactivo',acc:'⚠️ No activado aún'},
+  {id:12,n:'Isapre Cruz Blanca',rut:'76.101.870-K',tipo:'empresa',cli:0,ord:0,rev:0,tick:0,tend:'dn',est:'Inactivo',acc:'⚠️ En negociación — pendiente firma'},
+];
+// ══ COMPETENCIA SKU DATA ══
+const COMP_SKUS=[
+  {n:'Paracetamol 500mg x20',cat:'otc',pf:3490,sb:3790,cv:4190,ah:3510,cf:3400,tend:'caro',nota:'⚠️ Cofar -2.5%'},
+  {n:'Ibuprofeno 400mg x20',cat:'otc',pf:4290,sb:4590,cv:5090,ah:4310,cf:4200,tend:'caro',nota:'⚠️ Cofar -2.1%'},
+  {n:'Omeprazol 20mg x14',cat:'cr',pf:6890,sb:7490,cv:8390,ah:6910,cf:6750,tend:'caro',nota:'⚠️ Cofar -2%'},
+  {n:'Loratadina 10mg x10',cat:'otc',pf:4990,sb:5390,cv:5990,ah:5010,cf:4800,tend:'caro',nota:'⚠️ Cofar -3.8%'},
+  {n:'Metformina 850mg x30',cat:'cr',pf:5290,sb:5890,cv:6290,ah:5310,cf:5100,tend:'caro',nota:'⚠️ Cofar -3.6%'},
+  {n:'Vitamina C 1g x30',cat:'otc',pf:3190,sb:3490,cv:3790,ah:3210,cf:3100,tend:'caro',nota:'⚠️ Cofar -2.8%'},
+  {n:'Atorvastatina 40mg x30',cat:'cr',pf:8990,sb:9490,cv:10190,ah:9010,cf:8800,tend:'caro',nota:'⚠️ Cofar -2.1%'},
+  {n:'Sertralina 50mg x30',cat:'cr',pf:7490,sb:7990,cv:8390,ah:7510,cf:7200,tend:'caro',nota:'⚠️ Cofar -3.9%'},
+  {n:'Amoxicilina 500mg x15',cat:'otc',pf:5990,sb:6390,cv:6890,ah:6010,cf:5900,tend:'caro',nota:'⚠️ Cofar -1.5%'},
+  {n:'Aspirina 100mg x30',cat:'otc',pf:2990,sb:3190,cv:3490,ah:2990,cf:2900,tend:'caro',nota:'⚠️ Cofar -3%'},
+  {n:'Ranitidina 150mg x20',cat:'cr',pf:4190,sb:4490,cv:4890,ah:4210,cf:4000,tend:'caro',nota:'⚠️ Cofar -4.5%'},
+  {n:'Ozempic 0.5mg',cat:'cr',pf:185000,sb:195000,cv:210000,ah:188000,cf:null,tend:'ok',nota:'PROFAR -5.1% vs SB'},
+  {n:'Rybelsus 14mg',cat:'cr',pf:175000,sb:182000,cv:195000,ah:177000,cf:null,tend:'ok',nota:'PROFAR competitivo'},
+  {n:'Nurtec 75mg x8',cat:'oc',pf:89990,sb:null,cv:null,ah:null,cf:null,tend:'ok',nota:'Exclusividad — sin comp.'},
+  {n:'Trikafta (Elexacaftor)',cat:'oc',pf:2850000,sb:null,cv:null,ah:null,cf:null,tend:'ok',nota:'SB sin stock → oportunidad'},
+];
+// ══ PRICING SÁBANA DATA ══
+const PRIC_FULL=[
+  {n:'Colágeno Hidrolizado 500g',cat:'OTC',c:'E-Com',stock:48,dias:152,pA:18990,pJ:13290,desc:30,cap:892320,est:'trigger',dp:0,act:'Liquidar -30%'},
+  {n:'Espirulina 500mg x60',cat:'OTC',c:'E-Com',stock:62,dias:128,pA:9990,pJ:7492,desc:25,cap:619380,est:'trigger',dp:0,act:'-25% automático'},
+  {n:'Glucosamina 500mg x60',cat:'OTC',c:'E-Com',stock:38,dias:98,pA:12990,pJ:10392,desc:20,cap:494220,est:'trigger',dp:0,act:'-20% aplicar hoy'},
+  {n:'Extracto de Ginkgo x30',cat:'OTC',c:'E-Com',stock:25,dias:108,pA:8990,pJ:6293,desc:30,cap:224750,est:'trigger',dp:0,act:'-30% + promo email'},
+  {n:'Complejo B x30',cat:'OTC',c:'E-Com',stock:85,dias:122,pA:6990,pJ:5243,desc:25,cap:594150,est:'trigger',dp:0,act:'Liquidar o devolver'},
+  {n:'Polivitamínico Senior x30',cat:'OTC',c:'E-Com',stock:42,dias:95,pA:13990,pJ:11192,desc:20,cap:587580,est:'trigger',dp:0,act:'-20% + activar email'},
+  {n:'Valeriana 300mg x30',cat:'OTC',c:'E-Com',stock:28,dias:110,pA:5990,pJ:4193,desc:30,cap:167720,est:'trigger',dp:0,act:'-30% automático'},
+  {n:'Ranitidina 150mg x20',cat:'Crónico',c:'E-Com',stock:95,dias:28,pA:4190,pJ:3561,desc:15,cap:398050,est:'watch',dp:28,act:'Mejorando → obs 17d'},
+  {n:'Alprazolam 0.5mg x30',cat:'Crónico',c:'E-Com',stock:55,dias:40,pA:7490,pJ:6366,desc:15,cap:411950,est:'watch',dp:40,act:'Mejora leve — mantener'},
+  {n:'Loperamida 2mg x12',cat:'OTC',c:'E-Com',stock:18,dias:22,pA:3990,pJ:3192,desc:20,cap:71820,est:'watch',dp:22,act:'Observar tendencia'},
+  {n:'Vitamina D3 5000UI x60',cat:'OTC',c:'E-Com',stock:12,dias:8,pA:9990,pJ:7992,desc:20,cap:119880,est:'watch',dp:8,act:'Precio nuevo reciente'},
+  {n:'Nurtec 75mg x8',cat:'Oncológico',c:'E-Com',stock:8,dias:0,pA:89990,pJ:null,desc:0,cap:719920,est:'ok',dp:null,act:'✅ Rotando bien'},
+  {n:'Ozempic 0.5mg',cat:'Crónico',c:'E-Com',stock:5,dias:0,pA:185000,pJ:null,desc:0,cap:925000,est:'ok',dp:null,act:'✅ Rotando bien'},
+  {n:'Rybelsus 14mg',cat:'Crónico',c:'E-Com',stock:4,dias:0,pA:175000,pJ:null,desc:0,cap:700000,est:'ok',dp:null,act:'✅ Stock bajo — prioridad'},
+];
+// ══ LOG. INVERSA SÁBANA DATA ══
+const INV_FULL=[
+  {n:'Colágeno Hidrolizado 500g',cat:'OTC',c:'E-Com',prov:'NutriLab SpA',rut:'76.123.456-7',stock:48,dias:152,cap:892320,pc:18600,desc:30,etapa:'devolucion',act:'Solicitar OC devolución',plazo:'Esta semana'},
+  {n:'Espirulina 500mg x60',cat:'OTC',c:'E-Com',prov:'NaturaVida Ltda.',rut:'76.234.567-8',stock:62,dias:128,cap:619380,pc:9990,desc:25,etapa:'devolucion',act:'Negociar nota crédito',plazo:'15 días'},
+  {n:'Complejo B x30',cat:'OTC',c:'E-Com',prov:'Vitamex SA',rut:'96.789.012-3',stock:85,dias:122,cap:594150,pc:6990,desc:25,etapa:'devolucion',act:'Nota crédito parcial $400K',plazo:'10 días'},
+  {n:'Glucosamina 500mg x60',cat:'OTC',c:'E-Com',prov:'BioFarma Chile',rut:'76.456.789-1',stock:38,dias:98,cap:494220,pc:13000,desc:20,etapa:'nota',act:'Solicitar nota crédito 50%',plazo:'20 días'},
+  {n:'Polivitamínico Senior x30',cat:'OTC',c:'E-Com',prov:'Vitamex SA',rut:'96.789.012-3',stock:42,dias:95,cap:587580,pc:14000,desc:20,etapa:'liquidacion',act:'Liquidar en promoción -30%',plazo:'Este mes'},
+  {n:'Valeriana 300mg x30',cat:'OTC',c:'E-Com',prov:'HerboFarma',rut:'76.567.890-2',stock:28,dias:110,cap:167720,pc:5990,desc:30,etapa:'devolucion',act:'Devolución o destrucción',plazo:'15 días'},
+  {n:'Extracto de Ginkgo x30',cat:'OTC',c:'E-Com',prov:'HerboFarma',rut:'76.567.890-2',stock:25,dias:108,cap:224750,pc:9000,desc:30,etapa:'nota',act:'Nota crédito + liquidar',plazo:'15 días'},
+  {n:'Ranitidina 150mg x20',cat:'Crónico',c:'E-Com',prov:'Lab. Maver',rut:'96.345.678-9',stock:95,dias:28,cap:398050,pc:4190,desc:15,etapa:'watch',act:'En período observación',plazo:'30 días'},
+  {n:'Alprazolam 0.5mg x30',cat:'Crónico',c:'E-Com',prov:'Lab. Sanderson',rut:'91.234.567-8',stock:55,dias:40,cap:411950,pc:7490,desc:15,etapa:'watch',act:'Mejora leve — observar',plazo:'15 días'},
+  {n:'Loperamida 2mg x12',cat:'OTC',c:'E-Com',prov:'GSK Chile',rut:'96.890.123-4',stock:18,dias:22,cap:71820,pc:3990,desc:20,etapa:'watch',act:'Muy pronto — esperar',plazo:'45 días'},
+  {n:'Vitamina D3 5000UI x60',cat:'OTC',c:'E-Com',prov:'NutriLab SpA',rut:'76.123.456-7',stock:12,dias:8,cap:119880,pc:9990,desc:20,etapa:'watch',act:'Precio nuevo — observar',plazo:'37 días'},
+  {n:'Complejo C+Zinc x30',cat:'OTC',c:'E-Com',prov:'NaturaVida Ltda.',rut:'76.234.567-8',stock:22,dias:18,cap:131780,pc:5990,desc:20,etapa:'watch',act:'En evaluación inicial',plazo:'45 días'},
+];
 
 // ── Analytics Charts Init ──
 function initAnalyticsCharts(){
@@ -2273,19 +2631,11 @@ function initAnalyticsCharts(){
   mkC('cV26',{type:'bar',data:{labels:MES,datasets:[
     {label:'E-Com 2026',data:D.ecom.v26,backgroundColor:'rgba(59,130,246,.8)',borderRadius:3},
     {label:'E-Com 2025',data:D.ecom.v25,backgroundColor:'rgba(59,130,246,.25)',borderRadius:3},
-    {label:'Sala 2026',data:D.sala.v26,backgroundColor:'rgba(16,185,129,.8)',borderRadius:3},
-    {label:'Sala 2025',data:D.sala.v25,backgroundColor:'rgba(16,185,129,.25)',borderRadius:3},
-    {label:'Tel. 2026',data:D.tel.v26,backgroundColor:'rgba(139,92,246,.8)',borderRadius:3},
-    {label:'Tel. 2025',data:D.tel.v25,backgroundColor:'rgba(139,92,246,.25)',borderRadius:3},
   ]},options:bO()});
   mkC('cMg',{type:'line',data:{labels:MES,datasets:[
     {label:'E-Commerce',data:D.ecom.mg26,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#3b82f6'},
-    {label:'Sala Venta',data:D.sala.mg26,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.1)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#10b981'},
-    {label:'Venta Tel.',data:D.tel.mg26,borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.1)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#8b5cf6'},
   ]},options:bO()});
   mkC('cEvol',{type:'line',data:{labels:MES,datasets:[
-    {label:'Venta Tel.',data:D.tel.v26,borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2,pointBackgroundColor:'#8b5cf6'},
-    {label:'Sala Venta',data:D.sala.v26,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2,pointBackgroundColor:'#10b981'},
     {label:'E-Commerce',data:D.ecom.v26,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2,pointBackgroundColor:'#3b82f6'},
   ]},options:bO()});
   mkC('cRotDonut',{type:'doughnut',data:{labels:['Alta Rotación','Normal','Baja Rotación','Sin Rotación +3M'],datasets:[{data:[28,40,18,14],backgroundColor:['#10b981','#3b82f6','#f59e0b','#ef4444'],borderWidth:0,hoverOffset:4}]},
@@ -2311,10 +2661,159 @@ function initAnalyticsCharts(){
   mkC('cCDPFreq',{type:'bar',data:{labels:['1 compra','2-3','4-6','7-10','11+'],datasets:[{label:'Clientes',data:[421,689,513,287,142],backgroundColor:['rgba(239,68,68,.6)','rgba(245,158,11,.6)','rgba(59,130,246,.6)','rgba(16,185,129,.6)','rgba(16,185,129,.9)'],borderRadius:4}]},
     options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
   renderRot();renderActions();renderPricing();renderInversa();renderCDP();renderChurn();
+  renderConv();renderComp();renderPricTable();renderInvTable();
 }
 document.addEventListener('DOMContentLoaded',initAnalyticsCharts);
 
 // ── Analytics Render Functions ──
+// ── Sábana Render: Convenios ──
+function fmtCLP(n){if(!n)return '$0';if(n>=1e6)return '$'+(n/1e6).toFixed(1)+'M';if(n>=1e3)return '$'+(n/1e3).toFixed(0)+'K';return '$'+n.toLocaleString();}
+function renderConv(filter='all'){
+  const el=document.getElementById('convBody');if(!el)return;
+  const d=filter==='all'?CONV_DATA:filter==='inactivo'?CONV_DATA.filter(r=>r.est==='Inactivo'):CONV_DATA.filter(r=>r.tipo===filter&&r.est!=='Inactivo');
+  const total=CONV_DATA.filter(r=>r.est==='Activo').reduce((s,r)=>s+r.rev,0);
+  el.innerHTML=d.map(r=>{
+    const pct=total>0?(r.rev/total*100).toFixed(1):0;
+    const tendIco=r.tend==='up'?'<span style="color:#10b981">▲</span>':r.tend==='dn'?'<span style="color:#ef4444">▼</span>':'<span style="color:#94a3b8">—</span>';
+    const estChip=r.est==='Activo'?'<span class="chip ch-g">Activo</span>':'<span class="chip ch-r">Inactivo</span>';
+    return `<tr>
+      <td style="color:var(--text2);font-size:11px">${r.id}</td>
+      <td style="font-weight:500">${r.n}</td>
+      <td style="color:var(--text2);font-size:11px">${r.rut}</td>
+      <td><span class="chip ch-b">${r.tipo==='mutual'?'Mutual':r.tipo==='inst'?'Institución':'Empresa'}</span></td>
+      <td style="text-align:right">${r.cli.toLocaleString()}</td>
+      <td style="text-align:right">${r.ord}</td>
+      <td style="text-align:right;color:var(--green)">${fmtCLP(r.rev)}</td>
+      <td style="text-align:right;color:var(--text2)">${pct}%</td>
+      <td style="text-align:right">${r.tick?fmtCLP(r.tick):'—'}</td>
+      <td style="text-align:center">${tendIco}</td>
+      <td>${estChip}</td>
+      <td style="font-size:11px;color:var(--text2)">${r.acc}</td>
+    </tr>`;
+  }).join('');
+}
+function filterConv(f,el){
+  document.querySelectorAll('.conv-filter').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderConv(f);
+}
+function exportConvCSV(){
+  const rows=[['#','Convenio','RUT Empresa','Tipo','Clientes Reg.','Órdenes 60d','Revenue 60d','Ticket Prom.','Tendencia','Estado','Acción']];
+  CONV_DATA.forEach(r=>rows.push([r.id,r.n,r.rut,r.tipo,r.cli,r.ord,r.rev,r.tick,r.tend,r.est,r.acc]));
+  dlCSV(rows.map(r=>r.join(',')).join('\n'),'convenios-profar-'+new Date().toISOString().slice(0,10)+'.csv');
+  showNotif('✅ Exportado: convenios-profar.csv');
+}
+
+// ── Sábana Render: Competencia ──
+function renderComp(filter='all'){
+  const el=document.getElementById('compBody');if(!el)return;
+  const CAT_LABEL={'otc':'OTC','cr':'Crónico','oc':'Oncológico'};
+  const d=filter==='all'?COMP_SKUS:filter==='caro'?COMP_SKUS.filter(s=>s.tend==='caro'):COMP_SKUS.filter(s=>s.cat===filter);
+  el.innerHTML=d.map(s=>{
+    const minComp=Math.min(...[s.sb,s.cv,s.ah,s.cf].filter(v=>v!=null));
+    const dif=minComp?((s.pf-minComp)/minComp*100).toFixed(1):null;
+    const difStyle=dif&&dif>0?'color:#ef4444':'color:#10b981';
+    const estChip=s.tend==='caro'?'<span class="chip ch-r">⚠️ Más caro</span>':'<span class="chip ch-g">✅ Competitivo</span>';
+    const fmt=v=>v!=null?'$'+v.toLocaleString():'—';
+    return `<tr>
+      <td style="font-weight:500">${s.n}</td>
+      <td><span class="chip ch-b">${CAT_LABEL[s.cat]||s.cat}</span></td>
+      <td style="text-align:right;font-weight:600">${fmt(s.pf)}</td>
+      <td style="text-align:right">${fmt(s.sb)}</td>
+      <td style="text-align:right">${fmt(s.cv)}</td>
+      <td style="text-align:right">${fmt(s.ah)}</td>
+      <td style="text-align:right">${fmt(s.cf)}</td>
+      <td style="text-align:right;font-weight:600;${difStyle}">${dif!=null?(dif>0?'+'+dif+'%':dif+'%'):'—'}</td>
+      <td>${estChip}</td>
+      <td style="font-size:11px;color:var(--text2)">${s.nota}</td>
+    </tr>`;
+  }).join('');
+}
+function filterComp(f,el){
+  document.querySelectorAll('.comp-filter').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderComp(f);
+}
+function exportCompCSV(){
+  const rows=[['SKU','Categoría','PROFAR','Salcobrand','Cruz Verde','Ahumada','Cofar','Dif.Mín.','Estado','Nota']];
+  COMP_SKUS.forEach(s=>{
+    const minComp=Math.min(...[s.sb,s.cv,s.ah,s.cf].filter(v=>v!=null));
+    const dif=minComp?((s.pf-minComp)/minComp*100).toFixed(1):'';
+    rows.push([s.n,s.cat,s.pf,s.sb||'',s.cv||'',s.ah||'',s.cf||'',dif,s.tend,s.nota]);
+  });
+  dlCSV(rows.map(r=>r.join(',')).join('\n'),'competencia-precios-'+new Date().toISOString().slice(0,10)+'.csv');
+  showNotif('✅ Exportado: competencia-precios.csv');
+}
+
+// ── Sábana Render: Pricing ──
+function renderPricTable(filter='all'){
+  const el=document.getElementById('pricBody');if(!el)return;
+  const d=filter==='all'?PRIC_FULL:PRIC_FULL.filter(r=>r.est===filter);
+  el.innerHTML=d.map(r=>{
+    const estChip=r.est==='trigger'?'<span class="chip ch-r">🔴 Trigger</span>':r.est==='watch'?'<span class="chip ch-y">🟡 Obs.</span>':'<span class="chip ch-g">✅ OK</span>';
+    const dpCell=r.dp!=null?r.dp+'d':'—';
+    const pjCell=r.pJ?'$'+r.pJ.toLocaleString():'—';
+    return `<tr>
+      <td style="font-weight:500">${r.n}</td>
+      <td><span class="chip ch-b">${r.cat}</span></td>
+      <td>${r.c}</td>
+      <td style="text-align:right">${r.stock}</td>
+      <td style="text-align:right;color:${r.dias>90?'#ef4444':r.dias>45?'#f59e0b':'#94a3b8'}">${r.dias}d</td>
+      <td style="text-align:right;font-weight:600">${'$'+r.pA.toLocaleString()}</td>
+      <td style="text-align:right;color:var(--green)">${pjCell}</td>
+      <td style="text-align:right">${r.desc?'-'+r.desc+'%':'—'}</td>
+      <td style="text-align:right;color:#f59e0b">${fmtCLP(r.cap)}</td>
+      <td>${estChip}</td>
+      <td style="text-align:right">${dpCell}</td>
+      <td style="font-size:11px;color:var(--text2)">${r.act}</td>
+    </tr>`;
+  }).join('');
+}
+function filterPric(f,el){
+  document.querySelectorAll('.pric-filter').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderPricTable(f);
+}
+function exportPricCSV(){
+  const rows=[['SKU','Cat.','Canal','Stock','Días sin Venta','Precio Actual','Precio Ajuste','Dco.','Capital Inmov.','Estado','Post-Ajuste','Acción']];
+  PRIC_FULL.forEach(r=>rows.push([r.n,r.cat,r.c,r.stock,r.dias,r.pA,r.pJ||'',r.desc?'-'+r.desc+'%':'',r.cap,r.est,r.dp!=null?r.dp+'d':'',r.act]));
+  dlCSV(rows.map(r=>r.join(',')).join('\n'),'pricing-sabana-'+new Date().toISOString().slice(0,10)+'.csv');
+  showNotif('✅ Exportado: pricing-sabana.csv');
+}
+
+// ── Sábana Render: Log. Inversa ──
+function renderInvTable(filter='all'){
+  const el=document.getElementById('invBody');if(!el)return;
+  const d=filter==='all'?INV_FULL:INV_FULL.filter(r=>r.etapa===filter);
+  const ETAPA={'devolucion':'<span class="chip ch-p">📦 Devolución</span>','nota':'<span class="chip ch-b">📄 N. Crédito</span>','liquidacion':'<span class="chip ch-y">🏷️ Liquidación</span>','watch':'<span class="chip" style="background:rgba(100,116,139,.15);color:#94a3b8">👁 Obs.</span>'};
+  el.innerHTML=d.map(r=>`<tr>
+    <td style="font-weight:500">${r.n}</td>
+    <td><span class="chip ch-b">${r.cat}</span></td>
+    <td>${r.c}</td>
+    <td style="font-size:11px">${r.prov}</td>
+    <td style="font-size:11px;color:var(--text2)">${r.rut}</td>
+    <td style="text-align:right">${r.stock}</td>
+    <td style="text-align:right;color:${r.dias>90?'#ef4444':r.dias>45?'#f59e0b':'#94a3b8'}">${r.dias}d</td>
+    <td style="text-align:right;color:#f59e0b">${fmtCLP(r.cap)}</td>
+    <td style="text-align:right">${'$'+r.pc.toLocaleString()}</td>
+    <td style="text-align:right;color:var(--green)">${r.desc?'-'+r.desc+'%':'—'}</td>
+    <td>${ETAPA[r.etapa]||r.etapa}</td>
+    <td style="font-size:11px;color:var(--text2)">${r.act}</td>
+    <td style="font-size:11px;text-align:center;color:var(--text2)">${r.plazo}</td>
+  </tr>`).join('');
+}
+function filterInv(f,el){
+  document.querySelectorAll('.inv-filter').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderInvTable(f);
+}
+function exportInvCSV(){
+  const rows=[['SKU','Cat.','Canal','Proveedor','RUT Prov.','Stock','Días sin Venta','Capital Inmov.','P° Compra','Dco. Aplic.','Etapa','Acción','Plazo']];
+  INV_FULL.forEach(r=>rows.push([r.n,r.cat,r.c,r.prov,r.rut,r.stock,r.dias,r.cap,r.pc,r.desc?'-'+r.desc+'%':'',r.etapa,r.act,r.plazo]));
+  dlCSV(rows.map(r=>r.join(',')).join('\n'),'logistica-inversa-'+new Date().toISOString().slice(0,10)+'.csv');
+  showNotif('✅ Exportado: logistica-inversa.csv');
+}
+
 function renderRot(filter='all'){
   const skus=filter==='all'?SKUS:SKUS.filter(s=>CH_MAP[s.c]===filter);
   document.getElementById('rotBody').innerHTML=skus.map(s=>`
@@ -2410,6 +2909,136 @@ function renderChurn(){
       <td style="color:${r.dias>60?'var(--red)':r.dias>30?'var(--yellow)':'var(--green)'}">${r.dias} días</td>
       <td><span class="chip ${r.r==='Crítico'?'ch-r':r.r==='Alto'?'ch-r':r.r==='Medio'?'ch-y':'ch-g'}">${r.r}</span></td>
       <td><button class="act-btn btn-y" onclick="showNotif('📧 Reactivación: ${r.n}')">Reactivar</button></td>
+    </tr>`).join('');
+}
+
+// ── E-COMMERCE RENDER FUNCTIONS ──
+function renderBuyerSegments(){
+  const el=document.getElementById('ecomSegmentBody');if(!el)return;
+  el.innerHTML=BUYER_SEGMENT_L.map((seg,i)=>`
+    <tr>
+      <td style="font-weight:500"><span class="color-dot" style="background:${BUYER_SEGMENT_COLOR[i]}"></span>${seg}</td>
+      <td style="text-align:right">${BUYER_SEGMENT_V[i].toLocaleString()}</td>
+      <td style="text-align:right">$${(BUYER_SEGMENT_REV[i]/1000000).toFixed(2)}M</td>
+      <td style="text-align:right">${(BUYER_SEGMENT_REV[i]/BUYER_SEGMENT_V[i]).toFixed(0)}</td>
+    </tr>`).join('');
+}
+
+function renderTopProducts(){
+  const el=document.getElementById('ecomProductsBody');if(!el)return;
+  el.innerHTML=TOP_PRODUCTS_L.map((prod,i)=>`
+    <tr>
+      <td style="font-weight:500">${prod}</td>
+      <td style="text-align:right">${TOP_PRODUCTS_V[i].toLocaleString()}</td>
+      <td style="text-align:right">$${(TOP_PRODUCTS_REV[i]/1000000).toFixed(2)}M</td>
+      <td style="text-align:right">${(TOP_PRODUCTS_REV[i]/TOP_PRODUCTS_V[i]).toFixed(0)}</td>
+    </tr>`).join('');
+}
+
+function renderDeviceMetrics(){
+  const el=document.getElementById('ecomDeviceBody');if(!el)return;
+  el.innerHTML=DEVICE_L.map((dev,i)=>`
+    <tr>
+      <td><span class="color-dot" style="background:${DEVICE_COLOR[i]}"></span>${dev}</td>
+      <td style="text-align:right">${DEVICE_V[i].toLocaleString()}</td>
+      <td style="text-align:right">${DEVICE_CONVERSION[i].toFixed(2)}%</td>
+      <td style="text-align:right">$${DEVICE_AOV[i].toFixed(2)}</td>
+    </tr>`).join('');
+}
+
+function renderCartAbandonment(){
+  const el=document.getElementById('ecomCartBody');if(!el)return;
+  el.innerHTML=CART_ABANDON_CAUSE.map((cause,i)=>`
+    <tr>
+      <td>${cause}</td>
+      <td style="text-align:right">${CART_ABANDON_COUNT[i].toLocaleString()}</td>
+      <td style="text-align:right">$${(CART_ABANDON_VALUE[i]/1000).toFixed(1)}K</td>
+    </tr>`).join('');
+}
+
+function renderRetention(){
+  const el=document.getElementById('ecomRetentionBody');if(!el)return;
+  el.innerHTML=RETENTION_COHORT_L.map((cohort,i)=>`
+    <tr>
+      <td style="font-weight:500">${cohort}</td>
+      <td>${RETENTION_MONTH1[i]}%</td>
+      <td>${RETENTION_MONTH2[i]||'-'}%</td>
+      <td>${RETENTION_MONTH3[i]||'-'}%</td>
+      <td>${RETENTION_MONTH4[i]||'-'}%</td>
+      <td>${RETENTION_MONTH5[i]||'-'}%</td>
+    </tr>`).join('');
+}
+
+function renderShippingMethods(){
+  const el=document.getElementById('ecomShippingBody');if(!el)return;
+  el.innerHTML=SHIPPING_L.map((method,i)=>`
+    <tr>
+      <td><span class="color-dot" style="background:${SHIPPING_COLOR[i]}"></span>${method}</td>
+      <td style="text-align:right">${SHIPPING_V[i].toLocaleString()}</td>
+      <td style="text-align:right">${((SHIPPING_V[i]/8141)*100).toFixed(1)}%</td>
+      <td style="text-align:right">$${(SHIPPING_REV[i]/1000).toFixed(0)}K</td>
+    </tr>`).join('');
+}
+
+function renderDemographics(){
+  const el=document.getElementById('ecomDemographicsBody');if(!el)return;
+  el.innerHTML=DEMOGRAPHIC_AGE.map((age,i)=>`
+    <tr>
+      <td style="font-weight:500">${age} años</td>
+      <td style="text-align:right">${DEMOGRAPHIC_VOLUME[i].toLocaleString()}</td>
+      <td style="text-align:right">${DEMOGRAPHIC_REPEAT[i]}%</td>
+      <td style="text-align:right">$${DEMOGRAPHIC_AOV[i].toFixed(2)}</td>
+    </tr>`).join('');
+}
+
+function renderReturns(){
+  const el=document.getElementById('ecomReturnsBody');if(!el)return;
+  el.innerHTML=RETURNS_REASON.map((reason,i)=>`
+    <tr>
+      <td>${reason}</td>
+      <td style="text-align:right">${RETURNS_COUNT[i].toLocaleString()}</td>
+      <td style="text-align:right">${RETURNS_PERCENT[i]}%</td>
+      <td style="text-align:right">$${(RETURNS_VALUE[i]/1000).toFixed(1)}K</td>
+    </tr>`).join('');
+}
+
+function renderSearchPerformance(){
+  const el=document.getElementById('ecomSearchBody');if(!el)return;
+  el.innerHTML=SEARCH_KEYWORDS.map((kw,i)=>`
+    <tr>
+      <td style="font-weight:500">${kw}</td>
+      <td style="text-align:right">${SEARCH_VOLUME[i].toLocaleString()}</td>
+      <td style="text-align:right">${SEARCH_CLICKS[i].toLocaleString()}</td>
+      <td style="text-align:right">${SEARCH_CONVERSIONS[i]}</td>
+      <td style="text-align:right">${((SEARCH_CONVERSIONS[i]/SEARCH_CLICKS[i])*100).toFixed(2)}%</td>
+      <td style="text-align:right">$${SEARCH_CPC[i].toFixed(2)}</td>
+    </tr>`).join('');
+}
+
+function renderMonthly(){
+  const el=document.getElementById('ecomMonthlyBody');if(!el)return;
+  el.innerHTML=MONTHLY_MONTH.map((month,i)=>`
+    <tr>
+      <td><span class="chip ch-b">${month}${i===2?'*':''}</span></td>
+      <td>$${(MONTHLY_REVENUE[i]/1000000).toFixed(1)}M</td>
+      <td>${MONTHLY_ORDERS[i].toLocaleString()}</td>
+      <td>$${MONTHLY_AOV[i].toLocaleString()}</td>
+      <td>${MONTHLY_CONVERSION[i].toFixed(2)}%</td>
+      <td>${MONTHLY_MOM[i]===null?'-':`<span class="chip ${MONTHLY_MOM[i]<0?'ch-r':'ch-g'}">${MONTHLY_MOM[i]>0?'+':''}${MONTHLY_MOM[i].toFixed(1)}%</span>`}</td>
+      <td><span class="chip ch-g">+${MONTHLY_YOY[i].toFixed(1)}%</span></td>
+    </tr>`).join('');
+}
+
+function renderMargins(){
+  const el=document.getElementById('ecomMarginsBody');if(!el)return;
+  el.innerHTML=MARGINS_MONTH.map((month,i)=>`
+    <tr>
+      <td><span class="chip ch-b">${month}${i===2?'*':''}</span></td>
+      <td>${i===2?'<b style="color:var(--green)">':''}${MARGINS_CR[i].toFixed(2)}%${i===2?'</b>':''}</td>
+      <td>${MARGINS_GROSS[i].toFixed(1)}%</td>
+      <td>${MARGINS_Q1AVG[i].toFixed(1)}%</td>
+      <td><span class="chip ch-g">+${MARGINS_YOY[i].toFixed(1)}pp</span></td>
+      <td>${MARGINS_TREND[i]==='Mejora'?'📈 '+MARGINS_TREND[i]:'→ '+MARGINS_TREND[i]}</td>
     </tr>`).join('');
 }
 </script>
