@@ -514,6 +514,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="live"><div class="live-d"></div>Magento Live · <span id="hdrDate2"></span></div>
     <a href="profar.html" class="hbtn">← PROFAR Analytics</a>
     <a href="index.html" class="hbtn">← CMK</a>
+    <div id="gasStatusBadge" style="font-size:10px;color:#94a3b8;margin-left:8px;white-space:nowrap">● Cargando...</div>
   </div>
 </div>
 
@@ -3301,6 +3302,98 @@ function renderMargins(){
       <td>${MARGINS_TREND[i]==='Mejora'?'📈 '+MARGINS_TREND[i]:'→ '+MARGINS_TREND[i]}</td>
     </tr>`).join('');
 }
+
+// ══════════════════════════════════════════════════════════════════
+// GOOGLE APPS SCRIPT — Auto-update endpoint
+// ══════════════════════════════════════════════════════════════════
+// Para activar: reemplaza GAS_ENDPOINT con tu URL de implementación
+// Guía: apps-script/Code.gs en este repositorio
+const GAS_ENDPOINT = ''; // ← Pegar URL de Google Apps Script aquí
+
+// Actualiza los datos del dashboard desde el endpoint GAS
+async function fetchGASData() {
+  if (!GAS_ENDPOINT) return null;
+  try {
+    const res = await fetch(GAS_ENDPOINT + '?action=getData', {
+      method: 'GET',
+      mode: 'cors'
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return await res.json();
+  } catch(e) {
+    console.warn('GAS fetch error:', e.message);
+    return null;
+  }
+}
+
+// Aplica datos remotos al dashboard (sin recargar la página)
+function applyGASData(data) {
+  if (!data || data.error) return;
+
+  // Actualizar KPIs si están disponibles
+  if (data.kpis) {
+    const k = data.kpis;
+    const fmt = v => v >= 1e6 ? '$' + (v/1e6).toFixed(1) + 'M' : '$' + (v/1e3).toFixed(0) + 'K';
+    
+    const ytdEl = document.getElementById('gasYtdRev');
+    if (ytdEl && k.ytdRev26ConIVA) ytdEl.textContent = fmt(k.ytdRev26ConIVA);
+    
+    const yoyEl = document.getElementById('gasYtdYoy');
+    if (yoyEl && k.ytdYoY !== null) {
+      yoyEl.textContent = (k.ytdYoY > 0 ? '+' : '') + k.ytdYoY.toFixed(1) + '% vs 2025';
+      yoyEl.className = 'chip ' + (k.ytdYoY >= 0 ? 'ch-g' : 'ch-r');
+    }
+    
+    const tsEl = document.getElementById('gasLastUpdate');
+    if (tsEl && data._updatedAt) {
+      const d = new Date(data._updatedAt);
+      const f = d.toLocaleString('es-CL', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      tsEl.textContent = 'Datos: ' + f + (data._fromCache ? ' (cache)' : ' ✓');
+    }
+  }
+
+  // Actualizar arrays D.ecom si vienen en la respuesta
+  if (data.decom) {
+    const dc = data.decom;
+    if (dc.v26) D.ecom.v26 = dc.v26.map(v => v ? v/1e6 : null);
+    if (dc.mg26) D.ecom.mg26 = dc.mg26;
+    if (dc.cli26) D.ecom.cli26 = dc.cli26;
+    // Re-render charts
+    Object.values(Chart.instances || {}).forEach(ch => ch.update());
+  }
+}
+
+// Auto-update badge en el header
+function initGASBadge() {
+  const badge = document.getElementById('gasStatusBadge');
+  if (!badge) return;
+  
+  if (!GAS_ENDPOINT) {
+    badge.textContent = '● Sin endpoint';
+    badge.style.color = '#94a3b8';
+    return;
+  }
+  
+  badge.textContent = '● Conectando...';
+  badge.style.color = '#f59e0b';
+  
+  fetchGASData().then(data => {
+    if (data && !data.error) {
+      badge.textContent = '● En vivo';
+      badge.style.color = '#22c55e';
+      applyGASData(data);
+    } else {
+      badge.textContent = '● Offline (usando datos locales)';
+      badge.style.color = '#94a3b8';
+    }
+  });
+}
+
+// Inicializar badge al cargar
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(initGASBadge, 1500); // Esperar a que carguen los charts
+});
+
 </script>
 </body>
 </html>
