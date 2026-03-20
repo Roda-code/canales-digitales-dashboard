@@ -16,8 +16,16 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;}
 
+/* SUBNAV */
+nav.subnav{background:#0d1117;border-bottom:1px solid var(--border);padding:4px 20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;position:sticky;top:0;z-index:115;}
+nav.subnav a{color:var(--muted);text-decoration:none;padding:3px 8px;border-radius:6px;border:1px solid transparent;transition:all .15s;}
+nav.subnav a:hover{color:var(--text);border-color:var(--border);}
+nav.subnav a.active{color:var(--accent);background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.25);}
+.subnav-sep{color:var(--border);}
+@media print{nav.subnav{display:none;}}
+
 /* COMPANY SWITCHER */
-.co-bar{background:#0d1117;border-bottom:2px solid var(--border);padding:0 20px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:110;}
+.co-bar{background:#0d1117;border-bottom:2px solid var(--border);padding:0 20px;display:flex;align-items:center;gap:0;position:sticky;top:29px;z-index:110;}
 .co-btn{padding:11px 28px;font-size:13px;font-weight:700;cursor:pointer;border:none;border-bottom:3px solid transparent;background:transparent;color:var(--muted);letter-spacing:.3px;transition:all .15s;white-space:nowrap;}
 .co-btn:hover{color:var(--text);}
 .co-btn.co-profar.active{color:var(--teal);border-bottom-color:var(--teal);}
@@ -32,7 +40,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .co-meta{margin-left:auto;font-size:10px;color:var(--muted);background:#21262d;padding:3px 10px;border-radius:10px;border:1px solid var(--border);}
 
 /* FILTER BAR */
-.filter-bar{background:#0d1117;border-bottom:1px solid var(--border);padding:7px 20px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;position:sticky;top:42px;z-index:109;}
+.filter-bar{background:#0d1117;border-bottom:1px solid var(--border);padding:7px 20px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;position:sticky;top:71px;z-index:109;}
 .filter-label{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.5px;margin-right:2px;}
 .filter-sep{width:1px;height:18px;background:var(--border);margin:0 3px;}
 .pill{padding:3px 11px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--pill-bg);color:var(--muted);transition:all .15s;user-select:none;}
@@ -42,7 +50,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .filter-status{margin-left:auto;font-size:10px;color:var(--muted);background:#21262d;padding:3px 10px;border-radius:10px;border:1px solid var(--border);}
 
 /* TABS */
-.tabs{display:flex;background:var(--card);border-bottom:1px solid var(--border);overflow-x:auto;padding:0 12px;position:sticky;top:83px;z-index:108;}
+.tabs{display:flex;background:var(--card);border-bottom:1px solid var(--border);overflow-x:auto;padding:0 12px;position:sticky;top:112px;z-index:108;}
 .tab{padding:9px 13px;font-size:12px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);white-space:nowrap;transition:color .15s;}
 .tab:hover{color:var(--text);}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
@@ -127,6 +135,17 @@ tr:hover td{background:#1c2128;}
 </style>
 </head>
 <body>
+<nav class="subnav">
+  <a href="AI_Operator_Dashboard_v4.3.html" class="active">⚡ Operator</a>
+  <span class="subnav-sep">|</span>
+  <a href="Dashboard_Supervisor_CMK.html">📊 Supervisor CMK</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_Retail.html">🏪 Retail</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_Clinicas.html">🏥 Clínicas</a>
+  <span class="subnav-sep">|</span>
+  <a href="Briefing_Equipo_CENABAST.html">🏛 CENABAST</a>
+</nav>
 
 <!-- ══════════════════════════════════════════════════════
      COMPANY SWITCHER
@@ -179,6 +198,8 @@ tr:hover td{background:#1c2128;}
   <div class="tab" onclick="showTab('c-panorama',this,'cmk')">👤 Panorama</div>
   <div class="tab" onclick="showTab('c-rotacion',this,'cmk')">🔄 Rotación</div>
   <div class="tab" onclick="showTab('c-cartera',this,'cmk')">💼 Cartera</div>
+  <div class="tab" onclick="showTab('c-vendedores',this,'cmk')">👥 Vendedores</div>
+  <div class="tab" onclick="showTab('c-abastecimiento',this,'cmk')">📦 Abastecimiento</div>
 </div>
 
 <div class="content">
@@ -841,6 +862,71 @@ tr:hover td{background:#1c2128;}
   </div>
 </div>
 
+<!-- ══ CMK: VENDEDORES — META VS PROYECCIÓN ══ -->
+<div class="tab-pane" id="tab-c-vendedores">
+  <div class="info-box green">👥 <strong>Rendimiento por vendedor</strong> — Meta vs proyección al cierre de Mar-2026, velocidad intra-mes, eficiencia por cliente y tabla consolidada.</div>
+  <div class="section-label">Resumen por equipo</div>
+  <div class="kpi-row" id="vendEquipos"><!-- filled by JS --></div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">% Avance vs Meta — Mar 2026 <span class="chart-badge">Proyección al cierre</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartVendMeta"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Δ Velocidad Feb→Mar <span class="chart-badge">% cambio ritmo diario</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartVendVel"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card chart-full">
+      <div class="chart-title">Eficiencia por cliente — Revenue por cliente activo <span class="chart-badge">$M / cliente</span></div>
+      <div class="chart-wrap-xl"><canvas id="chartVendEfic"></canvas></div>
+    </div>
+  </div>
+  <div class="section-label">Tabla consolidada vendedores — Q1-2026</div>
+  <div class="chart-card" style="padding:0">
+    <table>
+      <thead><tr><th>#</th><th>Vendedor</th><th>Canal</th><th class="td-right">Rev Q1 $M</th><th class="td-right">Meta Mar</th><th class="td-right">Proy Mar</th><th class="td-right">% Meta</th><th class="td-right">Vel Δ%</th><th class="td-right">$M/Cliente</th><th>Estado</th></tr></thead>
+      <tbody id="vendBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ CMK: ABASTECIMIENTO ══ -->
+<div class="tab-pane" id="tab-c-abastecimiento">
+  <div class="info-box teal">📦 <strong>Abastecimiento &amp; Inventarios</strong> — Cobertura de stock, SKUs en riesgo de quiebre, excesos y órdenes de compra en tránsito al 19-Mar-2026.</div>
+  <div class="kpi-row">
+    <div class="kpi kpi-cmk"><div class="kpi-label">Días de cobertura prom.</div><div class="kpi-value" style="color:var(--yellow)">24.3</div><div class="kpi-delta neutral">Meta objetivo: 30 días</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">SKUs cobertura &lt;7d</div><div class="kpi-value" style="color:var(--red)">43</div><div class="kpi-delta down">↑ 12 vs semana anterior</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">SKUs exceso &gt;90d</div><div class="kpi-value" style="color:var(--yellow)">89</div><div class="kpi-delta neutral">$218M inmovilizado</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">OC en tránsito</div><div class="kpi-value" style="color:var(--teal)">127</div><div class="kpi-delta neutral">$1.847B por recibir</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">Fill Rate semanal</div><div class="kpi-value" style="color:var(--green)">94.2%</div><div class="kpi-delta up">▲ +0.8pp vs sem. ant.</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Cobertura por familia terapéutica <span class="chart-badge">días de stock</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartAbasFamilia"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">SKUs críticos (&lt;7d) por canal <span class="chart-badge">unidades</span></div>
+      <div class="chart-wrap-lg"><canvas id="chartAbasCanal"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card chart-full">
+      <div class="chart-title">Pipeline OC en tránsito — por proveedor <span class="chart-badge">$M CLP esperado</span></div>
+      <div class="chart-wrap-xl"><canvas id="chartAbasOC"></canvas></div>
+    </div>
+  </div>
+  <div class="section-label">Top SKUs en riesgo de quiebre — horizonte 7 días</div>
+  <div class="chart-card" style="padding:0">
+    <table>
+      <thead><tr><th>#</th><th>SKU / Producto</th><th>Familia</th><th class="td-right">Stock actual</th><th class="td-right">Venta/día</th><th class="td-right">Cobertura</th><th class="td-right">OC activa</th><th>Prioridad</th></tr></thead>
+      <tbody id="abasBody"></tbody>
+    </table>
+  </div>
+</div>
+
 </div><!-- /world-cmk -->
 </div><!-- /content -->
 <script>
@@ -969,6 +1055,8 @@ function showTab(id,el,world){
       'c-panorama':()=>{ buildPanoramaRev();buildPanoramaMg();buildPanoramaRiesgo(); },
       'c-rotacion':()=>{ buildRotRetail();buildRotClinica();buildRotAlza();buildRotCaida(); },
       'c-cartera':()=>{ buildCartActivos();buildCartTier();buildCartPareto();buildCartRetencion(); },
+      'c-vendedores':()=>{ buildVendMeta();buildVendVel();buildVendEfic(); },
+      'c-abastecimiento':()=>{ buildAbasFamilia();buildAbasCanal();buildAbasOC(); },
     };
     if(buildMap[id]){
       buildMap[id]();
@@ -1242,6 +1330,103 @@ function buildPanoramaRiesgo(){
     labels:filtered.map(v=>v.n.split(' ').slice(-1)[0]),
     datasets:[{label:'Revenue en riesgo $M',data:filtered.map(v=>v.riesgo),backgroundColor:'rgba(248,81,73,.65)',borderRadius:4}]
   },options:{...hbarOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`$${c.raw}M · ${filtered[c.dataIndex].caidos} clientes caídos`}}}}});
+}
+
+// ═══════════════════════════════════════════════════════
+//  CMK: VENDEDORES — META VS PROYECCIÓN
+// ═══════════════════════════════════════════════════════
+const DIAS_T_V=19; // días hábiles Mar transcurridos al 19-Mar
+const DIAS_M_V=21; // días hábiles totales Mar-2026
+// Meta Mar: para grandes cuentas (<=5 clientes) = r2×1.02; resto = avg(r1,r2)×1.05
+function metaMar(v){ return v.cli<=5 ? +(v.r2*1.02).toFixed(1) : +((v.r1+v.r2)/2*1.05).toFixed(1); }
+function proyMar(v){ return +(v.r3/DIAS_T_V*DIAS_M_V).toFixed(1); }
+function pctMetaV(v){ const m=metaMar(v); return m>0?Math.round(proyMar(v)/m*100):0; }
+function velDelta(v){ const base=v.r2/20; return base>0?+(((v.r3/DIAS_T_V)-base)/base*100).toFixed(1):0; }
+function eficCli(v){ return v.cli>0?+(v.rev/v.cli).toFixed(1):0; }
+function renderVendEquipos(){
+  const el=document.getElementById('vendEquipos');
+  if(!el)return;
+  const groups={'Retail':vendedoresData.filter(v=>v.c==='Retail'),'Clínicas':vendedoresData.filter(v=>v.c==='CLINICAS'),'CENABAST':vendedoresData.filter(v=>v.c==='CENABAST')};
+  const colors={'Retail':'var(--green)','Clínicas':'var(--teal)','CENABAST':'var(--orange)'};
+  el.innerHTML=Object.entries(groups).map(([k,arr])=>{
+    const rev=arr.reduce((s,v)=>s+v.rev,0);
+    const cli=arr.reduce((s,v)=>s+v.cli,0);
+    const caidos=arr.reduce((s,v)=>s+v.caidos,0);
+    const pct=Math.round(caidos/(cli+caidos)*100);
+    return `<div class="kpi kpi-cmk"><div class="kpi-label" style="color:${colors[k]}">${k}</div><div class="kpi-value">$${rev.toLocaleString('es-CL')}M</div><div class="kpi-delta neutral">${arr.length} vendedores · ${cli} cli · <span style="color:var(--red)">${pct}% caída</span></div></div>`;
+  }).join('');
+}
+function renderVendTable(){
+  const tbody=document.getElementById('vendBody');
+  if(!tbody)return;
+  const sorted=[...vendedoresData].filter(v=>v.rev>0).sort((a,b)=>b.rev-a.rev);
+  tbody.innerHTML=sorted.map((v,i)=>{
+    const meta=metaMar(v),proy=proyMar(v),pct=pctMetaV(v),vel=velDelta(v),efic=eficCli(v);
+    const pctC=pct>=100?'var(--green)':pct>=85?'var(--yellow)':'var(--red)';
+    const velC=vel>0?'var(--green)':vel<-10?'var(--red)':'var(--yellow)';
+    const badgeC=v.c==='Retail'?'green':v.c==='CLINICAS'?'teal':v.c==='CENABAST'?'orange':'accent';
+    return `<tr><td>${i+1}</td><td><strong>${v.n}</strong></td><td><span class="badge badge-${badgeC}">${v.c}</span></td><td class="td-right">${v.rev.toLocaleString('es-CL')}</td><td class="td-right">${meta.toLocaleString('es-CL')}</td><td class="td-right">${proy.toLocaleString('es-CL')}</td><td class="td-right" style="color:${pctC}"><strong>${pct}%</strong></td><td class="td-right" style="color:${velC}">${vel>0?'+':''}${vel}%</td><td class="td-right">${efic.toLocaleString('es-CL')}</td><td>${pct>=100?'<span class="badge badge-green">✅ En Meta</span>':pct>=85?'<span class="badge badge-yellow">⚠️ Cerca</span>':'<span class="badge badge-red">🔴 Riesgo</span>'}</td></tr>`;
+  }).join('');
+}
+function buildVendMeta(){
+  renderVendEquipos(); renderVendTable();
+  const data=[...vendedoresData].filter(v=>v.rev>0&&v.c!=='PROFAR').sort((a,b)=>b.rev-a.rev).slice(0,16);
+  const metas=data.map(v=>metaMar(v));
+  const projs=data.map(v=>proyMar(v));
+  mkChart('chartVendMeta',{type:'bar',data:{labels:data.map(v=>v.n.split(' ').slice(-1)[0]),datasets:[{label:'Meta Mar',data:metas,backgroundColor:'rgba(139,148,158,.3)',borderRadius:4},{label:'Proyección',data:projs,backgroundColor:projs.map((p,i)=>p>=metas[i]?'rgba(63,185,80,.75)':'rgba(248,81,73,.65)'),borderRadius:4}]},options:{...baseOpts(),plugins:{tooltip:{callbacks:{label:c=>`${c.dataset.label}: $${c.raw.toLocaleString('es-CL')}M`}}}}});
+}
+function buildVendVel(){
+  const top=[...vendedoresData].filter(v=>v.r2>0&&v.c!=='PROFAR').sort((a,b)=>Math.abs(velDelta(b))-Math.abs(velDelta(a))).slice(0,14);
+  const deltas=top.map(v=>velDelta(v));
+  mkChart('chartVendVel',{type:'bar',data:{labels:top.map(v=>v.n.split(' ').slice(-1)[0]),datasets:[{label:'Δ Velocidad %',data:deltas,backgroundColor:deltas.map(d=>d>0?'rgba(63,185,80,.75)':'rgba(248,81,73,.65)'),borderRadius:4}]},options:{...hbarOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw>0?'+':''}${c.raw}%`}}}}});
+}
+function buildVendEfic(){
+  const data=[...vendedoresData].filter(v=>v.cli>1&&v.c!=='PROFAR').sort((a,b)=>eficCli(b)-eficCli(a)).slice(0,16);
+  mkChart('chartVendEfic',{type:'bar',data:{labels:data.map(v=>v.n.split(' ').slice(-1)[0]),datasets:[{label:'$M por cliente',data:data.map(v=>eficCli(v)),backgroundColor:data.map(v=>eficCli(v)>20?'rgba(63,185,80,.75)':eficCli(v)>10?'rgba(46,168,204,.75)':'rgba(210,153,34,.75)'),borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`$${c.raw.toLocaleString('es-CL')}M/cli · ${data[c.dataIndex].n}`}}}}});
+}
+
+// ═══════════════════════════════════════════════════════
+//  CMK: ABASTECIMIENTO
+// ═══════════════════════════════════════════════════════
+const abasData=[
+  {sku:'ATROVENT HFA 20MCG IHAL',familia:'Respiratorio',stock:1240,vdia:185,oc:true},
+  {sku:'AMOXICILINA 500MG x 21 CAP',familia:'ATB Oral',stock:800,vdia:148,oc:false},
+  {sku:'PANTOPRAZOL 40MG x 28 COMP',familia:'Gastro',stock:2100,vdia:312,oc:true},
+  {sku:'LORATADINA 10MG x 30 COMP',familia:'Alergias',stock:650,vdia:110,oc:false},
+  {sku:'METFORMINA 850MG x 30 COMP',familia:'Diabetes',stock:1800,vdia:286,oc:true},
+  {sku:'LOSARTAN 50MG x 30 COMP',familia:'Cardiovasc.',stock:420,vdia:95,oc:false},
+  {sku:'CIPROFLOXACINO 500MG x 10 TAB',familia:'ATB Oral',stock:380,vdia:88,oc:true},
+  {sku:'OMEPRAZOL 20MG x 28 CAP',familia:'Gastro',stock:3100,vdia:510,oc:false},
+  {sku:'PARACETAMOL 500MG x 24 COMP',familia:'Analgésicos',stock:5200,vdia:840,oc:true},
+  {sku:'ATORVASTATINA 40MG x 30 COMP',familia:'Cardiovasc.',stock:710,vdia:132,oc:false}
+];
+const abasFamilias=['Respiratorio','ATB Oral','Gastro','Alergias','Diabetes','Cardiovasc.','Analgésicos','Oncología','Psiquiatría','Dermatología'];
+const abasCob=[8,5,6,18,7,14,6,31,42,28];
+const abasCanales=['Retail','Clínicas','CENABAST','G.Conv.','Est.Clín.'];
+const abasCriticos=[18,12,7,4,2];
+const abasOCProv=['Lab.Chile','Abbott','Eurofarma','Labormed','Recalcine','GlaxoSmith.','MSD','Sanofi'];
+const abasOCMonto=[342,298,211,187,165,143,128,98];
+function renderAbasTable(){
+  const tbody=document.getElementById('abasBody');
+  if(!tbody)return;
+  const sorted=[...abasData].sort((a,b)=>(a.stock/a.vdia)-(b.stock/b.vdia));
+  tbody.innerHTML=sorted.map((s,i)=>{
+    const cob=+(s.stock/s.vdia).toFixed(1);
+    const cobC=cob<5?'var(--red)':cob<10?'var(--yellow)':'var(--green)';
+    const prio=cob<3?'<span class="badge badge-red">🔴 CRÍTICO</span>':cob<7?'<span class="badge badge-yellow">⚠️ ALTO</span>':'<span class="badge badge-accent">📋 MEDIO</span>';
+    return `<tr><td>${i+1}</td><td><strong>${s.sku}</strong></td><td>${s.familia}</td><td class="td-right">${s.stock.toLocaleString('es-CL')}</td><td class="td-right">${s.vdia.toLocaleString('es-CL')}</td><td class="td-right" style="color:${cobC}"><strong>${cob}d</strong></td><td class="td-right">${s.oc?'<span class="badge badge-green">✓ Activa</span>':'<span class="badge badge-red">✗ Sin OC</span>'}</td><td>${prio}</td></tr>`;
+  }).join('');
+}
+function buildAbasFamilia(){
+  renderAbasTable();
+  const colors=abasCob.map(d=>d<7?'rgba(248,81,73,.75)':d<15?'rgba(210,153,34,.75)':'rgba(63,185,80,.75)');
+  mkChart('chartAbasFamilia',{type:'bar',data:{labels:abasFamilias,datasets:[{label:'Días cobertura',data:abasCob,backgroundColor:colors,borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw}d cobertura`}}},scales:{...baseOpts().scales,y:{...baseOpts().scales.y,suggestedMax:50}}}});
+}
+function buildAbasCanal(){
+  mkChart('chartAbasCanal',{type:'doughnut',data:{labels:abasCanales,datasets:[{data:abasCriticos,backgroundColor:['rgba(63,185,80,.8)','rgba(46,168,204,.8)','rgba(251,133,0,.8)','rgba(88,166,255,.8)','rgba(210,153,34,.8)'],borderWidth:2,borderColor:'#161b22'}]},options:{...donutOpts(),plugins:{...donutOpts().plugins,legend:{display:true,position:'bottom',labels:{color:'#8b949e',font:{size:10}}}}}});
+}
+function buildAbasOC(){
+  mkChart('chartAbasOC',{type:'bar',data:{labels:abasOCProv,datasets:[{label:'OC tránsito $M',data:abasOCMonto,backgroundColor:'rgba(46,168,204,.75)',borderRadius:4}]},options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`$${c.raw}M esperado`}}}}});
 }
 
 // ═══════════════════════════════════════════════════════
