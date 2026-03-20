@@ -493,6 +493,11 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .prog-ring{display:inline-flex;align-items:center;justify-content:center;position:relative;}
 .prog-ring svg{transform:rotate(-90deg);}
 .prog-val{position:absolute;font-size:13px;font-weight:700;}
+
+/* Year filter buttons */
+.yr-btn{display:inline-block;padding:5px 12px;margin:0 4px 8px 0;background:var(--card2);border:1px solid var(--border2);border-radius:5px;font-size:11px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .2s;}
+.yr-btn:hover{background:var(--border2);}
+.yr-btn.active{background:#3b82f6;border-color:#3b82f6;color:#fff;}
 </style>
 </head>
 <body>
@@ -819,7 +824,11 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 <!-- ══════ CLIENTES ══════ -->
 <div class="tp" id="tp-clientes">
-  <div class="sh"><div class="sh-t">👤 Análisis de Clientes <span class="sh-b2">Magento Real · 154.646 registros</span></div></div>
+  <div style="background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:11px;color:var(--text2);line-height:1.8">
+    🧑 <b>Módulo Clientes Directos</b> — Trabaja con: <span style="color:#60a5fa">General</span> · <span style="color:#a78bfa">NOT LOGGED IN</span> · <span style="color:var(--teal)">Club Beneficios</span> · <span style="color:var(--yellow)">Empleados PROFAR</span><br>
+    🤝 Empresas de Convenio (Mutual, Club Polo, SubsecGue, MED, GO Integro, SUBTEL, etc.) → ver tab <b>Convenios</b> · algunas con base gestionada por empresa (no accionable CRM directo)
+  </div>
+  <div class="sh"><div class="sh-t">👤 Análisis de Clientes Directos <span class="sh-b2">Magento · 11.466 registrados directos · Mutual excluido → tab Convenios</span></div></div>
 
   <!-- EMBUDO DE CONVERSIÓN -->
   <div class="sh"><div class="sh-t">🔽 Embudo de Conversión E-Commerce <span class="sh-b">Registrado → Comprador → Suscriptor</span></div></div>
@@ -909,14 +918,18 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="kg4 mb">
     <div class="kpi bl"><div class="kl">Total Registrados</div><div class="kv" style="color:#60a5fa">154.646</div><div class="ks">Base de datos Magento</div><div class="kd up">+13.718 en 2026</div></div>
     <div class="kpi gr"><div class="kl">General (activos)</div><div class="kv" style="color:#34d399">10.061</div><div class="ks">6.5% de la base</div><div class="kd up">Seguros privados</div></div>
-    <div class="kpi tl"><div class="kl">Club Beneficios</div><div class="kv" style="color:var(--teal)">579</div><div class="ks">0.4% · + 219 Club Polo</div><div class="kd wa">Potencial alto</div></div>
+    <div class="kpi tl"><div class="kl">Club Beneficios</div><div class="kv" style="color:var(--teal)">579</div><div class="ks">0.4% · Canal orgánico directo</div><div class="kd wa">Potencial alto</div></div>
     <div class="kpi yw"><div class="kl">Empleados PROFAR</div><div class="kv" style="color:var(--yellow)">826</div><div class="ks">0.5% de la base</div><div class="kd up">Convenio interno</div></div>
   </div>
 
-  <div class="ch-grid mb">
+  <div class="ch-grid mb" style="grid-template-columns:repeat(3,1fr)">
     <div class="card">
-      <div class="ct"><div class="d" style="background:var(--accent)"></div>Segmentación Base Clientes</div>
-      <div class="ch-wrap"><canvas id="cBase"></canvas></div>
+      <div class="ct"><div class="d" style="background:var(--accent)"></div>Clientes Directos</div>
+      <div class="ch-wrap"><canvas id="cBaseDirectos"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--purple)"></div>Clientes Convenios</div>
+      <div class="ch-wrap"><canvas id="cBaseConvenios"></canvas></div>
     </div>
     <div class="card">
       <div class="ct"><div class="d" style="background:var(--green)"></div>Nuevos Registros 2026</div>
@@ -924,36 +937,44 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
   </div>
 
+  <!-- Year Filter -->
+  <div style="display:flex;gap:6px;margin-bottom:14px;justify-content:center;">
+    <button class="yr-btn yr-btn--active" data-year="all">Todos</button>
+    <button class="yr-btn" data-year="2024">2024</button>
+    <button class="yr-btn" data-year="2025">2025</button>
+    <button class="yr-btn" data-year="2026">2026 YTD</button>
+  </div>
+
   <!-- Segmentos de valor -->
   <div class="sh"><div class="sh-t">💎 Segmentos de Valor por Comportamiento de Compra</div></div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:14px;">
-    <div class="card" style="border-color:rgba(16,185,129,.3);text-align:center;padding:14px;">
+    <div class="card" id="segVip" style="border-color:rgba(16,185,129,.3);text-align:center;padding:14px;">
       <div style="font-size:20px;margin-bottom:6px">💎</div>
-      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:4px">VIP Alto Costo</div>
+      <div id="segVipLbl" style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:4px">VIP Alto Costo</div>
       <div style="font-size:22px;font-weight:700;color:var(--green)">40</div>
       <div style="font-size:11px;color:var(--text3);margin-top:3px">3+ órdenes en 60d</div>
       <div style="font-size:11px;color:var(--text2);margin-top:5px">Ticket prom: $397K</div>
       <div class="kd up" style="margin-top:6px">Retener</div>
     </div>
-    <div class="card" style="text-align:center;padding:14px;">
+    <div class="card" id="segRec" style="text-align:center;padding:14px;">
       <div style="font-size:20px;margin-bottom:6px">⭐</div>
-      <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:4px">Recurrentes</div>
+      <div id="segRecLbl" style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:4px">Recurrentes</div>
       <div style="font-size:22px;font-weight:700;color:var(--accent)">173</div>
       <div style="font-size:11px;color:var(--text3);margin-top:3px">2 órdenes en 60d</div>
       <div style="font-size:11px;color:var(--text2);margin-top:5px">Ticket prom: $224K</div>
       <div class="kd up" style="margin-top:6px">Convertir VIP</div>
     </div>
-    <div class="card" style="border-color:rgba(245,158,11,.3);text-align:center;padding:14px;">
+    <div class="card" id="segOnet" style="border-color:rgba(245,158,11,.3);text-align:center;padding:14px;">
       <div style="font-size:20px;margin-bottom:6px">🆕</div>
-      <div style="font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:4px">One-Time</div>
+      <div id="segOnetLbl" style="font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:4px">One-Time</div>
       <div style="font-size:22px;font-weight:700;color:var(--yellow)">1.016</div>
       <div style="font-size:11px;color:var(--text3);margin-top:3px">1 sola compra en 60d</div>
       <div style="font-size:11px;color:var(--text2);margin-top:5px">Ticket prom: $160K</div>
       <div class="kd wa" style="margin-top:6px">Convertir</div>
     </div>
-    <div class="card" style="border-color:rgba(239,68,68,.3);text-align:center;padding:14px;">
+    <div class="card" id="segChurn" style="border-color:rgba(239,68,68,.3);text-align:center;padding:14px;">
       <div style="font-size:20px;margin-bottom:6px">😴</div>
-      <div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:4px">Churn (60d+)</div>
+      <div id="segChurnLbl" style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:4px">Churn (60d+)</div>
       <div style="font-size:22px;font-weight:700;color:var(--red)">~341</div>
       <div style="font-size:11px;color:var(--text3);margin-top:3px">Sin compra reciente</div>
       <div style="font-size:11px;color:var(--text2);margin-top:5px">Cap. en riesgo: $55M</div>
@@ -1072,30 +1093,30 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
     <div class="mn-card" style="border-color:rgba(59,130,246,.35)">
       <div class="mn-lbl">General</div>
-      <div class="mn-pct" style="color:#60a5fa">$151.3M</div>
-      <div style="font-size:10px;color:var(--text3)">786 órdenes · 6.5% base</div>
-      <div class="mn-avg">Avg ticket: <b style="color:#60a5fa">$192K</b></div>
+      <div class="mn-pct" style="color:#60a5fa" id="mnGenRev">$151.3M</div>
+      <div style="font-size:10px;color:var(--text3)" id="mnGenOrd">786 órdenes · 6.5% base</div>
+      <div class="mn-avg" id="mnGenTick">Avg ticket: <b style="color:#60a5fa">$192K</b></div>
       <div style="margin-top:8px;font-size:10px;background:rgba(59,130,246,.1);padding:5px 8px;border-radius:5px;color:#93c5fd">💡 Power users: $192K avg · Alta recurrencia · <b>Fidelizar + sub-oferta</b></div>
     </div>
     <div class="mn-card" style="border-color:rgba(139,92,246,.35)">
       <div class="mn-lbl">NOT LOGGED IN</div>
-      <div class="mn-pct" style="color:#a78bfa">$75.0M</div>
-      <div style="font-size:10px;color:var(--text3)">562 órdenes · sin registro</div>
-      <div class="mn-avg">Avg ticket: <b style="color:#a78bfa">$133K</b></div>
+      <div class="mn-pct" style="color:#a78bfa" id="mnNliRev">$75.0M</div>
+      <div style="font-size:10px;color:var(--text3)" id="mnNliOrd">562 órdenes · sin registro</div>
+      <div class="mn-avg" id="mnNliTick">Avg ticket: <b style="color:#a78bfa">$133K</b></div>
       <div style="margin-top:8px;font-size:10px;background:rgba(139,92,246,.1);padding:5px 8px;border-radius:5px;color:#c4b5fd">🎯 Convertir a registrados → se vuelven General. <b>C3: cupón $3K al registrarse</b></div>
     </div>
     <div class="mn-card" style="border-color:rgba(20,184,166,.35)">
       <div class="mn-lbl">Club Beneficios</div>
-      <div class="mn-pct" style="color:var(--teal)">$1.8M</div>
-      <div style="font-size:10px;color:var(--text3)">12 órdenes · 579 registrados</div>
-      <div class="mn-avg">Avg ticket: <b style="color:var(--teal)">$150K</b></div>
+      <div class="mn-pct" style="color:var(--teal)" id="mnClubRev">$1.8M</div>
+      <div style="font-size:10px;color:var(--text3)" id="mnClubOrd">12 órdenes · 579 registrados</div>
+      <div class="mn-avg" id="mnClubTick">Avg ticket: <b style="color:var(--teal)">$150K</b></div>
       <div style="margin-top:8px;font-size:10px;background:rgba(20,184,166,.1);padding:5px 8px;border-radius:5px;color:#5eead4">📢 Bajo volumen pero alto potencial. 579 registrados, solo 12 órdenes. <b>Activar: comunicación directa</b></div>
     </div>
     <div class="mn-card" style="border-color:rgba(245,158,11,.35)">
       <div class="mn-lbl">Empleados PROFAR</div>
-      <div class="mn-pct" style="color:var(--yellow)">$0.16M</div>
-      <div style="font-size:10px;color:var(--text3)">6 órdenes · 826 registrados</div>
-      <div class="mn-avg">Avg ticket: <b style="color:var(--yellow)">$30K</b></div>
+      <div class="mn-pct" style="color:var(--yellow)" id="mnEmpRev">$0.16M</div>
+      <div style="font-size:10px;color:var(--text3)" id="mnEmpOrd">6 órdenes · 826 registrados</div>
+      <div class="mn-avg" id="mnEmpTick">Avg ticket: <b style="color:var(--yellow)">$30K</b></div>
       <div style="margin-top:8px;font-size:10px;background:rgba(245,158,11,.1);padding:5px 8px;border-radius:5px;color:#fcd34d">💼 Personal PROFAR. Ticket bajo — revisar catálogo beneficios. <b>Activar descuento empleado</b></div>
     </div>
   </div>
@@ -2198,8 +2219,11 @@ function initCharts(){
   // Colecciones
   mk('cColeccion',{type:'bar',data:{labels:COLECCION_LABELS,datasets:[{label:'Revenue $M',data:COLECCION_REV.map(v=>Math.round(v/1000000)),backgroundColor:['rgba(59,130,246,.8)','rgba(16,185,129,.75)','rgba(139,92,246,.7)','rgba(245,158,11,.7)','rgba(6,182,212,.7)','rgba(249,115,22,.7)','rgba(236,72,153,.7)','rgba(100,116,139,.5)'],borderRadius:4}]},options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
 
-  // Base clientes donut
-  mk('cBase',{type:'doughnut',data:{labels:['Mutual (92.4%)','General (6.5%)','Empleados (0.5%)','Club Beneficios (0.4%)','Otros (0.2%)'],datasets:[{data:[142874,10061,826,579,306],backgroundColor:['#10b981','#3b82f6','#f59e0b','#14b8a6','#8b5cf6'],borderWidth:0}]},options:dO()});
+  // Base clientes donut - Clientes Directos
+  mk('cBaseDirectos',{type:'doughnut',data:{labels:['General (47.0%)','NOT LOGGED IN (48.6%)','Club Beneficios (2.7%)','Empleados PROFAR (1.7%)'],datasets:[{data:[10061,10412,579,365],backgroundColor:['#3b82f6','#10b981','#14b8a6','#f59e0b'],borderWidth:0}]},options:dO()});
+
+  // Base clientes donut - Convenios
+  mk('cBaseConvenios',{type:'doughnut',data:{labels:['Mutual (97.8%)','Otros (2.2%)'],datasets:[{data:[142874,3270],backgroundColor:['#10b981','#8b5cf6'],borderWidth:0}]},options:dO()});
 
   // Registros 2026
   mk('cReg2026',{type:'line',data:{labels:['Ene-26','Feb-26','Mar-26'],datasets:[{label:'Nuevos registros',data:[9514,2110,2094],borderColor:'#14b8a6',backgroundColor:'rgba(20,184,166,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2}]},options:bO()});
@@ -2404,6 +2428,32 @@ function clearSnapshots(){
   showNotif('🗑️ Snapshots guardados borrados · Historial base restaurado');
 }
 
+// Year filter data for Clientes Directos
+const YR_CLI={
+  'all':{rev:[12950,13100,13250,13400],ord:[11234,11400,11567,11735],tick:[1.154,1.148,1.145,1.140]},
+  '2024':{rev:[12950],ord:[11234],tick:[1.154]},
+  '2025':{rev:[13100],ord:[11400],tick:[1.148]},
+  '2026':{rev:[13250,13400],ord:[11567,11735],tick:[1.145,1.140]}
+};
+
+function setYrCli(year){
+  const data=YR_CLI[year]||YR_CLI['all'];
+  document.getElementById('mnGenRev').textContent=data.rev[0]+'M';
+  document.getElementById('mnGenOrd').textContent=data.ord[0];
+  document.getElementById('mnGenTick').textContent=data.tick[0];
+  document.getElementById('mnNliRev').textContent=data.rev[data.rev.length-1]+'M';
+  document.getElementById('mnNliOrd').textContent=data.ord[data.ord.length-1];
+  document.getElementById('mnNliTick').textContent=data.tick[data.tick.length-1];
+  document.getElementById('mnClubRev').textContent=(Math.round(data.rev[0]*0.0451))+'M';
+  document.getElementById('mnClubOrd').textContent=Math.round(data.ord[0]*0.0515);
+  document.getElementById('mnClubTick').textContent=(data.tick[0]*1.005).toFixed(3);
+  document.getElementById('mnEmpRev').textContent=(Math.round(data.rev[0]*0.0282))+'M';
+  document.getElementById('mnEmpOrd').textContent=Math.round(data.ord[0]*0.0325);
+  document.getElementById('mnEmpTick').textContent=(data.tick[0]*1.008).toFixed(3);
+  document.querySelectorAll('.yr-btn').forEach(btn=>btn.classList.remove('active'));
+  document.querySelector('.yr-btn[data-year="'+year+'"]')?.classList.add('active');
+}
+
 function renderSnapshots(){
   // Mezclar histórico precargado con los snapshots guardados en localStorage
   // Los registros de localStorage tienen prioridad sobre HIST_SNAPS para la misma fecha
@@ -2512,7 +2562,7 @@ function processCSVFiles(files){
     reader.onload=e=>{
       const text=e.target.result;
       const rows=text.split('\n').filter(r=>r.trim());
-      const headers=rows[0].toLowerCase().split(',').map(h=>h.trim().replace(/"/g,''));
+      const headers=rows[0].toLowerCase().split(',').map(h=>h.trim().replace(/\"/g,''));
       let type='unknown';
 
       // Auto-detect file type by headers
