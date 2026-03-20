@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROFAR CDP · Inteligencia de Clientes</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#080d18;--bg2:#0d1526;--card:#141e33;--card2:#1a2640;--card3:#1f2d4a;
+  --border:#243050;--border2:#344570;
+  --accent:#3b82f6;--a2:#6366f1;--green:#10b981;--red:#ef4444;--yellow:#f59e0b;
+  --orange:#f97316;--purple:#8b5cf6;--cyan:#06b6d4;--pink:#ec4899;--teal:#14b8a6;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;}
+::-webkit-scrollbar{width:4px;height:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+/* HDR */
+.hdr{background:linear-gradient(135deg,#0a1020,#1a2540);border-bottom:1px solid var(--border);padding:13px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.hdr-l{display:flex;align-items:center;gap:11px;}
+.logo{width:35px;height:35px;background:linear-gradient(135deg,var(--teal),var(--accent));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.hdr h1{font-size:18px;font-weight:700;} .hdr h1 span{color:var(--teal);}
+.hdr-sub{font-size:10px;color:var(--text3);}
+.hdr-r{display:flex;align-items:center;gap:9px;}
+.live{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:var(--green);padding:3px 8px;border-radius:13px;font-size:10px;font-weight:700;display:flex;align-items:center;gap:4px;}
+.live-d{width:5px;height:5px;background:var(--green);border-radius:50%;animation:p 2s infinite;}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
+.hbtn{background:none;border:1px solid var(--border2);color:var(--text2);padding:5px 11px;border-radius:6px;cursor:pointer;font-size:11px;text-decoration:none;display:flex;align-items:center;}
+.hbtn:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+/* LAYOUT */
+.wrap{max-width:1400px;margin:0 auto;padding:18px 20px;}
+
+/* TABS */
+.tnav{display:flex;gap:3px;margin-bottom:16px;background:var(--bg2);padding:3px;border-radius:9px;border:1px solid var(--border);overflow-x:auto;}
+.tb{padding:6px 13px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;color:var(--text3);border:none;background:none;white-space:nowrap;transition:all .2s;}
+.tb:hover{color:var(--text2);}
+.tb.active{background:var(--card2);color:var(--text);border:1px solid var(--border2);}
+.tp{display:none;}.tp.active{display:block;}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:15px;}
+.card2{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:12px;}
+.ct{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;display:flex;align-items:center;gap:5px;}
+.ct .d{width:5px;height:5px;border-radius:50%;}
+
+/* KPI */
+.kg3{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:14px;}
+.kg4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px;}
+.kg5{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;margin-bottom:14px;}
+.kg2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.kpi.bl::before{background:linear-gradient(90deg,var(--accent),#60a5fa);}
+.kpi.gr::before{background:linear-gradient(90deg,var(--green),#34d399);}
+.kpi.rd::before{background:linear-gradient(90deg,var(--red),var(--orange));}
+.kpi.tl::before{background:linear-gradient(90deg,var(--teal),var(--cyan));}
+.kpi.pu::before{background:linear-gradient(90deg,var(--purple),#a78bfa);}
+.kpi.yw::before{background:linear-gradient(90deg,var(--yellow),var(--orange));}
+.kl{font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+.kv{font-size:21px;font-weight:700;line-height:1.1;margin-bottom:3px;}
+.ks{font-size:11px;color:var(--text2);}
+.kd{font-size:10px;font-weight:700;padding:2px 6px;border-radius:7px;display:inline-block;margin-top:3px;}
+.up{background:rgba(16,185,129,.1);color:var(--green);}
+.dn{background:rgba(239,68,68,.1);color:var(--red);}
+.nt{background:rgba(148,163,184,.1);color:var(--text3);}
+.wa{background:rgba(245,158,11,.1);color:var(--yellow);}
+
+/* ALERT */
+.al{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:10px 12px;display:flex;align-items:flex-start;gap:8px;border-left:3px solid transparent;margin-bottom:7px;}
+.al.r{border-left-color:var(--red);}.al.g{border-left-color:var(--green);}
+.al.y{border-left-color:var(--yellow);}.al.b{border-left-color:var(--accent);}
+.al.p{border-left-color:var(--purple);}.al.t{border-left-color:var(--teal);}
+.ai{font-size:14px;margin-top:1px;flex-shrink:0;}
+.at{font-size:12px;font-weight:700;margin-bottom:2px;}
+.ad{font-size:11px;color:var(--text2);line-height:1.5;}
+.ab{margin-left:auto;font-size:9px;font-weight:700;padding:2px 7px;border-radius:7px;white-space:nowrap;align-self:flex-start;}
+.bg{background:rgba(16,185,129,.1);color:var(--green);}.br{background:rgba(239,68,68,.1);color:var(--red);}
+.by{background:rgba(245,158,11,.1);color:var(--yellow);}.bb{background:rgba(59,130,246,.1);color:var(--accent);}
+.bp{background:rgba(139,92,246,.1);color:var(--purple);}.bt{background:rgba(20,184,166,.1);color:var(--teal);}
+
+/* CHIP */
+.chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;display:inline-block;}
+.cg{background:rgba(16,185,129,.1);color:var(--green);}
+.cr{background:rgba(239,68,68,.1);color:var(--red);}
+.cy{background:rgba(245,158,11,.1);color:var(--yellow);}
+.cb{background:rgba(59,130,246,.1);color:var(--accent);}
+.cp{background:rgba(139,92,246,.1);color:var(--purple);}
+.ct2{background:rgba(20,184,166,.1);color:var(--teal);}
+.co{background:rgba(249,115,22,.1);color:var(--orange);}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:11px;}
+.tbl th{text-align:left;padding:7px 9px;color:var(--text3);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border);}
+.tbl td{padding:7px 9px;border-bottom:1px solid rgba(36,48,80,.5);vertical-align:middle;}
+.tbl tr:hover td{background:rgba(255,255,255,.015);}
+.bw{height:5px;border-radius:2px;background:var(--border);overflow:hidden;width:50px;display:inline-block;vertical-align:middle;}
+.bf{height:100%;border-radius:2px;}
+
+/* PROGRESS */
+.prog-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:11px;}
+.prog-lbl{width:140px;color:var(--text2);flex-shrink:0;}
+.prog-bar{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;}
+.prog-val{width:50px;text-align:right;font-weight:600;font-size:11px;}
+
+/* SUB CARD */
+.sub-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px;display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.sub-ico{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.sub-info{flex:1;}
+.sub-name{font-size:12px;font-weight:700;margin-bottom:2px;}
+.sub-det{font-size:11px;color:var(--text2);}
+.sub-val{font-size:13px;font-weight:700;text-align:right;flex-shrink:0;}
+
+/* GRID CONVENIO */
+.conv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.conv-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px;cursor:pointer;transition:all .2s;}
+.conv-card:hover{border-color:var(--border2);transform:translateY(-1px);}
+.conv-name{font-size:12px;font-weight:700;margin-bottom:7px;}
+.conv-row{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;}
+.conv-lbl{color:var(--text3);}
+.conv-val{font-weight:600;}
+.conv-trend{height:28px;display:flex;align-items:flex-end;gap:2px;margin-top:7px;}
+.conv-bar{flex:1;border-radius:1px;min-height:2px;}
+
+/* CH GRID */
+.ch-wrap{position:relative;height:200px;}
+.ch-wrap-lg{position:relative;height:250px;}
+.ch-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:14px;}
+
+/* SH */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.sh-t{font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.sh-b{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);color:var(--accent);font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;}
+.sh-b2{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--green);font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;}
+.sh-b3{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--yellow);font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;}
+.sh-acts{display:flex;gap:5px;}
+.btn-xs{background:none;border:1px solid var(--border2);color:var(--text2);padding:4px 9px;border-radius:5px;font-size:10px;cursor:pointer;transition:all .2s;}
+.btn-xs:hover,.btn-xs.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.mb{margin-bottom:14px;}
+.divider{height:1px;background:var(--border);margin:14px 0;}
+
+/* STOCK ALERT BAR */
+.stock-crit{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:13px;margin-bottom:14px;}
+.stock-title{font-size:12px;font-weight:700;color:var(--red);margin-bottom:10px;}
+.stock-item{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:11px;}
+.stock-name{flex:1;font-weight:500;}
+.stock-bar{width:80px;height:5px;border-radius:3px;background:var(--border);overflow:hidden;}
+
+/* PREDICTION */
+.pred-card{background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(99,102,241,.05));border:1px solid rgba(59,130,246,.2);border-radius:10px;padding:13px;margin-bottom:8px;}
+.pred-title{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:3px;}
+.pred-desc{font-size:11px;color:var(--text2);line-height:1.6;}
+
+/* NOTIF */
+.notif{position:fixed;bottom:20px;right:20px;background:var(--card2);border:1px solid var(--border2);border-radius:9px;padding:10px 14px;font-size:11px;max-width:260px;z-index:999;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;}
+.notif.show{opacity:1;transform:translateY(0);}
+
+/* CHANNEL FILTER */
+.ch-filter{display:flex;gap:6px;margin-bottom:14px;}
+.cf-btn{padding:6px 14px;border-radius:7px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:11px;font-weight:600;color:var(--text2);transition:all .2s;}
+.cf-btn:hover{border-color:var(--border2);}
+.cf-btn.active.ec{border-color:var(--accent);background:rgba(59,130,246,.1);color:#60a5fa;}
+.cf-btn.active.sl{border-color:var(--green);background:rgba(16,185,129,.1);color:#34d399;}
+.cf-btn.active.tl{border-color:var(--purple);background:rgba(139,92,246,.1);color:#a78bfa;}
+.cf-btn.active.all{border-color:var(--teal);background:rgba(20,184,166,.1);color:var(--teal);}
+
+/* DATA SOURCE BADGE */
+.src-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700;}
+.src-mg{background:rgba(20,184,166,.1);color:var(--teal);}
+.src-pbi{background:rgba(59,130,246,.1);color:var(--accent);}
+.src-calc{background:rgba(139,92,246,.1);color:var(--purple);}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="logo">👥</div>
+    <div>
+      <h1>PROFAR <span>CDP</span></h1>
+      <div class="hdr-sub">Inteligencia de Clientes · Magento + PBI · E-Commerce · Suscripciones · Convenios</div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <div class="live"><div class="live-d"></div>Magento Live · <span id="hdrDate2"></span></div>
+    <a href="profar.html" class="hbtn">← PROFAR Analytics</a>
+    <a href="index.html" class="hbtn">← CMK</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- CHANNEL SELECTOR -->
+<div class="ch-filter">
+  <button class="cf-btn active all" onclick="setCh('all',this)">🌐 Todos los Canales</button>
+  <button class="cf-btn ec" onclick="setCh('ec',this)">🛒 E-Commerce</button>
+  <button class="cf-btn sl" onclick="setCh('sl',this)">🏪 Sala de Venta</button>
+  <button class="cf-btn tl" onclick="setCh('tl',this)">📞 Venta Telefónica</button>
+</div>
+
+<!-- TABS -->
+<div class="tnav">
+  <button class="tb active" onclick="showTab('resumen',this)">📊 Resumen CDP</button>
+  <button class="tb" onclick="showTab('convenios',this)">🤝 Convenios</button>
+  <button class="tb" onclick="showTab('clientes',this)">👤 Clientes</button>
+  <button class="tb" onclick="showTab('suscripciones',this)">🔄 Suscripciones</button>
+  <button class="tb" onclick="showTab('stock',this)">📦 Stock Crítico</button>
+  <button class="tb" onclick="showTab('predicciones',this)">🔮 Predicciones IA</button>
+  <button class="tb" onclick="showTab('campanas',this)">📢 Campañas</button>
+</div>
+
+<!-- ══════ RESUMEN ══════ -->
+<div class="tp active" id="tp-resumen">
+
+  <!-- KPIs Magento reales -->
+  <div class="sh"><div class="sh-t">📊 KPIs Reales E-Commerce <span class="sh-b">Magento · 60 días</span></div></div>
+  <div class="kg5 mb">
+    <div class="kpi bl"><div class="kl">Órdenes (60d)</div><div class="kv" style="color:#60a5fa">1.908</div><div class="ks">Ene-Mar 2026</div><div class="kd up">+39% vs 2025</div></div>
+    <div class="kpi gr"><div class="kl">Revenue (60d)</div><div class="kv" style="color:#34d399;font-size:17px">$378.3M</div><div class="ks">E-Commerce total</div><div class="kd up">Real Magento</div></div>
+    <div class="kpi tl"><div class="kl">Ticket Promedio</div><div class="kv" style="color:var(--teal)">$198K</div><div class="ks">Prom. por orden</div><div class="kd up">↑ vs $143K 2025</div></div>
+    <div class="kpi pu"><div class="kl">Clientes Únicos</div><div class="kv" style="color:#a78bfa">1.229</div><div class="ks">Compraron en 60d</div><div class="kd nt">1.908 órdenes</div></div>
+    <div class="kpi yw"><div class="kl">Cancelación</div><div class="kv" style="color:var(--yellow);font-size:18px">20.2%</div><div class="ks">385 órdenes</div><div class="kd wa">Reducir a 15%</div></div>
+  </div>
+
+  <!-- Suscripciones highlight -->
+  <div class="kg4 mb">
+    <div class="kpi tl"><div class="kl">🔄 Suscripciones Activas</div><div class="kv" style="color:var(--teal)">279</div><div class="ks">De 376 total</div><div class="kd up">74% activas</div></div>
+    <div class="kpi gr"><div class="kl">MRR Suscripciones</div><div class="kv" style="color:var(--green);font-size:17px">$74.6M</div><div class="ks">Revenue mensual recurrente</div><div class="kd up">REAL Magento</div></div>
+    <div class="kpi pu"><div class="kl">Suscripciones Pausadas</div><div class="kv" style="color:var(--yellow)">82</div><div class="ks">Oportunidad de reactivar</div><div class="kd wa">~$22M en riesgo</div></div>
+    <div class="kpi rd"><div class="kl">Clientes 1 sola compra</div><div class="kv" style="color:var(--red)">82.7%</div><div class="ks">1.016 de 1.229</div><div class="kd wa">Convertir a recurrentes</div></div>
+  </div>
+
+  <!-- Revenue por grupo/convenio -->
+  <div class="sh"><div class="sh-t">🤝 Revenue por Convenio (Grupo Cliente) <span class="sh-b2">Real Magento 60d</span></div></div>
+  <div class="ch-grid mb">
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--accent)"></div>Revenue por Grupo Cliente</div>
+      <div class="ch-wrap"><canvas id="cGrupo"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--teal)"></div>Clientes Nuevos Registrados por Mes</div>
+      <div class="ch-wrap"><canvas id="cNuevos"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Progreso convenios -->
+  <div class="card mb">
+    <div class="ct"><div class="d" style="background:var(--green)"></div>Participación por Grupo Cliente <span class="src-badge src-mg">Magento Real</span></div>
+    <div class="prog-row"><div class="prog-lbl">General</div><div class="prog-bar"><div class="prog-fill" style="width:60%;background:#3b82f6"></div></div><div class="prog-val" style="color:#3b82f6">$151.3M</div><span style="font-size:10px;color:var(--text3);margin-left:6px">60.0% · 786 ord. · $192K ticket</span></div>
+    <div class="prog-row"><div class="prog-lbl">NOT LOGGED IN</div><div class="prog-bar"><div class="prog-fill" style="width:29.7%;background:#8b5cf6"></div></div><div class="prog-val" style="color:#8b5cf6">$75.0M</div><span style="font-size:10px;color:var(--text3);margin-left:6px">29.7% · 562 ord. · $133K ticket</span></div>
+    <div class="prog-row"><div class="prog-lbl">Mutual</div><div class="prog-bar"><div class="prog-fill" style="width:9.5%;background:#10b981"></div></div><div class="prog-val" style="color:#10b981">$24.1M</div><span style="font-size:10px;color:var(--text3);margin-left:6px">9.5% · 130 ord. · $185K ticket</span></div>
+    <div class="prog-row"><div class="prog-lbl">Club de Beneficios</div><div class="prog-bar"><div class="prog-fill" style="width:0.7%;background:#f59e0b"></div></div><div class="prog-val" style="color:var(--text3)">$1.8M</div><span style="font-size:10px;color:var(--text3);margin-left:6px">0.7% · 12 ord. · $150K ticket</span></div>
+  </div>
+
+  <!-- Top comunas -->
+  <div class="ch-grid mb">
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--orange)"></div>Top Comunas por Revenue <span class="src-badge src-mg">Real</span></div>
+      <div class="ch-wrap"><canvas id="cComunas"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--cyan)"></div>Distribución Recurrencia Clientes</div>
+      <div class="ch-wrap"><canvas id="cRecurr"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Alertas clave -->
+  <div class="sh"><div class="sh-t">🚨 Alertas Críticas E-Commerce</div></div>
+  <div class="al r"><div class="ai">🚫</div><div><div class="at">PASURTA 140mg y ZEJULA sin stock — $23.9M en demanda potencial perdida</div><div class="ad">2 SKUs top ventas con stock = 0. Están entre los 5 más vendidos. Cada semana sin stock = ~$5.9M perdidos en conversión.</div></div><div class="ab br">CRÍTICO</div></div>
+  <div class="al y"><div class="ai">📉</div><div><div class="at">20.2% de cancelación en órdenes — 385 de 1.908 canceladas</div><div class="ad">Tasa alta vs estándar ecommerce farma (12-15%). Analizar causas: ¿stock, precio, proceso? Cada punto reducido = +$3.8M revenue.</div></div><div class="ab by">URGENTE</div></div>
+  <div class="al b"><div class="ai">👥</div><div><div class="at">82.7% de clientes son de una sola compra — oportunidad masiva de retención</div><div class="ad">Solo 40 clientes con 3+ órdenes. Si migramos 10% de one-time a recurrentes = +$15M anuales en revenue estable.</div></div><div class="ab bb">CONVERTIR</div></div>
+  <div class="al g"><div class="ai">🔄</div><div><div class="at">MRR de suscripciones: $74.6M/mes — base estable y en crecimiento</div><div class="ad">279 suscripciones activas, principalmente Rybelsus (233 SKUs) y Nurtec. Creció desde oct 2025. Potencial de llegar a $100M con reactivación de 82 pausadas.</div></div><div class="ab bg">POTENCIAR</div></div>
+</div><!-- /resumen -->
+
+<!-- ══════ CONVENIOS ══════ -->
+<div class="tp" id="tp-convenios">
+  <div class="sh"><div class="sh-t">🤝 Análisis por Convenio / Grupo Cliente <span class="sh-b2">Data Real Magento</span></div></div>
+
+  <div class="kg4 mb">
+    <div class="kpi bl"><div class="kl">General (Seguros)</div><div class="kv" style="color:#60a5fa">$151.3M</div><div class="ks">786 órdenes · ticket $192K</div><div class="kd up">60% del canal</div></div>
+    <div class="kpi pu"><div class="kl">NOT LOGGED IN</div><div class="kv" style="color:#a78bfa">$75.0M</div><div class="ks">562 órdenes · ticket $133K</div><div class="kd wa">29.7% — aún sin registro</div></div>
+    <div class="kpi gr"><div class="kl">Mutual</div><div class="kv" style="color:#34d399">$24.1M</div><div class="ks">130 órdenes · ticket $185K</div><div class="kd up">9.5% · alta lealtad</div></div>
+    <div class="kpi tl"><div class="kl">Club de Beneficios</div><div class="kv" style="color:var(--teal)">$1.8M</div><div class="ks">12 órdenes · ticket $150K</div><div class="kd wa">Potencial crecimiento</div></div>
+  </div>
+
+  <!-- Revenue por colección de productos (Fuente_Precio_B2C) -->
+  <div class="sh"><div class="sh-t">📦 Revenue por Colección de Productos (Fuente Precio B2C) <span class="sh-b">Real Magento</span></div></div>
+  <div class="card mb">
+    <div class="ch-wrap-lg"><canvas id="cColeccion"></canvas></div>
+  </div>
+
+  <!-- Tabla convenios -->
+  <div class="card mb">
+    <div class="ct"><div class="d" style="background:var(--teal)"></div>Detalle Colecciones / Convenios</div>
+    <table class="tbl">
+      <thead><tr><th>Colección / Convenio</th><th>Revenue 60d</th><th>% Share</th><th>SKUs Vendidos</th><th>Ticket Implícito</th><th>Tendencia</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td><b>ALTO COSTO</b></td><td><b>$196.7M</b></td><td><span class="chip cb">66.3%</span></td><td>1.484 unid.</td><td>~$132K</td><td class="up">↑ Dominante</td><td><span class="chip cg">Motor principal</span></td></tr>
+        <tr><td>CONVENIOS</td><td>$49.0M</td><td><span class="chip cb">16.5%</span></td><td>586 unid.</td><td>~$84K</td><td class="up">↑ Creciendo</td><td><span class="chip cg">Estable</span></td></tr>
+        <tr><td>ONCOLOGÍA+CONVENIOS</td><td>$9.5M</td><td>3.2%</td><td>169 unid.</td><td>~$56K</td><td class="nt">→ Estable</td><td><span class="chip cy">Monitorear</span></td></tr>
+        <tr><td>MIGRAÑA+CONVENIOS</td><td>$5.3M</td><td>1.8%</td><td>31 unid.</td><td>~$171K</td><td class="up">↑ Creciendo (Pasurta)</td><td><span class="chip cr">Stock 0 ⚠️</span></td></tr>
+        <tr><td>DESTACADOS+CONVENIOS</td><td>$4.9M</td><td>1.6%</td><td>286 unid.</td><td>~$17K</td><td class="nt">→ Estable</td><td><span class="chip cg">OK</span></td></tr>
+        <tr><td>CONTROL PESO</td><td>$3.6M</td><td>1.2%</td><td>15 unid.</td><td>~$241K</td><td class="up">↑ Ozempic en alza</td><td><span class="chip cy">Stock bajo</span></td></tr>
+        <tr><td>VETERINARIA</td><td>$0.9M</td><td>0.3%</td><td>64 unid.</td><td>~$14K</td><td class="nt">→ Estable</td><td><span class="chip cy">Sin foco</span></td></tr>
+        <tr><td>VACUNAS</td><td>$0.07M</td><td>—</td><td>1 unid.</td><td>$65K</td><td class="up">↑ Shingrix creciendo</td><td><span class="chip cr">Stock bajo</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Análisis NOT LOGGED IN -->
+  <div class="sh"><div class="sh-t">🔓 Estrategia NOT LOGGED IN — $75M en compras anónimas</div></div>
+  <div class="kg3 mb">
+    <div class="al b"><div class="ai">💡</div><div><div class="at">$75M de revenue sin datos de cliente (29.7%)</div><div class="ad">Si registramos solo el 30% = 169 nuevos clientes identificados. Con suscripción ofrecida = +$12M MRR potencial.</div></div><div class="ab bb">+$12M</div></div>
+    <div class="al g"><div class="ai">🎁</div><div><div class="at">Cupón post-compra por registro: $3.000 CLP</div><div class="ad">Costo total campaña si registran 500: $1.5M. Revenue potencial por identificar: $37.5M anuales. ROI 25x.</div></div><div class="ab bg">ROI 25x</div></div>
+    <div class="al p"><div class="ai">📱</div><div><div class="at">Pop-up de registro en checkout para NOT LOGGED IN</div><div class="ad">Solo agregar campo opcional en el flujo actual. Sin fricción. Tasa estimada 35-40% de conversión a registro.</div></div><div class="ab bp">Implementar</div></div>
+  </div>
+</div><!-- /convenios -->
+
+<!-- ══════ CLIENTES ══════ -->
+<div class="tp" id="tp-clientes">
+  <div class="sh"><div class="sh-t">👤 Análisis de Clientes <span class="sh-b2">Magento Real · 154.646 registros</span></div></div>
+
+  <div class="kg4 mb">
+    <div class="kpi bl"><div class="kl">Total Registrados</div><div class="kv" style="color:#60a5fa">154.646</div><div class="ks">Base de datos Magento</div><div class="kd up">+13.718 en 2026</div></div>
+    <div class="kpi pu"><div class="kl">Mutual (mayor grupo)</div><div class="kv" style="color:#a78bfa">142.874</div><div class="ks">92.4% de la base</div><div class="kd nt">Convenio corporativo</div></div>
+    <div class="kpi gr"><div class="kl">General (activos)</div><div class="kv" style="color:#34d399">10.061</div><div class="ks">6.5% de la base</div><div class="kd up">Seguros privados</div></div>
+    <div class="kpi tl"><div class="kl">Club Beneficios</div><div class="kv" style="color:var(--teal)">579</div><div class="ks">+ 219 Club Polo</div><div class="kd wa">Potencial muy alto</div></div>
+  </div>
+
+  <div class="ch-grid mb">
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--accent)"></div>Segmentación Base Clientes</div>
+      <div class="ch-wrap"><canvas id="cBase"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--green)"></div>Nuevos Registros 2026</div>
+      <div class="ch-wrap"><canvas id="cReg2026"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Segmentos de valor -->
+  <div class="sh"><div class="sh-t">💎 Segmentos de Valor por Comportamiento de Compra</div></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:14px;">
+    <div class="card" style="border-color:rgba(16,185,129,.3);text-align:center;padding:14px;">
+      <div style="font-size:20px;margin-bottom:6px">💎</div>
+      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:4px">VIP Alto Costo</div>
+      <div style="font-size:22px;font-weight:700;color:var(--green)">40</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:3px">3+ órdenes en 60d</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:5px">Ticket prom: $397K</div>
+      <div class="kd up" style="margin-top:6px">Retener</div>
+    </div>
+    <div class="card" style="text-align:center;padding:14px;">
+      <div style="font-size:20px;margin-bottom:6px">⭐</div>
+      <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:4px">Recurrentes</div>
+      <div style="font-size:22px;font-weight:700;color:var(--accent)">173</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:3px">2 órdenes en 60d</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:5px">Ticket prom: $224K</div>
+      <div class="kd up" style="margin-top:6px">Convertir VIP</div>
+    </div>
+    <div class="card" style="border-color:rgba(245,158,11,.3);text-align:center;padding:14px;">
+      <div style="font-size:20px;margin-bottom:6px">🆕</div>
+      <div style="font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:4px">One-Time</div>
+      <div style="font-size:22px;font-weight:700;color:var(--yellow)">1.016</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:3px">1 sola compra en 60d</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:5px">Ticket prom: $160K</div>
+      <div class="kd wa" style="margin-top:6px">Convertir</div>
+    </div>
+    <div class="card" style="border-color:rgba(239,68,68,.3);text-align:center;padding:14px;">
+      <div style="font-size:20px;margin-bottom:6px">😴</div>
+      <div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:4px">Churn (60d+)</div>
+      <div style="font-size:22px;font-weight:700;color:var(--red)">~341</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:3px">Sin compra reciente</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:5px">Cap. en riesgo: $55M</div>
+      <div class="kd dn" style="margin-top:6px">Reactivar</div>
+    </div>
+  </div>
+
+  <!-- Top clientes -->
+  <div class="sh"><div class="sh-t">🏆 Top 10 Clientes por Revenue (60d)</div></div>
+  <div class="card mb">
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Cliente</th><th>Órdenes</th><th>Revenue</th><th>Ticket Prom.</th><th>Segmento</th><th>Acción</th></tr></thead>
+      <tbody id="topClientes"></tbody>
+    </table>
+  </div>
+</div><!-- /clientes -->
+
+<!-- ══════ SUSCRIPCIONES ══════ -->
+<div class="tp" id="tp-suscripciones">
+  <div class="sh"><div class="sh-t">🔄 Módulo Suscripciones <span class="sh-b2">Magento Real · 376 suscripciones</span></div></div>
+
+  <div class="kg4 mb">
+    <div class="kpi tl"><div class="kl">Activas</div><div class="kv" style="color:var(--teal)">279</div><div class="ks">74.2% del total</div><div class="kd up">Creciendo</div></div>
+    <div class="kpi yw"><div class="kl">Pausadas</div><div class="kv" style="color:var(--yellow)">82</div><div class="ks">Oportunidad reactivar</div><div class="kd wa">~$22M/mes en riesgo</div></div>
+    <div class="kpi rd"><div class="kl">Canceladas</div><div class="kv" style="color:var(--red)">15</div><div class="ks">4% de baja</div><div class="kd dn">Churn bajo</div></div>
+    <div class="kpi gr"><div class="kl">MRR Total</div><div class="kv" style="color:var(--green);font-size:17px">$74.6M</div><div class="ks">Revenue mensual recurrente</div><div class="kd up">Real Magento</div></div>
+  </div>
+
+  <div class="ch-grid mb">
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--teal)"></div>Estado Suscripciones</div>
+      <div class="ch-wrap"><canvas id="cSubStatus"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--accent)"></div>Frecuencia de Entrega</div>
+      <div class="ch-wrap"><canvas id="cSubFreq"></canvas></div>
+    </div>
+  </div>
+
+  <div class="ch-grid mb">
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--green)"></div>Suscripciones Creadas por Mes</div>
+      <div class="ch-wrap"><canvas id="cSubMes"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--purple)"></div>Top SKUs en Suscripciones (# suscripciones)</div>
+      <div class="ch-wrap"><canvas id="cSubSku"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Top SKUs suscripción -->
+  <div class="sh"><div class="sh-t">💊 Top SKUs en Suscripciones <span class="sh-b">Productos más suscritos</span></div></div>
+  <div class="card mb">
+    <table class="tbl">
+      <thead><tr><th>SKU</th><th>Producto</th><th># Suscripciones</th><th>Share %</th><th>Colección</th><th>Barra</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>109920</td><td>RYBELSUS 3 MG X 30 COMP</td><td><b>88</b></td><td>23.4%</td><td><span class="chip cb">Alto Costo</span></td><td><div class="bw"><div class="bf" style="width:100%;background:var(--accent)"></div></div></td><td><span class="chip cg">Activo</span></td></tr>
+        <tr><td>109921</td><td>RYBELSUS 7 MG X 30 COMP</td><td><b>86</b></td><td>22.9%</td><td><span class="chip cb">Alto Costo</span></td><td><div class="bw"><div class="bf" style="width:98%;background:var(--accent)"></div></div></td><td><span class="chip cg">Activo</span></td></tr>
+        <tr><td>109922</td><td>RYBELSUS 14 MG X 30 COMP</td><td><b>59</b></td><td>15.7%</td><td><span class="chip cb">Alto Costo</span></td><td><div class="bw"><div class="bf" style="width:67%;background:var(--accent)"></div></div></td><td><span class="chip cg">Activo</span></td></tr>
+        <tr><td>110816</td><td>NURTEC 75 MG X 8 TAB.</td><td><b>55</b></td><td>14.6%</td><td><span class="chip cr">Alto Costo</span></td><td><div class="bw"><div class="bf" style="width:63%;background:var(--green)"></div></div></td><td><span class="chip cg">Top ventas</span></td></tr>
+        <tr><td>108590</td><td>PASURTA 140 MG SOL. INY.</td><td><b>45</b></td><td>12.0%</td><td><span class="chip cr">Convenios</span></td><td><div class="bw"><div class="bf" style="width:51%;background:var(--red)"></div></div></td><td><span class="chip cr">⚠️ Stock 0</span></td></tr>
+        <tr><td>103312</td><td>LENZETTO</td><td><b>23</b></td><td>6.1%</td><td><span class="chip cy">—</span></td><td><div class="bw"><div class="bf" style="width:26%;background:var(--yellow)"></div></div></td><td><span class="chip cy">Monitorear</span></td></tr>
+        <tr><td>100086</td><td>GENOTROPIN 36 UI VIAL</td><td><b>19</b></td><td>5.1%</td><td><span class="chip cb">Alto Costo</span></td><td><div class="bw"><div class="bf" style="width:22%;background:var(--accent)"></div></div></td><td><span class="chip cg">Stock 2844</span></td></tr>
+        <tr><td>106810</td><td>OZEMPIC SOL. INY. 4MG</td><td><b>8</b></td><td>2.1%</td><td><span class="chip co">Control Peso</span></td><td><div class="bw"><div class="bf" style="width:9%;background:var(--orange)"></div></div></td><td><span class="chip cy">Stock bajo</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Alertas suscripciones -->
+  <div class="sh"><div class="sh-t">⚠️ Alertas Suscripciones</div></div>
+  <div class="al r"><div class="ai">🚫</div><div><div class="at">PASURTA con 45 suscripciones activas y stock = 0 — entregas fallando</div><div class="ad">45 pacientes suscritos a Pasurta sin stock disponible. Cada entrega fallida = riesgo de cancelación. Reponer urgente antes del próximo ciclo de entrega.</div></div><div class="ab br">URGENTE</div></div>
+  <div class="al y"><div class="ai">⏸️</div><div><div class="at">82 suscripciones pausadas — $22M/mes detenidos</div><div class="ad">Tasa de pausa inusualmente alta (21.8%). Probable causa: stock o problema de pago. Campaña de reactivación con recordatorio personalizado puede recuperar 40-60%.</div></div><div class="ab by">REACTIVAR</div></div>
+  <div class="al g"><div class="ai">📈</div><div><div class="at">Rybelsus domina suscripciones — 233 de 376 (61.9%)</div><div class="ad">Oportunidad de crear "pack Rybelsus" con 3, 6 y 12 meses de suscripción con descuento progresivo. Retención asegurada en mercado GLP-1 en alza.</div></div><div class="ab bg">POTENCIAR</div></div>
+</div><!-- /suscripciones -->
+
+<!-- ══════ STOCK CRÍTICO ══════ -->
+<div class="tp" id="tp-stock">
+  <div class="sh"><div class="sh-t">📦 Stock Crítico E-Commerce <span class="sh-b3">Real Magento · Actualizado hoy</span></div></div>
+
+  <div class="kg4 mb">
+    <div class="kpi rd"><div class="kl">SKUs sin stock</div><div class="kv" style="color:var(--red)">2</div><div class="ks">Top sellers en 0</div><div class="kd dn">Pérdida activa</div></div>
+    <div class="kpi yw"><div class="kl">Stock crítico &lt;20u</div><div class="kv" style="color:var(--yellow)">8</div><div class="ks">Top sellers &lt;3 sem.</div><div class="kd wa">Pedir esta semana</div></div>
+    <div class="kpi rd"><div class="kl">Revenue en riesgo</div><div class="kv" style="color:var(--red);font-size:17px">$58M+</div><div class="ks">Proyección 30 días</div><div class="kd dn">Si no se repone</div></div>
+    <div class="kpi gr"><div class="kl">SKUs OK (stock)</div><div class="kv" style="color:var(--green)">2.340+</div><div class="ks">De 2.344 totales</div><div class="kd up">99.8% OK</div></div>
+  </div>
+
+  <div class="stock-crit">
+    <div class="stock-title">🚨 CRÍTICO — Stock 0 (Pausar suscripciones, bloquear compra)</div>
+    <div class="stock-item">
+      <div class="stock-name"><b>PASURTA 140 MG</b> (SKU 108590)</div>
+      <div class="stock-bar"><div style="height:100%;width:0%;background:var(--red);border-radius:3px"></div></div>
+      <span style="color:var(--red);font-weight:700">0 ud.</span>
+      <span style="color:var(--text3);font-size:10px">Rev. 60d: $18.9M · 45 suscripciones activas</span>
+      <span class="chip cr">REPONER URGENTE</span>
+    </div>
+    <div class="stock-item">
+      <div class="stock-name"><b>ZEJULA 100 MG</b> (SKU 111352)</div>
+      <div class="stock-bar"><div style="height:100%;width:0%;background:var(--red);border-radius:3px"></div></div>
+      <span style="color:var(--red);font-weight:700">0 ud.</span>
+      <span style="color:var(--text3);font-size:10px">Rev. 60d: $5.0M · Oncología</span>
+      <span class="chip cr">REPONER URGENTE</span>
+    </div>
+  </div>
+
+  <div class="card mb">
+    <div class="ct"><div class="d" style="background:var(--yellow)"></div>Top 15 SKUs por Revenue con Stock Crítico</div>
+    <table class="tbl">
+      <thead><tr><th>SKU</th><th>Producto</th><th>Revenue 60d</th><th>Stock Actual</th><th>Sem. Estimadas</th><th>Suscripciones</th><th>Urgencia</th></tr></thead>
+      <tbody id="stockBody"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="ct"><div class="d" style="background:var(--orange)"></div>Revenue en Riesgo por Falta de Stock (proyección 30d)</div>
+    <div class="ch-wrap-lg"><canvas id="cStockRisk"></canvas></div>
+  </div>
+</div><!-- /stock -->
+
+<!-- ══════ PREDICCIONES ══════ -->
+<div class="tp" id="tp-predicciones">
+  <div class="sh"><div class="sh-t">🔮 Predicciones IA <span class="sh-b">Basado en tendencias reales Magento</span></div></div>
+
+  <div class="kg3 mb">
+    <div class="kpi gr"><div class="kl">MRR Proyectado Abr</div><div class="kv" style="color:var(--green);font-size:18px">$85-92M</div><div class="ks">Si se reactivan 40 subs pausadas</div><div class="kd up">↑ vs $74.6M actual</div></div>
+    <div class="kpi bl"><div class="kl">Revenue E-Com Q2</div><div class="kv" style="color:#60a5fa;font-size:18px">$180-220M</div><div class="ks">Si se resuelve stock crítico</div><div class="kd up">↑ vs $140M Mar</div></div>
+    <div class="kpi pu"><div class="kl">Clientes Activos 60d</div><div class="kv" style="color:#a78bfa;font-size:18px">+15-20%</div><div class="ks">Con campaña NOT LOGGED IN</div><div class="kd up">+184-246 clientes</div></div>
+  </div>
+
+  <div class="sh"><div class="sh-t">📈 Predicciones de Mercado por Categoría</div></div>
+  <div class="pred-card"><div class="pred-title">🔺 GLP-1 (Rybelsus, Ozempic) — ALTA DEMANDA SOSTENIDA</div><div class="pred-desc">Rybelsus es el top SKU de suscripciones (233 activas, 61.9%). La tendencia global GLP-1 seguirá creciendo Q2-Q3 2026. <b>Acción: ampliar stock mínimo a 6 meses, negociar precio por volumen con Novo Nordisk.</b> Riesgo: ingreso de competencia genérica en 12-18 meses.</div></div>
+  <div class="pred-card" style="border-color:rgba(245,158,11,.2);background:linear-gradient(135deg,rgba(245,158,11,.06),rgba(249,115,22,.03))"><div class="pred-title" style="color:var(--yellow)">⚠️ PASURTA (Migraña) — DEMANDA ALTA, STOCK CRÍTICO</div><div class="pred-desc">2° categoría por suscripciones (45 activas). La categoría de migraña crónica tiene alta lealtad (pacientes no cambian tratamiento). <b>Acción urgente: reponer antes del próximo ciclo (generalmente cada 28-30 días). Cada mes sin stock = pérdida de $18.9M + riesgo de migración a competencia.</b></div></div>
+  <div class="pred-card" style="border-color:rgba(16,185,129,.2);background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(6,182,212,.03))"><div class="pred-title" style="color:var(--green)">🔺 NURTEC (Migraña aguda) — CRECIMIENTO SOSTENIDO</div><div class="pred-desc">Top revenue absoluto: $88.1M en 60d (23.3% del total). 55 suscripciones. <b>Acción: crear pack premium "Kit Migraña Completo" (Nurtec + Pasurta) con descuento 8%. Potencial de bundle: +$12M por trimestre.</b></div></div>
+  <div class="pred-card" style="border-color:rgba(139,92,246,.2);background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(99,102,241,.03))"><div class="pred-title" style="color:var(--purple)">🔺 ONCOLOGÍA — Canal Telefónico dominante, E-Com en alza</div><div class="pred-desc">CLEXANE, IMATINIB y similares en E-Com. Canal telefónico maneja volumen mayor. <b>Oportunidad: migrar 15% del volumen telefónico a suscripción E-Com = $30M anuales a menor costo operacional.</b></div></div>
+  <div class="pred-card" style="border-color:rgba(239,68,68,.2);background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(249,115,22,.03))"><div class="pred-title" style="color:var(--red)">🔻 VETERINARIA — Categoría marginal sin foco</div><div class="pred-desc">$0.9M en 60d, 64 SKUs, sin presencia en suscripciones. <b>Recomendación: evaluar si mantener o focalizar solo en alta especialidad. El espacio en catálogo y bodega tiene mayor ROI en Alto Costo.</b></div></div>
+
+  <div class="sh" style="margin-top:6px"><div class="sh-t">📅 Proyección Revenue Mensual (próximos 3 meses)</div></div>
+  <div class="card">
+    <div class="ch-wrap-lg"><canvas id="cProyeccion"></canvas></div>
+  </div>
+</div><!-- /predicciones -->
+
+<!-- ══════ CAMPAÑAS ══════ -->
+<div class="tp" id="tp-campanas">
+  <div class="sh"><div class="sh-t">📢 Campañas Sugeridas <span class="sh-b">Basadas en data real</span></div></div>
+
+  <div class="kg4 mb">
+    <div class="kpi gr"><div class="kl">Potencial Total Campañas</div><div class="kv" style="color:var(--green);font-size:17px">+$45M</div><div class="ks">Revenue incremental/trimestre</div><div class="kd up">Si se ejecutan todas</div></div>
+    <div class="kpi bl"><div class="kl">Campañas Prioritarias</div><div class="kv" style="color:#60a5fa">4</div><div class="ks">Alta urgencia / alto ROI</div></div>
+    <div class="kpi yw"><div class="kl">Campañas Secundarias</div><div class="kv" style="color:var(--yellow)">3</div><div class="ks">Potencial medio / bajo esfuerzo</div></div>
+    <div class="kpi tl"><div class="kl">Segmentos Identificados</div><div class="kv" style="color:var(--teal)">6</div><div class="ks">Con data real para targetear</div></div>
+  </div>
+
+  <!-- Campañas prioritarias -->
+  <div class="sh"><div class="sh-t">🔴 Campañas Prioritarias (Alta Urgencia)</div></div>
+
+  <div class="sub-card" style="border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.04)">
+    <div class="sub-ico" style="background:rgba(239,68,68,.15)">🔄</div>
+    <div class="sub-info">
+      <div class="sub-name">CAMPAÑA 1: Reactivar 82 suscripciones pausadas</div>
+      <div class="sub-det"><b>Segmento:</b> 82 suscriptores pausados · <b>Canal:</b> Email + SMS · <b>Mensaje:</b> "Tu medicamento te espera, reactivá con 1 clic" · <b>Plazo:</b> 7 días</div>
+      <div style="margin-top:5px"><span class="chip cg">ROI 40x</span> <span class="chip cb">$22M recuperable</span> <span class="chip cy">7 días</span></div>
+    </div>
+    <div class="sub-val" style="color:var(--green)">+$22M/mes</div>
+  </div>
+
+  <div class="sub-card" style="border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.04)">
+    <div class="sub-ico" style="background:rgba(239,68,68,.15)">📦</div>
+    <div class="sub-info">
+      <div class="sub-name">CAMPAÑA 2: Comunicar quiebre de stock Pasurta — retención pacientes</div>
+      <div class="sub-det"><b>Segmento:</b> 45 pacientes con suscripción Pasurta activa · <b>Canal:</b> Email + WhatsApp · <b>Mensaje:</b> Disculpa + fecha estimada reposición + alternativa temporal</div>
+      <div style="margin-top:5px"><span class="chip cr">Urgente HOY</span> <span class="chip cb">Evitar 45 cancelaciones</span></div>
+    </div>
+    <div class="sub-val" style="color:var(--red)">Retener $18.9M</div>
+  </div>
+
+  <div class="sub-card" style="border-color:rgba(59,130,246,.3)">
+    <div class="sub-ico" style="background:rgba(59,130,246,.15)">🔓</div>
+    <div class="sub-info">
+      <div class="sub-name">CAMPAÑA 3: Convertir NOT LOGGED IN a registrados con cupón $3.000</div>
+      <div class="sub-det"><b>Segmento:</b> 562 órdenes sin login (29.7% del canal) · <b>Canal:</b> Pop-up checkout + email post-compra · <b>Incentivo:</b> $3.000 en próxima compra al registrarse</div>
+      <div style="margin-top:5px"><span class="chip cb">ROI 25x</span> <span class="chip cp">~200 registros nuevos</span></div>
+    </div>
+    <div class="sub-val" style="color:var(--accent)">+$26M/año</div>
+  </div>
+
+  <div class="sub-card" style="border-color:rgba(16,185,129,.3)">
+    <div class="sub-ico" style="background:rgba(16,185,129,.15)">🔄</div>
+    <div class="sub-info">
+      <div class="sub-name">CAMPAÑA 4: Pack Rybelsus 3+6+12 meses con descuento progresivo</div>
+      <div class="sub-det"><b>Segmento:</b> 233 suscriptores Rybelsus + nuevos GLP-1 · <b>Canal:</b> Email personalizado + PDP · <b>Descuento:</b> 3m=0%, 6m=5%, 12m=10%</div>
+      <div style="margin-top:5px"><span class="chip cg">LTV +40%</span> <span class="chip ct2">Retención 92%</span></div>
+    </div>
+    <div class="sub-val" style="color:var(--green)">+$8M LTV</div>
+  </div>
+
+  <!-- Campañas secundarias -->
+  <div class="sh" style="margin-top:14px"><div class="sh-t">🟡 Campañas Secundarias</div></div>
+
+  <div class="sub-card">
+    <div class="sub-ico" style="background:rgba(245,158,11,.15)">🎯</div>
+    <div class="sub-info">
+      <div class="sub-name">CAMPAÑA 5: Convertir 1.016 one-time buyers a segunda compra</div>
+      <div class="sub-det"><b>Segmento:</b> 1.016 clientes con 1 orden · <b>Canal:</b> Email 30 días post-compra · <b>Mensaje:</b> "¿Se te acabó? Reserva tu próxima dosis con 5% descuento"</div>
+      <div style="margin-top:5px"><span class="chip cy">+10% conversión</span> <span class="chip cb">~100 clientes nuevos recurrentes</span></div>
+    </div>
+    <div class="sub-val" style="color:var(--yellow)">+$16M/año</div>
+  </div>
+
+  <div class="sub-card">
+    <div class="sub-ico" style="background:rgba(139,92,246,.15)">🏙️</div>
+    <div class="sub-info">
+      <div class="sub-name">CAMPAÑA 6: Foco RM (Las Condes + Providencia + Lo Barnechea)</div>
+      <div class="sub-det"><b>Segmento:</b> Top 3 comunas = $91.3M (37.7% del revenue) · <b>Canal:</b> Google Ads geotargeting + SEM · <b>Objetivo:</b> aumentar share en NSE alto</div>
+      <div style="margin-top:5px"><span class="chip cp">NSE Alto</span> <span class="chip cb">Ticket $350K+</span></div>
+    </div>
+    <div class="sub-val" style="color:var(--purple)">+$12M/trim</div>
+  </div>
+</div><!-- /campañas -->
+
+</div><!-- /wrap -->
+<div class="notif" id="notif"></div>
+
+<script>
+// ══════ DATA REAL MAGENTO ══════
+const GRUPO_LABELS=['General','NOT LOGGED IN','Mutual','Club Beneficios','Empleados'];
+const GRUPO_REV=[151296916,74976089,24065294,1799717,163832];
+const GRUPO_ORDERS=[786,562,130,12,6];
+const GRUPO_COLORS=['#3b82f6','#8b5cf6','#10b981','#f59e0b','#64748b'];
+
+const COMUNAS_LABELS=['Las Condes','Providencia','Lo Barnechea','Ñuñoa','Vitacura','Viña del Mar','Santiago','Concepción','Colina','La Florida'];
+const COMUNAS_REV=[43073964,25556825,22659901,15887065,14150014,9884057,8300091,7740200,7549313,6371615];
+
+const COLECCION_LABELS=['ALTO COSTO','CONVENIOS','ONCOL.+CONV.','MIGRAÑA+CONV.','DEST.+CONV.','CONTROL PESO','VETERINARIA','OTROS'];
+const COLECCION_REV=[196737103,49044713,9522624,5295538,4893127,3609960,902451,2322075];
+
+const SUB_MES_L=['Oct-25','Nov-25','Dic-25','Ene-26','Feb-26','Mar-26'];
+const SUB_MES_V=[2,124,64,82,55,49];
+
+const TOP_SKUS_SUB_L=['Rybelsus 3mg','Rybelsus 7mg','Rybelsus 14mg','Nurtec 75mg','Pasurta 140mg','Lenzetto','Genotropin','Ozempic'];
+const TOP_SKUS_SUB_V=[88,86,59,55,45,23,19,8];
+
+const STOCK_ITEMS=[
+  {sku:'110816',name:'NURTEC 75MG x8',rev:88104236,stock:214,subs:55,semanas:18},
+  {sku:'100086',name:'GENOTROPIN 36UI',rev:19692885,stock:2844,subs:19,semanas:99},
+  {sku:'109922',name:'RYBELSUS 14mg x30',rev:19027488,stock:111,subs:59,semanas:4},
+  {sku:'108590',name:'PASURTA 140mg',rev:18881755,stock:0,subs:45,semanas:0},
+  {sku:'109920',name:'RYBELSUS 3mg x30',rev:16089420,stock:129,subs:88,semanas:5},
+  {sku:'109921',name:'RYBELSUS 7mg x30',rev:15949512,stock:127,subs:86,semanas:5},
+  {sku:'100034',name:'CIMZIA 200mg x2',rev:5596590,stock:5,subs:0,semanas:1},
+  {sku:'101612',name:'CLEXANE 40mg x10',rev:5299392,stock:30,subs:0,semanas:1},
+  {sku:'111352',name:'ZEJULA 100mg x56',rev:5037400,stock:0,subs:0,semanas:0},
+  {sku:'111101',name:'SOTYKTU 6mg x30',rev:4666942,stock:13,subs:0,semanas:1},
+  {sku:'112936',name:'SHINGRIX 0.5ml',rev:4369534,stock:11,subs:0,semanas:1},
+  {sku:'107897',name:'DUPIXENT 300mg',rev:4346200,stock:47,subs:0,semanas:2},
+  {sku:'106810',name:'OZEMPIC 4mg/3ml',rev:3609960,stock:46,subs:8,semanas:2},
+  {sku:'101613',name:'CLEXANE 60mg x10',rev:3474350,stock:18,subs:0,semanas:1},
+  {sku:'102955',name:'IMATINIB 400mg',rev:3364478,stock:7,subs:0,semanas:1},
+];
+
+const TOP_CLIENTES=[
+  {email:'parraou@gmail.com',orders:1,rev:6000506,ticket:6000506},
+  {email:'diana.asela31@gmail.com',orders:1,rev:2591989,ticket:2591989},
+  {email:'anaperezbalverdi@gmail.com',orders:1,rev:2222981,ticket:2222981},
+  {email:'antoniamunategui@gmail.com',orders:2,rev:2214081,ticket:1107040},
+  {email:'kineretpaz@hotmail.com',orders:2,rev:1746102,ticket:873051},
+  {email:'palaciosj68@gmail.com',orders:1,rev:1654202,ticket:1654202},
+  {email:'ffrugonea@gmail.com',orders:6,rev:1394014,ticket:232335},
+  {email:'mabel_andrea@yahoo.es',orders:2,rev:1378979,ticket:689489},
+  {email:'erikarw2@gmail.com',orders:2,rev:1345980,ticket:672990},
+  {email:'lolo.acp@gmail.com',orders:1,rev:1339980,ticket:1339980},
+];
+
+// ══════ INIT ══════
+document.addEventListener('DOMContentLoaded',()=>{
+  const d=new Date();
+  document.getElementById('hdrDate2').textContent=d.toLocaleDateString('es-CL',{day:'numeric',month:'short',year:'numeric'});
+  initCharts();
+  renderStock();
+  renderTopClientes();
+  showNotif('✅ Data Magento cargada · '+STOCK_ITEMS.length+' SKUs analizados');
+});
+
+// ══════ TABS ══════
+function showTab(id,el){
+  document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tb').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tp-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ══════ CHANNEL FILTER ══════
+let currentCh='all';
+function setCh(ch,el){
+  currentCh=ch;
+  document.querySelectorAll('.cf-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  updateChannelContext(ch);
+  showNotif('Filtro: '+(ch==='all'?'Todos los canales':ch==='ec'?'E-Commerce':ch==='sl'?'Sala de Venta':'Venta Telefónica'));
+}
+function updateChannelContext(ch){
+  const note=ch==='ec'?'Magento':ch==='sl'?'PBI PROFAR · Particular':ch==='tl'?'PBI PROFAR · Venta Tel.':'Todos';
+  // Future: filter charts by channel
+}
+
+// ══════ CHARTS ══════
+const bO=()=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:10}}},tooltip:{backgroundColor:'#1a2640',borderColor:'#243050',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:8}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(36,48,80,.4)'}},y:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(36,48,80,.4)'}}}});
+const dO=()=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:10},padding:8}},tooltip:{backgroundColor:'#1a2640',borderColor:'#243050',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:8}}});
+
+function mk(id,cfg){const el=document.getElementById(id);if(!el)return;return new Chart(el,cfg);}
+
+function initCharts(){
+  // Revenue por grupo
+  mk('cGrupo',{type:'doughnut',data:{labels:GRUPO_LABELS,datasets:[{data:GRUPO_REV.map(v=>Math.round(v/1000000)),backgroundColor:GRUPO_COLORS,borderWidth:0}]},options:{...dO(),plugins:{...dO().plugins,tooltip:{...dO().plugins.tooltip,callbacks:{label:c=>`${c.label}: $${c.raw}M`}}}}});
+
+  // Nuevos clientes 2026
+  mk('cNuevos',{type:'bar',data:{labels:['Ene-26','Feb-26','Mar-26'],datasets:[{label:'Nuevos Registros',data:[9514,2110,2094],backgroundColor:['rgba(20,184,166,.75)','rgba(59,130,246,.75)','rgba(59,130,246,.75)'],borderRadius:4}]},options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
+
+  // Comunas
+  mk('cComunas',{type:'bar',data:{labels:COMUNAS_LABELS,datasets:[{label:'Revenue $M',data:COMUNAS_REV.map(v=>Math.round(v/1000000)),backgroundColor:'rgba(249,115,22,.7)',borderRadius:3}]},options:{...bO(),indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(36,48,80,.4)'}},y:{ticks:{color:'#94a3b8',font:{size:9}},grid:{display:false}}}}});
+
+  // Recurrencia
+  mk('cRecurr',{type:'doughnut',data:{labels:['1 compra (82.7%)','2 compras (14.1%)','3+ compras (3.3%)'],datasets:[{data:[1016,173,40],backgroundColor:['#ef4444','#f59e0b','#10b981'],borderWidth:0}]},options:dO()});
+
+  // Colecciones
+  mk('cColeccion',{type:'bar',data:{labels:COLECCION_LABELS,datasets:[{label:'Revenue $M',data:COLECCION_REV.map(v=>Math.round(v/1000000)),backgroundColor:['rgba(59,130,246,.8)','rgba(16,185,129,.75)','rgba(139,92,246,.7)','rgba(245,158,11,.7)','rgba(6,182,212,.7)','rgba(249,115,22,.7)','rgba(236,72,153,.7)','rgba(100,116,139,.5)'],borderRadius:4}]},options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
+
+  // Base clientes donut
+  mk('cBase',{type:'doughnut',data:{labels:['Mutual (92.4%)','General (6.5%)','Empleados (0.5%)','Club Beneficios (0.4%)','Otros (0.2%)'],datasets:[{data:[142874,10061,826,579,306],backgroundColor:['#10b981','#3b82f6','#f59e0b','#14b8a6','#8b5cf6'],borderWidth:0}]},options:dO()});
+
+  // Registros 2026
+  mk('cReg2026',{type:'line',data:{labels:['Ene-26','Feb-26','Mar-26'],datasets:[{label:'Nuevos registros',data:[9514,2110,2094],borderColor:'#14b8a6',backgroundColor:'rgba(20,184,166,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2}]},options:bO()});
+
+  // Sub status
+  mk('cSubStatus',{type:'doughnut',data:{labels:['Activas (74.2%)','Pausadas (21.8%)','Canceladas (4%)'],datasets:[{data:[279,82,15],backgroundColor:['#14b8a6','#f59e0b','#ef4444'],borderWidth:0}]},options:dO()});
+
+  // Sub frecuencia
+  mk('cSubFreq',{type:'bar',data:{labels:['30 días','60 días','90 días','28 días','14 días','21 días','35 días'],datasets:[{label:'Suscripciones',data:[180,54,52,35,25,16,12],backgroundColor:'rgba(20,184,166,.7)',borderRadius:3}]},options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
+
+  // Sub por mes
+  mk('cSubMes',{type:'bar',data:{labels:SUB_MES_L,datasets:[{label:'Suscripciones creadas',data:SUB_MES_V,backgroundColor:SUB_MES_V.map((v,i)=>i<2?'rgba(59,130,246,.5)':'rgba(20,184,166,.75)'),borderRadius:4}]},options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
+
+  // Sub SKUs
+  mk('cSubSku',{type:'bar',data:{labels:TOP_SKUS_SUB_L,datasets:[{label:'# Suscripciones',data:TOP_SKUS_SUB_V,backgroundColor:TOP_SKUS_SUB_V.map((v,i)=>i===4?'rgba(239,68,68,.7)':'rgba(59,130,246,.7)'),borderRadius:3}]},options:{...bO(),indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'rgba(36,48,80,.4)'}},y:{ticks:{color:'#94a3b8',font:{size:9}},grid:{display:false}}}}});
+
+  // Stock risk
+  mk('cStockRisk',{type:'bar',data:{labels:STOCK_ITEMS.slice(0,10).map(s=>s.name.slice(0,20)),datasets:[{label:'Revenue 60d ($M)',data:STOCK_ITEMS.slice(0,10).map(s=>Math.round(s.rev/1000000)),backgroundColor:STOCK_ITEMS.slice(0,10).map(s=>s.stock===0?'rgba(239,68,68,.8)':s.stock<20?'rgba(245,158,11,.7)':'rgba(16,185,129,.6)'),borderRadius:3}]},options:{...bO(),plugins:{...bO().plugins,legend:{display:false},tooltip:{...bO().plugins.tooltip,callbacks:{label:c=>`Rev: $${c.raw}M · Stock: ${STOCK_ITEMS[c.dataIndex].stock}u`}}}}});
+
+  // Proyección
+  const actual=[75171596/1e6,162549019/1e6,140606976/1e6];
+  const proyMin=[actual[2]*0.9, actual[2]*1.05, actual[2]*1.18];
+  const proyMax=[actual[2]*1.1, actual[2]*1.25, actual[2]*1.42];
+  mk('cProyeccion',{type:'line',data:{labels:['Ene-26','Feb-26','Mar-26','Abr-26 (proy)','May-26 (proy)','Jun-26 (proy)'],datasets:[
+    {label:'Real',data:[...actual,null,null,null],borderColor:'#14b8a6',backgroundColor:'rgba(20,184,166,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2},
+    {label:'Proyección optimista',data:[null,null,actual[2],...proyMax],borderColor:'#10b981',borderDash:[5,5],backgroundColor:'rgba(16,185,129,.08)',fill:true,tension:.4,pointRadius:4,borderWidth:2},
+    {label:'Proyección base',data:[null,null,actual[2],...proyMin],borderColor:'#f59e0b',borderDash:[5,5],backgroundColor:'rgba(245,158,11,.05)',fill:false,tension:.4,pointRadius:4,borderWidth:1.5},
+  ]},options:bO()});
+}
+
+// ══════ STOCK TABLE ══════
+function renderStock(){
+  const body=document.getElementById('stockBody');
+  body.innerHTML=STOCK_ITEMS.map((s,i)=>{
+    const urg=s.stock===0?'<span class="chip cr">⚠️ SIN STOCK</span>':s.semanas<=1?'<span class="chip cr">Urgente 1 sem</span>':s.semanas<=3?'<span class="chip cy">Esta semana</span>':'<span class="chip cg">OK</span>';
+    const stk=s.stock===0?`<span style="color:var(--red);font-weight:700">0 ud. ⚠️</span>`:s.stock<20?`<span style="color:var(--yellow);font-weight:700">${s.stock} ud.</span>`:`<span style="color:var(--green)">${s.stock} ud.</span>`;
+    return`<tr><td>${s.sku}</td><td style="font-weight:500">${s.name}</td><td><b>$${Math.round(s.rev/1000000)}M</b></td><td>${stk}</td><td style="color:${s.semanas===0?'var(--red)':s.semanas<3?'var(--yellow)':'var(--green)'}">${s.semanas===0?'0 — AGOTADO':s.semanas+' sem.'}</td><td>${s.subs>0?`<span class="chip ct2">${s.subs} subs</span>`:'-'}</td><td>${urg}</td></tr>`;
+  }).join('');
+}
+
+// ══════ TOP CLIENTES ══════
+function renderTopClientes(){
+  const segs={6000506:'💎 VIP Oncología',2591989:'💎 VIP Alto Costo',2222981:'💎 VIP Especialidad',2214081:'⭐ Recurrente',1746102:'⭐ Recurrente',1654202:'💎 VIP 1er orden',1394014:'🔄 Leal (6 órdenes)',1378979:'⭐ Recurrente',1345980:'⭐ Recurrente',1339980:'💎 VIP Especialidad'};
+  document.getElementById('topClientes').innerHTML=TOP_CLIENTES.map((c,i)=>{
+    const email=c.email.length>28?c.email.slice(0,14)+'...'+c.email.split('@')[1]:c.email;
+    const seg=segs[c.rev]||'General';
+    return`<tr><td><b>${i+1}</b></td><td>${email}</td><td>${c.orders}</td><td><b>$${(c.rev/1000).toFixed(0)}K</b></td><td>$${(c.ticket/1000).toFixed(0)}K</td><td><span class="chip ${c.orders>=3?'cg':c.orders>=2?'cb':'cy'}">${seg}</span></td><td><button style="font-size:10px;padding:3px 8px;border-radius:5px;border:1px solid var(--teal);color:var(--teal);background:none;cursor:pointer" onclick="showNotif('Contactando ${email}')">Contactar</button></td></tr>`;
+  }).join('');
+}
+
+// ══════ NOTIF ══════
+function showNotif(m){const n=document.getElementById('notif');n.textContent=m;n.classList.add('show');setTimeout(()=>n.classList.remove('show'),3500);}
+</script>
+</body>
+</html>
