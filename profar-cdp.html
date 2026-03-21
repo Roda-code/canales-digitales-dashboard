@@ -1912,7 +1912,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="sh"><div class="sh-title">📋 Detalle SKU por Categoría</div></div>
   <div style="margin-bottom:12px;display:flex;align-items:center;gap:8px;">
     <label style="font-size:12px;font-weight:600;color:var(--text2)">Filtrar Categoría:</label>
-    <select id="skuCategoryFilter" style="padding:6px 8px;border:1px solid var(--border);border-radius:5px;background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;min-width:200px;">
+    <select id="skuCategoryFilter" onchange="filterSKUCat(this.value)" style="padding:6px 8px;border:1px solid var(--border);border-radius:5px;background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;min-width:200px;">
       <option value="">Todas las categorías</option>
       <option value="frío">Antigripales / Frío</option>
       <option value="digestivo">Digestivo / Gastro</option>
@@ -2048,6 +2048,49 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
         <th>Rotación</th><th style="text-align:center">Posición</th><th>Nota</th>
       </tr></thead>
       <tbody id="compBody"></tbody>
+    </table>
+  </div>
+
+  <!-- ── Catálogo Maestro: todos los productos cruzados ── -->
+  <div class="sh" style="margin-top:20px">
+    <div class="sh-title">📦 Catálogo Maestro E-Com — Todos los Productos <span class="sh-badge">Rotación + Precios + Competencia + Pricing</span></div>
+    <div class="sh-actions"><button class="btn-xs" onclick="exportMasterCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal)">📥 CSV</button></div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;align-items:center">
+    <span style="font-size:10px;color:var(--text3);min-width:70px">Categoría:</span>
+    <div id="mf-cat" style="display:flex;gap:4px;flex-wrap:wrap">
+      <button class="btn-xs mf-cat active" onclick="setMF('cat','all',this)">Todos (32)</button>
+      <button class="btn-xs mf-cat" onclick="setMF('cat','oc',this)" style="border-color:rgba(139,92,246,.4);color:var(--purple)">🔬 Oncológico</button>
+      <button class="btn-xs mf-cat" onclick="setMF('cat','cr',this)" style="border-color:rgba(59,130,246,.4);color:#60a5fa">💊 Crónico</button>
+      <button class="btn-xs mf-cat" onclick="setMF('cat','otc',this)" style="border-color:rgba(16,185,129,.4);color:var(--teal)">🛒 OTC</button>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;align-items:center">
+    <span style="font-size:10px;color:var(--text3);min-width:70px">Estado:</span>
+    <div id="mf-st" style="display:flex;gap:4px;flex-wrap:wrap">
+      <button class="btn-xs mf-st active" onclick="setMF('st','all',this)">Todo</button>
+      <button class="btn-xs mf-st" onclick="setMF('st','alta',this)" style="border-color:rgba(16,185,129,.4);color:var(--green)">🟢 Alta Rot.</button>
+      <button class="btn-xs mf-st" onclick="setMF('st','baja',this)" style="border-color:rgba(245,158,11,.4);color:var(--yellow)">🟠 Baja/Sin Rot.</button>
+      <button class="btn-xs mf-st" onclick="setMF('st','trigger',this)" style="border-color:rgba(239,68,68,.4);color:var(--red)">🔴 Trigger Pricing</button>
+      <button class="btn-xs mf-st" onclick="setMF('st','critico',this)" style="border-color:rgba(239,68,68,.3);color:#f87171">🚨 Crítico Comp.</button>
+      <button class="btn-xs mf-st" onclick="setMF('st','stock0',this)" style="border-color:rgba(239,68,68,.5);color:var(--red)">💔 Stock 0</button>
+    </div>
+  </div>
+  <div class="card" style="overflow-x:auto">
+    <table class="tbl" style="min-width:950px">
+      <thead><tr>
+        <th>SKU / Producto</th>
+        <th style="text-align:center">Cat.</th>
+        <th>Rotación</th>
+        <th style="text-align:center">Estado Rot.</th>
+        <th style="text-align:right">Rev. 2026</th>
+        <th style="text-align:center">Stock</th>
+        <th style="text-align:center">Pos. Comp.</th>
+        <th style="text-align:right">Dif. Precio</th>
+        <th style="text-align:center">Pricing</th>
+        <th>Acción recomendada</th>
+      </tr></thead>
+      <tbody id="masterBody"></tbody>
     </table>
   </div>
 </div>
@@ -3185,7 +3228,7 @@ function initAnalyticsCharts(){
   mkC('cCDPFreq',{type:'bar',data:{labels:['1 compra','2-3','4-6','7-10','11+'],datasets:[{label:'Clientes',data:[421,689,513,287,142],backgroundColor:['rgba(239,68,68,.6)','rgba(245,158,11,.6)','rgba(59,130,246,.6)','rgba(16,185,129,.6)','rgba(16,185,129,.9)'],borderRadius:4}]},
     options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
   renderRot();renderActions();renderPricing();renderInversa();renderCDP();renderChurn();
-  renderConv();renderBuyers();renderComp();renderCompMatrix();renderPricTable();renderInvTable();
+  renderConv();renderBuyers();renderComp();renderCompMatrix();renderPricTable();renderInvTable();renderMasterCat();
 }
 document.addEventListener('DOMContentLoaded',initAnalyticsCharts);
 
@@ -3341,6 +3384,102 @@ function filterComp(f,el){
   document.querySelectorAll('.comp-filter').forEach(b=>b.classList.remove('active'));
   if(el)el.classList.add('active');
   renderComp(f);
+}
+
+// ── Fix: category filter for static SKU table ──
+function filterSKUCat(val){
+  document.querySelectorAll('#skuTableBody .sku-row').forEach(r=>{
+    r.style.display=(!val||r.dataset.category===val)?'':'none';
+  });
+}
+
+// ── Master Catálogo: cross-reference SKUS × COMP_SKUS × PRIC_FULL ──
+function normKey(n){
+  return n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'').slice(0,8);
+}
+let _mfCat='all', _mfSt='all';
+function setMF(type,val,el){
+  if(type==='cat') _mfCat=val;
+  else _mfSt=val;
+  const grp=document.getElementById('mf-'+type);
+  if(grp) grp.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  renderMasterCat();
+}
+function renderMasterCat(){
+  const el=document.getElementById('masterBody');if(!el)return;
+  // Build lookup maps by normKey
+  const compMap={};COMP_SKUS.forEach(c=>{compMap[normKey(c.n)]=c;});
+  const pricMap={};PRIC_FULL.forEach(p=>{pricMap[normKey(p.n)]=p;});
+  // Filter
+  let items=[...SKUS];
+  if(_mfCat!=='all') items=items.filter(s=>s.cat===_mfCat);
+  if(_mfSt==='alta') items=items.filter(s=>s.st==='Alta');
+  else if(_mfSt==='baja') items=items.filter(s=>s.st==='Baja'||s.st==='Sin Rot.');
+  else if(_mfSt==='trigger') items=items.filter(s=>{const p=pricMap[normKey(s.n)];return p&&p.est==='trigger';});
+  else if(_mfSt==='critico') items=items.filter(s=>{const c=compMap[normKey(s.n)];return c&&(c.posicion==='critico'||c.posicion==='doble_problema');});
+  else if(_mfSt==='stock0') items=items.filter(s=>s.stk===0);
+  // Sort: cat priority then rot desc
+  items=[...items].sort((a,b)=>{
+    const o={oc:0,cr:1,otc:2};
+    const ca=o[a.cat]??3,cb=o[b.cat]??3;
+    if(ca!==cb)return ca-cb;
+    return b.rot-a.rot;
+  });
+  const CAT_CHIP={oc:'ch-p',cr:'ch-d',otc:'ch-c'};
+  const CAT_LBL={oc:'Oncológico',cr:'Crónico',otc:'OTC'};
+  const ROT_CHIP={'Alta':'ch-g','Normal':'ch-y','Baja':'ch-o','Sin Rot.':'ch-r'};
+  const POS_HTML={
+    estrella:'<span class="chip" style="background:rgba(16,185,129,.15);color:var(--green);font-size:9px">⭐ Estrella</span>',
+    critico:'<span class="chip" style="background:rgba(239,68,68,.12);color:#f87171;font-size:9px">🚨 Crítico</span>',
+    activar:'<span class="chip" style="background:rgba(59,130,246,.12);color:#60a5fa;font-size:9px">🔔 Activar</span>',
+    doble_problema:'<span class="chip" style="background:rgba(148,163,184,.1);color:var(--text3);font-size:9px">☠️ D.Prob.</span>',
+  };
+  const PRIC_HTML={trigger:'<span class="chip ch-r" style="font-size:9px">🔴 Trigger</span>',watch:'<span class="chip ch-y" style="font-size:9px">🟡 Watch</span>',ok:'<span class="chip ch-g" style="font-size:9px">✅ OK</span>'};
+  el.innerHTML=items.map(s=>{
+    const key=normKey(s.n);
+    const comp=compMap[key]||null;
+    const pric=pricMap[key]||null;
+    const rotBar=`<div style="display:flex;align-items:center;gap:5px"><div style="width:38px;height:5px;background:var(--border);border-radius:3px"><div style="width:${s.rot}%;height:100%;background:${s.rot>=70?'var(--green)':s.rot>=30?'var(--yellow)':'var(--red)'};border-radius:3px"></div></div><span style="font-size:10px;color:var(--text3)">${s.rot}%</span></div>`;
+    const revCell=s.rev26>0?`<b style="color:var(--green)">$${s.rev26}M</b>`:`<span style="color:var(--text3)">—</span>`;
+    const stkColor=s.stk===0?'color:var(--red);font-weight:700':s.stk<1.5?'color:var(--yellow);font-weight:600':'color:var(--text2)';
+    const stkTxt=s.stk===0?'🚨 Sin stock':s.stk<1?`⚠️ ${s.stk}m`:`${s.stk}m`;
+    let difCell='<span style="color:var(--text3)">—</span>';
+    if(comp){
+      const minC=Math.min(...[comp.sb,comp.cv,comp.ah,comp.cf].filter(v=>v!=null));
+      if(minC){const d=((comp.pf-minC)/minC*100).toFixed(1);difCell=`<span style="${+d>0?'color:var(--red)':'color:var(--green)'};font-weight:600">${+d>0?'+'+d+'%':d+'%'}</span>`;}
+      else if(s.precComp==='excl') difCell='<span style="color:var(--green);font-size:10px">Exclusivo</span>';
+    }else if(s.precComp==='excl') difCell='<span style="color:var(--green);font-size:10px">Exclusivo</span>';
+    const posCell=comp?(POS_HTML[comp.posicion]||'—'):'<span style="color:var(--text3);font-size:10px">Sin dato</span>';
+    const pricCell=pric?(PRIC_HTML[pric.est]||'—'):'<span style="color:var(--text3);font-size:10px">—</span>';
+    const actTxt=pric?pric.act:comp?comp.nota:'—';
+    return `<tr>
+      <td style="font-weight:500;font-size:11px">${s.n}</td>
+      <td style="text-align:center"><span class="chip ${CAT_CHIP[s.cat]||'ch-c'}" style="font-size:9px">${CAT_LBL[s.cat]||s.cat}</span></td>
+      <td>${rotBar}</td>
+      <td style="text-align:center"><span class="chip ${ROT_CHIP[s.st]||'ch-c'}" style="font-size:9px">${s.st}</span></td>
+      <td style="text-align:right">${revCell}</td>
+      <td style="text-align:center;${stkColor};font-size:11px">${stkTxt}</td>
+      <td style="text-align:center">${posCell}</td>
+      <td style="text-align:right">${difCell}</td>
+      <td style="text-align:center">${pricCell}</td>
+      <td style="font-size:10px;color:var(--text2);max-width:190px">${actTxt}</td>
+    </tr>`;
+  }).join('');
+}
+function exportMasterCSV(){
+  const compMap={};COMP_SKUS.forEach(c=>{compMap[normKey(c.n)]=c;});
+  const pricMap={};PRIC_FULL.forEach(p=>{pricMap[normKey(p.n)]=p;});
+  const rows=[['SKU','Nombre','Cat.','Rot%','Estado Rot.','Rev2026$M','Stock(meses)','PrecComp','Pos.Comp.','Dif%','EstPricing','Acción']];
+  SKUS.forEach(s=>{
+    const comp=compMap[normKey(s.n)]||{};
+    const pric=pricMap[normKey(s.n)]||{};
+    const minC=Math.min(...[comp.sb,comp.cv,comp.ah,comp.cf].filter(v=>v!=null));
+    const dif=minC?((comp.pf-minC)/minC*100).toFixed(1):'';
+    rows.push([s.sku,s.n,s.cat,s.rot,s.st,s.rev26,s.stk,s.precComp,comp.posicion||'',dif,pric.est||'',pric.act||comp.nota||'']);
+  });
+  dlCSV(rows.map(r=>r.join(',')).join('\n'),'catalogo-maestro-'+new Date().toISOString().slice(0,10)+'.csv');
+  showNotif('✅ Exportado: catalogo-maestro.csv');
 }
 function exportCompCSV(){
   const rows=[['SKU','Categoría','PROFAR','Salcobrand','Cruz Verde','Ahumada','Cofar','Dif.Mín.','Estado','Nota']];
