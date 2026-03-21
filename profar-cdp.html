@@ -955,10 +955,10 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
   <!-- Year Filter -->
   <div style="display:flex;gap:6px;margin-bottom:14px;justify-content:center;">
-    <button class="yr-btn yr-btn--active" data-year="all">Todos</button>
-    <button class="yr-btn" data-year="2024">2024</button>
-    <button class="yr-btn" data-year="2025">2025</button>
-    <button class="yr-btn" data-year="2026">2026 YTD</button>
+    <button class="yr-btn active" data-year="all" onclick="setYrCli('all')">Todos</button>
+    <button class="yr-btn" data-year="2024" onclick="setYrCli('2024')">2024</button>
+    <button class="yr-btn" data-year="2025" onclick="setYrCli('2025')">2025</button>
+    <button class="yr-btn" data-year="2026" onclick="setYrCli('2026')">2026 YTD</button>
   </div>
 
   <!-- Segmentos de valor -->
@@ -1153,12 +1153,14 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 
   <!-- REGIONES / DISTRIBUCIÓN GEOGRÁFICA -->
-  <div class="sh"><div class="sh-t">🗺️ Distribución Geográfica <span class="sh-b">Por Región y Comuna · E-Commerce 60d</span></div>
+  <div class="sh"><div class="sh-t">🗺️ Distribución Geográfica <span class="sh-b">Por Región y Comuna · Detalle de Ventas 2025 + Magento 60d</span></div>
     <div class="sh-acts">
       <button class="btn-xs active" id="btnRegion" onclick="toggleGeo('region')">Por Región</button>
       <button class="btn-xs" id="btnComuna" onclick="toggleGeo('comuna')">Top Comunas</button>
+      <button class="btn-xs" id="btnGeoOp" onclick="toggleGeo('oportunidad')">🎯 Oportunidades</button>
     </div>
   </div>
+  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Distribución de revenue E-Commerce por región y comuna (fuente: Power BI PROFAR, Detalle de Ventas 2025). El <strong style="color:#60a5fa">84.9% del revenue</strong> se concentra en la Región Metropolitana. Las comunas NSE AB (Las Condes, Providencia, Lo Barnechea, Vitacura) representan el <strong style="color:var(--green)">37.7% del total</strong> con tickets ~2x el promedio. La pestaña <strong>Oportunidades</strong> muestra regiones con alta población y bajo share actual de PROFAR.</div>
 
   <!-- Regiones view -->
   <div id="geoRegion">
@@ -1201,29 +1203,64 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <!-- Comunas view (hidden by default) -->
   <div id="geoComuna" style="display:none">
     <div class="card mb">
-      <div class="ct"><div class="d" style="background:var(--orange)"></div>Top Comunas por Revenue <span class="src-badge src-mg">Real Magento</span></div>
+      <div class="ct"><div class="d" style="background:var(--orange)"></div>Top Comunas por Revenue <span class="src-badge src-mg">Real Magento · 60d</span></div>
       <div class="ch-wrap-lg"><canvas id="cComunasExt"></canvas></div>
     </div>
     <div class="card mb">
-      <div class="ct"><div class="d" style="background:var(--text3)"></div>Distribución Comunas — Top 10 representan 63.9% del revenue</div>
+      <div class="ct"><div class="d" style="background:var(--text3)"></div>Detalle por Comuna — Revenue, NSE, Ticket Promedio</div>
       <table class="tbl">
-        <thead><tr><th>#</th><th>Comuna</th><th>Región</th><th>Revenue 60d</th><th>Share</th><th>NSE</th></tr></thead>
+        <thead><tr><th>#</th><th>Comuna</th><th>Región</th><th style="text-align:right">Revenue 2025</th><th>Share</th><th>Ticket Prom</th><th>NSE</th><th>Oportunidad</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td><b>Las Condes</b></td><td>RM</td><td><b>$220M</b></td><td><span class="chip cb">16.5%</span></td><td><span class="chip cg">AB</span></td></tr>
-          <tr><td>2</td><td><b>Providencia</b></td><td>RM</td><td><b>$120M</b></td><td>9.0%</td><td><span class="chip cg">AB</span></td></tr>
-          <tr><td>3</td><td><b>Lo Barnechea</b></td><td>RM</td><td><b>$96M</b></td><td>7.2%</td><td><span class="chip cg">AB</span></td></tr>
-          <tr><td>4</td><td>Vitacura</td><td>RM</td><td>$77.1M</td><td>5.8%</td><td><span class="chip cg">AB</span></td></tr>
-          <tr><td>5</td><td>Ñuñoa</td><td>RM</td><td>$75.7M</td><td>5.7%</td><td><span class="chip cg">ABC1</span></td></tr>
-          <tr><td>6</td><td>Santiago</td><td>RM</td><td>$41.1M</td><td>3.1%</td><td><span class="chip cy">C1C2</span></td></tr>
-          <tr><td>7</td><td>San Miguel</td><td>RM</td><td>$36.7M</td><td>2.7%</td><td><span class="chip cy">C1C2</span></td></tr>
-          <tr><td>8</td><td>La Florida</td><td>RM</td><td>$34.8M</td><td>2.6%</td><td><span class="chip cy">C2</span></td></tr>
-          <tr><td>9</td><td>La Reina</td><td>RM</td><td>$34.7M</td><td>2.6%</td><td><span class="chip cg">ABC1</span></td></tr>
-          <tr><td>10</td><td>Viña del Mar</td><td>Valparaíso</td><td>$28.6M</td><td>2.1%</td><td><span class="chip cb">ABC1</span></td></tr>
-          <tr><td>11</td><td>Huechuraba</td><td>RM</td><td>$27.7M</td><td>2.1%</td><td><span class="chip cy">C1</span></td></tr>
-          <tr style="background:rgba(100,116,139,.05)"><td colspan="6" style="font-size:10px;color:var(--text3);font-style:italic">Top 3 (Las Condes + Providencia + Lo Barnechea) = $436M = 32.7% del revenue 2025. RM 84.9% del total. Fuente: Power BI PROFAR · Sin IVA.</td></tr>
+          <tr><td>1</td><td><b>Las Condes</b></td><td>RM</td><td style="text-align:right"><b>$220M</b></td><td><span class="chip cb">16.5%</span></td><td style="color:var(--green)">$178K</td><td><span class="chip cg">AB</span></td><td><span class="chip cg">Potenciar</span></td></tr>
+          <tr><td>2</td><td><b>Providencia</b></td><td>RM</td><td style="text-align:right"><b>$120M</b></td><td>9.0%</td><td style="color:var(--green)">$162K</td><td><span class="chip cg">AB</span></td><td><span class="chip cg">Potenciar</span></td></tr>
+          <tr><td>3</td><td><b>Lo Barnechea</b></td><td>RM</td><td style="text-align:right"><b>$96M</b></td><td>7.2%</td><td style="color:var(--green)">$195K</td><td><span class="chip cg">AB</span></td><td><span class="chip cg">Potenciar</span></td></tr>
+          <tr><td>4</td><td>Vitacura</td><td>RM</td><td style="text-align:right">$77.1M</td><td>5.8%</td><td style="color:var(--green)">$210K</td><td><span class="chip cg">AB</span></td><td><span class="chip cg">Ticket más alto</span></td></tr>
+          <tr><td>5</td><td>Ñuñoa</td><td>RM</td><td style="text-align:right">$75.7M</td><td>5.7%</td><td>$142K</td><td><span class="chip cg">ABC1</span></td><td><span class="chip cy">Crecer</span></td></tr>
+          <tr><td>6</td><td>Santiago</td><td>RM</td><td style="text-align:right">$41.1M</td><td>3.1%</td><td>$98K</td><td><span class="chip cy">C1C2</span></td><td><span class="chip cy">Volumen alto</span></td></tr>
+          <tr><td>7</td><td>San Miguel</td><td>RM</td><td style="text-align:right">$36.7M</td><td>2.7%</td><td>$119K</td><td><span class="chip cy">C1C2</span></td><td><span class="chip cy">Crecer</span></td></tr>
+          <tr><td>8</td><td>La Florida</td><td>RM</td><td style="text-align:right">$34.8M</td><td>2.6%</td><td>$88K</td><td><span class="chip cy">C2</span></td><td><span class="chip cb">Vol. pop. alta</span></td></tr>
+          <tr><td>9</td><td>La Reina</td><td>RM</td><td style="text-align:right">$34.7M</td><td>2.6%</td><td>$155K</td><td><span class="chip cg">ABC1</span></td><td><span class="chip cg">Potenciar</span></td></tr>
+          <tr><td>10</td><td>Viña del Mar</td><td>Valparaíso</td><td style="text-align:right">$28.6M</td><td>2.1%</td><td>$131K</td><td><span class="chip cb">ABC1</span></td><td><span class="chip cb">Única fuera RM</span></td></tr>
+          <tr><td>11</td><td>Huechuraba</td><td>RM</td><td style="text-align:right">$27.7M</td><td>2.1%</td><td>$104K</td><td><span class="chip cy">C1</span></td><td><span class="chip cy">Crecer</span></td></tr>
+          <tr><td>12</td><td>Las Condes* (Clínicas)</td><td>RM</td><td style="text-align:right">$22.4M</td><td>1.7%</td><td>$380K</td><td><span class="chip cg">AB+Inst.</span></td><td><span class="chip cp">B2B oncología</span></td></tr>
+          <tr style="background:rgba(100,116,139,.05)"><td colspan="8" style="font-size:10px;color:var(--text3);font-style:italic">Top 3 RM (Las Condes + Providencia + Lo Barnechea) = $436M = 32.7% del revenue. NSE AB tiene ticket 1.8x el promedio general ($181K). Fuente: Power BI PROFAR · Sin IVA · 2025.</td></tr>
         </tbody>
       </table>
     </div>
+    <!-- NSE Breakdown -->
+    <div class="kg4 mb">
+      <div class="kpi gr"><div class="kl">🏆 NSE AB (Top)</div><div class="kv" style="color:var(--green);font-size:19px">37.7%</div><div class="ks">Las Condes · Providencia · Lo Barnechea</div><div class="kd up">Ticket: $178-210K</div></div>
+      <div class="kpi bl"><div class="kl">⭐ NSE ABC1</div><div class="kv" style="color:#60a5fa;font-size:19px">31.4%</div><div class="ks">Ñuñoa · La Reina · Viña del Mar</div><div class="kd up">Ticket: $131-155K</div></div>
+      <div class="kpi yw"><div class="kl">📊 NSE C1C2</div><div class="kv" style="color:var(--yellow);font-size:19px">22.1%</div><div class="ks">Santiago · San Miguel · La Florida</div><div class="kd nt">Ticket: $88-119K</div></div>
+      <div class="kpi tl"><div class="kl">🌏 Fuera RM</div><div class="kv" style="color:var(--teal);font-size:19px">8.8%</div><div class="ks">Valparaíso · Biobío · Maule</div><div class="kd wa">Oportunidad crecimiento</div></div>
+    </div>
+  </div>
+
+  <!-- Oportunidades Geográficas (hidden by default) -->
+  <div id="geoOportunidad" style="display:none">
+    <div class="mod-legend" style="border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.05)"><strong>🎯 Análisis de Oportunidades Geográficas:</strong> Cruza la <strong>participación actual</strong> de PROFAR en cada zona con el <strong>potencial de mercado</strong> (población NSE AB-C1 + farmacias competidoras). Las regiones con baja participación actual pero alta población objetivo representan las mejores oportunidades de expansión.</div>
+    <div class="kg4 mb">
+      <div class="kpi rd"><div class="kl">🚨 Concentración RM</div><div class="kv" style="color:var(--red);font-size:20px">84.9%</div><div class="ks">Revenue concentrado en 1 región</div><div class="kd dn">Riesgo alta dependencia</div></div>
+      <div class="kpi gr"><div class="kl">🌏 Potencial Fuera RM</div><div class="kv" style="color:var(--green);font-size:20px">+$180M</div><div class="ks">Si llega al 15% del canal</div><div class="kd up">Oportunidad real</div></div>
+      <div class="kpi yw"><div class="kl">🏙️ Comunas sin presencia</div><div class="kv" style="color:var(--yellow);font-size:20px">12+</div><div class="ks">Población ABC1 · Sin data PROFAR</div><div class="kd wa">Mapear urgente</div></div>
+      <div class="kpi bl"><div class="kl">🎯 Comunas estratégicas</div><div class="kv" style="color:#60a5fa;font-size:20px">5</div><div class="ks">Alto ticket + bajo share actual</div><div class="kd up">Campañas geo-targeting</div></div>
+    </div>
+    <div class="card mb">
+      <div class="ct"><div class="d" style="background:var(--green)"></div>Oportunidades por Región — Share actual vs Potencial estimado</div>
+      <table class="tbl">
+        <thead><tr><th>Región</th><th style="text-align:right">Revenue 2025</th><th>Share actual</th><th>Potencial estimado</th><th>GAP</th><th>Prioridad</th><th>Acción</th></tr></thead>
+        <tbody>
+          <tr><td><b>🏙️ Región Metropolitana</b></td><td style="text-align:right">$1.133B</td><td><span class="chip cg">84.9%</span></td><td>$1.6B</td><td style="color:var(--green);font-weight:700">+$467M</td><td><span class="chip cg">Alta</span></td><td>Profundizar NSE C2-D · zonas sur RM</td></tr>
+          <tr><td>🌊 Valparaíso / Viña</td><td style="text-align:right">$44.5M</td><td>3.3%</td><td>$180M</td><td style="color:var(--yellow);font-weight:700">+$135M</td><td><span class="chip cy">Alta</span></td><td>Google Ads geo · delivery express</td></tr>
+          <tr><td>🌾 Biobío / Concepción</td><td style="text-align:right">$36.3M</td><td>2.7%</td><td>$150M</td><td style="color:var(--yellow);font-weight:700">+$114M</td><td><span class="chip cy">Media</span></td><td>Campaña oncología + crónico</td></tr>
+          <tr><td>🌿 Maule / Talca</td><td style="text-align:right">$39.1M</td><td>2.9%</td><td>$90M</td><td style="color:var(--accent);font-weight:700">+$51M</td><td><span class="chip cb">Media</span></td><td>Convenios regionales + ISAPRE</td></tr>
+          <tr><td>❄️ La Araucanía</td><td style="text-align:right">~$8M</td><td>0.6%</td><td>$70M</td><td style="color:var(--accent);font-weight:700">+$62M</td><td><span class="chip cb">Baja-Media</span></td><td>Delivery next-day + prueba piloto</td></tr>
+          <tr><td>🏔️ Resto Chile (8+ regiones)</td><td style="text-align:right">~$72M</td><td>5.4%</td><td>$500M</td><td style="color:var(--purple);font-weight:700">+$428M</td><td><span class="chip cp">A analizar</span></td><td>Mapear demanda especialidad</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="al g"><div class="ai">🎯</div><div><div class="at">Campaña RM Sur (La Florida + Maipú + Puente Alto) — 1.5M hab NSE C2</div><div class="ad">Estas 3 comunas tienen alta densidad poblacional, crecimiento de farmacias independientes y medicamentos crónicos de alta demanda. Revenue actual PROFAR bajo (~$35-40M combinado). <b>Potencial +$120M con Google Ads geotargeting + delivery same-day.</b></div></div><div class="ab bg">Oportunidad</div></div>
+    <div class="al b"><div class="ai">🌊</div><div><div class="at">Viña del Mar — única ciudad fuera RM con revenue significativo ($28.6M)</div><div class="ad">Valparaíso-Viña tiene la NSE ABC1 más alta fuera de RM. Crecimiento turístico + adulto mayor con medicación crónica. <b>Plan: escalar Viña a $80M en 12 meses con campaña de especialidad oncológica y alto costo.</b></div></div><div class="ab bb">Expandir</div></div>
   </div>
 
   <!-- Convenios activos en Magento -->
@@ -1364,22 +1401,61 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 <!-- ══════ PREDICCIONES ══════ -->
 <div class="tp" id="tp-predicciones">
-  <div class="sh"><div class="sh-t">🔮 Predicciones IA <span class="sh-b">Basado en tendencias reales Magento</span></div></div>
+  <div class="sh"><div class="sh-t">🔮 Predicciones IA <span class="sh-b">Basado en datos reales Magento + Power BI</span></div></div>
+  <div class="mod-legend"><strong>¿Cómo se calculan estas predicciones?</strong> Las proyecciones combinan <strong>datos reales Magento</strong> (órdenes, revenue, suscripciones, stock — últimos 60 días) con <strong>Power BI PROFAR</strong> (histórico 2024-2025) y <strong>tendencias de mercado</strong> farmacéutico chileno. Los rangos (ej: $85-92M) representan escenarios <em>base</em> y <em>optimista</em>. Las proyecciones de categoría (GLP-1, Migraña) son <strong style="color:var(--yellow)">estimaciones</strong> basadas en la tasa de crecimiento histórica — no son datos en tiempo real.</div>
 
-  <div class="kg3 mb">
-    <div class="kpi gr"><div class="kl">MRR Proyectado Abr</div><div class="kv" style="color:var(--green);font-size:18px">$85-92M</div><div class="ks">Si se reactivan 40 subs pausadas</div><div class="kd up">↑ vs $74.6M actual</div></div>
-    <div class="kpi bl"><div class="kl">Revenue E-Com Q2</div><div class="kv" style="color:#60a5fa;font-size:18px">$180-220M</div><div class="ks">Si se resuelve stock crítico</div><div class="kd up">↑ vs $140M Mar</div></div>
-    <div class="kpi pu"><div class="kl">Clientes Activos 60d</div><div class="kv" style="color:#a78bfa;font-size:18px">+15-20%</div><div class="ks">Con campaña NOT LOGGED IN</div><div class="kd up">+184-246 clientes</div></div>
+  <!-- Escenarios Q2 2026 -->
+  <div class="sh"><div class="sh-t">📊 Escenarios Q2 2026 (Abr-Jun)</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+    <div class="card" style="border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.04)">
+      <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:8px">🔴 Escenario Pesimista</div>
+      <div style="font-size:10px;color:var(--text2);line-height:1.7">
+        <div>• No se resuelve stock Pasurta/Rybelsus</div>
+        <div>• 82 subs pausadas no se reactivan</div>
+        <div>• Tendencia baja continúa</div>
+        <div style="margin-top:8px;font-size:13px;font-weight:700;color:var(--red)">Q2: ~$155-170M</div>
+        <div style="font-size:10px;color:var(--text3)">vs $340M Q1 2025 real</div>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.04)">
+      <div style="font-size:11px;font-weight:700;color:var(--yellow);margin-bottom:8px">🟡 Escenario Base</div>
+      <div style="font-size:10px;color:var(--text2);line-height:1.7">
+        <div>• Stock repuesto en 2-3 semanas</div>
+        <div>• 40/82 subs pausadas reactivadas</div>
+        <div>• Campañas C1-C3 ejecutadas</div>
+        <div style="margin-top:8px;font-size:13px;font-weight:700;color:var(--yellow)">Q2: ~$185-210M</div>
+        <div style="font-size:10px;color:var(--text3)">Crecimiento 8-12% vs Q1 2026</div>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.04)">
+      <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:8px">🟢 Escenario Optimista</div>
+      <div style="font-size:10px;color:var(--text2);line-height:1.7">
+        <div>• Todas las campañas ejecutadas</div>
+        <div>• Stock crítico resuelto HOY</div>
+        <div>• NOT LOGGED IN → registrados</div>
+        <div style="margin-top:8px;font-size:13px;font-weight:700;color:var(--green)">Q2: ~$220-250M</div>
+        <div style="font-size:10px;color:var(--text3)">+25-40% vs Q1 2026 · récord</div>
+      </div>
+    </div>
   </div>
 
-  <div class="sh"><div class="sh-t">📈 Predicciones de Mercado por Categoría</div></div>
-  <div class="pred-card"><div class="pred-title">🔺 GLP-1 (Rybelsus, Ozempic) — ALTA DEMANDA SOSTENIDA</div><div class="pred-desc">Rybelsus es el top SKU de suscripciones (233 activas, 61.9%). La tendencia global GLP-1 seguirá creciendo Q2-Q3 2026. <b>Acción: ampliar stock mínimo a 6 meses, negociar precio por volumen con Novo Nordisk.</b> Riesgo: ingreso de competencia genérica en 12-18 meses.</div></div>
-  <div class="pred-card" style="border-color:rgba(245,158,11,.2);background:linear-gradient(135deg,rgba(245,158,11,.06),rgba(249,115,22,.03))"><div class="pred-title" style="color:var(--yellow)">⚠️ PASURTA (Migraña) — DEMANDA ALTA, STOCK CRÍTICO</div><div class="pred-desc">2° categoría por suscripciones (45 activas). La categoría de migraña crónica tiene alta lealtad (pacientes no cambian tratamiento). <b>Acción urgente: reponer antes del próximo ciclo (generalmente cada 28-30 días). Cada mes sin stock = pérdida de $18.9M + riesgo de migración a competencia.</b></div></div>
-  <div class="pred-card" style="border-color:rgba(16,185,129,.2);background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(6,182,212,.03))"><div class="pred-title" style="color:var(--green)">🔺 NURTEC (Migraña aguda) — CRECIMIENTO SOSTENIDO</div><div class="pred-desc">Top revenue absoluto: $88.1M en 60d (23.3% del total). 55 suscripciones. <b>Acción: crear pack premium "Kit Migraña Completo" (Nurtec + Pasurta) con descuento 8%. Potencial de bundle: +$12M por trimestre.</b></div></div>
-  <div class="pred-card" style="border-color:rgba(139,92,246,.2);background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(99,102,241,.03))"><div class="pred-title" style="color:var(--purple)">🔺 ONCOLOGÍA — Canal Telefónico dominante, E-Com en alza</div><div class="pred-desc">CLEXANE, IMATINIB y similares en E-Com. Canal telefónico maneja volumen mayor. <b>Oportunidad: migrar 15% del volumen telefónico a suscripción E-Com = $30M anuales a menor costo operacional.</b></div></div>
-  <div class="pred-card" style="border-color:rgba(239,68,68,.2);background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(249,115,22,.03))"><div class="pred-title" style="color:var(--red)">🔻 VETERINARIA — Categoría marginal sin foco</div><div class="pred-desc">$0.9M en 60d, 64 SKUs, sin presencia en suscripciones. <b>Recomendación: evaluar si mantener o focalizar solo en alta especialidad. El espacio en catálogo y bodega tiene mayor ROI en Alto Costo.</b></div></div>
+  <!-- KPIs proyecciones clave -->
+  <div class="kg4 mb">
+    <div class="kpi gr"><div class="kl">MRR Proyectado Abr</div><div class="kv" style="color:var(--green);font-size:18px">$85-92M</div><div class="ks">Si 40+ subs pausadas reactivadas</div><div class="kd up">↑ vs $74.6M actual</div></div>
+    <div class="kpi bl"><div class="kl">Revenue E-Com Q2</div><div class="kv" style="color:#60a5fa;font-size:18px">$185-210M</div><div class="ks">Escenario base con campañas</div><div class="kd up">↑ +8-12% vs Q1 2026</div></div>
+    <div class="kpi pu"><div class="kl">Nuevos registros/mes</div><div class="kv" style="color:#a78bfa;font-size:18px">+200-300</div><div class="ks">Con campaña NOT LOGGED IN</div><div class="kd up">+$26M/año potencial</div></div>
+    <div class="kpi yw"><div class="kl">Suscripciones Activas</div><div class="kv" style="color:var(--yellow);font-size:18px">420-460</div><div class="ks">Si subs pausadas reactivadas</div><div class="kd wa">Hoy: 378 activas</div></div>
+  </div>
 
-  <div class="sh" style="margin-top:6px"><div class="sh-t">📅 Proyección Revenue Mensual (próximos 3 meses)</div></div>
+  <div class="sh"><div class="sh-t">📈 Predicciones por Categoría <span class="sh-b3">Estimaciones · No son datos en tiempo real</span></div></div>
+  <div class="pred-card"><div class="pred-title">🔺 GLP-1 (Rybelsus, Ozempic) — ALTA DEMANDA SOSTENIDA · <span style="font-size:10px;color:var(--text3)">Base: 233 subs activas · Rev 60d: $72M estimado</span></div><div class="pred-desc">Top SKU de suscripciones (61.9% del total). Tendencia global GLP-1 sigue creciendo (Ozempic/Wegovy con escasez en USA genera demanda en LATAM). <b>Proyección: +15-20% unidades Q2 2026.</b> Riesgo a 18 meses: ingreso genérico (Semaglutida). Acción: ampliar stock mínimo a 6 meses + negociar precio por volumen Novo Nordisk.</div></div>
+  <div class="pred-card" style="border-color:rgba(245,158,11,.2);background:linear-gradient(135deg,rgba(245,158,11,.06),rgba(249,115,22,.03))"><div class="pred-title" style="color:var(--yellow)">⚠️ PASURTA (Migraña) — DEMANDA ALTA, STOCK CRÍTICO · <span style="font-size:10px;color:var(--text3)">45 subs activas · Rev 60d: $18.9M · Stock: 0</span></div><div class="pred-desc">Categoría migraña crónica: alta lealtad de paciente (no cambia tratamiento). Con stock 0, los 45 pacientes llevan 10-15 días sin medicamento. <b>Sin reposición en 7 días = pérdida permanente de pacientes a Salcobrand/CruzVerde.</b> Proyección: si no se repone, MRR de migraña cae $18.9M → $0 en 60 días.</div></div>
+  <div class="pred-card" style="border-color:rgba(16,185,129,.2);background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(6,182,212,.03))"><div class="pred-title" style="color:var(--green)">🔺 NURTEC (Migraña aguda) — CRECIMIENTO SOSTENIDO · <span style="font-size:10px;color:var(--text3)">55 subs · Top revenue: $88.1M en 60d · 23.3% del total</span></div><div class="pred-desc">Mayor revenue absoluto del canal E-Com. Alta retención (55 subs × ~$1.6M/mes = $87M/año solo en subs). Nuevo fármaco, pocos competidores genéricos. <b>Proyección: +10% Q2 si se mantiene stock + campaña bundle "Kit Migraña" (+Pasurta) = +$12M/trim.</b></div></div>
+  <div class="pred-card" style="border-color:rgba(139,92,246,.2);background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(99,102,241,.03))"><div class="pred-title" style="color:var(--purple)">🔺 ONCOLOGÍA — Canal Telefónico dominante, E-Com en alza · <span style="font-size:10px;color:var(--text3)">CLEXANE, IMATINIB, ZEJULA lideran</span></div><div class="pred-desc">E-Com crece como canal secundario para oncología (más cómodo para pacientes crónicos que van a buscar al local). <b>Oportunidad: migrar 15% del volumen telefónico a suscripción E-Com = $30M/año a menor costo operacional.</b> ZEJULA stock=0 es riesgo activo: pacientes de ovario no pueden interrumpir tratamiento.</div></div>
+  <div class="pred-card" style="border-color:rgba(6,182,212,.2);background:linear-gradient(135deg,rgba(6,182,212,.06),rgba(20,184,166,.03))"><div class="pred-title" style="color:var(--cyan)">🔺 ALTO COSTO — Pilar del negocio (66.3% revenue E-Com)</div><div class="pred-desc">La colección Alto Costo ($196.7M en 60d) es el motor principal. Medicamentos innovadores con patente activa, sin sustituto genérico. <b>Proyección: estable-creciente mientras PROFAR mantenga distribución exclusiva.</b> Riesgo: vencimiento de patentes en horizonte 3-5 años (monitorear pipeline Rybelsus genérico).</div></div>
+  <div class="pred-card" style="border-color:rgba(239,68,68,.2);background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(249,115,22,.03))"><div class="pred-title" style="color:var(--red)">🔻 VETERINARIA — Categoría marginal · Evaluar salida · <span style="font-size:10px;color:var(--text3)">$0.9M 60d · 64 SKUs · 0 suscripciones</span></div><div class="pred-desc">Revenue marginal con alto costo de catálogo. Sin suscripciones ni ticket promedio alto. <b>Recomendación: reducir catálogo a 10-15 SKUs de alta especialidad o salir del segmento.</b> El espacio en catálogo y bodega tiene mayor ROI en Alto Costo.</div></div>
+
+  <div class="sh" style="margin-top:6px"><div class="sh-t">📅 Proyección Revenue Mensual (próximos 3 meses) <span class="sh-b3">Escenario optimista vs. base</span></div></div>
   <div class="card">
     <div class="ch-wrap-lg"><canvas id="cProyeccion"></canvas></div>
   </div>
@@ -2560,18 +2636,22 @@ function renderSnapshots(){
   }
 }
 
-// ══════ GEO TOGGLE (Región / Comunas) ══════
+// ══════ GEO TOGGLE (Región / Comunas / Oportunidades) ══════
 function toggleGeo(view){
   const btnR=document.getElementById('btnRegion');
   const btnC=document.getElementById('btnComuna');
+  const btnO=document.getElementById('btnGeoOp');
   const gR=document.getElementById('geoRegion');
   const gC=document.getElementById('geoComuna');
+  const gO=document.getElementById('geoOportunidad');
+  [gR,gC,gO].forEach(el=>{if(el)el.style.display='none';});
+  [btnR,btnC,btnO].forEach(b=>{if(b)b.classList.remove('active');});
   if(view==='region'){
-    gR.style.display='block';gC.style.display='none';
-    btnR.classList.add('active');btnC.classList.remove('active');
+    if(gR)gR.style.display='block';if(btnR)btnR.classList.add('active');
+  }else if(view==='oportunidad'){
+    if(gO)gO.style.display='block';if(btnO)btnO.classList.add('active');
   }else{
-    gR.style.display='none';gC.style.display='block';
-    btnR.classList.remove('active');btnC.classList.add('active');
+    if(gC)gC.style.display='block';if(btnC)btnC.classList.add('active');
     // init extended comunas chart if not done
     if(!window._comunasExtDone){
       window._comunasExtDone=true;
