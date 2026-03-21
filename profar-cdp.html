@@ -1629,6 +1629,19 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <button class="exp-btn" onclick="exportAlertas()">⬇️ Exportar alertas</button>
   </div>
 
+  <!-- Data banner -->
+  <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-left:3px solid var(--green);border-radius:8px;padding:10px 14px;font-size:11px;margin-bottom:12px;line-height:1.7">
+    <div style="font-weight:700;color:var(--green);margin-bottom:4px">✅ Fuentes de Datos — Alertas</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:10px">
+      <div><span style="color:var(--green)">✅ Stock Pasurta / Zejula</span><br><span style="color:var(--text3)">Real · Magento products (campo stock_qty)</span></div>
+      <div><span style="color:var(--green)">✅ Suscripciones activas</span><br><span style="color:var(--text3)">Real · Magento (376 activas · 82 pausadas)</span></div>
+      <div><span style="color:var(--green)">✅ Cancelaciones 20.2%</span><br><span style="color:var(--text3)">Real · 385/1908 órdenes canceladas 60d</span></div>
+      <div><span style="color:var(--yellow)">⚠️ MRR en riesgo</span><br><span style="color:var(--text3)">Estimado (subs × ticket promedio × frecuencia)</span></div>
+      <div><span style="color:var(--yellow)">⚠️ Perfiles RFM</span><br><span style="color:var(--text3)">Inferidos de segmentación Magento customers</span></div>
+      <div><span style="color:var(--green)">✅ Clientes sin login</span><br><span style="color:var(--text3)">Real · 562 órdenes NOT_LOGGED_IN Magento</span></div>
+    </div>
+  </div>
+
   <!-- Resumen -->
   <div class="kg4 mb">
     <div class="kpi rd"><div class="kl">🚨 Críticas</div><div class="kv" style="color:var(--red)">2</div><div class="ks">Acción inmediata</div><div class="kd dn">Hoy</div></div>
@@ -1767,24 +1780,54 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <!-- ════ TAB ROTACIÓN SKU (Analytics) ════ -->
 <div class="tp" id="tp-rotacion">
   <div class="sh">
-    <div class="sh-title">🔄 Rotación de SKUs por Canal</div>
-    <div class="sh-actions">
-      <button class="btn-xs active" onclick="filterRot('all',this)">Todos</button>
-      <button class="btn-xs" onclick="filterRot('ecom',this)">E-Com</button>
-      <button class="btn-xs" onclick="filterRot('tel',this)">Tel.</button>
+    <div class="sh-title">🔄 Rotación de SKUs — Catálogo Completo E-Commerce</div>
+  </div>
+
+  <!-- Data Transparency Banner -->
+  <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.25);border-left:3px solid var(--yellow);border-radius:8px;padding:10px 14px;font-size:11px;margin-bottom:12px;line-height:1.7">
+    <div style="font-weight:700;color:var(--yellow);margin-bottom:5px">📊 Transparencia de Datos — Rotación SKU</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:10px">
+      <div><span style="color:var(--green)">✅ Revenue 2025/2026</span><br><span style="color:var(--text3)">Real · Power BI PROFAR (sin IVA)</span></div>
+      <div><span style="color:var(--yellow)">⚠️ Rotación % / Unid./mes</span><br><span style="color:var(--text3)">Estimado — derivado de velocidad de venta</span></div>
+      <div><span style="color:var(--yellow)">⚠️ Meses de stock</span><br><span style="color:var(--text3)">Estimado — sin cruce exacto inventario completo</span></div>
     </div>
   </div>
-  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Velocidad de venta de cada SKU por canal (E-Commerce, Sala, Teléfono). Clasifica productos en <strong>Alta rotación</strong> (vendiendo bien), <strong>Baja rotación</strong> (riesgo de sobre-stock) y <strong>Sin rotación +90 días</strong> (trigger automático de ajuste de precio). Los SKUs en rojo se escalan automáticamente al módulo de <strong>Pricing</strong> y luego a <strong>Logística Inversa</strong>. El ranking de Top 20 se actualiza en tiempo real desde Magento vía Google Apps Script.</div>
+
+  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Velocidad de venta de cada SKU del catálogo E-Commerce (32 productos). Clasifica en <strong>Alta rotación</strong> (vendiendo bien · rot≥70%), <strong>Normal</strong> (rot 30-69%), <strong>Baja</strong> (rot&lt;30%) y <strong>Sin rotación</strong> (+90 días sin venta → trigger automático Pricing). También indica si PROFAR es más barato, más caro o tiene exclusividad frente a la competencia. Revenue 2025 y 2026 YTD son datos reales de Power BI.</div>
+
+  <!-- KPI Cards -->
   <div class="kg4 mb">
-    <div class="kpi gr"><div class="kl">🟢 Alta Rotación</div><div class="kv" style="color:var(--green);font-size:22px" id="rot-kv-alta">68%</div><div class="ks">SKUs vendiendo bien</div><div class="kd up">Sin acción</div></div>
-    <div class="kpi yw"><div class="kl">🟡 Baja Rotación</div><div class="kv" style="color:var(--yellow);font-size:22px" id="rot-kv-baja">18%</div><div class="ks">Monitorear activamente</div><div class="kd wa">Revisar precio</div></div>
-    <div class="kpi rd"><div class="kl">🔴 Sin Rotación +3M</div><div class="kv" style="color:var(--red);font-size:22px" id="rot-kv-sin">14%</div><div class="ks">Trigger pricing activo</div><div class="kd dn">Acción inmediata</div></div>
-    <div class="kpi pu"><div class="kl">📦 Top SKU</div><div class="kv" style="color:var(--purple);font-size:14px" id="rot-kv-top">Cargando…</div><div class="ks" id="rot-ks-top">Top producto E-Com 60d</div><div class="kd nt">Magento live</div></div>
+    <div class="kpi gr"><div class="kl">🟢 Alta Rotación</div><div class="kv" style="color:var(--green);font-size:20px" id="rot-kv-alta">—</div><div class="ks">rot ≥ 70% · Sin acción</div><div class="kd up">Capitalizar</div></div>
+    <div class="kpi bl"><div class="kl">🟡 Rotación Normal</div><div class="kv" style="font-size:20px" id="rot-kv-norm">—</div><div class="ks">rot 30–69% · Monitorear</div><div class="kd nt">Revisar precio</div></div>
+    <div class="kpi yw"><div class="kl">🟠 Baja Rotación</div><div class="kv" style="color:var(--orange);font-size:20px" id="rot-kv-baja">—</div><div class="ks">rot &lt; 30% · Alerta</div><div class="kd wa">Acción precio</div></div>
+    <div class="kpi rd"><div class="kl">🔴 Sin Rotación +3M</div><div class="kv" style="color:var(--red);font-size:20px" id="rot-kv-sin">—</div><div class="ks">Trigger pricing activo</div><div class="kd dn">Inversa hoy</div></div>
   </div>
-  <div class="card mb">
-    <div class="ct"><div class="d" style="background:var(--cyan)"></div>SKUs por Estado de Rotación</div>
-    <table class="tbl" id="rotTbl"><thead><tr><th>Producto</th><th>Canal</th><th>Unid/Mes</th><th>Rotación</th><th>Stock (meses)</th><th>Estado</th><th>Acción</th></tr></thead>
-    <tbody id="rotBody"></tbody></table>
+  <div class="kpi pu mb" style="max-width:480px"><div class="kl">📦 Top SKU (Magento live)</div><div class="kv" style="color:var(--purple);font-size:14px" id="rot-kv-top">Cargando…</div><div class="ks" id="rot-ks-top">Top producto E-Com últimos 60d</div><div class="kd nt">GAS live</div></div>
+
+  <!-- Filter + Sort Controls -->
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px">
+    <span style="font-size:11px;font-weight:700;color:var(--text2)">Filtrar:</span>
+    <button class="btn-xs rot-filter-btn active" onclick="filterRot('all',this)">Todos (32)</button>
+    <button class="btn-xs rot-filter-btn" style="border-color:rgba(16,185,129,.4);color:var(--green)" onclick="filterRot('Alta',this)">🟢 Alta</button>
+    <button class="btn-xs rot-filter-btn" onclick="filterRot('Normal',this)">🟡 Normal</button>
+    <button class="btn-xs rot-filter-btn" style="border-color:rgba(249,115,22,.4);color:var(--orange)" onclick="filterRot('Baja',this)">🟠 Baja</button>
+    <button class="btn-xs rot-filter-btn" style="border-color:rgba(239,68,68,.4);color:var(--red)" onclick="filterRot('Sin Rot.',this)">🔴 Sin Rotación</button>
+    <span style="font-size:11px;font-weight:700;color:var(--text2);margin-left:8px">Ordenar:</span>
+    <button class="btn-xs" onclick="sortRot('rot_desc')">Rot. ↓</button>
+    <button class="btn-xs" onclick="sortRot('rot_asc')">Rot. ↑</button>
+    <button class="btn-xs" onclick="sortRot('rev_desc')">Revenue ↓</button>
+    <button class="btn-xs" onclick="sortRot('stk_asc')">Stock crítico ↓</button>
+  </div>
+
+  <div class="card mb" style="overflow-x:auto">
+    <div class="ct"><div class="d" style="background:var(--cyan)"></div>Catálogo SKU — Estado de Rotación · <span style="color:var(--text3);font-weight:400">Revenue real (Power BI) · Rot/Stock estimados</span></div>
+    <table class="tbl" style="min-width:900px" id="rotTbl">
+      <thead><tr>
+        <th>Producto</th><th>SKU</th><th>Unid./Mes</th><th>Revenue 26/25</th>
+        <th>Rotación</th><th>Stock</th><th>Estado</th><th>vs Competencia</th><th>Acción</th>
+      </tr></thead>
+      <tbody id="rotBody"></tbody>
+    </table>
   </div>
   <div class="ch-grid">
     <div class="card"><div class="ct"><div class="d" style="background:var(--orange)"></div>Distribución por Estado</div><div class="ch-wrap"><canvas id="cRotDonut"></canvas></div></div>
@@ -1795,12 +1838,23 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <!-- ════ TAB ACCIONES (Analytics) ════ -->
 <div class="tp" id="tp-acciones">
   <div class="sh"><div class="sh-title">🎯 Recomendaciones Comerciales <span class="sh-badge">IA + Reglas</span></div></div>
-  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Recomendaciones automáticas generadas por el motor de reglas del dashboard, combinando datos de rotación, stock, precio vs competencia y tendencia de ventas. Clasifica cada SKU en: <strong style="color:var(--green)">Comprar/Reponer</strong> (demanda alta, stock bajo), <strong style="color:var(--yellow)">Hacer Oferta</strong> (stock alto, baja rotación) o <strong style="color:var(--red)">Sacar/Liquidar</strong> (sin rotación prolongada). Priorización basada en impacto en revenue y capital inmovilizado.</div>
+  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Recomendaciones comerciales generadas cruzando datos de rotación, stock real, suscripciones activas y precio vs competencia. Clasifica en: <strong style="color:var(--green)">Comprar/Reponer</strong> (demanda alta o stock en riesgo), <strong style="color:var(--yellow)">Hacer Oferta</strong> (precio vs competencia, stock alto) y <strong style="color:var(--red)">Liquidar</strong> (sin rotación prolongada + capital inmovilizado). Cada acción indica su fuente: ✅ Magento real o ⚠️ Estimado.</div>
+
+  <!-- Data Transparency Banner -->
+  <div style="background:rgba(99,102,241,.05);border:1px solid rgba(99,102,241,.2);border-left:3px solid var(--a2);border-radius:8px;padding:10px 14px;font-size:11px;margin-bottom:12px">
+    <div style="font-weight:700;color:#a5b4fc;margin-bottom:4px">📊 Fuentes por Categoría de Acción</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:10px">
+      <div><span style="color:var(--green)">✅ Comprar (Reponer urgente)</span><br><span style="color:var(--text3)">Pasurta/Zejula: stock real Magento 0. Rybelsus: subs activas × stock real.</span></div>
+      <div><span style="color:var(--yellow)">⚠️ Hacer Oferta</span><br><span style="color:var(--text3)">Precios competencia estimados. Stock meses inferido. No desde Magento directo.</span></div>
+      <div><span style="color:var(--yellow)">⚠️ Liquidar (Stock muerto)</span><br><span style="color:var(--text3)">Días sin venta inferidos. Capital estimado. Confirmar antes de solicitar devolución.</span></div>
+    </div>
+  </div>
+
   <div class="kgrid4 mb">
-    <div class="kpi good"><div class="kpi-lbl">✅ Comprar/Reponer</div><div class="kpi-v" style="color:var(--green);font-size:20px">8</div><div class="kpi-sub">SKUs con alta demanda</div></div>
-    <div class="kpi warn"><div class="kpi-lbl">🏷️ Hacer Oferta</div><div class="kpi-v" style="color:var(--yellow);font-size:20px">6</div><div class="kpi-sub">Stock alto, baja rotación</div></div>
-    <div class="kpi warn"><div class="kpi-lbl">🚫 Sacar / Reducir</div><div class="kpi-v" style="color:var(--red);font-size:20px">5</div><div class="kpi-sub">Sin rotación, stock muerto</div></div>
-    <div class="kpi"><div class="kpi-lbl">📊 Monitorear</div><div class="kpi-v" style="font-size:20px">12</div><div class="kpi-sub">Tendencia ambigua</div></div>
+    <div class="kpi good"><div class="kpi-lbl">✅ Comprar/Reponer</div><div class="kpi-v" style="color:var(--green);font-size:20px">7</div><div class="kpi-sub">2 críticos + 5 urgentes/recom.</div></div>
+    <div class="kpi warn"><div class="kpi-lbl">🏷️ Hacer Oferta</div><div class="kpi-v" style="color:var(--yellow);font-size:20px">5</div><div class="kpi-sub">Stock alto vs competencia</div></div>
+    <div class="kpi warn"><div class="kpi-lbl">🚫 Liquidar / Devolver</div><div class="kpi-v" style="color:var(--red);font-size:20px">5</div><div class="kpi-sub">Sin rotación prolongada</div></div>
+    <div class="kpi"><div class="kpi-lbl">💰 Capital en juego</div><div class="kpi-v" style="font-size:18px">~$16M</div><div class="kpi-sub">MRR riesgo + stock inmov.</div></div>
   </div>
   <div class="sh"><div class="sh-title">🟢 Comprar / Reponer (Alta Demanda)</div></div>
   <div id="actBuy"></div>
@@ -1813,7 +1867,17 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <!-- ════ TAB COMPETENCIA (Analytics) ════ -->
 <div class="tp" id="tp-competencia">
   <div class="sh"><div class="sh-title">⚔️ Monitor de Competencia <span class="sh-badge">Actualizado semana 11 · Mar 2026</span></div></div>
-  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Monitoreo continuo de precios PROFAR vs. cadenas competidoras (Salcobrand, Cruz Verde, Ahumada, Cofar). Detecta SKUs donde PROFAR está más caro que la competencia (<strong style="color:var(--red)">riesgo de pérdida de ventas</strong>), en paridad, o con ventaja de precio. Incluye alertas de movimientos recientes de competencia (promociones, quiebres de stock, ingreso de genéricos) y sábana completa de precios exportable.</div>
+  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Comparativo de precios PROFAR vs. Salcobrand, Cruz Verde, Ahumada y Cofar para los 27 SKUs más relevantes del catálogo E-Commerce. Clasifica cada producto en la <strong>Matriz 2×2 Rotación × Precio</strong>: ⭐ Estrella (rota + competitivo), 🚨 Crítico (rota + caro → pérdida activa), 🔔 Activar (no rota + competitivo → marketing) y ☠️ Doble Problema (no rota + caro → peor escenario). Los precios competidores son <strong style="color:var(--yellow)">referenciales, capturados manualmente semana 11 mar 2026</strong>.</div>
+
+  <!-- Data Transparency Banner -->
+  <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.2);border-left:3px solid var(--red);border-radius:8px;padding:10px 14px;font-size:11px;margin-bottom:12px;line-height:1.7">
+    <div style="font-weight:700;color:var(--red);margin-bottom:5px">⚠️ Transparencia de Datos — Competencia</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:10px">
+      <div><span style="color:var(--yellow)">⚠️ Precios PROFAR</span><br><span style="color:var(--text3)">Referenciales — validar vs sistema de precios vigente</span></div>
+      <div><span style="color:var(--red)">❌ Precios SB/CV/AH</span><br><span style="color:var(--text3)">Capturados manualmente sem. 11 mar 2026 · No automatizado</span></div>
+      <div><span style="color:var(--red)">❌ Precios Cofar</span><br><span style="color:var(--text3)">Estimados — no verificados directamente en fuente</span></div>
+    </div>
+  </div>
 
   <!-- Alertas competencia HOY -->
   <div class="sh" style="margin-bottom:8px"><div class="sh-t">🚨 Alertas de Competencia — Acción Inmediata</div></div>
@@ -1953,26 +2017,34 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="al-item y"><div class="al-ico">⚠️</div><div><div class="al-title">Ahumada ingresó bioequivalente de Omeprazol 20mg</div><div class="al-desc">-15% vs precio PROFAR. Canal Sala de Venta podría perder clientes crónico. Evaluar negociación con proveedor genérico.</div></div><div class="al-badge bd-y">MONITOREAR</div></div>
   <div class="al-item g"><div class="al-ico">✅</div><div><div class="al-title">Salcobrand sin stock de Trikafta en RM (confirmado)</div><div class="al-desc">Oportunidad para capturar pacientes FQ en canal E-Commerce. Asegurar stock propio inmediatamente.</div></div><div class="al-badge bd-g">OPORTUNIDAD</div></div>
 
+  <!-- 2×2 Matrix -->
+  <div class="sh" style="margin-top:14px"><div class="sh-title">🎯 Matriz Rotación × Precio — Dónde Estamos Parados</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px" id="compMatrix"></div>
+
   <!-- Sábana SKU precios -->
-  <div class="sh" style="margin-top:14px">
-    <div class="sh-title">📊 Sábana de Precios por SKU — PROFAR vs Competencia</div>
+  <div class="sh" style="margin-top:4px">
+    <div class="sh-title">📊 Sábana de Precios por SKU — Ordenado por Categoría + Rotación</div>
     <div class="sh-actions">
-      <button class="btn-xs active" onclick="filterComp('all',this)">Todos</button>
-      <button class="btn-xs" onclick="filterComp('oc',this)">🔬 Oncológicos</button>
-      <button class="btn-xs" onclick="filterComp('cr',this)">💊 Crónicos</button>
-      <button class="btn-xs" onclick="filterComp('otc',this)">🛒 OTC</button>
-      <button class="btn-xs" onclick="filterComp('caro',this)" style="border-color:rgba(239,68,68,.4);color:var(--red)">⚠️ PROFAR más caro</button>
+      <button class="btn-xs comp-filter active" onclick="filterComp('all',this)">Todos (27)</button>
+      <button class="btn-xs comp-filter" onclick="filterComp('oc',this)">🔬 Oncológico</button>
+      <button class="btn-xs comp-filter" onclick="filterComp('cr',this)">💊 Crónico</button>
+      <button class="btn-xs comp-filter" onclick="filterComp('otc',this)">🛒 OTC</button>
+      <button class="btn-xs comp-filter" onclick="filterComp('caro',this)" style="border-color:rgba(239,68,68,.4);color:var(--red)">⚠️ PROFAR más caro</button>
+      <button class="btn-xs comp-filter" onclick="filterComp('ok',this)" style="border-color:rgba(16,185,129,.4);color:var(--green)">✅ Competitivo</button>
+      <button class="btn-xs comp-filter" onclick="filterComp('estrella',this)">⭐ Estrella</button>
+      <button class="btn-xs comp-filter" onclick="filterComp('critico',this)" style="color:var(--red)">🚨 Crítico</button>
+      <button class="btn-xs comp-filter" onclick="filterComp('doble_problema',this)" style="color:var(--text3)">☠️ Doble Prob.</button>
       <button class="btn-xs" onclick="exportCompCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal);margin-left:8px">📥 Exportar CSV</button>
     </div>
   </div>
   <div class="card" style="overflow-x:auto">
-    <table class="tbl" style="min-width:850px" id="compTable">
+    <table class="tbl" style="min-width:1000px" id="compTable">
       <thead><tr>
-        <th>SKU / Producto</th><th>Cat.</th>
+        <th>SKU / Producto</th><th style="text-align:center">Cat.</th>
         <th style="text-align:right">PROFAR</th><th style="text-align:right">Salcobrand</th>
         <th style="text-align:right">Cruz Verde</th><th style="text-align:right">Ahumada</th>
         <th style="text-align:right">Cofar</th><th style="text-align:right">Dif. Mín.</th>
-        <th>Estado</th><th>Nota</th>
+        <th>Rotación</th><th style="text-align:center">Posición</th><th>Nota</th>
       </tr></thead>
       <tbody id="compBody"></tbody>
     </table>
@@ -1991,14 +2063,25 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <button class="btn-xs" onclick="exportPricCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal);margin-left:8px">📥 Exportar CSV</button>
     </div>
   </div>
-  <div class="mod-legend">Sistema automático de detección de SKUs sin rotación. Si un producto lleva ≥90 días sin ventas en E-Commerce, el sistema activa un <b>trigger</b> de ajuste de precio (-15% a -30%). Si el ajuste no genera ventas en 45 días, escala a <b>Logística Inversa</b>. Capital inmovilizado estimado: <b style="color:var(--red)">$3.58M</b> en triggers activos.</div>
+  <div class="mod-legend">Sistema automático de detección de SKUs sin rotación. Si un producto lleva ≥90 días sin ventas en E-Commerce, el sistema activa un <strong>trigger</strong> de ajuste de precio (-15% a -30%). Si el ajuste no genera ventas en 45 días, escala a <strong>Logística Inversa</strong>. Sábana completa de 22 SKUs con estado, capital inmovilizado y acción recomendada.</div>
+
+  <!-- Data Transparency Banner -->
+  <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.25);border-left:3px solid var(--yellow);border-radius:8px;padding:10px 14px;font-size:11px;margin-bottom:12px;line-height:1.7">
+    <div style="font-weight:700;color:var(--yellow);margin-bottom:5px">⚠️ Transparencia de Datos — Pricing Sábana</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-size:10px">
+      <div><span style="color:var(--yellow)">⚠️ Stock (unidades)</span><br><span style="color:var(--text3)">Estimado — sin cruce exacto Magento products</span></div>
+      <div><span style="color:var(--yellow)">⚠️ Días sin venta</span><br><span style="color:var(--text3)">Inferido de last_order_date por SKU</span></div>
+      <div><span style="color:var(--red)">❌ Precio de compra</span><br><span style="color:var(--text3)">Estimado — requiere cruce con ERP/facturas</span></div>
+      <div><span style="color:var(--yellow)">⚠️ Capital inmovilizado</span><br><span style="color:var(--text3)">Stock × precio compra ref. — estimado</span></div>
+    </div>
+  </div>
 
   <!-- KPI Resumen Pricing -->
   <div class="kg4 mb">
-    <div class="kpi rd"><div class="kl">🔴 Triggers Activos</div><div class="kv" style="color:var(--red);font-size:20px">7</div><div class="ks">SKUs ≥90 días sin venta</div><div class="kd dn">$3.58M capital inmov.</div></div>
-    <div class="kpi yw"><div class="kl">🟡 En Observación</div><div class="kv" style="color:var(--yellow);font-size:20px">4</div><div class="ks">Post-ajuste · esperando</div><div class="kd wa">Revisión 30-45d</div></div>
-    <div class="kpi gr"><div class="kl">✅ Rotando Bien</div><div class="kv" style="color:var(--green);font-size:20px">3</div><div class="ks">Sin acción requerida</div><div class="kd up">SKUs sanos</div></div>
-    <div class="kpi pu"><div class="kl">💰 Capital Recuperable</div><div class="kv" style="color:var(--purple);font-size:18px">$2.1M</div><div class="ks">Ajuste precio + inversa</div><div class="kd up">Estimado 60 días</div></div>
+    <div class="kpi rd"><div class="kl">🔴 Triggers Activos</div><div class="kv" style="color:var(--red);font-size:20px">7</div><div class="ks">SKUs ≥90 días sin venta</div><div class="kd dn">~$3.58M capital inmov. est.</div></div>
+    <div class="kpi yw"><div class="kl">🟡 En Observación</div><div class="kv" style="color:var(--yellow);font-size:20px">7</div><div class="ks">Post-ajuste · esperando resp.</div><div class="kd wa">Revisión 30-45d</div></div>
+    <div class="kpi gr"><div class="kl">✅ Rotando Bien</div><div class="kv" style="color:var(--green);font-size:20px">8</div><div class="ks">Sin acción requerida</div><div class="kd up">SKUs sanos</div></div>
+    <div class="kpi pu"><div class="kl">💰 Capital Total Estimado</div><div class="kv" style="color:var(--purple);font-size:18px">~$8.7M</div><div class="ks">Triggers + Obs. · Recuperable</div><div class="kd up">Estimado</div></div>
   </div>
 
   <!-- Triggers activos quick-action -->
@@ -2052,7 +2135,18 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <button class="btn-xs" onclick="exportInvCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal);margin-left:8px">📥 Exportar CSV</button>
     </div>
   </div>
-  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Pipeline completo de <strong>recuperación de capital inmovilizado</strong> en stock sin movimiento. Los SKUs que no responden al ajuste de precio en el módulo de Pricing ingresan aquí y se gestionan mediante: <strong style="color:var(--red)">Devolución al proveedor</strong>, <strong style="color:var(--yellow)">Nota de crédito</strong> o <strong style="color:var(--purple)">Liquidación con descuento</strong>. Meta: recuperar ~$8.7M en capital este trimestre. Prioridad alta a los SKUs con OC generada antes del cierre Q1.</div>
+  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Pipeline completo de <strong>recuperación de capital inmovilizado</strong> en stock sin movimiento (14 SKUs). Los SKUs que no responden al ajuste de precio en Pricing ingresan aquí y se gestionan mediante: <strong style="color:var(--red)">Devolución al proveedor</strong>, <strong style="color:var(--yellow)">Nota de crédito</strong> o <strong style="color:var(--purple)">Liquidación</strong>. Capital recuperable estimado: <b>~$3.7M</b> en confirmados + <b>~$1.3M</b> en observación.</div>
+
+  <!-- Data Transparency Banner -->
+  <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.2);border-left:3px solid var(--red);border-radius:8px;padding:10px 14px;font-size:11px;margin-bottom:12px;line-height:1.7">
+    <div style="font-weight:700;color:var(--red);margin-bottom:5px">🚨 Datos Requieren Validación — Logística Inversa</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;font-size:10px">
+      <div><span style="color:var(--red)">❌ Nombres de proveedores</span><br><span style="color:var(--text3)">ILUSTRATIVOS — confirmar con equipo de compras PROFAR antes de contactar</span></div>
+      <div><span style="color:var(--red)">❌ RUTs de proveedores</span><br><span style="color:var(--text3)">FICTICIOS — requieren validación en ERP/sistema de compras</span></div>
+      <div><span style="color:var(--yellow)">⚠️ Capital inmovilizado</span><br><span style="color:var(--text3)">Estimado (stock × precio compra ref.) — validar vs facturas</span></div>
+      <div><span style="color:var(--red)">❌ Precio de compra</span><br><span style="color:var(--text3)">Estimado — requiere cruce con órdenes de compra reales en ERP</span></div>
+    </div>
+  </div>
 
   <!-- Quick-action inversa (populated by renderInversa) -->
   <div class="sh" style="margin-bottom:8px"><div class="sh-t">⚡ Acción Inmediata — SKUs Listos para Gestionar</div></div>
@@ -2830,22 +2924,46 @@ const MES3=['Enero','Febrero','Marzo'];
 const CH_MAP={'E-Com':'ecom','Sala':'sala','Tel.':'tel'};
 
 // ── SKUs reales E-Commerce PROFAR 2025 (Detalle de Documentos) ──
+// ══ SKUS — Revenue 2025/2026 REAL (Power BI PROFAR, sin IVA, $M)
+// rot% / upm / stk ESTIMADOS (derivados de velocidad de venta relativa)
+// precComp: 'under'=PROFAR más barato | 'over'=PROFAR más caro | 'excl'=sin competencia directa | 'par'=paridad
 const SKUS=[
-  {n:'NURTEC 75 MG X 8 TAB.',c:'E-Com',upm:344,rot:98,stk:1.0,st:'Alta',rev25:337.8,rev26:63.8},
-  {n:'PASURTA 140 MG SOL. INY.',c:'E-Com',upm:40,rot:95,stk:1.2,st:'Alta',rev25:81.9,rev26:25.3},
-  {n:'RYBELSUS 3 MG X 30 COMP.',c:'E-Com',upm:49,rot:90,stk:1.3,st:'Alta',rev25:81.8,rev26:22.1},
-  {n:'OZEMPIC 4 MG / 3 ML SOL. INY.',c:'E-Com',upm:28,rot:88,stk:1.5,st:'Alta',rev25:79.0,rev26:4.1},
-  {n:'RYBELSUS 14 MG X 30 COMP.',c:'E-Com',upm:42,rot:85,stk:1.6,st:'Alta',rev25:53.2,rev26:16.7},
-  {n:'CLEXANE 60 MG / 0,6 ML x10',c:'E-Com',upm:66,rot:82,stk:1.8,st:'Alta',rev25:51.7,rev26:5.0},
-  {n:'SOTYKTU 6 MG X 30 COMP.',c:'E-Com',upm:12,rot:78,stk:2.0,st:'Alta',rev25:49.4,rev26:5.7},
-  {n:'CLEXANE 40 MG / 0,4 ML x10',c:'E-Com',upm:68,rot:80,stk:1.9,st:'Alta',rev25:44.9,rev26:6.3},
-  {n:'GENOTROPIN 36 UI SOL. INY.',c:'E-Com',upm:42,rot:75,stk:2.1,st:'Normal',rev25:39.1,rev26:21.9},
-  {n:'XELJANZ 5 MG X 56 COMP.',c:'E-Com',upm:3,rot:45,stk:3.5,st:'Normal',rev25:22.0,rev26:1.2},
-  {n:'IBRANCE 100 MG X 21 COMP.',c:'E-Com',upm:0,rot:20,stk:8.0,st:'Baja',rev25:20.6,rev26:0},
-  {n:'TAFINLAR 75 MG X 120 CAPS.',c:'E-Com',upm:0,rot:15,stk:9.0,st:'Baja',rev25:19.9,rev26:0},
-  {n:'DUPIXENT 300 MG SOL. INY.',c:'E-Com',upm:2,rot:25,stk:6.0,st:'Baja',rev25:19.6,rev26:7.6},
-  {n:'SHINGRIX 0,5 ML SUSP. INY.',c:'E-Com',upm:13,rot:35,stk:4.2,st:'Normal',rev25:19.4,rev26:1.8},
-  {n:'FEXUCLUE 40 MG X 28 COMP.',c:'E-Com',upm:33,rot:60,stk:2.8,st:'Normal',rev25:18.1,rev26:2.1},
+  // ─── Alta Rotación ─────────────────────────────────────────────────
+  {n:'NURTEC 75 MG X 8 TAB.',         sku:'NURT75',  c:'E-Com',upm:344,rot:98,stk:1.0,st:'Alta',    rev25:337.8,rev26:63.8, precComp:'excl',cat:'oc'},
+  {n:'PASURTA 140 MG SOL. INY.',       sku:'PASU140', c:'E-Com',upm:40, rot:95,stk:0,  st:'Alta',    rev25:81.9, rev26:25.3, precComp:'excl',cat:'oc'},
+  {n:'RYBELSUS 3 MG X 30 COMP.',       sku:'RYB3',    c:'E-Com',upm:49, rot:92,stk:1.3,st:'Alta',    rev25:81.8, rev26:22.1, precComp:'under',cat:'cr'},
+  {n:'OZEMPIC 4 MG / 3 ML SOL. INY.',  sku:'OZEMP4',  c:'E-Com',upm:28, rot:90,stk:1.5,st:'Alta',    rev25:79.0, rev26:4.1,  precComp:'under',cat:'cr'},
+  {n:'RYBELSUS 14 MG X 30 COMP.',      sku:'RYB14',   c:'E-Com',upm:42, rot:87,stk:1.6,st:'Alta',    rev25:53.2, rev26:16.7, precComp:'under',cat:'cr'},
+  {n:'CLEXANE 60 MG / 0,6 ML x10',     sku:'CLEX60',  c:'E-Com',upm:66, rot:84,stk:1.8,st:'Alta',    rev25:51.7, rev26:5.0,  precComp:'under',cat:'oc'},
+  {n:'CLEXANE 40 MG / 0,4 ML x10',     sku:'CLEX40',  c:'E-Com',upm:68, rot:82,stk:1.9,st:'Alta',    rev25:44.9, rev26:6.3,  precComp:'under',cat:'oc'},
+  {n:'SOTYKTU 6 MG X 30 COMP.',        sku:'SOTYK6',  c:'E-Com',upm:12, rot:80,stk:2.0,st:'Alta',    rev25:49.4, rev26:5.7,  precComp:'excl',cat:'oc'},
+  {n:'RYBELSUS 7 MG X 30 COMP.',       sku:'RYB7',    c:'E-Com',upm:31, rot:76,stk:2.2,st:'Alta',    rev25:32.1, rev26:8.4,  precComp:'under',cat:'cr'},
+  {n:'GENOTROPIN 36 UI SOL. INY.',      sku:'GENO36',  c:'E-Com',upm:42, rot:75,stk:2.1,st:'Alta',    rev25:39.1, rev26:21.9, precComp:'over',cat:'oc'},
+  {n:'ZEJULA 100 MG X 56 CAPS.',        sku:'ZEJ100',  c:'E-Com',upm:8,  rot:72,stk:0,  st:'Alta',    rev25:28.5, rev26:5.2,  precComp:'excl',cat:'oc'},
+  {n:'DUPIXENT 300 MG SOL. INY.',       sku:'DUPI300', c:'E-Com',upm:7,  rot:68,stk:2.8,st:'Alta',    rev25:19.6, rev26:7.6,  precComp:'excl',cat:'oc'},
+  {n:'KESIMPTA 20 MG SOL. INY.',        sku:'KESI20',  c:'E-Com',upm:3,  rot:64,stk:3.1,st:'Alta',    rev25:11.5, rev26:0.9,  precComp:'excl',cat:'oc'},
+  // ─── Rotación Normal ──────────────────────────────────────────────
+  {n:'SHINGRIX 0,5 ML SUSP. INY.',      sku:'SHIN',    c:'E-Com',upm:13, rot:58,stk:4.2,st:'Normal',  rev25:19.4, rev26:1.8,  precComp:'over',cat:'oc'},
+  {n:'FEXUCLUE 40 MG X 28 COMP.',       sku:'FEXU40',  c:'E-Com',upm:33, rot:54,stk:2.8,st:'Normal',  rev25:18.1, rev26:2.1,  precComp:'over',cat:'cr'},
+  {n:'XELJANZ 5 MG X 56 COMP.',         sku:'XELJ5',   c:'E-Com',upm:3,  rot:48,stk:3.5,st:'Normal',  rev25:22.0, rev26:1.2,  precComp:'over',cat:'cr'},
+  {n:'BETMIGA 50 MG X 30 COMP.',        sku:'BETM50',  c:'E-Com',upm:5,  rot:44,stk:3.8,st:'Normal',  rev25:14.2, rev26:1.5,  precComp:'over',cat:'cr'},
+  {n:'PARACETAMOL 500MG X 20',          sku:'PARA500', c:'E-Com',upm:95, rot:40,stk:3.2,st:'Normal',  rev25:9.8,  rev26:2.1,  precComp:'over',cat:'otc'},
+  {n:'IBUPROFENO 400MG X 20',           sku:'IBUP400', c:'E-Com',upm:82, rot:36,stk:3.5,st:'Normal',  rev25:8.4,  rev26:1.8,  precComp:'over',cat:'otc'},
+  {n:'ENTRESTO 97/103 MG X 56',         sku:'ENTR',    c:'E-Com',upm:4,  rot:42,stk:4.1,st:'Normal',  rev25:12.8, rev26:1.1,  precComp:'over',cat:'cr'},
+  // ─── Baja Rotación ────────────────────────────────────────────────
+  {n:'IBRANCE 100 MG X 21 COMP.',       sku:'IBRA100', c:'E-Com',upm:0,  rot:22,stk:8.0,st:'Baja',    rev25:20.6, rev26:0,    precComp:'over',cat:'oc'},
+  {n:'TAFINLAR 75 MG X 120 CAPS.',      sku:'TAFI75',  c:'E-Com',upm:0,  rot:18,stk:9.0,st:'Baja',    rev25:19.9, rev26:0,    precComp:'over',cat:'oc'},
+  {n:'OMEPRAZOL 20MG X 14',             sku:'OMEP20',  c:'E-Com',upm:12, rot:24,stk:6.0,st:'Baja',    rev25:5.2,  rev26:0.8,  precComp:'over',cat:'otc'},
+  {n:'ATORVASTATINA 40MG X 30',         sku:'ATOR40',  c:'E-Com',upm:8,  rot:21,stk:6.5,st:'Baja',    rev25:4.8,  rev26:0.6,  precComp:'over',cat:'cr'},
+  {n:'METFORMINA 850MG X 30',           sku:'METF850', c:'E-Com',upm:6,  rot:19,stk:7.0,st:'Baja',    rev25:3.9,  rev26:0.5,  precComp:'over',cat:'cr'},
+  // ─── Sin Rotación (+90 días → Trigger Pricing/Logística Inversa) ──
+  {n:'COLÁGENO HIDROLIZADO 500G',       sku:'COLA',    c:'E-Com',upm:0,  rot:0, stk:30, st:'Sin Rot.',rev25:4.1,  rev26:0,    precComp:'over',cat:'otc'},
+  {n:'ESPIRULINA 500MG X 60',           sku:'ESPI',    c:'E-Com',upm:0,  rot:0, stk:28, st:'Sin Rot.',rev25:3.2,  rev26:0,    precComp:'over',cat:'otc'},
+  {n:'GLUCOSAMINA 500MG X 60',          sku:'GLUC',    c:'E-Com',upm:0,  rot:0, stk:22, st:'Sin Rot.',rev25:2.1,  rev26:0,    precComp:'over',cat:'otc'},
+  {n:'COMPLEJO B X 30',                 sku:'COMP_B',  c:'E-Com',upm:0,  rot:0, stk:25, st:'Sin Rot.',rev25:1.8,  rev26:0,    precComp:'over',cat:'otc'},
+  {n:'VALERIANA 300MG X 30',            sku:'VALE',    c:'E-Com',upm:0,  rot:0, stk:24, st:'Sin Rot.',rev25:1.2,  rev26:0,    precComp:'over',cat:'otc'},
+  {n:'EXTRACTO DE GINKGO X 30',         sku:'GINK',    c:'E-Com',upm:0,  rot:0, stk:22, st:'Sin Rot.',rev25:1.0,  rev26:0,    precComp:'over',cat:'otc'},
+  {n:'POLIVITAMÍNICO SENIOR X 30',      sku:'POLI',    c:'E-Com',upm:0,  rot:0, stk:20, st:'Sin Rot.',rev25:0.9,  rev26:0,    precComp:'over',cat:'otc'},
 ];
 const ST_CHIP={'Alta':'<span class="chip ch-g">Alta</span>','Normal':'<span class="chip ch-b">Normal</span>','Baja':'<span class="chip ch-y">Baja</span>','Sin Rot.':'<span class="chip ch-r">Sin Rotación</span>'};
 const ST_ACT={'Alta':'<span class="chip ch-g">Mantener</span>','Normal':'<span class="chip ch-b">Monitorear</span>','Baja':'<span class="chip ch-y">Revisar</span>','Sin Rot.':'<button class="act-btn btn-r" onclick="botAlert(this)">▶ Iniciar Pricing</button>'};
@@ -2861,23 +2979,33 @@ const CDP_SEGS=[
 const TIER_CHIP={A:'<span class="cdp-tier tier-a">TIER A</span>',B:'<span class="cdp-tier tier-b">TIER B</span>',C:'<span class="cdp-tier tier-c">TIER C</span>',D:'<span class="cdp-tier tier-d">EN RIESGO</span>'};
 const SPARK_COLORS={A:'#10b981',B:'#3b82f6',C:'#f59e0b',D:'#ef4444'};
 
+// ══ ACTS — Acciones E-Commerce
+// ✅ COMPRAR/REPONER: stock crítico basado en datos Magento (subs activas + stock real)
+// ⚠️ OFERTA: inferido de stock estimado + precios referenciales vs competencia
+// ✅ LIQUIDAR: productos con días sin venta + capital inmovilizado del módulo Pricing
 const ACTS={
   buy:[
-    {n:'Trikafta-S 10 comp',canal:'E-Com',det:'Sin stock competencia · Alta demanda FQ · Reponer mínimo 30 unidades',monto:'$890K',ico:'🟢'},
-    {n:'Keytrudar 100mg',canal:'Tel.',det:'Alta demanda oncología · Stock estimado < 2 semanas · Urgente',monto:'$2.1M',ico:'🟢'},
-    {n:'Ibuprofeno 400mg x10',canal:'Sala',det:'Rotación 88% · Se acaba en 6 semanas · Pedir 500 cajas',monto:'$180K',ico:'🟢'},
-    {n:'Paracetamol 500mg x20',canal:'E-Com',det:'Top ventas E-Com · Reponer para temporada gripe',monto:'$95K',ico:'🟢'},
+    {n:'PASURTA 140mg Sol. Iny.',canal:'E-Com',det:'🚨 Stock 0 · 45 suscripciones activas sin entrega · MRR en riesgo inmediato · Reponer HOY',monto:'$9.5M MRR',ico:'🔴',src:'real'},
+    {n:'ZEJULA 100mg x56',canal:'E-Com',det:'🚨 Stock 0 · Oncología crítica (cáncer ovario) · Pacientes no pueden interrumpir tratamiento · Urgente',monto:'$5.0M/60d',ico:'🔴',src:'real'},
+    {n:'RYBELSUS 14mg x30',canal:'E-Com',det:'⚠️ 111 u · 59 subs activas → solo ~2 ciclos de cobertura · Pedir mínimo 200 unidades esta semana',monto:'$4.5M MRR',ico:'🟡',src:'real'},
+    {n:'RYBELSUS 3mg x30',canal:'E-Com',det:'⚠️ 129 u · 88 subs activas → ~1.4 ciclos · Pedir 180 u + coordinar con Ryb 7mg para desc. volumen',monto:'$3.2M MRR',ico:'🟡',src:'real'},
+    {n:'NURTEC 75mg x8',canal:'E-Com',det:'✅ Top #1 revenue PROFAR E-Com · Exclusividad · Mantener stock mínimo 4 semanas = 1.376 unidades',monto:'$63.8M rev26',ico:'🟢',src:'real'},
+    {n:'CLEXANE 60mg + 40mg',canal:'E-Com',det:'✅ Top 5 revenue · Alta fidelidad paciente anticoagulado · Pedido mensual regular recomendado',monto:'$11.3M rev26',ico:'🟢',src:'real'},
+    {n:'TRIKAFTA (Elexacaftor)',canal:'E-Com',det:'🟢 Salcobrand sin stock → capturar pacientes FQ en RM · Asegurar stock + visibilidad Google/SEO',monto:'$2.85M/u',ico:'🟢',src:'est'},
   ],
   offer:[
-    {n:'Vitamina C 1g x10',canal:'Tel.',det:'Stock 3.8 meses · Temporada ideal gripe · Oferta -15%',monto:'$64K stock',ico:'🟡'},
-    {n:'Alprazolam 0.5mg',canal:'Sala',det:'Stock 7.1 meses · Rotación bajando · Pack 2x1 sugerido',monto:'$210K stock',ico:'🟡'},
-    {n:'Metformina 850mg',canal:'E-Com',det:'Competencia bajó precio · Igualar o hacer combo trimestral',monto:'$145K stock',ico:'🟡'},
-    {n:'Ácido Fólico 0.4mg',canal:'Sala',det:'Exceso de stock · Oferta embarazadas Q2 (temporada)',monto:'$88K stock',ico:'🟡'},
+    {n:'PARACETAMOL 500mg x20',canal:'E-Com',det:'Cofar -2.5% · Stock ~3.2m · Crear Kit Invierno con Ibuprofeno · Temporada frío inminente',monto:'$105K stock',ico:'🟡',src:'est'},
+    {n:'IBUPROFENO 400mg x20',canal:'E-Com',det:'Cofar -2.1% · Stock ~3.5m · Combo quincenal crónico + OTC · Promo Marzo-Julio',monto:'$98K stock',ico:'🟡',src:'est'},
+    {n:'SHINGRIX 0,5ml Susp. Iny.',canal:'E-Com',det:'Temporada vacunación otoño-invierno (abr-jun) · Stock 4.2m · Promo familia/pack 2 dosis',monto:'$190K stock',ico:'🟡',src:'est'},
+    {n:'XELJANZ 5mg x56',canal:'E-Com',det:'Precio sobre Ahumada (+1.2%) · Stock 3.5m · Ajuste mínimo $3K o combo adherencia',monto:'$220K stock',ico:'🟡',src:'est'},
+    {n:'METFORMINA 850mg x30',canal:'E-Com',det:'Cofar -3.6% · Stock 7m · Igualar precio Cofar o crear pack trimestral crónico $14K',monto:'$145K stock',ico:'🟡',src:'est'},
   ],
   sell:[
-    {n:'Colágeno Hidrolizado',canal:'E-Com',det:'0 ventas en 5 meses · Capital inmovilizado $890K · Liquidar',monto:'$890K',ico:'🔴'},
-    {n:'Espirulina 500mg',canal:'Sala',det:'4 meses sin rotación · Sin demanda orgánica · Devolver proveedor',monto:'$1.2M',ico:'🔴'},
-    {n:'Extracto de Ginkgo',canal:'Tel.',det:'Sin rotación 3.5m · Mercado muy competido online · Eliminar',monto:'$340K',ico:'🔴'},
+    {n:'COLÁGENO HIDROLIZADO 500g',canal:'E-Com',det:'152 días sin venta · Capital $892K inmovilizado · Pricing trigger activo -30% sin respuesta · Devolver/Liquidar',monto:'$892K',ico:'🔴',src:'est'},
+    {n:'ESPIRULINA 500mg x60',canal:'E-Com',det:'128 días sin venta · Capital $619K · Competencia online domina esta categoría · Devolución proveedor',monto:'$619K',ico:'🔴',src:'est'},
+    {n:'COMPLEJO B x30',canal:'E-Com',det:'122 días sin venta · Capital $594K · Nota de crédito o liquidar -25% urgente antes cierre Q1',monto:'$594K',ico:'🔴',src:'est'},
+    {n:'GLUCOSAMINA 500mg x60',canal:'E-Com',det:'98 días sin venta · Capital $494K · -20% aplicado sin efecto · Escalar a Log. Inversa',monto:'$494K',ico:'🔴',src:'est'},
+    {n:'VALERIANA 300mg x30',canal:'E-Com',det:'110 días sin venta · Capital $168K · Demanda mínima online · Destrucción o devolución',monto:'$168K',ico:'🔴',src:'est'},
   ]
 };
 
@@ -2931,54 +3059,95 @@ const CONV_BUYERS=[
   {rut:'195295255',n:'NESTOR NAVARRO',email:'—',grupo:'Empleados',ords:1,rev:20000,tick:20000,ult:'21/01/2026'},
 ];
 // ══ COMPETENCIA SKU DATA ══
+// ⚠️ Precios PROFAR: referenciales — validar contra sistema de precios vigente
+// ❌ Precios SB/CV/AH/CF: scrapeados manualmente semana 11, mar 2026 — no automatizado
+// Matriz 2×2: posicion = rot_alta+precio_ok='estrella' | rot_alta+precio_caro='critico' | rot_baja+precio_ok='activar' | rot_baja+precio_caro='doble_problema'
 const COMP_SKUS=[
-  {n:'Paracetamol 500mg x20',cat:'otc',pf:3490,sb:3790,cv:4190,ah:3510,cf:3400,tend:'caro',nota:'⚠️ Cofar -2.5%'},
-  {n:'Ibuprofeno 400mg x20',cat:'otc',pf:4290,sb:4590,cv:5090,ah:4310,cf:4200,tend:'caro',nota:'⚠️ Cofar -2.1%'},
-  {n:'Omeprazol 20mg x14',cat:'cr',pf:6890,sb:7490,cv:8390,ah:6910,cf:6750,tend:'caro',nota:'⚠️ Cofar -2%'},
-  {n:'Loratadina 10mg x10',cat:'otc',pf:4990,sb:5390,cv:5990,ah:5010,cf:4800,tend:'caro',nota:'⚠️ Cofar -3.8%'},
-  {n:'Metformina 850mg x30',cat:'cr',pf:5290,sb:5890,cv:6290,ah:5310,cf:5100,tend:'caro',nota:'⚠️ Cofar -3.6%'},
-  {n:'Vitamina C 1g x30',cat:'otc',pf:3190,sb:3490,cv:3790,ah:3210,cf:3100,tend:'caro',nota:'⚠️ Cofar -2.8%'},
-  {n:'Atorvastatina 40mg x30',cat:'cr',pf:8990,sb:9490,cv:10190,ah:9010,cf:8800,tend:'caro',nota:'⚠️ Cofar -2.1%'},
-  {n:'Sertralina 50mg x30',cat:'cr',pf:7490,sb:7990,cv:8390,ah:7510,cf:7200,tend:'caro',nota:'⚠️ Cofar -3.9%'},
-  {n:'Amoxicilina 500mg x15',cat:'otc',pf:5990,sb:6390,cv:6890,ah:6010,cf:5900,tend:'caro',nota:'⚠️ Cofar -1.5%'},
-  {n:'Aspirina 100mg x30',cat:'otc',pf:2990,sb:3190,cv:3490,ah:2990,cf:2900,tend:'caro',nota:'⚠️ Cofar -3%'},
-  {n:'Ranitidina 150mg x20',cat:'cr',pf:4190,sb:4490,cv:4890,ah:4210,cf:4000,tend:'caro',nota:'⚠️ Cofar -4.5%'},
-  {n:'Ozempic 0.5mg',cat:'cr',pf:185000,sb:195000,cv:210000,ah:188000,cf:null,tend:'ok',nota:'PROFAR -5.1% vs SB'},
-  {n:'Rybelsus 14mg',cat:'cr',pf:175000,sb:182000,cv:195000,ah:177000,cf:null,tend:'ok',nota:'PROFAR competitivo'},
-  {n:'Nurtec 75mg x8',cat:'oc',pf:89990,sb:null,cv:null,ah:null,cf:null,tend:'ok',nota:'Exclusividad — sin comp.'},
-  {n:'Trikafta (Elexacaftor)',cat:'oc',pf:2850000,sb:null,cv:null,ah:null,cf:null,tend:'ok',nota:'SB sin stock → oportunidad'},
+  // ══ OTC / Sin prescripción ══
+  {n:'Paracetamol 500mg x20',    cat:'otc',pf:3490,  sb:3790,  cv:4190,  ah:3510,  cf:3400,  tend:'caro',rot:40,posicion:'activar',        nota:'⚠️ Cofar -2.5% · Temporada invierno'},
+  {n:'Ibuprofeno 400mg x20',     cat:'otc',pf:4290,  sb:4590,  cv:5090,  ah:4310,  cf:4200,  tend:'caro',rot:36,posicion:'activar',        nota:'⚠️ Cofar -2.1% · Combo Kit Invierno'},
+  {n:'Loratadina 10mg x10',      cat:'otc',pf:4990,  sb:5390,  cv:5990,  ah:5010,  cf:4800,  tend:'caro',rot:30,posicion:'activar',        nota:'⚠️ Cofar -3.8% · Temporada alergias'},
+  {n:'Aspirina 100mg x30',       cat:'otc',pf:2990,  sb:3190,  cv:3490,  ah:2990,  cf:2900,  tend:'caro',rot:24,posicion:'activar',        nota:'⚠️ Cofar -3% · Cardio preventivo'},
+  {n:'Vitamina C 1g x30',        cat:'otc',pf:3190,  sb:3490,  cv:3790,  ah:3210,  cf:3100,  tend:'caro',rot:18,posicion:'doble_problema', nota:'⚠️ Cofar -2.8% · Temporada baja fuera invierno'},
+  {n:'Amoxicilina 500mg x15',    cat:'otc',pf:5990,  sb:6390,  cv:6890,  ah:6010,  cf:5900,  tend:'caro',rot:28,posicion:'activar',        nota:'⚠️ Cofar -1.5% · Prescripción médica común'},
+  // ══ Crónico ══
+  {n:'Omeprazol 20mg x14',       cat:'cr', pf:6890,  sb:7490,  cv:8390,  ah:6910,  cf:6750,  tend:'caro',rot:24,posicion:'doble_problema', nota:'⚠️ Cofar -2% · Ahumada bioequivalente nuevo -14.7%'},
+  {n:'Metformina 850mg x30',     cat:'cr', pf:5290,  sb:5890,  cv:6290,  ah:5310,  cf:5100,  tend:'caro',rot:19,posicion:'doble_problema', nota:'⚠️ Cofar -3.6% · Ajustar o crear pack trimestral'},
+  {n:'Atorvastatina 40mg x30',   cat:'cr', pf:8990,  sb:9490,  cv:10190, ah:9010,  cf:8800,  tend:'caro',rot:21,posicion:'doble_problema', nota:'⚠️ Cofar -2.1% · Baja rotación E-Com'},
+  {n:'Sertralina 50mg x30',      cat:'cr', pf:7490,  sb:7990,  cv:8390,  ah:7510,  cf:7200,  tend:'caro',rot:18,posicion:'doble_problema', nota:'⚠️ Cofar -3.9% · Peor brecha precio+rot'},
+  {n:'Ranitidina 150mg x20',     cat:'cr', pf:4190,  sb:4490,  cv:4890,  ah:4210,  cf:4000,  tend:'caro',rot:28,posicion:'activar',        nota:'⚠️ Cofar -4.5% · Post-ajuste mejorando'},
+  {n:'Xeljanz 5mg x56',          cat:'cr', pf:245000,sb:260000,cv:null,  ah:248000,cf:null,   tend:'caro',rot:48,posicion:'critico',       nota:'⚠️ Ahumada -1.2% · Crónico con rotación'},
+  {n:'Betmiga 50mg x30',         cat:'cr', pf:38500, sb:40000, cv:42000, ah:38800, cf:null,   tend:'caro',rot:44,posicion:'critico',       nota:'⚠️ Ahumada -0.8% · Monitorear'},
+  {n:'Ozempic 4mg/3ml',          cat:'cr', pf:185000,sb:195000,cv:210000,ah:188000,cf:null,   tend:'ok',  rot:90,posicion:'estrella',      nota:'✅ PROFAR -5.1% vs SB · Liderazgo precio'},
+  {n:'Rybelsus 3mg x30',         cat:'cr', pf:162000,sb:168000,cv:182000,ah:164000,cf:null,   tend:'ok',  rot:92,posicion:'estrella',      nota:'✅ PROFAR competitivo · Top suscripciones'},
+  {n:'Rybelsus 14mg x30',        cat:'cr', pf:175000,sb:182000,cv:195000,ah:177000,cf:null,   tend:'ok',  rot:87,posicion:'estrella',      nota:'✅ PROFAR competitivo · Alta adherencia'},
+  {n:'Clexane 60mg x10',         cat:'cr', pf:42000, sb:44500, cv:47000, ah:42800, cf:null,   tend:'ok',  rot:84,posicion:'estrella',      nota:'✅ PROFAR -5.6% vs SB · Anticoagulante clave'},
+  {n:'Clexane 40mg x10',         cat:'cr', pf:36500, sb:38000, cv:41000, ah:37200, cf:null,   tend:'ok',  rot:82,posicion:'estrella',      nota:'✅ PROFAR -3.9% vs SB · Mantener stock'},
+  // ══ Oncológico / Especialidad ══
+  {n:'Nurtec 75mg x8',           cat:'oc', pf:89990, sb:null,  cv:null,  ah:null,  cf:null,   tend:'ok',  rot:98,posicion:'estrella',      nota:'✅ Exclusividad · Sin competencia directa'},
+  {n:'Sotyktu 6mg x30',          cat:'oc', pf:320000,sb:null,  cv:null,  ah:null,  cf:null,   tend:'ok',  rot:80,posicion:'estrella',      nota:'✅ Sin competencia · Especialidad dermatol.'},
+  {n:'Dupixent 300mg sol.',       cat:'oc', pf:485000,sb:null,  cv:null,  ah:null,  cf:null,   tend:'ok',  rot:68,posicion:'estrella',      nota:'✅ Distribución exclusiva · Dermatol/Atópica'},
+  {n:'Trikafta (Elexacaftor)',    cat:'oc', pf:2850000,sb:null, cv:null,  ah:null,  cf:null,   tend:'ok',  rot:60,posicion:'estrella',      nota:'✅ SB sin stock → OPORTUNIDAD captura paciente FQ'},
+  {n:'Zejula 100mg x56',         cat:'oc', pf:680000,sb:null,  cv:null,  ah:null,  cf:null,   tend:'ok',  rot:72,posicion:'estrella',      nota:'🚨 Stock 0 actualmente · Reponer urgente'},
+  {n:'Genotropin 36 UI sol.',     cat:'oc', pf:380000,sb:null,  cv:null,  ah:385000,cf:null,   tend:'caro',rot:75,posicion:'critico',       nota:'⚠️ Ahumada -1.3% · Revisar precio'},
+  {n:'Shingrix 0.5ml Susp. Iny.',cat:'oc', pf:125000,sb:128000,cv:135000,ah:126000,cf:null,   tend:'caro',rot:58,posicion:'critico',       nota:'⚠️ SB -2.3% · Oportunidad temporada vacunas'},
+  {n:'Ibrance 100mg x21',        cat:'oc', pf:1250000,sb:1290000,cv:null,ah:1260000,cf:null,  tend:'caro',rot:22,posicion:'doble_problema',nota:'⚠️ Ahumada -0.8% · Baja rot. + precio caro'},
+  {n:'Tafinlar 75mg x120',       cat:'oc', pf:1180000,sb:null, cv:null,  ah:1195000,cf:null,  tend:'caro',rot:18,posicion:'doble_problema',nota:'⚠️ Ahumada -1.3% · Peor escenario'},
 ];
 // ══ PRICING SÁBANA DATA ══
+// Stock unidades / días sin venta: ⚠️ ESTIMADOS (inferidos de last_order_date por SKU)
+// Capital inmovilizado: ⚠️ ESTIMADO (stock × precio compra referencial)
+// Precio de compra: ❌ ESTIMADO — costo exacto requiere cruce con ERP/facturas proveedor
 const PRIC_FULL=[
-  {n:'Colágeno Hidrolizado 500g',cat:'OTC',c:'E-Com',stock:48,dias:152,pA:18990,pJ:13290,desc:30,cap:892320,est:'trigger',dp:0,act:'Liquidar -30%'},
-  {n:'Espirulina 500mg x60',cat:'OTC',c:'E-Com',stock:62,dias:128,pA:9990,pJ:7492,desc:25,cap:619380,est:'trigger',dp:0,act:'-25% automático'},
-  {n:'Glucosamina 500mg x60',cat:'OTC',c:'E-Com',stock:38,dias:98,pA:12990,pJ:10392,desc:20,cap:494220,est:'trigger',dp:0,act:'-20% aplicar hoy'},
-  {n:'Extracto de Ginkgo x30',cat:'OTC',c:'E-Com',stock:25,dias:108,pA:8990,pJ:6293,desc:30,cap:224750,est:'trigger',dp:0,act:'-30% + promo email'},
-  {n:'Complejo B x30',cat:'OTC',c:'E-Com',stock:85,dias:122,pA:6990,pJ:5243,desc:25,cap:594150,est:'trigger',dp:0,act:'Liquidar o devolver'},
-  {n:'Polivitamínico Senior x30',cat:'OTC',c:'E-Com',stock:42,dias:95,pA:13990,pJ:11192,desc:20,cap:587580,est:'trigger',dp:0,act:'-20% + activar email'},
-  {n:'Valeriana 300mg x30',cat:'OTC',c:'E-Com',stock:28,dias:110,pA:5990,pJ:4193,desc:30,cap:167720,est:'trigger',dp:0,act:'-30% automático'},
-  {n:'Ranitidina 150mg x20',cat:'Crónico',c:'E-Com',stock:95,dias:28,pA:4190,pJ:3561,desc:15,cap:398050,est:'watch',dp:28,act:'Mejorando → obs 17d'},
-  {n:'Alprazolam 0.5mg x30',cat:'Crónico',c:'E-Com',stock:55,dias:40,pA:7490,pJ:6366,desc:15,cap:411950,est:'watch',dp:40,act:'Mejora leve — mantener'},
-  {n:'Loperamida 2mg x12',cat:'OTC',c:'E-Com',stock:18,dias:22,pA:3990,pJ:3192,desc:20,cap:71820,est:'watch',dp:22,act:'Observar tendencia'},
-  {n:'Vitamina D3 5000UI x60',cat:'OTC',c:'E-Com',stock:12,dias:8,pA:9990,pJ:7992,desc:20,cap:119880,est:'watch',dp:8,act:'Precio nuevo reciente'},
-  {n:'Nurtec 75mg x8',cat:'Oncológico',c:'E-Com',stock:8,dias:0,pA:89990,pJ:null,desc:0,cap:719920,est:'ok',dp:null,act:'✅ Rotando bien'},
-  {n:'Ozempic 0.5mg',cat:'Crónico',c:'E-Com',stock:5,dias:0,pA:185000,pJ:null,desc:0,cap:925000,est:'ok',dp:null,act:'✅ Rotando bien'},
-  {n:'Rybelsus 14mg',cat:'Crónico',c:'E-Com',stock:4,dias:0,pA:175000,pJ:null,desc:0,cap:700000,est:'ok',dp:null,act:'✅ Stock bajo — prioridad'},
+  // ─── Trigger (sin venta +90 días → acción inmediata) ────────────
+  {n:'Colágeno Hidrolizado 500g',  cat:'OTC',      c:'E-Com',stock:48, dias:152,pA:18990, pJ:13290, desc:30,cap:892320, est:'trigger',dp:0,   act:'Liquidar -30% + email base'},
+  {n:'Espirulina 500mg x60',       cat:'OTC',      c:'E-Com',stock:62, dias:128,pA:9990,  pJ:7492,  desc:25,cap:619380, est:'trigger',dp:0,   act:'-25% o devolver proveedor'},
+  {n:'Complejo B x30',             cat:'OTC',      c:'E-Com',stock:85, dias:122,pA:6990,  pJ:5243,  desc:25,cap:594150, est:'trigger',dp:0,   act:'Nota crédito o liquidar urgente'},
+  {n:'Valeriana 300mg x30',        cat:'OTC',      c:'E-Com',stock:28, dias:110,pA:5990,  pJ:4193,  desc:30,cap:167720, est:'trigger',dp:0,   act:'-30% automático + destrucción'},
+  {n:'Extracto de Ginkgo x30',     cat:'OTC',      c:'E-Com',stock:25, dias:108,pA:8990,  pJ:6293,  desc:30,cap:224750, est:'trigger',dp:0,   act:'-30% + promo email segmentado'},
+  {n:'Glucosamina 500mg x60',      cat:'OTC',      c:'E-Com',stock:38, dias:98, pA:12990, pJ:10392, desc:20,cap:494220, est:'trigger',dp:0,   act:'-20% ya aplicado → escalar inversa'},
+  {n:'Polivitamínico Senior x30',  cat:'OTC',      c:'E-Com',stock:42, dias:95, pA:13990, pJ:11192, desc:20,cap:587580, est:'trigger',dp:0,   act:'-20% + activar email convenio'},
+  // ─── Watch (con descuento aplicado → observando respuesta) ──────
+  {n:'Ranitidina 150mg x20',       cat:'Crónico',  c:'E-Com',stock:95, dias:28, pA:4190,  pJ:3561,  desc:15,cap:398050, est:'watch',  dp:28,  act:'↑ Mejorando → observar 17d más'},
+  {n:'Alprazolam 0.5mg x30',       cat:'Crónico',  c:'E-Com',stock:55, dias:40, pA:7490,  pJ:6366,  desc:15,cap:411950, est:'watch',  dp:40,  act:'↑ Leve mejora — mantener obs.'},
+  {n:'Loperamida 2mg x12',         cat:'OTC',      c:'E-Com',stock:18, dias:22, pA:3990,  pJ:3192,  desc:20,cap:71820,  est:'watch',  dp:22,  act:'Observar tendencia 23d'},
+  {n:'Vitamina D3 5000UI x60',     cat:'OTC',      c:'E-Com',stock:12, dias:8,  pA:9990,  pJ:7992,  desc:20,cap:119880, est:'watch',  dp:8,   act:'Precio nuevo reciente — esperar'},
+  {n:'Sertralina 50mg x30',        cat:'Crónico',  c:'E-Com',stock:35, dias:55, pA:7490,  pJ:6366,  desc:15,cap:262150, est:'watch',  dp:0,   act:'-15% pendiente aplicar'},
+  {n:'Atorvastatina 40mg x30',     cat:'Crónico',  c:'E-Com',stock:28, dias:62, pA:8990,  pJ:7192,  desc:20,cap:251720, est:'watch',  dp:0,   act:'-20% pendiente aplicar'},
+  {n:'Metformina 850mg x30',       cat:'Crónico',  c:'E-Com',stock:22, dias:70, pA:5290,  pJ:4232,  desc:20,cap:116380, est:'watch',  dp:0,   act:'Igualar Cofar $5.100 o -20%'},
+  // ─── OK (rotando bien → solo monitorear) ────────────────────────
+  {n:'Nurtec 75mg x8',             cat:'Oncológico',c:'E-Com',stock:8,  dias:0,  pA:89990, pJ:null,  desc:0, cap:719920, est:'ok',     dp:null,act:'✅ Top #1 · Sin ajuste'},
+  {n:'Ozempic 4mg/3ml',            cat:'Crónico',  c:'E-Com',stock:5,  dias:0,  pA:185000,pJ:null,  desc:0, cap:925000, est:'ok',     dp:null,act:'✅ Competitivo · Mantener'},
+  {n:'Rybelsus 14mg x30',          cat:'Crónico',  c:'E-Com',stock:4,  dias:0,  pA:175000,pJ:null,  desc:0, cap:700000, est:'ok',     dp:null,act:'✅ Stock bajo — reponer HOY'},
+  {n:'Rybelsus 3mg x30',           cat:'Crónico',  c:'E-Com',stock:5,  dias:0,  pA:162000,pJ:null,  desc:0, cap:810000, est:'ok',     dp:null,act:'✅ Stock bajo — pedir 180 u'},
+  {n:'Clexane 60mg x10',           cat:'Oncológico',c:'E-Com',stock:12, dias:0,  pA:42000, pJ:null,  desc:0, cap:504000, est:'ok',     dp:null,act:'✅ Precio competitivo'},
+  {n:'Clexane 40mg x10',           cat:'Oncológico',c:'E-Com',stock:15, dias:0,  pA:36500, pJ:null,  desc:0, cap:547500, est:'ok',     dp:null,act:'✅ Mantener stock 3 semanas'},
+  {n:'Sotyktu 6mg x30',            cat:'Oncológico',c:'E-Com',stock:6,  dias:0,  pA:320000,pJ:null,  desc:0, cap:1920000,est:'ok',    dp:null,act:'✅ Exclusivo · Sin ajuste'},
+  {n:'Dupixent 300mg sol.',         cat:'Oncológico',c:'E-Com',stock:4,  dias:0,  pA:485000,pJ:null,  desc:0, cap:1940000,est:'ok',    dp:null,act:'✅ Distribución exclusiva'},
 ];
 // ══ LOG. INVERSA SÁBANA DATA ══
+// ⚠️ IMPORTANTE: Nombres de proveedores son ILUSTRATIVOS — confirmar con equipo de compras PROFAR
+// ⚠️ RUTs de proveedores son FICTICIOS — requieren validación en sistema ERP
+// ⚠️ Capital inmovilizado: stock × precio compra referencial — validar vs facturas
+// ❌ Precio de compra (pc): estimado — requiere cruce con órdenes de compra reales
 const INV_FULL=[
-  {n:'Colágeno Hidrolizado 500g',cat:'OTC',c:'E-Com',prov:'NutriLab SpA',rut:'76.123.456-7',stock:48,dias:152,cap:892320,pc:18600,desc:30,etapa:'devolucion',act:'Solicitar OC devolución',plazo:'Esta semana'},
-  {n:'Espirulina 500mg x60',cat:'OTC',c:'E-Com',prov:'NaturaVida Ltda.',rut:'76.234.567-8',stock:62,dias:128,cap:619380,pc:9990,desc:25,etapa:'devolucion',act:'Negociar nota crédito',plazo:'15 días'},
-  {n:'Complejo B x30',cat:'OTC',c:'E-Com',prov:'Vitamex SA',rut:'96.789.012-3',stock:85,dias:122,cap:594150,pc:6990,desc:25,etapa:'devolucion',act:'Nota crédito parcial $400K',plazo:'10 días'},
-  {n:'Glucosamina 500mg x60',cat:'OTC',c:'E-Com',prov:'BioFarma Chile',rut:'76.456.789-1',stock:38,dias:98,cap:494220,pc:13000,desc:20,etapa:'nota',act:'Solicitar nota crédito 50%',plazo:'20 días'},
-  {n:'Polivitamínico Senior x30',cat:'OTC',c:'E-Com',prov:'Vitamex SA',rut:'96.789.012-3',stock:42,dias:95,cap:587580,pc:14000,desc:20,etapa:'liquidacion',act:'Liquidar en promoción -30%',plazo:'Este mes'},
-  {n:'Valeriana 300mg x30',cat:'OTC',c:'E-Com',prov:'HerboFarma',rut:'76.567.890-2',stock:28,dias:110,cap:167720,pc:5990,desc:30,etapa:'devolucion',act:'Devolución o destrucción',plazo:'15 días'},
-  {n:'Extracto de Ginkgo x30',cat:'OTC',c:'E-Com',prov:'HerboFarma',rut:'76.567.890-2',stock:25,dias:108,cap:224750,pc:9000,desc:30,etapa:'nota',act:'Nota crédito + liquidar',plazo:'15 días'},
-  {n:'Ranitidina 150mg x20',cat:'Crónico',c:'E-Com',prov:'Lab. Maver',rut:'96.345.678-9',stock:95,dias:28,cap:398050,pc:4190,desc:15,etapa:'watch',act:'En período observación',plazo:'30 días'},
-  {n:'Alprazolam 0.5mg x30',cat:'Crónico',c:'E-Com',prov:'Lab. Sanderson',rut:'91.234.567-8',stock:55,dias:40,cap:411950,pc:7490,desc:15,etapa:'watch',act:'Mejora leve — observar',plazo:'15 días'},
-  {n:'Loperamida 2mg x12',cat:'OTC',c:'E-Com',prov:'GSK Chile',rut:'96.890.123-4',stock:18,dias:22,cap:71820,pc:3990,desc:20,etapa:'watch',act:'Muy pronto — esperar',plazo:'45 días'},
-  {n:'Vitamina D3 5000UI x60',cat:'OTC',c:'E-Com',prov:'NutriLab SpA',rut:'76.123.456-7',stock:12,dias:8,cap:119880,pc:9990,desc:20,etapa:'watch',act:'Precio nuevo — observar',plazo:'37 días'},
-  {n:'Complejo C+Zinc x30',cat:'OTC',c:'E-Com',prov:'NaturaVida Ltda.',rut:'76.234.567-8',stock:22,dias:18,cap:131780,pc:5990,desc:20,etapa:'watch',act:'En evaluación inicial',plazo:'45 días'},
+  // ─── Confirmados para devolución/nota crédito ────────────────────
+  {n:'Colágeno Hidrolizado 500g', cat:'OTC',    c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:48, dias:152,cap:892320, pc:18600,desc:30,etapa:'devolucion', act:'Solicitar OC devolución al proveedor',     plazo:'Esta semana'},
+  {n:'Espirulina 500mg x60',      cat:'OTC',    c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:62, dias:128,cap:619380, pc:9990, desc:25,etapa:'devolucion', act:'Negociar nota crédito o devolución',       plazo:'15 días'},
+  {n:'Complejo B x30',            cat:'OTC',    c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:85, dias:122,cap:594150, pc:6990, desc:25,etapa:'devolucion', act:'Nota crédito parcial $400K o liquidar',   plazo:'10 días'},
+  {n:'Glucosamina 500mg x60',     cat:'OTC',    c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:38, dias:98, cap:494220, pc:13000,desc:20,etapa:'nota',       act:'Solicitar nota crédito 50% del stock',    plazo:'20 días'},
+  {n:'Valeriana 300mg x30',       cat:'OTC',    c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:28, dias:110,cap:167720, pc:5990, desc:30,etapa:'devolucion', act:'Devolución o destrucción controlada',     plazo:'15 días'},
+  {n:'Extracto de Ginkgo x30',    cat:'OTC',    c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:25, dias:108,cap:224750, pc:9000, desc:30,etapa:'nota',       act:'Nota crédito + liquidar online',          plazo:'15 días'},
+  // ─── Liquidación interna (descuento + promo) ────────────────────
+  {n:'Polivitamínico Senior x30', cat:'OTC',    c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:42, dias:95, cap:587580, pc:14000,desc:30,etapa:'liquidacion',act:'Liquidar en promo -30% · Activar email',  plazo:'Este mes'},
+  {n:'Sertralina 50mg x30',       cat:'Crónico',c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:35, dias:55, cap:262150, pc:7490, desc:15,etapa:'liquidacion',act:'-15% aplicar + monitorear 30d',           plazo:'2 semanas'},
+  {n:'Atorvastatina 40mg x30',    cat:'Crónico',c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:28, dias:62, cap:251720, pc:8990, desc:20,etapa:'liquidacion',act:'-20% aplicar hoy · Combo mensual',         plazo:'Esta semana'},
+  {n:'Metformina 850mg x30',      cat:'Crónico',c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:22, dias:70, cap:116380, pc:5290, desc:20,etapa:'liquidacion',act:'Igualar precio Cofar $5.100 o -20%',       plazo:'Esta semana'},
+  // ─── En observación (post-pricing) ──────────────────────────────
+  {n:'Ranitidina 150mg x20',      cat:'Crónico',c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:95, dias:28, cap:398050, pc:4190, desc:15,etapa:'watch',      act:'↑ Mejorando (↑5u/mes) → obs 17d más',     plazo:'30 días'},
+  {n:'Alprazolam 0.5mg x30',      cat:'Crónico',c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:55, dias:40, cap:411950, pc:7490, desc:15,etapa:'watch',      act:'↑ Leve mejora (8u/mes) — mantener precio',plazo:'15 días'},
+  {n:'Loperamida 2mg x12',        cat:'OTC',    c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:18, dias:22, cap:71820,  pc:3990, desc:20,etapa:'watch',      act:'Muy reciente — observar 23d más',         plazo:'45 días'},
+  {n:'Vitamina D3 5000UI x60',    cat:'OTC',    c:'E-Com',prov:'⚠️ Por confirmar',rut:'Por verificar',stock:12, dias:8,  cap:119880, pc:9990, desc:20,etapa:'watch',      act:'Precio nuevo reciente — esperar respuesta',plazo:'37 días'},
 ];
 
 // ── Analytics Charts Init ──
@@ -3025,7 +3194,7 @@ function initAnalyticsCharts(){
   mkC('cCDPFreq',{type:'bar',data:{labels:['1 compra','2-3','4-6','7-10','11+'],datasets:[{label:'Clientes',data:[421,689,513,287,142],backgroundColor:['rgba(239,68,68,.6)','rgba(245,158,11,.6)','rgba(59,130,246,.6)','rgba(16,185,129,.6)','rgba(16,185,129,.9)'],borderRadius:4}]},
     options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
   renderRot();renderActions();renderPricing();renderInversa();renderCDP();renderChurn();
-  renderConv();renderBuyers();renderComp();renderPricTable();renderInvTable();
+  renderConv();renderBuyers();renderComp();renderCompMatrix();renderPricTable();renderInvTable();
 }
 document.addEventListener('DOMContentLoaded',initAnalyticsCharts);
 
@@ -3102,33 +3271,84 @@ function exportBuyersCSV(){
 }
 
 // ── Sábana Render: Competencia ──
+// ── Competitive 2×2 Matrix ──
+const POS_CFG={
+  estrella:    {lbl:'⭐ Estrella',     desc:'Rota + precio competitivo → Capitalizar',      bg:'rgba(16,185,129,.12)', bc:'rgba(16,185,129,.3)', tc:'var(--green)'},
+  critico:     {lbl:'🚨 Crítico',      desc:'Rota + precio más caro → Bajar precio HOY',    bg:'rgba(239,68,68,.1)',   bc:'rgba(239,68,68,.3)',   tc:'var(--red)'},
+  activar:     {lbl:'🔔 Activar',      desc:'No rota + precio competitivo → Marketing',      bg:'rgba(59,130,246,.1)',  bc:'rgba(59,130,246,.3)',  tc:'var(--accent)'},
+  doble_problema:{lbl:'☠️ Doble Problema',desc:'No rota + precio caro → Peor escenario',   bg:'rgba(148,163,184,.08)',bc:'rgba(148,163,184,.2)',tc:'var(--text3)'},
+};
+function renderCompMatrix(){
+  const el=document.getElementById('compMatrix');if(!el)return;
+  const groups={estrella:[],critico:[],activar:[],doble_problema:[]};
+  COMP_SKUS.forEach(s=>{ if(groups[s.posicion])groups[s.posicion].push(s); });
+  el.innerHTML=Object.entries(POS_CFG).map(([key,cfg])=>{
+    const items=groups[key]||[];
+    const capTotal=items.reduce((acc,s)=>{
+      const minC=Math.min(...[s.sb,s.cv,s.ah,s.cf].filter(v=>v!=null));
+      return acc+(minC?Math.abs((s.pf-minC)/minC*100):0);
+    },0);
+    return `<div style="background:${cfg.bg};border:1px solid ${cfg.bc};border-radius:10px;padding:13px;min-height:120px">
+      <div style="font-weight:700;color:${cfg.tc};font-size:13px;margin-bottom:4px">${cfg.lbl}</div>
+      <div style="font-size:10px;color:var(--text2);margin-bottom:10px">${cfg.desc}</div>
+      <div style="font-size:10px;color:var(--text3);margin-bottom:8px">${items.length} SKU${items.length!==1?'s':''}</div>
+      ${items.map(s=>{
+        const minC=Math.min(...[s.sb,s.cv,s.ah,s.cf].filter(v=>v!=null));
+        const dif=minC?((s.pf-minC)/minC*100).toFixed(1):null;
+        return `<div style="background:rgba(0,0,0,.15);border-radius:5px;padding:6px 8px;margin-bottom:5px;font-size:10px">
+          <div style="font-weight:600;color:var(--text)">${s.n}</div>
+          <div style="color:var(--text2);margin-top:2px">${dif!=null?(dif>0?'⬆️ +'+dif+'%':'⬇️ '+dif+'%'):'Sin competencia'} · Rot: ${s.rot}%</div>
+          <div style="color:var(--text3);font-size:9px;margin-top:2px">${s.nota}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
 function renderComp(filter='all'){
   const el=document.getElementById('compBody');if(!el)return;
   const CAT_LABEL={'otc':'OTC','cr':'Crónico','oc':'Oncológico'};
-  const d=filter==='all'?COMP_SKUS:filter==='caro'?COMP_SKUS.filter(s=>s.tend==='caro'):COMP_SKUS.filter(s=>s.cat===filter);
+  const POS_CHIP={
+    estrella:    '<span class="chip" style="background:rgba(16,185,129,.15);color:var(--green);font-size:9px">⭐ Estrella</span>',
+    critico:     '<span class="chip" style="background:rgba(239,68,68,.12);color:#f87171;font-size:9px">🚨 Crítico</span>',
+    activar:     '<span class="chip" style="background:rgba(59,130,246,.12);color:#60a5fa;font-size:9px">🔔 Activar</span>',
+    doble_problema:'<span class="chip" style="background:rgba(148,163,184,.1);color:var(--text3);font-size:9px">☠️ Doble Prob.</span>',
+  };
+  let d=COMP_SKUS;
+  if(filter==='caro') d=d.filter(s=>s.tend==='caro');
+  else if(filter==='ok') d=d.filter(s=>s.tend==='ok');
+  else if(filter!=='all') d=d.filter(s=>s.cat===filter||s.posicion===filter);
+  // Sort by category then by rotation desc
+  d=[...d].sort((a,b)=>{
+    const catOrd={oc:0,cr:1,otc:2};
+    const ca=(catOrd[a.cat]??3),cb=(catOrd[b.cat]??3);
+    if(ca!==cb)return ca-cb;
+    return b.rot-a.rot;
+  });
   el.innerHTML=d.map(s=>{
     const minComp=Math.min(...[s.sb,s.cv,s.ah,s.cf].filter(v=>v!=null));
     const dif=minComp?((s.pf-minComp)/minComp*100).toFixed(1):null;
-    const difStyle=dif&&dif>0?'color:#ef4444':'color:#10b981';
-    const estChip=s.tend==='caro'?'<span class="chip ch-r">⚠️ Más caro</span>':'<span class="chip ch-g">✅ Competitivo</span>';
+    const difStyle=dif!=null&&dif>0?'color:#ef4444':dif!=null?'color:#10b981':'color:var(--text3)';
     const fmt=v=>v!=null?'$'+v.toLocaleString():'—';
+    const rotBar=`<div style="display:flex;align-items:center;gap:4px"><div style="width:40px;height:4px;background:var(--border);border-radius:2px"><div style="width:${s.rot}%;height:100%;background:${s.rot>=70?'var(--green)':s.rot>=30?'var(--yellow)':'var(--red)'};border-radius:2px"></div></div><span style="font-size:10px;color:var(--text3)">${s.rot}%</span></div>`;
     return `<tr>
-      <td style="font-weight:500">${s.n}</td>
-      <td><span class="chip ch-b">${CAT_LABEL[s.cat]||s.cat}</span></td>
+      <td style="font-weight:500;font-size:11px">${s.n}</td>
+      <td style="text-align:center"><span class="chip ch-b" style="font-size:9px">${CAT_LABEL[s.cat]||s.cat}</span></td>
       <td style="text-align:right;font-weight:600">${fmt(s.pf)}</td>
-      <td style="text-align:right">${fmt(s.sb)}</td>
-      <td style="text-align:right">${fmt(s.cv)}</td>
-      <td style="text-align:right">${fmt(s.ah)}</td>
-      <td style="text-align:right">${fmt(s.cf)}</td>
+      <td style="text-align:right;font-size:11px">${fmt(s.sb)}</td>
+      <td style="text-align:right;font-size:11px">${fmt(s.cv)}</td>
+      <td style="text-align:right;font-size:11px">${fmt(s.ah)}</td>
+      <td style="text-align:right;font-size:11px">${fmt(s.cf)}</td>
       <td style="text-align:right;font-weight:600;${difStyle}">${dif!=null?(dif>0?'+'+dif+'%':dif+'%'):'—'}</td>
-      <td>${estChip}</td>
-      <td style="font-size:11px;color:var(--text2)">${s.nota}</td>
+      <td>${rotBar}</td>
+      <td style="text-align:center">${POS_CHIP[s.posicion]||'—'}</td>
+      <td style="font-size:10px;color:var(--text2)">${s.nota}</td>
     </tr>`;
   }).join('');
 }
 function filterComp(f,el){
   document.querySelectorAll('.comp-filter').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
+  if(el)el.classList.add('active');
   renderComp(f);
 }
 function exportCompCSV(){
@@ -3211,46 +3431,95 @@ function exportInvCSV(){
   showNotif('✅ Exportado: logistica-inversa.csv');
 }
 
-function renderRot(filter='all'){
-  const skus=filter==='all'?SKUS:SKUS.filter(s=>CH_MAP[s.c]===filter);
-  document.getElementById('rotBody').innerHTML=skus.map(s=>`
-    <tr>
-      <td style="font-weight:500">${s.n}</td>
-      <td><span class="chip ${CH_COLOR[s.c]||'ch-c'}">${s.c}</span></td>
-      <td style="color:var(--text2)">${s.upm} u/mes</td>
+let rotSort='rot_desc'; // 'rot_desc' | 'rot_asc' | 'rev_desc' | 'rev_asc'
+let rotFilter='all';
+function renderRot(filter,sort){
+  if(filter!==undefined)rotFilter=filter;
+  if(sort!==undefined)rotSort=sort;
+  const el=document.getElementById('rotBody');if(!el)return;
+  let skus=[...SKUS];
+  // Apply filter
+  if(rotFilter==='Alta')    skus=skus.filter(s=>s.st==='Alta');
+  else if(rotFilter==='Normal') skus=skus.filter(s=>s.st==='Normal');
+  else if(rotFilter==='Baja')   skus=skus.filter(s=>s.st==='Baja');
+  else if(rotFilter==='Sin Rot.')skus=skus.filter(s=>s.st==='Sin Rot.');
+  // Apply sort
+  if(rotSort==='rot_desc') skus.sort((a,b)=>b.rot-a.rot);
+  else if(rotSort==='rot_asc') skus.sort((a,b)=>a.rot-b.rot);
+  else if(rotSort==='rev_desc') skus.sort((a,b)=>(b.rev26+b.rev25)-(a.rev26+a.rev25));
+  else if(rotSort==='rev_asc')  skus.sort((a,b)=>(a.rev26+a.rev25)-(b.rev26+b.rev25));
+  else if(rotSort==='stk_asc')  skus.sort((a,b)=>b.stk-a.stk);
+  const PREC_BADGE={under:'<span class="chip" style="background:rgba(16,185,129,.15);color:var(--green);font-size:9px">✅ + barato</span>',over:'<span class="chip" style="background:rgba(239,68,68,.12);color:#f87171;font-size:9px">⚠️ + caro</span>',excl:'<span class="chip" style="background:rgba(139,92,246,.15);color:#a78bfa;font-size:9px">🔒 excl.</span>',par:'<span class="chip" style="background:rgba(148,163,184,.1);color:var(--text2);font-size:9px">= paridad</span>'};
+  el.innerHTML=skus.map((s,idx)=>{
+    const rev26s=s.rev26>0?`<span style="color:var(--green);font-weight:700">$${s.rev26}M</span>`:`<span style="color:var(--text3)">—</span>`;
+    const rev25s=`<span style="color:var(--text3);font-size:10px">/$${s.rev25}M</span>`;
+    return `<tr>
+      <td style="font-weight:500;font-size:11px">${s.n}</td>
+      <td style="font-size:10px;color:var(--text3);font-family:monospace">${s.sku||'—'}</td>
+      <td style="color:var(--text2)">${s.upm>0?s.upm+' u/mes':'Sin venta'}</td>
+      <td>${rev26s}${rev25s}</td>
       <td><div style="display:flex;align-items:center;gap:6px">
-        <div class="bar-w"><div class="bar-f" style="width:${s.rot}%;background:${s.rot>60?'var(--green)':s.rot>25?'var(--yellow)':'var(--red)'}"></div></div>
-        <span style="font-size:10px;color:var(--text2)">${s.rot}%</span>
+        <div class="bar-w" style="width:80px"><div class="bar-f" style="width:${s.rot}%;background:${s.rot>=70?'var(--green)':s.rot>=30?'var(--yellow)':s.rot>0?'var(--orange)':'var(--red)'}"></div></div>
+        <span style="font-size:10px;font-weight:700;color:${s.rot>=70?'var(--green)':s.rot>=30?'var(--yellow)':s.rot>0?'var(--orange)':'var(--red)'}">${s.rot}%</span>
       </div></td>
-      <td style="color:${s.stk>10?'var(--red)':s.stk>4?'var(--yellow)':'var(--green)'}">${s.stk}m</td>
-      <td>${ST_CHIP[s.st]}</td>
-      <td>${ST_ACT[s.st]}</td>
-    </tr>`).join('');
+      <td style="color:${s.stk>10?'var(--red)':s.stk>4?'var(--yellow)':'var(--green)'}">${s.stk===0?'<span style="color:var(--red);font-weight:700">🚨 Sin stock</span>':s.stk+'m'}</td>
+      <td>${ST_CHIP[s.st]||s.st}</td>
+      <td>${PREC_BADGE[s.precComp]||''}</td>
+      <td>${ST_ACT[s.st]||''}</td>
+    </tr>`;
+  }).join('');
+  // Update KPI counts
+  const alta=SKUS.filter(s=>s.st==='Alta').length;
+  const norm=SKUS.filter(s=>s.st==='Normal').length;
+  const baja=SKUS.filter(s=>s.st==='Baja').length;
+  const sinr=SKUS.filter(s=>s.st==='Sin Rot.').length;
+  const tot=SKUS.length;
+  const setEl=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  setEl('rot-kv-alta', alta+'/'+tot);
+  setEl('rot-kv-norm', norm+'/'+tot);
+  setEl('rot-kv-baja', baja+'/'+tot);
+  setEl('rot-kv-sin',  sinr+'/'+tot);
 }
 function filterRot(f,el){
-  document.querySelectorAll('#tp-rotacion .btn-xs').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');renderRot(f);
+  document.querySelectorAll('#tp-rotacion .rot-filter-btn').forEach(b=>b.classList.remove('active'));
+  if(el)el.classList.add('active');
+  renderRot(f);
+}
+function sortRot(s){
+  rotSort=s;
+  renderRot();
 }
 function botAlert(btn){
   const prod=btn.closest('tr').querySelector('td').textContent;
   showNotif('⚡ Pricing iniciado: '+prod);
 }
 function renderActions(){
-  document.getElementById('actBuy').innerHTML=ACTS.buy.map(a=>`
-    <div class="act-item buy"><div class="act-ico ico-g">${a.ico}</div>
-      <div class="act-info"><div class="act-name">${a.n} <span class="chip ${CH_COLOR[a.canal]||'ch-b'}">${a.canal}</span></div><div class="act-det">${a.det}</div></div>
+  const srcBadge=src=>src==='real'?'<span class="chip cg" style="font-size:9px">✅ Magento real</span>':'<span class="chip cy" style="font-size:9px">⚠️ Estimado</span>';
+  const mkActBtn=(cls,lbl,n)=>`<button class="act-btn ${cls}" onclick="showNotif('${lbl}')">${lbl.split(' ')[0]} ${lbl.split(' ').slice(1,3).join(' ')}</button>`;
+  const actEl=document.getElementById('actBuy');
+  if(actEl)actEl.innerHTML=ACTS.buy.map(a=>{
+    const sn=a.n.replace(/'/g,'');
+    return `<div class="act-item buy"><div class="act-ico ico-g">${a.ico}</div>
+      <div class="act-info"><div class="act-name">${a.n} <span class="chip ${CH_COLOR[a.canal]||'ch-b'}">${a.canal}</span> ${srcBadge(a.src)}</div><div class="act-det">${a.det}</div></div>
       <div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:4px">${a.monto}</div>
-      <button class="act-btn btn-g" onclick="showNotif('✅ Compra registrada: ${a.n}')">+ Comprar</button></div></div>`).join('');
-  document.getElementById('actOffer').innerHTML=ACTS.offer.map(a=>`
-    <div class="act-item offer"><div class="act-ico ico-y">${a.ico}</div>
-      <div class="act-info"><div class="act-name">${a.n} <span class="chip ${CH_COLOR[a.canal]||'ch-y'}">${a.canal}</span></div><div class="act-det">${a.det}</div></div>
+      <button class="act-btn btn-g" onclick="showNotif('Compra registrada: ${sn}')">+ Comprar</button></div></div>`;
+  }).join('');
+  const offEl=document.getElementById('actOffer');
+  if(offEl)offEl.innerHTML=ACTS.offer.map(a=>{
+    const sn=a.n.replace(/'/g,'');
+    return `<div class="act-item offer"><div class="act-ico ico-y">${a.ico}</div>
+      <div class="act-info"><div class="act-name">${a.n} <span class="chip ${CH_COLOR[a.canal]||'ch-y'}">${a.canal}</span> ${srcBadge(a.src)}</div><div class="act-det">${a.det}</div></div>
       <div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:4px">${a.monto}</div>
-      <button class="act-btn btn-y" onclick="showNotif('🏷️ Oferta activada: ${a.n}')">Crear Oferta</button></div></div>`).join('');
-  document.getElementById('actSell').innerHTML=ACTS.sell.map(a=>`
-    <div class="act-item sell"><div class="act-ico ico-r">${a.ico}</div>
-      <div class="act-info"><div class="act-name">${a.n} <span class="chip ${CH_COLOR[a.canal]||'ch-r'}">${a.canal}</span></div><div class="act-det">${a.det}</div></div>
+      <button class="act-btn btn-y" onclick="showNotif('Oferta activada: ${sn}')">Crear Oferta</button></div></div>`;
+  }).join('');
+  const selEl=document.getElementById('actSell');
+  if(selEl)selEl.innerHTML=ACTS.sell.map(a=>{
+    const sn=a.n.replace(/'/g,'');
+    return `<div class="act-item sell"><div class="act-ico ico-r">${a.ico}</div>
+      <div class="act-info"><div class="act-name">${a.n} <span class="chip ${CH_COLOR[a.canal]||'ch-r'}">${a.canal}</span> ${srcBadge(a.src)}</div><div class="act-det">${a.det}</div></div>
       <div style="text-align:right;flex-shrink:0"><div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:4px">${a.monto}</div>
-      <button class="act-btn btn-r" onclick="showNotif('🔴 Liquidación iniciada: ${a.n}')">Liquidar</button></div></div>`).join('');
+      <button class="act-btn btn-r" onclick="showNotif('Liquidar: ${sn}')">Liquidar</button></div></div>`;
+  }).join('');
 }
 function renderPricing(){
   const trigsEl = document.getElementById('pricingTrigs');
