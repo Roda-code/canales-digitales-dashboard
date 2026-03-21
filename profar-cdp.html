@@ -3010,17 +3010,7 @@ const ACTS={
   ]
 };
 
-const PRIC_TRIG=[
-  {n:'Colágeno Hidrolizado',c:'E-Com',meses:5,det:'Sin ventas desde Oct 2025. Stock 30 meses.',act:'Liquidar -30%'},
-  {n:'Espirulina 500mg',c:'Sala',meses:4,det:'Competencia online más barata. Stock crítico.',act:'-25%'},
-  {n:'Glucosamina 500mg',c:'Tel.',meses:3,det:'Precio superior competencia en 18%.',act:'-20%'},
-  {n:'Extracto de Ginkgo',c:'Tel.',meses:3.5,det:'3 ventas totales en el año.',act:'-30%'},
-];
-const PRIC_WATCH=[
-  {n:'Ranitidina 150mg',c:'Tel.',dpost:28,det:'Descuento -15% hace 28 días. Pasó de 0 a 5u/mes.',estado:'↑ Mejorando'},
-  {n:'Alprazolam 0.5mg',c:'E-Com',dpost:40,det:'40 días post-ajuste. Mejora leve (8u/mes).',estado:'↑ Leve mejora'},
-  {n:'Polivitamínico Senior',c:'Sala',dpost:15,det:'15 días, aún sin ventas.',estado:'→ Sin cambio'},
-];
+// PRIC_TRIG y PRIC_WATCH eliminados — renderPricing() ahora usa PRIC_FULL filtrado por est
 const INV_ITEMS=[
   {n:'Colágeno Hidrolizado',c:'E-Com',meses:5,cap:'$890K',prov:'NutriLab',act:'Devolución'},
   {n:'Espirulina 500mg',c:'Sala',meses:4,cap:'$1.2M',prov:'NaturaVida',act:'Nota crédito'},
@@ -3525,18 +3515,28 @@ function renderActions(){
 function renderPricing(){
   const trigsEl = document.getElementById('pricingTrigs');
   const watchEl = document.getElementById('pricingWatch');
-  if(trigsEl) trigsEl.innerHTML=PRIC_TRIG.map(p=>`
-    <div class="act-item sell"><div class="act-ico ico-r">⛔</div>
-      <div class="act-info"><div class="act-name">${p.n} <span class="chip ${CH_COLOR[p.c]||'ch-r'}">${p.c}</span></div>
-      <div class="act-det">${p.meses} meses sin rotar · ${p.det}</div></div>
-      <button class="act-btn btn-r" onclick="showNotif('🏷️ Pricing: ${p.act} para ${p.n}')" style="flex-shrink:0">${p.act}</button>
-    </div>`).join('');
-  if(watchEl) watchEl.innerHTML=PRIC_WATCH.map(p=>`
-    <div class="act-item watch"><div class="act-ico ico-y">⏱️</div>
-      <div class="act-info"><div class="act-name">${p.n} <span class="chip ${CH_COLOR[p.c]||'ch-c'}">${p.c}</span></div>
-      <div class="act-det">${p.dpost} días post-ajuste · ${p.det}</div></div>
-      <span class="chip ${p.estado.includes('↑')?'ch-g':'ch-y'}">${p.estado}</span>
-    </div>`).join('');
+  const trigs = PRIC_FULL.filter(p=>p.est==='trigger');
+  const watch = PRIC_FULL.filter(p=>p.est==='watch');
+  if(trigsEl) trigsEl.innerHTML=trigs.map(p=>{
+    const meses=Math.round(p.dias/30);
+    const sn=p.n.replace(/'/g,'');
+    const actBtn=p.act.split('→')[0].split('+')[0].trim();
+    return `<div class="act-item sell"><div class="act-ico ico-r">⛔</div>
+      <div class="act-info"><div class="act-name">${p.n} <span class="chip ch-b">E-Com</span></div>
+      <div class="act-det">${meses} meses sin rotar · ${p.dias}d sin venta · Stock: ${p.stock}u · Cap.: $${Math.round(p.cap).toLocaleString('es-CL')}</div></div>
+      <button class="act-btn btn-r" onclick="showNotif('🏷️ Pricing: ${sn}')" style="flex-shrink:0">${actBtn}</button>
+    </div>`;
+  }).join('');
+  if(watchEl) watchEl.innerHTML=watch.map(p=>{
+    const estado=p.act.startsWith('↑')?p.act.split('→')[0].split('—')[0].trim():p.dp>0?'→ Observando':'→ Pendiente';
+    const stClr=estado.startsWith('↑')?'ch-g':'ch-y';
+    const dpTxt=p.dp!=null&&p.dp>0?p.dp+'d post-ajuste · ':'';
+    return `<div class="act-item watch"><div class="act-ico ico-y">⏱️</div>
+      <div class="act-info"><div class="act-name">${p.n} <span class="chip ch-b">E-Com</span></div>
+      <div class="act-det">${dpTxt}-${p.desc}% aplicado · ${p.act}</div></div>
+      <span class="chip ${stClr}">${estado}</span>
+    </div>`;
+  }).join('');
 }
 function renderInversa(){
   const invEl = document.getElementById('inversaItems');
