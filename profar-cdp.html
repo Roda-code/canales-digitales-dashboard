@@ -114,11 +114,12 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .bf{height:100%;border-radius:2px;}
 
 /* PROGRESS */
-.prog-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:11px;}
-.prog-lbl{width:140px;color:var(--text2);flex-shrink:0;}
-.prog-bar{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
+.prog-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:11px;flex-wrap:wrap;}
+.prog-lbl{min-width:130px;width:130px;color:var(--text2);flex-shrink:0;font-size:11px;}
+.prog-bar{flex:1;min-width:60px;height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
 .prog-fill{height:100%;border-radius:4px;}
-.prog-val{width:50px;text-align:right;font-weight:600;font-size:11px;}
+.prog-val{min-width:105px;width:105px;text-align:right;font-weight:600;font-size:11px;flex-shrink:0;white-space:nowrap;}
+.prog-stat{font-size:10px;color:var(--text3);margin-left:4px;white-space:nowrap;}
 
 /* SUB CARD */
 .sub-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px;display:flex;align-items:center;gap:10px;margin-bottom:7px;}
@@ -496,7 +497,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 /* Progress ring */
 .prog-ring{display:inline-flex;align-items:center;justify-content:center;position:relative;}
 .prog-ring svg{transform:rotate(-90deg);}
-.prog-val{position:absolute;font-size:13px;font-weight:700;}
+.prog-ring .prog-val{position:absolute;font-size:13px;font-weight:700;width:auto;min-width:0;}
 
 /* Year filter buttons */
 .yr-btn{display:inline-block;padding:5px 12px;margin:0 4px 8px 0;background:var(--card2);border:1px solid var(--border2);border-radius:5px;font-size:11px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .2s;}
@@ -658,10 +659,10 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="card mb">
     <div class="ct"><div class="d" style="background:var(--green)"></div>Participación por Grupo Cliente <span class="src-badge src-mg">Magento Real 60d</span></div>
     <div id="gas-prog-grupos">
-      <div class="prog-row"><div class="prog-lbl">General</div><div class="prog-bar"><div class="prog-fill" style="width:60%;background:#3b82f6"></div></div><div class="prog-val" style="color:#3b82f6">$151.321.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">60.0% · 786 ord. · $192.000 ticket</span></div>
-      <div class="prog-row"><div class="prog-lbl">NOT LOGGED IN</div><div class="prog-bar"><div class="prog-fill" style="width:29.7%;background:#8b5cf6"></div></div><div class="prog-val" style="color:#8b5cf6">$75.038.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">29.7% · 562 ord. · $133.000 ticket</span></div>
-      <div class="prog-row"><div class="prog-lbl">Mutual</div><div class="prog-bar"><div class="prog-fill" style="width:9.5%;background:#10b981"></div></div><div class="prog-val" style="color:#10b981">$24.073.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">9.5% · 130 ord. · $185.000 ticket</span></div>
-      <div class="prog-row"><div class="prog-lbl">Club de Beneficios</div><div class="prog-bar"><div class="prog-fill" style="width:0.7%;background:#f59e0b"></div></div><div class="prog-val" style="color:var(--text3)">$1.823.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">0.7% · 12 ord. · $150.000 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">General</div><div class="prog-bar"><div class="prog-fill" style="width:60%;background:#3b82f6"></div></div><div class="prog-val" style="color:#3b82f6">$151.321.000</div><span class="prog-stat">60.0% · 786 ord. · $192.000 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">NOT LOGGED IN</div><div class="prog-bar"><div class="prog-fill" style="width:29.7%;background:#8b5cf6"></div></div><div class="prog-val" style="color:#8b5cf6">$75.038.000</div><span class="prog-stat">29.7% · 562 ord. · $133.000 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">Mutual</div><div class="prog-bar"><div class="prog-fill" style="width:9.5%;background:#10b981"></div></div><div class="prog-val" style="color:#10b981">$24.073.000</div><span class="prog-stat">9.5% · 130 ord. · $185.000 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">Club Beneficios</div><div class="prog-bar"><div class="prog-fill" style="width:0.7%;background:#f59e0b"></div></div><div class="prog-val" style="color:var(--text3)">$1.823.000</div><span class="prog-stat">0.7% · 12 ord. · $150.000 ticket</span></div>
     </div>
   </div>
 
@@ -3791,7 +3792,7 @@ function applyGASData(data) {
           <div class="prog-lbl">${g.grupo}</div>
           <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${clr}"></div></div>
           <div class="prog-val" style="color:${clr}">${fmtCLP(g.rev)}</div>
-          <span style="font-size:10px;color:var(--text3);margin-left:6px">${pct}% · ${fmtN(g.orders)} ord. · ${fmtCLP(tick)} ticket</span>
+          <span class="prog-stat">${pct}% · ${fmtN(g.orders)} ord. · ${fmtCLP(tick)} ticket</span>
         </div>`;
       }).join('');
     }
