@@ -3360,9 +3360,11 @@ function renderComp(filter='all'){
     return b.rot-a.rot;
   });
   el.innerHTML=d.map(s=>{
-    const minComp=Math.min(...[s.sb,s.cv,s.ah,s.cf].filter(v=>v!=null));
-    const dif=minComp?((s.pf-minComp)/minComp*100).toFixed(1):null;
-    const difStyle=dif!=null&&dif>0?'color:#ef4444':dif!=null?'color:#10b981':'color:var(--text3)';
+    const prices=[s.sb,s.cv,s.ah,s.cf].filter(v=>v!=null);
+    const minComp=prices.length?Math.min(...prices):null;
+    const dif=minComp!=null?((s.pf-minComp)/minComp*100).toFixed(1):null;
+    const difStyle=dif!=null&&+dif>0?'color:#ef4444':dif!=null?'color:#10b981':'color:var(--text3)';
+    const difTxt=dif!=null?(+dif>0?'+'+dif+'%':dif+'%'):'<span style="color:var(--green);font-size:10px">Excl.</span>';
     const fmt=v=>v!=null?'$'+v.toLocaleString():'—';
     const rotBar=`<div style="display:flex;align-items:center;gap:4px"><div style="width:40px;height:4px;background:var(--border);border-radius:2px"><div style="width:${s.rot}%;height:100%;background:${s.rot>=70?'var(--green)':s.rot>=30?'var(--yellow)':'var(--red)'};border-radius:2px"></div></div><span style="font-size:10px;color:var(--text3)">${s.rot}%</span></div>`;
     return `<tr>
@@ -3373,7 +3375,7 @@ function renderComp(filter='all'){
       <td style="text-align:right;font-size:11px">${fmt(s.cv)}</td>
       <td style="text-align:right;font-size:11px">${fmt(s.ah)}</td>
       <td style="text-align:right;font-size:11px">${fmt(s.cf)}</td>
-      <td style="text-align:right;font-weight:600;${difStyle}">${dif!=null?(dif>0?'+'+dif+'%':dif+'%'):'—'}</td>
+      <td style="text-align:right;font-weight:600;${difStyle}">${difTxt}</td>
       <td>${rotBar}</td>
       <td style="text-align:center">${POS_CHIP[s.posicion]||'—'}</td>
       <td style="font-size:10px;color:var(--text2)">${s.nota}</td>
@@ -3394,8 +3396,42 @@ function filterSKUCat(val){
 }
 
 // ── Master Catálogo: cross-reference SKUS × COMP_SKUS × PRIC_FULL ──
+// 12-char key prevents collisions like Rybelsus 3/7/14mg
 function normKey(n){
-  return n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'').slice(0,8);
+  return n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'').slice(0,12);
+}
+// Build full deduplicated catalog from all 3 sources
+function buildFullCatalog(){
+  const compMap={};COMP_SKUS.forEach(c=>{compMap[normKey(c.n)]=c;});
+  const pricMap={};PRIC_FULL.forEach(p=>{pricMap[normKey(p.n)]=p;});
+  const catMap={'OTC':'otc','Oncológico':'oc','Crónico':'cr','oc':'oc','cr':'cr','otc':'otc'};
+  const seen=new Set();
+  const items=[];
+  // 1. SKUS as primary source (E-Com catalog, has rotation + revenue)
+  SKUS.forEach(s=>{
+    const key=normKey(s.n);
+    seen.add(key);
+    items.push({n:s.n,sku:s.sku,cat:s.cat,rot:s.rot,st:s.st,rev26:s.rev26,stk:s.stk,precComp:s.precComp,_src:'skus',comp:compMap[key]||null,pric:pricMap[key]||null});
+  });
+  // 2. COMP_SKUS additions not in SKUS
+  COMP_SKUS.forEach(c=>{
+    const key=normKey(c.n);
+    if(seen.has(key))return;
+    seen.add(key);
+    const pric=pricMap[key]||null;
+    const st=c.rot>=70?'Alta':c.rot>=30?'Normal':c.rot>0?'Baja':'Sin Rot.';
+    items.push({n:c.n,sku:'—',cat:catMap[c.cat]||c.cat,rot:c.rot,st:st,rev26:null,stk:null,precComp:c.tend==='ok'?'under':'over',_src:'comp',comp:c,pric:pric});
+  });
+  // 3. PRIC_FULL additions not yet seen
+  PRIC_FULL.forEach(p=>{
+    const key=normKey(p.n);
+    if(seen.has(key))return;
+    seen.add(key);
+    const cat=catMap[p.cat]||'otc';
+    const st=p.est==='trigger'?'Sin Rot.':p.est==='watch'?'Baja':'Normal';
+    items.push({n:p.n,sku:'—',cat:cat,rot:p.est==='ok'?30:p.est==='watch'?15:0,st:st,rev26:null,stk:p.stock?(p.stock/30).toFixed(1):null,precComp:'over',_src:'pric',comp:compMap[key]||null,pric:p});
+  });
+  return items;
 }
 let _mfCat='all', _mfSt='all';
 function setMF(type,val,el){
@@ -3408,17 +3444,15 @@ function setMF(type,val,el){
 }
 function renderMasterCat(){
   const el=document.getElementById('masterBody');if(!el)return;
-  // Build lookup maps by normKey
-  const compMap={};COMP_SKUS.forEach(c=>{compMap[normKey(c.n)]=c;});
-  const pricMap={};PRIC_FULL.forEach(p=>{pricMap[normKey(p.n)]=p;});
-  // Filter
-  let items=[...SKUS];
+  // Build full deduplicated catalog
+  let items=buildFullCatalog();
+  // Apply filters
   if(_mfCat!=='all') items=items.filter(s=>s.cat===_mfCat);
   if(_mfSt==='alta') items=items.filter(s=>s.st==='Alta');
   else if(_mfSt==='baja') items=items.filter(s=>s.st==='Baja'||s.st==='Sin Rot.');
-  else if(_mfSt==='trigger') items=items.filter(s=>{const p=pricMap[normKey(s.n)];return p&&p.est==='trigger';});
-  else if(_mfSt==='critico') items=items.filter(s=>{const c=compMap[normKey(s.n)];return c&&(c.posicion==='critico'||c.posicion==='doble_problema');});
-  else if(_mfSt==='stock0') items=items.filter(s=>s.stk===0);
+  else if(_mfSt==='trigger') items=items.filter(s=>s.pric&&s.pric.est==='trigger');
+  else if(_mfSt==='critico') items=items.filter(s=>s.comp&&(s.comp.posicion==='critico'||s.comp.posicion==='doble_problema'));
+  else if(_mfSt==='stock0') items=items.filter(s=>s.stk===0||(s.pric&&s.pric.stock===0));
   // Sort: cat priority then rot desc
   items=[...items].sort((a,b)=>{
     const o={oc:0,cr:1,otc:2};
@@ -3426,6 +3460,9 @@ function renderMasterCat(){
     if(ca!==cb)return ca-cb;
     return b.rot-a.rot;
   });
+  // Update total count button
+  const totBtn=document.querySelector('#mf-cat .mf-cat');
+  if(totBtn&&_mfCat==='all')totBtn.textContent=`Todos (${buildFullCatalog().length})`;
   const CAT_CHIP={oc:'ch-p',cr:'ch-d',otc:'ch-c'};
   const CAT_LBL={oc:'Oncológico',cr:'Crónico',otc:'OTC'};
   const ROT_CHIP={'Alta':'ch-g','Normal':'ch-y','Baja':'ch-o','Sin Rot.':'ch-r'};
@@ -3437,24 +3474,25 @@ function renderMasterCat(){
   };
   const PRIC_HTML={trigger:'<span class="chip ch-r" style="font-size:9px">🔴 Trigger</span>',watch:'<span class="chip ch-y" style="font-size:9px">🟡 Watch</span>',ok:'<span class="chip ch-g" style="font-size:9px">✅ OK</span>'};
   el.innerHTML=items.map(s=>{
-    const key=normKey(s.n);
-    const comp=compMap[key]||null;
-    const pric=pricMap[key]||null;
-    const rotBar=`<div style="display:flex;align-items:center;gap:5px"><div style="width:38px;height:5px;background:var(--border);border-radius:3px"><div style="width:${s.rot}%;height:100%;background:${s.rot>=70?'var(--green)':s.rot>=30?'var(--yellow)':'var(--red)'};border-radius:3px"></div></div><span style="font-size:10px;color:var(--text3)">${s.rot}%</span></div>`;
+    const comp=s.comp;const pric=s.pric;
+    const rot=s.rot??0;
+    const rotBar=`<div style="display:flex;align-items:center;gap:5px"><div style="width:38px;height:5px;background:var(--border);border-radius:3px"><div style="width:${rot}%;height:100%;background:${rot>=70?'var(--green)':rot>=30?'var(--yellow)':'var(--red)'};border-radius:3px"></div></div><span style="font-size:10px;color:var(--text3)">${rot}%</span></div>`;
     const revCell=s.rev26>0?`<b style="color:var(--green)">$${s.rev26}M</b>`:`<span style="color:var(--text3)">—</span>`;
-    const stkColor=s.stk===0?'color:var(--red);font-weight:700':s.stk<1.5?'color:var(--yellow);font-weight:600':'color:var(--text2)';
-    const stkTxt=s.stk===0?'🚨 Sin stock':s.stk<1?`⚠️ ${s.stk}m`:`${s.stk}m`;
+    const stkVal=s.stk!==null?s.stk:(pric?+(pric.stock/30).toFixed(1):null);
+    const stkColor=stkVal===0?'color:var(--red);font-weight:700':stkVal!==null&&stkVal<1.5?'color:var(--yellow);font-weight:600':'color:var(--text2)';
+    const stkTxt=stkVal===0?'🚨 Sin stock':stkVal===null?'—':stkVal<1?`⚠️ ${stkVal}m`:`${stkVal}m`;
     let difCell='<span style="color:var(--text3)">—</span>';
     if(comp){
-      const minC=Math.min(...[comp.sb,comp.cv,comp.ah,comp.cf].filter(v=>v!=null));
-      if(minC){const d=((comp.pf-minC)/minC*100).toFixed(1);difCell=`<span style="${+d>0?'color:var(--red)':'color:var(--green)'};font-weight:600">${+d>0?'+'+d+'%':d+'%'}</span>`;}
-      else if(s.precComp==='excl') difCell='<span style="color:var(--green);font-size:10px">Exclusivo</span>';
+      const prices=[comp.sb,comp.cv,comp.ah,comp.cf].filter(v=>v!=null);
+      if(prices.length){const minC=Math.min(...prices);const d=((comp.pf-minC)/minC*100).toFixed(1);difCell=`<span style="${+d>0?'color:var(--red)':'color:var(--green)'};font-weight:600">${+d>0?'+'+d+'%':d+'%'}</span>`;}
+      else difCell='<span style="color:var(--green);font-size:10px">Exclusivo</span>';
     }else if(s.precComp==='excl') difCell='<span style="color:var(--green);font-size:10px">Exclusivo</span>';
-    const posCell=comp?(POS_HTML[comp.posicion]||'—'):'<span style="color:var(--text3);font-size:10px">Sin dato</span>';
+    const posCell=comp?(POS_HTML[comp.posicion]||'—'):'<span style="color:var(--text3);font-size:10px">—</span>';
     const pricCell=pric?(PRIC_HTML[pric.est]||'—'):'<span style="color:var(--text3);font-size:10px">—</span>';
+    const srcBadge=s._src!=='skus'?` <span style="font-size:8px;color:var(--text3);opacity:.6">${s._src==='comp'?'comp':'pric'}</span>`:'';
     const actTxt=pric?pric.act:comp?comp.nota:'—';
     return `<tr>
-      <td style="font-weight:500;font-size:11px">${s.n}</td>
+      <td style="font-weight:500;font-size:11px">${s.n}${srcBadge}</td>
       <td style="text-align:center"><span class="chip ${CAT_CHIP[s.cat]||'ch-c'}" style="font-size:9px">${CAT_LBL[s.cat]||s.cat}</span></td>
       <td>${rotBar}</td>
       <td style="text-align:center"><span class="chip ${ROT_CHIP[s.st]||'ch-c'}" style="font-size:9px">${s.st}</span></td>
@@ -3468,18 +3506,19 @@ function renderMasterCat(){
   }).join('');
 }
 function exportMasterCSV(){
-  const compMap={};COMP_SKUS.forEach(c=>{compMap[normKey(c.n)]=c;});
-  const pricMap={};PRIC_FULL.forEach(p=>{pricMap[normKey(p.n)]=p;});
-  const rows=[['SKU','Nombre','Cat.','Rot%','Estado Rot.','Rev2026$M','Stock(meses)','PrecComp','Pos.Comp.','Dif%','EstPricing','Acción']];
-  SKUS.forEach(s=>{
-    const comp=compMap[normKey(s.n)]||{};
-    const pric=pricMap[normKey(s.n)]||{};
-    const minC=Math.min(...[comp.sb,comp.cv,comp.ah,comp.cf].filter(v=>v!=null));
-    const dif=minC?((comp.pf-minC)/minC*100).toFixed(1):'';
-    rows.push([s.sku,s.n,s.cat,s.rot,s.st,s.rev26,s.stk,s.precComp,comp.posicion||'',dif,pric.est||'',pric.act||comp.nota||'']);
+  const items=buildFullCatalog();
+  const rows=[['SKU','Nombre','Cat.','Rot%','Estado Rot.','Rev2026$M','Stock(meses)','Pos.Comp.','Dif%','EstPricing','Acción']];
+  items.forEach(s=>{
+    const comp=s.comp||{};
+    const pric=s.pric||{};
+    const prices=[comp.sb,comp.cv,comp.ah,comp.cf].filter(v=>v!=null);
+    const minC=prices.length?Math.min(...prices):null;
+    const dif=minC!=null?((comp.pf-minC)/minC*100).toFixed(1):'';
+    const stkVal=s.stk!==null&&s.stk!==undefined?s.stk:(pric.stock?(pric.stock/30).toFixed(1):'');
+    rows.push([s.sku||'—',s.n,s.cat,s.rot||0,s.st,s.rev26||'',stkVal,comp.posicion||'',dif,pric.est||'',pric.act||comp.nota||'']);
   });
   dlCSV(rows.map(r=>r.join(',')).join('\n'),'catalogo-maestro-'+new Date().toISOString().slice(0,10)+'.csv');
-  showNotif('✅ Exportado: catalogo-maestro.csv');
+  showNotif('✅ Exportado: catalogo-maestro.csv ('+items.length+' productos)');
 }
 function exportCompCSV(){
   const rows=[['SKU','Categoría','PROFAR','Salcobrand','Cruz Verde','Ahumada','Cofar','Dif.Mín.','Estado','Nota']];
