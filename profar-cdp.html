@@ -435,6 +435,10 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .btn-xs:hover,.btn-xs.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 .divider{height:1px;background:var(--border);margin:14px 0;}
 
+/* MODULE LEGEND */
+.mod-legend{background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.2);border-left:3px solid var(--a2);border-radius:8px;padding:9px 13px;font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:14px;}
+.mod-legend strong{color:var(--text);}
+
 /* PRICING FLOW */
 .pf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;}
 .pf-step{text-align:center;padding:12px 8px;border-radius:9px;border:1px solid;font-size:11px;}
@@ -1317,6 +1321,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <!-- ══════ STOCK CRÍTICO ══════ -->
 <div class="tp" id="tp-stock">
   <div class="sh"><div class="sh-t">📦 Stock Crítico E-Commerce <span class="sh-b3">Real Magento · Actualizado hoy</span></div></div>
+  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Niveles de stock en tiempo real de los productos más vendidos en E-Commerce, sincronizados desde Magento vía Google Apps Script. Detecta <strong style="color:var(--red)">SKUs sin stock</strong> (pérdida activa de ventas y riesgo de cancelación de suscripciones), <strong style="color:var(--yellow)">stock crítico &lt;20 unidades</strong> (menos de 3 semanas) y proyecta revenue en riesgo si no se reponen. Fuente: campo <code>stock_qty</code> del catálogo de productos Magento.</div>
 
   <div class="kg4 mb">
     <div class="kpi rd"><div class="kl">SKUs sin stock</div><div class="kv" style="color:var(--red)">2</div><div class="ks">Top sellers en 0</div><div class="kd dn">Pérdida activa</div></div>
@@ -1598,6 +1603,9 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
   </div>
 
+  <!-- Leyenda módulo -->
+  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> KPIs de ventas E-Commerce PROFAR con fuente de datos validada: <strong>Power BI PROFAR</strong> (histórico anual 2024-2026 sin IVA) + <strong>Magento real-time</strong> via Google Apps Script (últimos 60 días con IVA). Incluye evolución mensual, margen CR, mix de canales PROFAR y Top 20 productos por ingresos. Los datos Magento se actualizan automáticamente al cargar el dashboard.</div>
+
   <!-- KPIs E-Commerce — Fuente: Power BI PROFAR (sin IVA) + Magento orders.csv (con IVA ref.) -->
   <div class="sh"><div class="sh-title">🛒 E-Commerce PROFAR <span class="sh-badge" style="background:rgba(16,185,129,.15);color:#10b981">Power BI Real · Sin IVA</span></div></div>
   <div style="font-size:10px;color:var(--text3);margin:-10px 0 12px 4px">📅 Fuente: Power BI PROFAR · E-COMMERCE PROFAR · Mes Completo · Sin IVA · Años 2024-2025-2026 YTD</div>
@@ -1648,13 +1656,15 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="ch-wrap-lg"><canvas id="cEvol"></canvas></div>
   </div>
 
-  <div class="sh"><div class="sh-title">📊 Top 20 Productos E-Commerce Q1 2026</div></div>
+  <div class="sh"><div class="sh-title">📊 Top 20 Productos E-Commerce <span class="sh-badge" id="top20Badge">Magento · 60d live</span></div></div>
   <div class="card mb">
     <table class="tbl">
-      <thead><tr><th>SKU</th><th>Producto</th><th>Categoría</th><th>Ingresos Q1</th><th>Unidades</th><th>Precio Prom</th><th>Mg%</th><th>YoY</th><th>Trend</th></tr></thead>
-      <tbody id="ecomProductsBody"></tbody>
+      <thead><tr><th>#</th><th>SKU</th><th>Producto</th><th style="text-align:right">Ingresos 60d</th><th style="text-align:right">Unidades</th><th style="text-align:right">Precio Prom</th><th>Fuente</th></tr></thead>
+      <tbody id="ecomProductsBody">
+        <tr><td colspan="7" style="text-align:center;color:var(--text3);padding:20px">⏳ Cargando datos Magento en tiempo real…</td></tr>
+      </tbody>
     </table>
-    <div style="font-size:10px;color:var(--text3);margin-top:8px">* Top 20 por ingresos totales. Datos al 20/03/2026</div>
+    <div style="font-size:10px;color:var(--text3);margin-top:8px" id="top20Footer">* Fuente: Magento vía Google Apps Script. Top 20 por ingresos totales últimos 60 días.</div>
   </div>
 
   <div class="sh"><div class="sh-title">📅 Detalle Mensual E-Commerce</div></div>
@@ -1685,14 +1695,15 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="sh-actions">
       <button class="btn-xs active" onclick="filterRot('all',this)">Todos</button>
       <button class="btn-xs" onclick="filterRot('ecom',this)">E-Com</button>
-
       <button class="btn-xs" onclick="filterRot('tel',this)">Tel.</button>
     </div>
   </div>
-  <div class="kgrid mb">
-    <div class="kpi good"><div class="kpi-lbl">Alta Rotación</div><div class="kpi-v" style="color:var(--green);font-size:20px">68%</div><div class="kpi-sub">SKUs vendiendo bien</div></div>
-    <div class="kpi warn"><div class="kpi-lbl">Baja Rotación</div><div class="kpi-v" style="color:var(--yellow);font-size:20px">18%</div><div class="kpi-sub">Monitorear activamente</div></div>
-    <div class="kpi warn"><div class="kpi-lbl">Sin Rotación +3M</div><div class="kpi-v" style="color:var(--red);font-size:20px">14%</div><div class="kpi-sub">⚠️ Trigger pricing activo</div></div>
+  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Velocidad de venta de cada SKU por canal (E-Commerce, Sala, Teléfono). Clasifica productos en <strong>Alta rotación</strong> (vendiendo bien), <strong>Baja rotación</strong> (riesgo de sobre-stock) y <strong>Sin rotación +90 días</strong> (trigger automático de ajuste de precio). Los SKUs en rojo se escalan automáticamente al módulo de <strong>Pricing</strong> y luego a <strong>Logística Inversa</strong>. El ranking de Top 20 se actualiza en tiempo real desde Magento vía Google Apps Script.</div>
+  <div class="kg4 mb">
+    <div class="kpi gr"><div class="kl">🟢 Alta Rotación</div><div class="kv" style="color:var(--green);font-size:22px" id="rot-kv-alta">68%</div><div class="ks">SKUs vendiendo bien</div><div class="kd up">Sin acción</div></div>
+    <div class="kpi yw"><div class="kl">🟡 Baja Rotación</div><div class="kv" style="color:var(--yellow);font-size:22px" id="rot-kv-baja">18%</div><div class="ks">Monitorear activamente</div><div class="kd wa">Revisar precio</div></div>
+    <div class="kpi rd"><div class="kl">🔴 Sin Rotación +3M</div><div class="kv" style="color:var(--red);font-size:22px" id="rot-kv-sin">14%</div><div class="ks">Trigger pricing activo</div><div class="kd dn">Acción inmediata</div></div>
+    <div class="kpi pu"><div class="kl">📦 Top SKU</div><div class="kv" style="color:var(--purple);font-size:14px" id="rot-kv-top">Cargando…</div><div class="ks" id="rot-ks-top">Top producto E-Com 60d</div><div class="kd nt">Magento live</div></div>
   </div>
   <div class="card mb">
     <div class="ct"><div class="d" style="background:var(--cyan)"></div>SKUs por Estado de Rotación</div>
@@ -1708,6 +1719,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <!-- ════ TAB ACCIONES (Analytics) ════ -->
 <div class="tp" id="tp-acciones">
   <div class="sh"><div class="sh-title">🎯 Recomendaciones Comerciales <span class="sh-badge">IA + Reglas</span></div></div>
+  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Recomendaciones automáticas generadas por el motor de reglas del dashboard, combinando datos de rotación, stock, precio vs competencia y tendencia de ventas. Clasifica cada SKU en: <strong style="color:var(--green)">Comprar/Reponer</strong> (demanda alta, stock bajo), <strong style="color:var(--yellow)">Hacer Oferta</strong> (stock alto, baja rotación) o <strong style="color:var(--red)">Sacar/Liquidar</strong> (sin rotación prolongada). Priorización basada en impacto en revenue y capital inmovilizado.</div>
   <div class="kgrid4 mb">
     <div class="kpi good"><div class="kpi-lbl">✅ Comprar/Reponer</div><div class="kpi-v" style="color:var(--green);font-size:20px">8</div><div class="kpi-sub">SKUs con alta demanda</div></div>
     <div class="kpi warn"><div class="kpi-lbl">🏷️ Hacer Oferta</div><div class="kpi-v" style="color:var(--yellow);font-size:20px">6</div><div class="kpi-sub">Stock alto, baja rotación</div></div>
@@ -1724,11 +1736,22 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 <!-- ════ TAB COMPETENCIA (Analytics) ════ -->
 <div class="tp" id="tp-competencia">
-  <div class="sh"><div class="sh-title">⚔️ Monitor de Competencia <span class="sh-badge">Actualizado semana 11</span></div></div>
-  <div class="kgrid mb">
-    <div class="kpi good"><div class="kpi-lbl">SKUs PROFAR más baratos</div><div class="kpi-v" style="color:var(--green);font-size:20px">67%</div><div class="kpi-sub">vs Salcobrand/CruzVerde</div></div>
-    <div class="kpi"><div class="kpi-lbl">SKUs en paridad</div><div class="kpi-v" style="font-size:20px">23%</div><div class="kpi-sub">±2% de competencia</div></div>
-    <div class="kpi warn"><div class="kpi-lbl">⚠️ SKUs más caros</div><div class="kpi-v" style="color:var(--red);font-size:20px">10%</div><div class="kpi-sub">Acción requerida</div></div>
+  <div class="sh"><div class="sh-title">⚔️ Monitor de Competencia <span class="sh-badge">Actualizado semana 11 · Mar 2026</span></div></div>
+  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Monitoreo continuo de precios PROFAR vs. cadenas competidoras (Salcobrand, Cruz Verde, Ahumada, Cofar). Detecta SKUs donde PROFAR está más caro que la competencia (<strong style="color:var(--red)">riesgo de pérdida de ventas</strong>), en paridad, o con ventaja de precio. Incluye alertas de movimientos recientes de competencia (promociones, quiebres de stock, ingreso de genéricos) y sábana completa de precios exportable.</div>
+
+  <!-- Alertas competencia HOY -->
+  <div class="sh" style="margin-bottom:8px"><div class="sh-t">🚨 Alertas de Competencia — Acción Inmediata</div></div>
+  <div class="al r"><div class="ai">⚔️</div><div><div class="at">Cofar más barato en 11 SKUs genéricos — penetrando mercado crónico</div><div class="ad">Cofar aplica precios agresivos en OTC y crónico: Paracetamol -2.5%, Ibuprofeno -2.1%, Loratadina -3.8%, Sertralina -3.9%, Ranitidina -4.5%. <b>Son los SKUs de mayor rotación en E-Commerce.</b> Acción: revisar márgenes y negociar con proveedor de genéricos.</div></div><div class="ab br">Crítico</div></div>
+  <div class="al y"><div class="ai">📉</div><div><div class="at">Cruz Verde -20% en antigripales (semana 10) — PROFAR pierde conversión estacional</div><div class="ad">Temporada frío-gripe en Chile (marzo-julio). Cruz Verde lanzó campaña masiva en categoría frío. PROFAR tiene ventaja de precio en Tafirol pero pierde en Antigripal/Acción Rápida. <b>Recomendar crear combo "Kit Invierno PROFAR" con envío gratis.</b></div></div><div class="ab by">Esta semana</div></div>
+  <div class="al g"><div class="ai">✅</div><div><div class="at">Trikafta (FQ) sin stock en Salcobrand → oportunidad exclusiva</div><div class="ad">Salcobrand sin stock de Trikafta (Elexacaftor/Tezacaftor/Ivacaftor). Precio PROFAR: $2.850.000. <b>Pacientes FQ en RM buscan stock urgente.</b> PROFAR puede capturar estos pacientes asegurando stock y visibilidad en Google.</div></div><div class="ab bg">Oportunidad</div></div>
+  <div class="al b"><div class="ai">💊</div><div><div class="at">Ahumada ingresó bioequivalente Omeprazol 20mg — -14.7% vs PROFAR</div><div class="ad">Nuevo genérico de Ahumada entra con precio $2.089 vs $2.450 PROFAR. Omeprazol tiene 1.203 órdenes/60d — es SKU crítico. <b>Negociar con proveedor de bioequivalente o ajustar precio a $2.190 para mantener competitividad.</b></div></div><div class="ab bb">Monitorear</div></div>
+
+  <!-- KPIs -->
+  <div class="kg4 mb">
+    <div class="kpi gr"><div class="kl">✅ SKUs más baratos</div><div class="kv" style="color:var(--green);font-size:22px">67%</div><div class="ks">vs Salcobrand / CruzVerde</div><div class="kd up">Ventaja competitiva</div></div>
+    <div class="kpi bl"><div class="kl">⚖️ SKUs en paridad</div><div class="kv" style="font-size:22px">23%</div><div class="ks">±2% de competencia</div><div class="kd nt">Monitorear</div></div>
+    <div class="kpi rd"><div class="kl">⚠️ SKUs más caros</div><div class="kv" style="color:var(--red);font-size:22px">10%</div><div class="ks">Requieren acción hoy</div><div class="kd dn">~11 SKUs</div></div>
+    <div class="kpi yw"><div class="kl">💰 Revenue en riesgo</div><div class="kv" style="color:var(--yellow);font-size:18px">$18M</div><div class="ks">SKUs con precio inferior</div><div class="kd wa">Estimado 60d</div></div>
   </div>
   <div class="card mb">
     <div class="ct"><div class="d" style="background:var(--accent)"></div>Comparativo de Precios por SKU — PROFAR vs Competencia</div>
@@ -1883,15 +1906,31 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <!-- ════ TAB PRICING (Analytics) ════ -->
 <div class="tp" id="tp-pricing">
   <div class="sh">
-    <div class="sh-title">🏷️ Estratégia de Pricing <span class="sh-badge">Automático</span></div>
+    <div class="sh-title">🏷️ Estrategia de Pricing <span class="sh-badge">Automático · Reglas IA</span></div>
     <div class="sh-actions">
-      <button class="btn-xs active" onclick="filterPric('all',this)">Todos</button>
-      <button class="btn-xs" onclick="filterPric('trigger',this)" style="color:var(--red)">🔴 Triggers</button>
-      <button class="btn-xs" onclick="filterPric('watch',this)" style="color:var(--yellow)">🟡 Observación</button>
-      <button class="btn-xs" onclick="filterPric('ok',this)" style="color:var(--green)">✅ OK</button>
+      <button class="btn-xs active pric-filter" onclick="filterPric('all',this)">Todos</button>
+      <button class="btn-xs pric-filter" onclick="filterPric('trigger',this)" style="color:var(--red)">🔴 Triggers</button>
+      <button class="btn-xs pric-filter" onclick="filterPric('watch',this)" style="color:var(--yellow)">🟡 Observación</button>
+      <button class="btn-xs pric-filter" onclick="filterPric('ok',this)" style="color:var(--green)">✅ OK</button>
       <button class="btn-xs" onclick="exportPricCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal);margin-left:8px">📥 Exportar CSV</button>
     </div>
   </div>
+  <div class="mod-legend">Sistema automático de detección de SKUs sin rotación. Si un producto lleva ≥90 días sin ventas en E-Commerce, el sistema activa un <b>trigger</b> de ajuste de precio (-15% a -30%). Si el ajuste no genera ventas en 45 días, escala a <b>Logística Inversa</b>. Capital inmovilizado estimado: <b style="color:var(--red)">$3.58M</b> en triggers activos.</div>
+
+  <!-- KPI Resumen Pricing -->
+  <div class="kg4 mb">
+    <div class="kpi rd"><div class="kl">🔴 Triggers Activos</div><div class="kv" style="color:var(--red);font-size:20px">7</div><div class="ks">SKUs ≥90 días sin venta</div><div class="kd dn">$3.58M capital inmov.</div></div>
+    <div class="kpi yw"><div class="kl">🟡 En Observación</div><div class="kv" style="color:var(--yellow);font-size:20px">4</div><div class="ks">Post-ajuste · esperando</div><div class="kd wa">Revisión 30-45d</div></div>
+    <div class="kpi gr"><div class="kl">✅ Rotando Bien</div><div class="kv" style="color:var(--green);font-size:20px">3</div><div class="ks">Sin acción requerida</div><div class="kd up">SKUs sanos</div></div>
+    <div class="kpi pu"><div class="kl">💰 Capital Recuperable</div><div class="kv" style="color:var(--purple);font-size:18px">$2.1M</div><div class="ks">Ajuste precio + inversa</div><div class="kd up">Estimado 60 días</div></div>
+  </div>
+
+  <!-- Triggers activos quick-action -->
+  <div class="sh" style="margin-bottom:8px"><div class="sh-t">🔴 Triggers Activos — Acción Inmediata</div></div>
+  <div id="pricingTrigs" class="mb"></div>
+  <div class="sh" style="margin-bottom:8px"><div class="sh-t">⏱️ En Observación Post-Ajuste</div></div>
+  <div id="pricingWatch" class="mb"></div>
+
   <div class="pf-grid mb">
     <div class="pf-step" style="border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.05)"><div class="pf-ico">🚫</div><div class="pf-t" style="color:var(--red)">Sin Rotación</div><div class="pf-d">≥ 90 días sin venta</div></div>
     <div class="pf-step" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.05)"><div class="pf-ico">🏷️</div><div class="pf-t" style="color:var(--yellow)">Ajuste Precio</div><div class="pf-d">-15% a -30%</div></div>
@@ -1937,11 +1976,17 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <button class="btn-xs" onclick="exportInvCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal);margin-left:8px">📥 Exportar CSV</button>
     </div>
   </div>
-  <div class="kgrid4 mb">
-    <div class="kpi warn"><div class="kpi-lbl">SKUs en Pipeline</div><div class="kpi-v" style="color:var(--red);font-size:20px">12</div><div class="kpi-sub">7 candidatos + 5 confirmados</div></div>
-    <div class="kpi"><div class="kpi-lbl">Post-Precio Obs.</div><div class="kpi-v" style="font-size:20px">5</div><div class="kpi-sub">En período 30-45d</div></div>
-    <div class="kpi"><div class="kpi-lbl">Listos Devolución</div><div class="kpi-v" style="color:var(--purple);font-size:20px">4</div><div class="kpi-sub">Con OC generada</div></div>
-    <div class="kpi good"><div class="kpi-lbl">Capital Recuperable</div><div class="kpi-v" style="color:var(--green);font-size:18px">$8.7M</div><div class="kpi-sub">Est. nota crédito + liquidación</div></div>
+  <div class="mod-legend"><strong>¿Qué mide este módulo?</strong> Pipeline completo de <strong>recuperación de capital inmovilizado</strong> en stock sin movimiento. Los SKUs que no responden al ajuste de precio en el módulo de Pricing ingresan aquí y se gestionan mediante: <strong style="color:var(--red)">Devolución al proveedor</strong>, <strong style="color:var(--yellow)">Nota de crédito</strong> o <strong style="color:var(--purple)">Liquidación con descuento</strong>. Meta: recuperar ~$8.7M en capital este trimestre. Prioridad alta a los SKUs con OC generada antes del cierre Q1.</div>
+
+  <!-- Quick-action inversa (populated by renderInversa) -->
+  <div class="sh" style="margin-bottom:8px"><div class="sh-t">⚡ Acción Inmediata — SKUs Listos para Gestionar</div></div>
+  <div id="inversaItems" class="mb"></div>
+
+  <div class="kg4 mb">
+    <div class="kpi rd"><div class="kl">📦 SKUs en Pipeline</div><div class="kv" style="color:var(--red);font-size:22px">12</div><div class="ks">7 candidatos + 5 confirmados</div><div class="kd dn">Gestión activa</div></div>
+    <div class="kpi yw"><div class="kl">⏱️ Post-Precio Obs.</div><div class="kv" style="color:var(--yellow);font-size:22px">5</div><div class="ks">En período 30-45d</div><div class="kd wa">Esperando respuesta</div></div>
+    <div class="kpi pu"><div class="kl">✅ Listos Devolución</div><div class="kv" style="color:var(--purple);font-size:22px">4</div><div class="ks">Con OC generada</div><div class="kd up">Gestionar hoy</div></div>
+    <div class="kpi gr"><div class="kl">💰 Capital Recuperable</div><div class="kv" style="color:var(--green);font-size:18px">$8.7M</div><div class="ks">Nota crédito + liquidación</div><div class="kd up">Este trimestre</div></div>
   </div>
   <div class="card mb" style="overflow-x:auto">
     <div class="ct"><div class="d" style="background:var(--purple)"></div>Sábana Logística Inversa — Pipeline Completo</div>
@@ -3128,13 +3173,15 @@ function renderActions(){
       <button class="act-btn btn-r" onclick="showNotif('🔴 Liquidación iniciada: ${a.n}')">Liquidar</button></div></div>`).join('');
 }
 function renderPricing(){
-  document.getElementById('pricingTrigs').innerHTML=PRIC_TRIG.map(p=>`
+  const trigsEl = document.getElementById('pricingTrigs');
+  const watchEl = document.getElementById('pricingWatch');
+  if(trigsEl) trigsEl.innerHTML=PRIC_TRIG.map(p=>`
     <div class="act-item sell"><div class="act-ico ico-r">⛔</div>
       <div class="act-info"><div class="act-name">${p.n} <span class="chip ${CH_COLOR[p.c]||'ch-r'}">${p.c}</span></div>
       <div class="act-det">${p.meses} meses sin rotar · ${p.det}</div></div>
       <button class="act-btn btn-r" onclick="showNotif('🏷️ Pricing: ${p.act} para ${p.n}')" style="flex-shrink:0">${p.act}</button>
     </div>`).join('');
-  document.getElementById('pricingWatch').innerHTML=PRIC_WATCH.map(p=>`
+  if(watchEl) watchEl.innerHTML=PRIC_WATCH.map(p=>`
     <div class="act-item watch"><div class="act-ico ico-y">⏱️</div>
       <div class="act-info"><div class="act-name">${p.n} <span class="chip ${CH_COLOR[p.c]||'ch-c'}">${p.c}</span></div>
       <div class="act-det">${p.dpost} días post-ajuste · ${p.det}</div></div>
@@ -3142,7 +3189,9 @@ function renderPricing(){
     </div>`).join('');
 }
 function renderInversa(){
-  document.getElementById('inversaItems').innerHTML=INV_ITEMS.map(i=>`
+  const invEl = document.getElementById('inversaItems');
+  if(!invEl) return;
+  invEl.innerHTML=INV_ITEMS.map(i=>`
     <div class="act-item" style="border-color:rgba(139,92,246,.35);background:rgba(139,92,246,.04);margin-bottom:8px">
       <div class="act-ico ico-p">📦</div>
       <div class="act-info"><div class="act-name">${i.n} <span class="chip ${CH_COLOR[i.c]||'ch-p'}">${i.c}</span></div>
@@ -3477,9 +3526,45 @@ function applyGASData(data) {
     console.log('GAS resumen 60d:', { revenue: fmt(r.revenue), revenueConIVA: fmt(r.revenueConIVA), orders: r.orders, clientes: r.clientes, ticket: fmt(r.ticketProm) });
   }
 
-  // ── 8. Top productos — log ─────────────────────────────────────
-  if (data.topProductos && data.topProductos.length > 0)
-    console.log('GAS top prods 60d:', data.topProductos.slice(0,5).map(p => p.nombre + ' ×' + p.qty));
+  // ── 8. Top 20 productos — tabla E-Commerce ─────────────────────
+  if (data.topProductos && data.topProductos.length > 0) {
+    const prods = data.topProductos;
+    const tbody = document.getElementById('ecomProductsBody');
+    if (tbody) {
+      tbody.innerHTML = prods.map((p, i) => {
+        const precProm = p.qty > 0 ? Math.round(p.rev / p.qty) : 0;
+        const skuStr = p.sku || '—';
+        const nomStr = p.nombre || skuStr;
+        const revStr = '$' + Math.round(p.rev).toLocaleString('es-CL');
+        const precStr = '$' + precProm.toLocaleString('es-CL');
+        const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1) + '.';
+        return `<tr>
+          <td style="font-weight:700;color:var(--text3)">${medal}</td>
+          <td style="font-size:10px;color:var(--text3);font-family:monospace">${skuStr}</td>
+          <td style="font-weight:500;max-width:240px">${nomStr}</td>
+          <td style="text-align:right;color:var(--green);font-weight:700">${revStr}</td>
+          <td style="text-align:right;color:var(--text2)">${p.qty.toLocaleString('es-CL')}</td>
+          <td style="text-align:right;color:var(--text2)">${precStr}</td>
+          <td><span class="chip cg" style="font-size:9px">Magento live</span></td>
+        </tr>`;
+      }).join('');
+      // Update badge and footer
+      const badge = document.getElementById('top20Badge');
+      if (badge) badge.textContent = 'Magento · ' + prods.length + ' prods · 60d live';
+      const footer = document.getElementById('top20Footer');
+      if (footer) {
+        const ts = data._updatedAt ? new Date(data._updatedAt).toLocaleString('es-CL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : 'ahora';
+        footer.textContent = '* Fuente: Magento via GAS. Top ' + prods.length + ' por ingresos últimos 60 días. Actualizado: ' + ts;
+      }
+    }
+    // Update rotacion top SKU card
+    const topP = prods[0];
+    if (topP) {
+      set('rot-kv-top', (topP.nombre || topP.sku || '—').substring(0, 28) + (topP.nombre && topP.nombre.length > 28 ? '…' : ''));
+      set('rot-ks-top', topP.qty.toLocaleString('es-CL') + ' uds · $' + Math.round(topP.rev).toLocaleString('es-CL'));
+    }
+    console.log('GAS top prods 60d:', prods.slice(0,5).map(p => p.nombre + ' ×' + p.qty));
+  }
 
   console.log('✓ GAS applyGASData OK. Cache age:', data._cacheAge ? data._cacheAge + 's' : 'fresco');
 }

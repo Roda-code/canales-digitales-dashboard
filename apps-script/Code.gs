@@ -419,6 +419,7 @@ function getTopProducts(sh) {
   var statusC = headers.indexOf('status');
   var totalC  = headers.indexOf('grand_total');
   var skuC    = headers.indexOf('items_sku');
+  var nameC   = headers.indexOf('items_name');
 
   var now     = new Date();
   var cutoff  = new Date(now.getTime() - 60*24*60*60*1000);
@@ -431,20 +432,26 @@ function getTopProducts(sh) {
     var d = new Date(String(row[dateC]||''));
     if (isNaN(d.getTime()) || d < cutoff) continue;
 
-    var skus  = String(row[skuC]||'').split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+    var skuRaw  = String(row[skuC]||'');
+    var nameRaw = nameC >= 0 ? String(row[nameC]||'') : '';
+    // Limpiar comillas embebidas en SKUs
+    var skus  = skuRaw.split(',').map(function(s){ return s.replace(/"/g,'').trim(); }).filter(Boolean);
+    var names = nameRaw.split(',').map(function(s){ return s.replace(/"/g,'').trim(); });
     var total = parseFloat(String(row[totalC]).replace(/,/g,'')) || 0;
 
-    skus.forEach(function(sku){
-      if (!prodMap[sku]) prodMap[sku] = { sku:sku, qty:0, rev:0 };
+    skus.forEach(function(sku, idx){
+      var nombre = (names[idx] && names[idx].length > 2) ? names[idx] : sku;
+      if (!prodMap[sku]) prodMap[sku] = { sku:sku, nombre:nombre, qty:0, rev:0 };
+      else if (nombre !== sku && prodMap[sku].nombre === sku) prodMap[sku].nombre = nombre;
       prodMap[sku].qty++;
       prodMap[sku].rev += total / skus.length;
     });
   }
 
   return Object.values(prodMap)
-    .sort(function(a,b){ return b.qty-a.qty; })
-    .slice(0,8)
-    .map(function(p){ return { sku:p.sku, qty:p.qty, rev:Math.round(p.rev) }; });
+    .sort(function(a,b){ return b.rev-a.rev; })
+    .slice(0,20)
+    .map(function(p){ return { sku:p.sku, nombre:p.nombre, qty:p.qty, rev:Math.round(p.rev) }; });
 }
 
 // ── processStock ──────────────────────────────────────────────────
@@ -459,8 +466,9 @@ function processStock(sh) {
 
   for (var i = 1; i < data.length; i++) {
     var row = data[i];
-    var st  = String(row[statusC]||'');
-    if (st !== '1' && st.toLowerCase() !== 'enabled') continue;
+    // En Magento: status=2 o 'disabled' = desactivado. Todo lo demás se incluye.
+    var st  = String(row[statusC]||'1').toLowerCase();
+    if (st === '2' || st === 'disabled') continue;
     total++;
     if ((parseFloat(row[stockC])||0) > 0) conStock++; else sinStock++;
   }
