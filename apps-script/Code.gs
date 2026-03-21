@@ -5,20 +5,22 @@
  *
  * SETUP (solo una vez, ~5 minutos):
  * ─────────────────────────────────
- * 1. Ve a https://script.google.com → Nuevo proyecto → "Profar CDP"
- * 2. Reemplaza Code.gs con este archivo
- * 3. Ejecutar → inicializar()  (autoriza permisos)
- * 4. Implementar → Nueva implementación
+ * 1. Reemplaza Code.gs con este archivo
+ * 2. Ejecutar → _init()  (autoriza permisos + crea hoja + carga datos)
+ * 3. Implementar → Nueva implementación
  *       Tipo: Aplicación web
  *       Ejecutar como: Yo
  *       Quién tiene acceso: Todos (anónimo)
  *    → Copia la URL /exec
- * 5. En profar-cdp.html: const GAS_ENDPOINT = 'PEGAR_URL_AQUI'
- * 6. Ejecutar → configurarTriggers()
+ * 4. En profar-cdp.html: const GAS_ENDPOINT = 'PEGAR_URL_AQUI'
+ * 5. Ejecutar → configurarTriggers()
  *
  * LISTO. El script se actualiza solo 3x/día desde ahí en adelante.
  * ═══════════════════════════════════════════════════════════════════
  */
+
+// ── Entry point para auto-selección ───────────────────────────────
+function _init() { inicializar(); }
 
 // ── Configuración ──────────────────────────────────────────────────
 var BASE_URL = 'https://profar.cl/dataexport/download/index';
@@ -43,6 +45,13 @@ var GRUPOS = {
 var DIRECTOS_ARR = ['0','1','3','4'];
 var MESES_CORTOS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
+// ── getSpreadsheet: recupera o null si no inicializado ─────────────
+function getSpreadsheet() {
+  var id = PropertiesService.getScriptProperties().getProperty('SHEET_ID');
+  if (!id) return null;
+  try { return SpreadsheetApp.openById(id); } catch(e) { return null; }
+}
+
 // ── Entry point ────────────────────────────────────────────────────
 function doGet(e) {
   var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : 'getData';
@@ -63,7 +72,8 @@ function doGet(e) {
 
 // ── getCachedData ──────────────────────────────────────────────────
 function getCachedData() {
-  var ss  = SpreadsheetApp.getActiveSpreadsheet();
+  var ss  = getSpreadsheet();
+  if (!ss) return { error: 'Sin hoja de calculo. Ejecuta _init() primero.' };
   var sh  = ss.getSheetByName(SH.KPI);
   if (!sh || sh.getLastRow() < 1) return { error: 'Sin datos. Ejecuta runUpdate() primero.' };
   var json = sh.getRange(1,1).getValue();
@@ -77,7 +87,8 @@ function getCachedData() {
 // ── runUpdate: orquesta todo ───────────────────────────────────────
 function runUpdate() {
   Logger.log('=== runUpdate START ' + new Date().toISOString() + ' ===');
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = getSpreadsheet();
+  if (!ss) throw new Error('Sin hoja de calculo. Ejecuta _init() primero.');
 
   var orders = fetchCSV('orders');
   var subs   = fetchCSV('subscriptions');
@@ -476,17 +487,33 @@ function getOrCreateSheet(ss, name) {
 
 // ── inicializar ───────────────────────────────────────────────────
 function inicializar() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var props = PropertiesService.getScriptProperties();
+  var existingId = props.getProperty('SHEET_ID');
+
+  var ss;
+  if (existingId) {
+    try {
+      ss = SpreadsheetApp.openById(existingId);
+      Logger.log('Hoja existente encontrada: ' + existingId);
+    } catch(e) {
+      ss = null;
+    }
+  }
+
+  if (!ss) {
+    ss = SpreadsheetApp.create('Profar CDP — Data');
+    props.setProperty('SHEET_ID', ss.getId());
+    Logger.log('Nueva hoja creada: ' + ss.getId() + ' — URL: ' + ss.getUrl());
+  }
+
   try { ss.rename('Profar CDP — Data'); } catch(e) {}
   Object.keys(SH).forEach(function(k){ getOrCreateSheet(ss, SH[k]); });
+
   Logger.log('Hojas creadas. Corriendo primera actualizacion...');
   var result = runUpdate();
   Logger.log('Inicializacion completa: ' + JSON.stringify(result));
-  SpreadsheetApp.getUi().alert(
-    'Profar CDP inicializado!\n\nOrdenes procesadas: ' + result.ordersTotal +
-    '\nActualizado: ' + result.updatedAt +
-    '\n\nAhora ejecuta configurarTriggers() para activar las actualizaciones 3x/dia.'
-  );
+  Logger.log('URL de la hoja: ' + ss.getUrl());
+  Logger.log('ID de la hoja: ' + ss.getId());
 }
 
 // ── configurarTriggers ────────────────────────────────────────────
@@ -495,6 +522,5 @@ function configurarTriggers() {
   ScriptApp.newTrigger('runUpdate').timeBased().atHour(8).everyDays(1).create();
   ScriptApp.newTrigger('runUpdate').timeBased().atHour(13).everyDays(1).create();
   ScriptApp.newTrigger('runUpdate').timeBased().atHour(18).everyDays(1).create();
-  Logger.log('Triggers configurados: 08:00 / 13:00 / 18:00 hora Chile');
-  SpreadsheetApp.getUi().alert('Triggers activos: 08:00 / 13:00 / 18:00 hora Chile');
+  Logger.log('Triggers configurados: 08:00 / 13:00 / 18:00');
 }
