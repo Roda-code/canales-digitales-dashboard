@@ -3306,18 +3306,15 @@ function renderMargins(){
 // ══════════════════════════════════════════════════════════════════
 // GOOGLE APPS SCRIPT — Auto-update endpoint
 // ══════════════════════════════════════════════════════════════════
-// Para activar: reemplaza GAS_ENDPOINT con tu URL de implementación
+// ── GAS Live Data Integration ────────────────────────────────────
 // Guía: apps-script/Code.gs en este repositorio
-const GAS_ENDPOINT = ''; // ← Pegar URL de Google Apps Script aquí
+const GAS_ENDPOINT = ''; // ← Pegar URL /exec de Google Apps Script aquí
 
-// Actualiza los datos del dashboard desde el endpoint GAS
+// Fetch datos desde el endpoint GAS
 async function fetchGASData() {
   if (!GAS_ENDPOINT) return null;
   try {
-    const res = await fetch(GAS_ENDPOINT + '?action=getData', {
-      method: 'GET',
-      mode: 'cors'
-    });
+    const res = await fetch(GAS_ENDPOINT + '?action=getData', { method:'GET', mode:'cors' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     return await res.json();
   } catch(e) {
@@ -3326,72 +3323,140 @@ async function fetchGASData() {
   }
 }
 
-// Aplica datos remotos al dashboard (sin recargar la página)
+// Aplica datos del GAS al dashboard (estructura Code.gs v2)
+// Estructura: { resumen, historico, monthly, segmentos, suscripciones, topProductos, stock, _updatedAt }
 function applyGASData(data) {
-  if (!data || data.error) return;
+  if (!data || data.error) { console.warn('GAS data error:', data?.error); return; }
+  const fmt  = v => v >= 1e6 ? '$' + (v/1e6).toFixed(1) + 'M' : '$' + Math.round(v/1e3) + 'K';
+  const fmtN = v => v?.toLocaleString('es-CL') ?? '—';
 
-  // Actualizar KPIs si están disponibles
-  if (data.kpis) {
-    const k = data.kpis;
-    const fmt = v => v >= 1e6 ? '$' + (v/1e6).toFixed(1) + 'M' : '$' + (v/1e3).toFixed(0) + 'K';
-    
-    const ytdEl = document.getElementById('gasYtdRev');
-    if (ytdEl && k.ytdRev26ConIVA) ytdEl.textContent = fmt(k.ytdRev26ConIVA);
-    
-    const yoyEl = document.getElementById('gasYtdYoy');
-    if (yoyEl && k.ytdYoY !== null) {
-      yoyEl.textContent = (k.ytdYoY > 0 ? '+' : '') + k.ytdYoY.toFixed(1) + '% vs 2025';
-      yoyEl.className = 'chip ' + (k.ytdYoY >= 0 ? 'ch-g' : 'ch-r');
-    }
-    
-    const tsEl = document.getElementById('gasLastUpdate');
-    if (tsEl && data._updatedAt) {
-      const d = new Date(data._updatedAt);
-      const f = d.toLocaleString('es-CL', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-      tsEl.textContent = 'Datos: ' + f + (data._fromCache ? ' (cache)' : ' ✓');
+  // ── 1. Badge timestamp ─────────────────────────────────────────
+  const badge = document.getElementById('gasStatusBadge');
+  if (badge && data._updatedAt) {
+    const d = new Date(data._updatedAt);
+    const f = d.toLocaleString('es-CL', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    badge.textContent = '● En vivo · ' + f + (data._fromCache ? ' (cache)' : ' ✓');
+    badge.style.color = '#22c55e';
+  }
+
+  // ── 2. Chart mensual (cMonthly) — últimos 6 meses ─────────────
+  if (data.monthly && data.monthly.labels && data.monthly.labels.length > 0) {
+    const ch = Chart.getChart(document.getElementById('cMonthly'));
+    if (ch) {
+      const revM = data.monthly.revenue.map(v => parseFloat((v/1e6).toFixed(2)));
+      ch.data.labels = data.monthly.labels;
+      ch.data.datasets[0].data  = revM;
+      ch.data.datasets[0].label = 'Revenue ($M)';
+      if (ch.data.datasets[1]) {
+        ch.data.datasets[1].data  = data.monthly.orders;
+        ch.data.datasets[1].label = 'Órdenes';
+      }
+      ch.update('none');
     }
   }
 
-  // Actualizar arrays D.ecom si vienen en la respuesta
-  if (data.decom) {
-    const dc = data.decom;
-    if (dc.v26) D.ecom.v26 = dc.v26.map(v => v ? v/1e6 : null);
-    if (dc.mg26) D.ecom.mg26 = dc.mg26;
-    if (dc.cli26) D.ecom.cli26 = dc.cli26;
-    // Re-render charts
-    Object.values(Chart.instances || {}).forEach(ch => ch.update());
+  // ── 3. Segmentos Directos (cBaseDirectos) ─────────────────────
+  if (data.segmentos && data.segmentos.directos && data.segmentos.directos.length > 0) {
+    const ch = Chart.getChart(document.getElementById('cBaseDirectos'));
+    if (ch) {
+      const dir = data.segmentos.directos;
+      const tot = dir.reduce((s,d) => s + d.clients, 0) || 1;
+      ch.data.labels           = dir.map(d => d.grupo + ' (' + Math.round(d.clients/tot*100) + '%)');
+      ch.data.datasets[0].data = dir.map(d => d.clients);
+      ch.update('none');
+    }
   }
+
+  // ── 4. Segmentos Convenios (cBaseConvenios) ────────────────────
+  if (data.segmentos && data.segmentos.convenios && data.segmentos.convenios.length > 0) {
+    const ch = Chart.getChart(document.getElementById('cBaseConvenios'));
+    if (ch) {
+      const conv = data.segmentos.convenios;
+      const tot  = conv.reduce((s,d) => s + d.clients, 0) || 1;
+      ch.data.labels           = conv.map(d => d.grupo + ' (' + Math.round(d.clients/tot*100) + '%)');
+      ch.data.datasets[0].data = conv.map(d => d.clients);
+      ch.update('none');
+    }
+  }
+
+  // ── 5. Suscripciones — chart + KPI cards ──────────────────────
+  if (data.suscripciones) {
+    const s   = data.suscripciones;
+    const tot = s.total || 1;
+
+    const chSub = Chart.getChart(document.getElementById('cSubStatus'));
+    if (chSub) {
+      const ap = Math.round(s.active/tot*100), pp = Math.round(s.paused/tot*100), cp = Math.round(s.canceled/tot*100);
+      chSub.data.labels           = ['Activas ('+ap+'%)','Pausadas ('+pp+'%)','Canceladas ('+cp+'%)'];
+      chSub.data.datasets[0].data = [s.active, s.paused, s.canceled];
+      chSub.update('none');
+    }
+
+    // KPI cards en tp-suscripciones (orden: Activas, Pausadas, Canceladas, MRR)
+    const susTab = document.getElementById('tp-suscripciones');
+    if (susTab) {
+      const kvs = susTab.querySelectorAll('.kpi .kv');
+      if (kvs[0]) kvs[0].textContent = fmtN(s.active);
+      if (kvs[1]) kvs[1].textContent = fmtN(s.paused);
+      if (kvs[2]) kvs[2].textContent = fmtN(s.canceled);
+    }
+  }
+
+  // ── 6. Stock — KPI cards ───────────────────────────────────────
+  if (data.stock) {
+    const st      = data.stock;
+    const stockTab = document.getElementById('tp-stock');
+    if (stockTab) {
+      const kvs = stockTab.querySelectorAll('.kpi .kv');
+      if (kvs[0]) { kvs[0].textContent = fmtN(st.sinStock); kvs[0].style.color = '#ef4444'; }
+      if (kvs[3]) { kvs[3].textContent = fmtN(st.conStock); kvs[3].style.color = '#10b981'; }
+    }
+  }
+
+  // ── 7. Resumen last60d — log para debugging ────────────────────
+  if (data.resumen && data.resumen.last60d) {
+    const r = data.resumen.last60d;
+    console.log('GAS resumen 60d:', {
+      revenue: fmt(r.revenue), revenueConIVA: fmt(r.revenueConIVA),
+      orders: r.orders, clientes: r.clientes,
+      ticket: fmt(r.ticketProm), yoy: data.resumen.yoy
+    });
+  }
+
+  // ── 8. Top productos — log ─────────────────────────────────────
+  if (data.topProductos && data.topProductos.length > 0)
+    console.log('GAS top prods 60d:', data.topProductos.slice(0,5).map(p => p.nombre + ' ×' + p.qty));
+
+  console.log('✓ GAS applyGASData OK. Cache age:', data._cacheAge ? data._cacheAge + 's' : 'fresco');
 }
 
-// Auto-update badge en el header
+// Auto-update badge e integración al cargar la página
 function initGASBadge() {
   const badge = document.getElementById('gasStatusBadge');
   if (!badge) return;
-  
+
   if (!GAS_ENDPOINT) {
-    badge.textContent = '● Sin endpoint';
+    badge.textContent = '● Sin endpoint GAS';
     badge.style.color = '#94a3b8';
     return;
   }
-  
+
   badge.textContent = '● Conectando...';
   badge.style.color = '#f59e0b';
-  
+
   fetchGASData().then(data => {
     if (data && !data.error) {
-      badge.textContent = '● En vivo';
-      badge.style.color = '#22c55e';
       applyGASData(data);
     } else {
-      badge.textContent = '● Offline (usando datos locales)';
+      badge.textContent = '● Offline (datos locales)';
       badge.style.color = '#94a3b8';
     }
   });
 }
 
-// Inicializar badge al cargar
+// Inicializar tras DOMContentLoaded (esperar charts)
 document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(initGASBadge, 1500); // Esperar a que carguen los charts
+  setTimeout(initGASBadge, 1800);
 });
 
 </script>
