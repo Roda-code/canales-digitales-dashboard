@@ -602,6 +602,15 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
   </div>
 
+  <!-- KPIs en tiempo real — GAS · Magento · Últimos 60 días -->
+  <div class="sh"><div class="sh-t">⚡ KPIs en Tiempo Real · Magento <span class="sh-b2">Últimos 60 días · con IVA · <span id="gasLiveLabel" style="color:var(--text3)">cargando…</span></span></div></div>
+  <div class="kg4 mb">
+    <div class="kpi bl"><div class="kl">Órdenes (60d)</div><div class="kv" id="gas-kv-orders" style="color:#60a5fa">—</div><div class="ks" id="gas-ks-orders">Magento real</div></div>
+    <div class="kpi gr"><div class="kl">Revenue con IVA (60d)</div><div class="kv" id="gas-kv-revenue" style="color:#34d399;font-size:15px">—</div><div class="ks" id="gas-ks-revenue">Últimos 60 días</div></div>
+    <div class="kpi tl"><div class="kl">Clientes únicos (60d)</div><div class="kv" id="gas-kv-clients" style="color:var(--teal)">—</div><div class="ks" id="gas-ks-clients">Compradores activos</div></div>
+    <div class="kpi pu"><div class="kl">Ticket Promedio (60d)</div><div class="kv" id="gas-kv-ticket" style="color:#a78bfa;font-size:16px">—</div><div class="ks" id="gas-ks-ticket">con IVA · promedio</div></div>
+  </div>
+
   <!-- KPIs — Fuente: Power BI PROFAR sin IVA (últimos 3 meses disponibles 2026) -->
   <div class="sh"><div class="sh-t">📊 KPIs E-Commerce 2026 YTD <span class="sh-b">Power BI sin IVA · Ene-Mar 2026 · (×1.19 = equiv. Magento con IVA)</span></div></div>
   <div class="kg5 mb">
@@ -622,9 +631,9 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
   <!-- Suscripciones highlight -->
   <div class="kg4 mb">
-    <div class="kpi tl"><div class="kl">🔄 Suscripciones Activas</div><div class="kv" style="color:var(--teal)">279</div><div class="ks">De 376 total</div><div class="kd up">74% activas</div></div>
-    <div class="kpi gr"><div class="kl">MRR Suscripciones</div><div class="kv" style="color:var(--green);font-size:17px">$74.6M</div><div class="ks">Revenue mensual recurrente</div><div class="kd up">REAL Magento</div></div>
-    <div class="kpi pu"><div class="kl">Suscripciones Pausadas</div><div class="kv" style="color:var(--yellow)">82</div><div class="ks">Oportunidad de reactivar</div><div class="kd wa">~$22M en riesgo</div></div>
+    <div class="kpi tl"><div class="kl">🔄 Suscripciones Activas</div><div class="kv" id="gas-subs-active-kv" style="color:var(--teal)">279</div><div class="ks" id="gas-subs-total-ks">De 377 total</div><div class="kd up" id="gas-subs-pct-kd">74% activas</div></div>
+    <div class="kpi gr"><div class="kl">MRR Suscripciones</div><div class="kv" id="gas-subs-mrr-kv" style="color:var(--green);font-size:17px">$74.600.000</div><div class="ks">Revenue mensual recurrente</div><div class="kd up">REAL Magento</div></div>
+    <div class="kpi pu"><div class="kl">Suscripciones Pausadas</div><div class="kv" id="gas-subs-paused-kv" style="color:var(--yellow)">83</div><div class="ks" id="gas-subs-paused-ks">Oportunidad de reactivar</div><div class="kd wa">~$22M en riesgo</div></div>
     <div class="kpi rd"><div class="kl">Clientes 1 sola compra</div><div class="kv" style="color:var(--red)">82.7%</div><div class="ks">1.016 de 1.229</div><div class="kd wa">Convertir a recurrentes</div></div>
   </div>
 
@@ -643,11 +652,13 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
   <!-- Progreso convenios -->
   <div class="card mb">
-    <div class="ct"><div class="d" style="background:var(--green)"></div>Participación por Grupo Cliente <span class="src-badge src-mg">Magento Real</span></div>
-    <div class="prog-row"><div class="prog-lbl">General</div><div class="prog-bar"><div class="prog-fill" style="width:60%;background:#3b82f6"></div></div><div class="prog-val" style="color:#3b82f6">$151.3M</div><span style="font-size:10px;color:var(--text3);margin-left:6px">60.0% · 786 ord. · $192K ticket</span></div>
-    <div class="prog-row"><div class="prog-lbl">NOT LOGGED IN</div><div class="prog-bar"><div class="prog-fill" style="width:29.7%;background:#8b5cf6"></div></div><div class="prog-val" style="color:#8b5cf6">$75.0M</div><span style="font-size:10px;color:var(--text3);margin-left:6px">29.7% · 562 ord. · $133K ticket</span></div>
-    <div class="prog-row"><div class="prog-lbl">Mutual</div><div class="prog-bar"><div class="prog-fill" style="width:9.5%;background:#10b981"></div></div><div class="prog-val" style="color:#10b981">$24.1M</div><span style="font-size:10px;color:var(--text3);margin-left:6px">9.5% · 130 ord. · $185K ticket</span></div>
-    <div class="prog-row"><div class="prog-lbl">Club de Beneficios</div><div class="prog-bar"><div class="prog-fill" style="width:0.7%;background:#f59e0b"></div></div><div class="prog-val" style="color:var(--text3)">$1.8M</div><span style="font-size:10px;color:var(--text3);margin-left:6px">0.7% · 12 ord. · $150K ticket</span></div>
+    <div class="ct"><div class="d" style="background:var(--green)"></div>Participación por Grupo Cliente <span class="src-badge src-mg">Magento Real 60d</span></div>
+    <div id="gas-prog-grupos">
+      <div class="prog-row"><div class="prog-lbl">General</div><div class="prog-bar"><div class="prog-fill" style="width:60%;background:#3b82f6"></div></div><div class="prog-val" style="color:#3b82f6">$151.321.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">60.0% · 786 ord. · $192.000 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">NOT LOGGED IN</div><div class="prog-bar"><div class="prog-fill" style="width:29.7%;background:#8b5cf6"></div></div><div class="prog-val" style="color:#8b5cf6">$75.038.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">29.7% · 562 ord. · $133.000 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">Mutual</div><div class="prog-bar"><div class="prog-fill" style="width:9.5%;background:#10b981"></div></div><div class="prog-val" style="color:#10b981">$24.073.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">9.5% · 130 ord. · $185.000 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">Club de Beneficios</div><div class="prog-bar"><div class="prog-fill" style="width:0.7%;background:#f59e0b"></div></div><div class="prog-val" style="color:var(--text3)">$1.823.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">0.7% · 12 ord. · $150.000 ticket</span></div>
+    </div>
   </div>
 
   <!-- Top comunas -->
@@ -2895,7 +2906,7 @@ document.addEventListener('DOMContentLoaded',initAnalyticsCharts);
 
 // ── Analytics Render Functions ──
 // ── Sábana Render: Convenios ──
-function fmtCLP(n){if(!n)return '$0';if(n>=1e6)return '$'+(n/1e6).toFixed(1)+'M';if(n>=1e3)return '$'+(n/1e3).toFixed(0)+'K';return '$'+n.toLocaleString();}
+function fmtCLP(n){if(!n||n===0)return '$0';return '$'+Math.round(n).toLocaleString('es-CL');}
 function renderConv(filter='all'){
   const el=document.getElementById('convBody');if(!el)return;
   let d=CONV_DATA;
@@ -3327,8 +3338,9 @@ async function fetchGASData() {
 // Estructura: { resumen, historico, monthly, segmentos, suscripciones, topProductos, stock, _updatedAt }
 function applyGASData(data) {
   if (!data || data.error) { console.warn('GAS data error:', data?.error); return; }
-  const fmt  = v => v >= 1e6 ? '$' + (v/1e6).toFixed(1) + 'M' : '$' + Math.round(v/1e3) + 'K';
+  const fmt  = v => '$' + Math.round(v).toLocaleString('es-CL');
   const fmtN = v => v?.toLocaleString('es-CL') ?? '—';
+  const set  = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
 
   // ── 1. Badge timestamp ─────────────────────────────────────────
   const badge = document.getElementById('gasStatusBadge');
@@ -3355,7 +3367,7 @@ function applyGASData(data) {
     }
   }
 
-  // ── 3. Segmentos Directos (cBaseDirectos) ─────────────────────
+  // ── 3. Segmentos Directos (cBaseDirectos) + Progress bars ─────
   if (data.segmentos && data.segmentos.directos && data.segmentos.directos.length > 0) {
     const ch = Chart.getChart(document.getElementById('cBaseDirectos'));
     if (ch) {
@@ -3364,6 +3376,26 @@ function applyGASData(data) {
       ch.data.labels           = dir.map(d => d.grupo + ' (' + Math.round(d.clients/tot*100) + '%)');
       ch.data.datasets[0].data = dir.map(d => d.clients);
       ch.update('none');
+    }
+
+    // Progress bars — combinar directos + convenios
+    const progEl = document.getElementById('gas-prog-grupos');
+    if (progEl) {
+      const all = [...(data.segmentos.directos || []), ...(data.segmentos.convenios || [])];
+      all.sort((a,b) => b.rev - a.rev);
+      const totalRev = all.reduce((s,g) => s + g.rev, 0) || 1;
+      const colors = ['#3b82f6','#8b5cf6','#10b981','#f59e0b','#06b6d4','#f97316','#ec4899'];
+      progEl.innerHTML = all.map((g, i) => {
+        const pct  = (g.rev / totalRev * 100).toFixed(1);
+        const tick = g.orders > 0 ? Math.round(g.rev / g.orders) : 0;
+        const clr  = colors[i % colors.length];
+        return `<div class="prog-row">
+          <div class="prog-lbl">${g.grupo}</div>
+          <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${clr}"></div></div>
+          <div class="prog-val" style="color:${clr}">${fmtCLP(g.rev)}</div>
+          <span style="font-size:10px;color:var(--text3);margin-left:6px">${pct}% · ${fmtN(g.orders)} ord. · ${fmtCLP(tick)} ticket</span>
+        </div>`;
+      }).join('');
     }
   }
 
@@ -3400,6 +3432,14 @@ function applyGASData(data) {
       if (kvs[1]) kvs[1].textContent = fmtN(s.paused);
       if (kvs[2]) kvs[2].textContent = fmtN(s.canceled);
     }
+
+    // KPI cards en highlight del resumen (suscripciones)
+    set('gas-subs-active-kv', fmtN(s.active));
+    set('gas-subs-paused-kv', fmtN(s.paused));
+    set('gas-subs-total-ks',  'De ' + fmtN(s.total) + ' total');
+    const pctActive = s.total > 0 ? Math.round(s.active / s.total * 100) : 0;
+    set('gas-subs-pct-kd', pctActive + '% activas');
+    set('gas-subs-paused-ks', fmtN(s.proximasSemana || 0) + ' próximas esta semana');
   }
 
   // ── 6. Stock — KPI cards ───────────────────────────────────────
@@ -3413,14 +3453,28 @@ function applyGASData(data) {
     }
   }
 
-  // ── 7. Resumen last60d — log para debugging ────────────────────
+  // ── 7. Resumen last60d — KPI cards en vivo ────────────────────
   if (data.resumen && data.resumen.last60d) {
     const r = data.resumen.last60d;
-    console.log('GAS resumen 60d:', {
-      revenue: fmt(r.revenue), revenueConIVA: fmt(r.revenueConIVA),
-      orders: r.orders, clientes: r.clientes,
-      ticket: fmt(r.ticketProm), yoy: data.resumen.yoy
-    });
+    set('gas-kv-orders',  fmtN(r.orders));
+    set('gas-kv-revenue', fmt(r.revenueConIVA || r.revenue));
+    set('gas-kv-clients', fmtN(r.clientes));
+    set('gas-kv-ticket',  fmt(r.ticketProm));
+    set('gas-ks-orders',  r.orders + ' órdenes · 60d');
+    set('gas-ks-revenue', 'sin IVA: ' + fmt(r.revenue));
+    set('gas-ks-clients', r.clientes + ' compradores únicos');
+    const yoy = data.resumen.yoy;
+    if (yoy && yoy.revenueVar !== undefined) {
+      const yoySign = yoy.revenueVar >= 0 ? '↑ +' : '↓ ';
+      set('gas-ks-ticket', fmt(r.ticketProm) + ' · YoY ' + yoySign + Math.abs(yoy.revenueVar).toFixed(1) + '%');
+    }
+    // Actualizar label de fuente
+    if (data._updatedAt) {
+      const d = new Date(data._updatedAt);
+      const f = d.toLocaleString('es-CL', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      set('gasLiveLabel', 'actualizado ' + f + (data._fromCache ? ' (cache)' : ' ✓'));
+    }
+    console.log('GAS resumen 60d:', { revenue: fmt(r.revenue), revenueConIVA: fmt(r.revenueConIVA), orders: r.orders, clientes: r.clientes, ticket: fmt(r.ticketProm) });
   }
 
   // ── 8. Top productos — log ─────────────────────────────────────
