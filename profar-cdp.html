@@ -114,12 +114,11 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .bf{height:100%;border-radius:2px;}
 
 /* PROGRESS */
-.prog-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:11px;flex-wrap:wrap;}
-.prog-lbl{min-width:130px;width:130px;color:var(--text2);flex-shrink:0;font-size:11px;}
-.prog-bar{flex:1;min-width:60px;height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
+.prog-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:11px;}
+.prog-lbl{width:140px;color:var(--text2);flex-shrink:0;}
+.prog-bar{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
 .prog-fill{height:100%;border-radius:4px;}
-.prog-val{min-width:105px;width:105px;text-align:right;font-weight:600;font-size:11px;flex-shrink:0;white-space:nowrap;}
-.prog-stat{font-size:10px;color:var(--text3);margin-left:4px;white-space:nowrap;}
+.prog-val{width:50px;text-align:right;font-weight:600;font-size:11px;}
 
 /* SUB CARD */
 .sub-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px;display:flex;align-items:center;gap:10px;margin-bottom:7px;}
@@ -497,7 +496,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 /* Progress ring */
 .prog-ring{display:inline-flex;align-items:center;justify-content:center;position:relative;}
 .prog-ring svg{transform:rotate(-90deg);}
-.prog-ring .prog-val{position:absolute;font-size:13px;font-weight:700;width:auto;min-width:0;}
+.prog-val{position:absolute;font-size:13px;font-weight:700;}
 
 /* Year filter buttons */
 .yr-btn{display:inline-block;padding:5px 12px;margin:0 4px 8px 0;background:var(--card2);border:1px solid var(--border2);border-radius:5px;font-size:11px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .2s;}
@@ -562,6 +561,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <button class="tb" id="tb-competencia" onclick="showTab('competencia',this)">⚔️ Competencia</button>
   <button class="tb" id="tb-pricing" onclick="showTab('pricing',this)">🏷️ Pricing</button>
   <button class="tb" id="tb-inversa" onclick="showTab('inversa',this)">📦 Log. Inversa</button>
+  <button class="tb" id="tb-devoluciones" onclick="showTab('devoluciones',this)">↩️ Devoluciones <span id="devBadge" style="background:var(--orange);color:#fff;font-size:9px;padding:1px 5px;border-radius:10px;margin-left:3px;font-weight:700">!</span></button>
 </div>
 
 <!-- ══════ RESUMEN ══════ -->
@@ -659,10 +659,10 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="card mb">
     <div class="ct"><div class="d" style="background:var(--green)"></div>Participación por Grupo Cliente <span class="src-badge src-mg">Magento Real 60d</span></div>
     <div id="gas-prog-grupos">
-      <div class="prog-row"><div class="prog-lbl">General</div><div class="prog-bar"><div class="prog-fill" style="width:60%;background:#3b82f6"></div></div><div class="prog-val" style="color:#3b82f6">$151.321.000</div><span class="prog-stat">60.0% · 786 ord. · $192.000 ticket</span></div>
-      <div class="prog-row"><div class="prog-lbl">NOT LOGGED IN</div><div class="prog-bar"><div class="prog-fill" style="width:29.7%;background:#8b5cf6"></div></div><div class="prog-val" style="color:#8b5cf6">$75.038.000</div><span class="prog-stat">29.7% · 562 ord. · $133.000 ticket</span></div>
-      <div class="prog-row"><div class="prog-lbl">Mutual</div><div class="prog-bar"><div class="prog-fill" style="width:9.5%;background:#10b981"></div></div><div class="prog-val" style="color:#10b981">$24.073.000</div><span class="prog-stat">9.5% · 130 ord. · $185.000 ticket</span></div>
-      <div class="prog-row"><div class="prog-lbl">Club Beneficios</div><div class="prog-bar"><div class="prog-fill" style="width:0.7%;background:#f59e0b"></div></div><div class="prog-val" style="color:var(--text3)">$1.823.000</div><span class="prog-stat">0.7% · 12 ord. · $150.000 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">General</div><div class="prog-bar"><div class="prog-fill" style="width:60%;background:#3b82f6"></div></div><div class="prog-val" style="color:#3b82f6">$151.321.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">60.0% · 786 ord. · $192.000 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">NOT LOGGED IN</div><div class="prog-bar"><div class="prog-fill" style="width:29.7%;background:#8b5cf6"></div></div><div class="prog-val" style="color:#8b5cf6">$75.038.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">29.7% · 562 ord. · $133.000 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">Mutual</div><div class="prog-bar"><div class="prog-fill" style="width:9.5%;background:#10b981"></div></div><div class="prog-val" style="color:#10b981">$24.073.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">9.5% · 130 ord. · $185.000 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">Club de Beneficios</div><div class="prog-bar"><div class="prog-fill" style="width:0.7%;background:#f59e0b"></div></div><div class="prog-val" style="color:var(--text3)">$1.823.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">0.7% · 12 ord. · $150.000 ticket</span></div>
     </div>
   </div>
 
@@ -1912,7 +1912,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="sh"><div class="sh-title">📋 Detalle SKU por Categoría</div></div>
   <div style="margin-bottom:12px;display:flex;align-items:center;gap:8px;">
     <label style="font-size:12px;font-weight:600;color:var(--text2)">Filtrar Categoría:</label>
-    <select id="skuCategoryFilter" onchange="filterSKUCat(this.value)" style="padding:6px 8px;border:1px solid var(--border);border-radius:5px;background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;min-width:200px;">
+    <select id="skuCategoryFilter" style="padding:6px 8px;border:1px solid var(--border);border-radius:5px;background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;min-width:200px;">
       <option value="">Todas las categorías</option>
       <option value="frío">Antigripales / Frío</option>
       <option value="digestivo">Digestivo / Gastro</option>
@@ -2048,49 +2048,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
         <th>Rotación</th><th style="text-align:center">Posición</th><th>Nota</th>
       </tr></thead>
       <tbody id="compBody"></tbody>
-    </table>
-  </div>
-
-  <!-- ── Catálogo Maestro: todos los productos cruzados ── -->
-  <div class="sh" style="margin-top:20px">
-    <div class="sh-title">📦 Catálogo Maestro E-Com — Todos los Productos <span class="sh-badge">Rotación + Precios + Competencia + Pricing</span></div>
-    <div class="sh-actions"><button class="btn-xs" onclick="exportMasterCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal)">📥 CSV</button></div>
-  </div>
-  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;align-items:center">
-    <span style="font-size:10px;color:var(--text3);min-width:70px">Categoría:</span>
-    <div id="mf-cat" style="display:flex;gap:4px;flex-wrap:wrap">
-      <button class="btn-xs mf-cat active" onclick="setMF('cat','all',this)">Todos (32)</button>
-      <button class="btn-xs mf-cat" onclick="setMF('cat','oc',this)" style="border-color:rgba(139,92,246,.4);color:var(--purple)">🔬 Oncológico</button>
-      <button class="btn-xs mf-cat" onclick="setMF('cat','cr',this)" style="border-color:rgba(59,130,246,.4);color:#60a5fa">💊 Crónico</button>
-      <button class="btn-xs mf-cat" onclick="setMF('cat','otc',this)" style="border-color:rgba(16,185,129,.4);color:var(--teal)">🛒 OTC</button>
-    </div>
-  </div>
-  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;align-items:center">
-    <span style="font-size:10px;color:var(--text3);min-width:70px">Estado:</span>
-    <div id="mf-st" style="display:flex;gap:4px;flex-wrap:wrap">
-      <button class="btn-xs mf-st active" onclick="setMF('st','all',this)">Todo</button>
-      <button class="btn-xs mf-st" onclick="setMF('st','alta',this)" style="border-color:rgba(16,185,129,.4);color:var(--green)">🟢 Alta Rot.</button>
-      <button class="btn-xs mf-st" onclick="setMF('st','baja',this)" style="border-color:rgba(245,158,11,.4);color:var(--yellow)">🟠 Baja/Sin Rot.</button>
-      <button class="btn-xs mf-st" onclick="setMF('st','trigger',this)" style="border-color:rgba(239,68,68,.4);color:var(--red)">🔴 Trigger Pricing</button>
-      <button class="btn-xs mf-st" onclick="setMF('st','critico',this)" style="border-color:rgba(239,68,68,.3);color:#f87171">🚨 Crítico Comp.</button>
-      <button class="btn-xs mf-st" onclick="setMF('st','stock0',this)" style="border-color:rgba(239,68,68,.5);color:var(--red)">💔 Stock 0</button>
-    </div>
-  </div>
-  <div class="card" style="overflow-x:auto">
-    <table class="tbl" style="min-width:950px">
-      <thead><tr>
-        <th>SKU / Producto</th>
-        <th style="text-align:center">Cat.</th>
-        <th>Rotación</th>
-        <th style="text-align:center">Estado Rot.</th>
-        <th style="text-align:right">Rev. 2026</th>
-        <th style="text-align:center">Stock</th>
-        <th style="text-align:center">Pos. Comp.</th>
-        <th style="text-align:right">Dif. Precio</th>
-        <th style="text-align:center">Pricing</th>
-        <th>Acción recomendada</th>
-      </tr></thead>
-      <tbody id="masterBody"></tbody>
     </table>
   </div>
 </div>
@@ -2233,6 +2190,335 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
   </div>
 </div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     TAB: DEVOLUCIONES — Análisis completo NC / Power BI ERP
+     ══════════════════════════════════════════════════════════════ -->
+<div class="tp" id="tp-devoluciones">
+
+  <!-- ── HEADER ── -->
+  <div class="sh" style="margin-bottom:8px">
+    <div class="sh-t" style="font-size:14px">↩️ Notas de Crédito — Devoluciones &amp; Cancelaciones
+      <span class="chip ch-o" style="font-size:10px;margin-left:6px">ERP Power BI · TIPO=NC</span>
+      <span id="devLastUpdate" style="font-size:9px;color:var(--text3);margin-left:8px">● Datos: 22 Mar 2026</span>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <button class="btn-xs" onclick="exportDevCSV()">📥 CSV</button>
+      <button class="btn-xs" onclick="toggleDevDetail()">🔍 Ver detalle</button>
+    </div>
+  </div>
+
+  <!-- ── AVISO CONTEXTO NC ── -->
+  <div style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-left:3px solid var(--accent);border-radius:8px;padding:9px 13px;font-size:11px;margin-bottom:14px;line-height:1.7;display:flex;gap:10px;align-items:flex-start">
+    <span style="font-size:16px;flex-shrink:0">ℹ️</span>
+    <div>
+      <b style="color:var(--accent)">¿Qué mide TIPO=NC?</b> Todas las transacciones que <b>no se completaron exitosamente</b>: pedidos cancelados antes de entrega, devoluciones post-entrega, ajustes de precio y notas de crédito por cobertura de seguro. Sin campo "motivo" en ERP no es posible distinguirlos. <b>La métrica clave es la Tasa de Entrega Exitosa (inverso)</b> — cuántas boletas llegaron al paciente sin ningún problema.
+    </div>
+  </div>
+
+  <!-- ── FILTROS DE FECHA ── -->
+  <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
+    <span style="font-size:10px;color:var(--text3);font-weight:700;white-space:nowrap">Período:</span>
+    <button class="btn-xs" id="drf-30"  onclick="setDevRange(30,this)">30d</button>
+    <button class="btn-xs" id="drf-60"  onclick="setDevRange(60,this)">60d</button>
+    <button class="btn-xs" id="drf-90"  onclick="setDevRange(90,this)">90d</button>
+    <button class="btn-xs" id="drf-180" onclick="setDevRange(180,this)">180d</button>
+    <button class="btn-xs active" id="drf-all" onclick="setDevRange(9999,this)">Todo</button>
+    <span style="width:1px;height:18px;background:var(--border);display:inline-block;margin:0 4px"></span>
+    <span style="font-size:10px;color:var(--text3);font-weight:700">Región:</span>
+    <select id="devRegSel" onchange="applyDevFilters()" style="background:var(--card2);border:1px solid var(--border2);color:var(--text2);border-radius:5px;padding:3px 7px;font-size:10px;cursor:pointer">
+      <option value="all">Todas</option>
+      <option value="RM">Región Metropolitana</option>
+      <option value="V">Valparaíso</option>
+      <option value="VIII">Biobío</option>
+      <option value="IX">La Araucanía</option>
+      <option value="IV">Coquimbo</option>
+    </select>
+    <span style="font-size:10px;color:var(--text3);font-weight:700">Categoría:</span>
+    <select id="devCatSel" onchange="applyDevFilters()" style="background:var(--card2);border:1px solid var(--border2);color:var(--text2);border-radius:5px;padding:3px 7px;font-size:10px;cursor:pointer">
+      <option value="all">Todas</option>
+      <option value="onco">Oncología</option>
+      <option value="ref">Refrigerados (REF)</option>
+      <option value="glp1">GLP-1 / Diabetes</option>
+      <option value="neuro">Neurológico</option>
+      <option value="otro">Otros</option>
+    </select>
+    <span style="font-size:10px;color:var(--text3);font-weight:700;margin-left:4px">Umbral alerta:</span>
+    <input id="devThreshold" type="number" value="3" min="1" max="20" onchange="applyDevFilters()" style="width:48px;background:var(--card2);border:1px solid var(--border2);color:var(--text);border-radius:5px;padding:3px 6px;font-size:10px">
+    <span style="font-size:10px;color:var(--text3)">%</span>
+    <span id="devFilterChip" class="chip ch-b" style="margin-left:4px;display:none"></span>
+  </div>
+
+  <!-- ── FUNNEL COMPRA → ENTREGA ── -->
+  <div class="card" style="margin-bottom:14px;border-color:rgba(20,184,166,.25);background:rgba(20,184,166,.03)">
+    <div class="ct"><div class="d" style="background:var(--teal)"></div>Funnel Compra → Entrega Exitosa <span class="chip ch-b" style="font-size:9px;margin-left:auto">Período completo · 2024–2026</span></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;align-items:center;text-align:center">
+      <div style="padding:10px 8px">
+        <div style="font-size:22px;font-weight:800;color:var(--teal)" id="devFunnelTotal">21,584</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">Transacciones<br>TIPO=BT + NC</div>
+        <div style="width:100%;height:4px;background:var(--teal);border-radius:2px;margin-top:8px"></div>
+      </div>
+      <div style="padding:10px 8px;position:relative">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:4px">↓ 279 NC (1.31%)</div>
+        <div style="font-size:22px;font-weight:800;color:var(--accent)" id="devFunnelBT">21,305</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">Boletas emitidas<br>TIPO=BT</div>
+        <div style="width:100%;height:4px;background:var(--accent);border-radius:2px;margin-top:8px"></div>
+      </div>
+      <div style="padding:10px 8px">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:4px">↓ sin NC registradas</div>
+        <div style="font-size:22px;font-weight:800;color:var(--green)" id="devFunnelEntrega">~20,900</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">Entregas exitosas<br>estimadas</div>
+        <div style="width:100%;height:4px;background:var(--green);border-radius:2px;margin-top:8px"></div>
+      </div>
+      <div style="padding:10px 8px;background:rgba(16,185,129,.06);border-radius:8px;border:1px solid rgba(16,185,129,.2)">
+        <div style="font-size:10px;color:var(--green);font-weight:700;margin-bottom:4px">✅ TASA ENTREGA</div>
+        <div style="font-size:28px;font-weight:800;color:var(--green)" id="devFunnelTasaEntrega">98.69%</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">de los pedidos llegan<br>sin incidentes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── KPI CARDS ── -->
+  <div class="kgrid4" id="devKpiRow" style="margin-bottom:14px">
+    <div class="kpi warn">
+      <div class="kpi-lbl">Tasa NC (Dev+Cancel)</div>
+      <div class="kpi-v" id="devKpiTasa" style="color:var(--orange)">1.31%</div>
+      <div class="kpi-sub" id="devKpiTasaSub">279 NC / 21,305 BT</div>
+      <div class="kpi-delta nt" id="devKpiTasaDelta">↗ +0.1pp vs mes ant.</div>
+    </div>
+    <div class="kpi rd">
+      <div class="kpi-lbl">Valor NC Acumulado</div>
+      <div class="kpi-v" id="devKpiValor" style="color:var(--red)">$51.9M</div>
+      <div class="kpi-sub" id="devKpiValorSub">1.90% del ingreso total</div>
+      <div class="kpi-delta dn" id="devKpiValorDelta">Acum. 2024–2026</div>
+    </div>
+    <div class="kpi ec">
+      <div class="kpi-lbl">N° Notas de Crédito</div>
+      <div class="kpi-v" id="devKpiNC" style="color:var(--accent)">279</div>
+      <div class="kpi-sub" id="devKpiNCSub">Dev + Cancel + Ajustes</div>
+      <div class="kpi-delta up" id="devKpiNCDelta">Ene 2024 – Mar 2026</div>
+    </div>
+    <div class="kpi tl">
+      <div class="kpi-lbl">Ticket Prom. NC</div>
+      <div class="kpi-v" id="devKpiTicket" style="color:var(--teal)">$186K</div>
+      <div class="kpi-sub" id="devKpiTicketSub">Promedio por nota crédito</div>
+      <div class="kpi-delta up" id="devKpiTicketDelta">vs $127K ticket BT</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+    <!-- Proyección -->
+    <div class="kpi" style="background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(59,130,246,.05));border-color:rgba(99,102,241,.3)">
+      <div class="kpi-lbl" style="color:var(--purple)">🔮 Proyección Próximo Mes (IA)</div>
+      <div class="kpi-v" id="devKpiProyeccion" style="color:var(--purple)">~1.2%</div>
+      <div class="kpi-sub" id="devKpiProySub">Basado en tendencia 6 meses</div>
+      <div class="kpi-delta" id="devKpiPryDelta" style="background:rgba(99,102,241,.1);color:var(--purple)">📉 Tendencia bajista</div>
+    </div>
+    <!-- Pico máximo -->
+    <div class="kpi yw">
+      <div class="kpi-lbl">⚡ Pico Máximo Detectado</div>
+      <div class="kpi-v" style="color:var(--yellow);font-size:18px" id="devKpiPico">Dic 2025 · 6.72%</div>
+      <div class="kpi-sub" id="devKpiPicoSub">OZEMPIC 4×NC · $7.4M valor</div>
+      <div class="kpi-delta wa" id="devKpiPicoDelta">⚠️ Producto único de alto valor</div>
+    </div>
+  </div>
+
+  <!-- ── ALERTAS AUTOMÁTICAS ── -->
+  <div id="devAlertasBox" style="margin-bottom:14px">
+    <div class="ct"><div class="d" style="background:var(--red)"></div>Alertas Automáticas
+      <span id="devAlertCount" class="chip ch-r" style="margin-left:6px">3 activas</span>
+    </div>
+    <div id="devAlertList">
+      <div class="al-item r">
+        <div class="al-ico">🚨</div>
+        <div style="flex:1">
+          <div class="al-title">Dic 2025 — Tasa 6.72% supera umbral (3%)</div>
+          <div class="al-desc">4 NCs de OZEMPIC en un solo mes · Valor devuelto: $10.2M · Posible problema lote/cadena de frío</div>
+        </div>
+        <span class="al-badge bd-r">CRÍTICO</span>
+      </div>
+      <div class="al-item y">
+        <div class="al-ico">⚠️</div>
+        <div style="flex:1">
+          <div class="al-title">Abr 2025 — Tasa 5.93% (1 NC de IBRANCE $4.1M)</div>
+          <div class="al-desc">Una sola Nota de Crédito de producto oncológico de alto valor. Verificar motivo con paciente/médico.</div>
+        </div>
+        <span class="al-badge bd-y">REVISAR</span>
+      </div>
+      <div class="al-item y">
+        <div class="al-ico">❄️</div>
+        <div style="flex:1">
+          <div class="al-title">Productos REF — $11.2M en devoluciones acumuladas</div>
+          <div class="al-desc">Refrigerados representan 21.6% del valor devuelto. Verificar protocolo cadena de frío en despacho.</div>
+        </div>
+        <span class="al-badge bd-y">CADENA FRÍO</span>
+      </div>
+      <div class="al-item b">
+        <div class="al-ico">ℹ️</div>
+        <div style="flex:1">
+          <div class="al-title">RM concentra 91.4% — 255 de 279 NCs</div>
+          <div class="al-desc">Proporcionalmente normal dado que RM genera &gt;85% de ventas. Sin anomalía regional.</div>
+        </div>
+        <span class="al-badge bd-b">INFO</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CHARTS ── -->
+  <div class="ch-grid" style="margin-bottom:14px">
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--orange)"></div>Tasa de Devolución Mensual (%)
+        <span class="chip ch-y" style="margin-left:auto;font-size:9px" id="devChartPeriodLabel">27 meses</span>
+      </div>
+      <div style="position:relative;height:220px"><canvas id="devTrendChart"></canvas></div>
+      <div style="font-size:9px;color:var(--text3);margin-top:6px;display:flex;gap:10px">
+        <span>— Tasa % (eje der.)</span>
+        <span style="color:var(--red)">■ Valor devuelto ($M)</span>
+        <span style="color:var(--accent)">- - Umbral alerta</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--purple)"></div>Top Productos Devueltos — Valor CLP</div>
+      <div style="position:relative;height:220px"><canvas id="devTopChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="ch-grid" style="margin-bottom:14px">
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--teal)"></div>Distribución Regional</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center">
+        <div style="position:relative;height:170px"><canvas id="devRegionChart"></canvas></div>
+        <div id="devRegionLegend" style="font-size:10px;display:flex;flex-direction:column;gap:4px"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="d" style="background:var(--cyan)"></div>Predicción Tendencia — Próximos 3 Meses</div>
+      <div style="position:relative;height:170px"><canvas id="devForecastChart"></canvas></div>
+      <div style="font-size:9px;color:var(--text3);margin-top:5px;display:flex;gap:8px">
+        <span style="color:var(--accent)">— Histórico</span>
+        <span style="color:var(--purple)">— — Proyección</span>
+        <span style="color:rgba(239,68,68,.5)">··· Umbral</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOP PRODUCTOS TABLE ── -->
+  <div class="card mb">
+    <div class="sh">
+      <div class="sh-t">🏆 Top 15 Productos por Valor Devuelto
+        <span class="chip ch-r" style="margin-left:6px;font-size:9px">NCs con mayor impacto financiero</span>
+      </div>
+      <input id="devProdSearch" type="text" placeholder="Buscar producto…" oninput="filterDevTable()"
+        style="background:var(--card2);border:1px solid var(--border2);color:var(--text);border-radius:6px;padding:5px 9px;font-size:10px;width:160px;outline:none">
+    </div>
+    <div style="overflow-x:auto">
+      <table class="tbl" id="devTopTable">
+        <thead><tr>
+          <th onclick="sortDevTable(0)" style="cursor:pointer"># ↕</th>
+          <th onclick="sortDevTable(1)" style="cursor:pointer">Producto ↕</th>
+          <th onclick="sortDevTable(2)" style="cursor:pointer;text-align:right">N° NC ↕</th>
+          <th onclick="sortDevTable(3)" style="cursor:pointer;text-align:right">Valor Dev. ↕</th>
+          <th onclick="sortDevTable(4)" style="cursor:pointer;text-align:right">% del Total ↕</th>
+          <th onclick="sortDevTable(5)" style="cursor:pointer;text-align:right">Ticket Prom. ↕</th>
+          <th>Categoría</th>
+          <th>Alerta</th>
+        </tr></thead>
+        <tbody id="devTopBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── DETALLE NC (colapsable) ── -->
+  <div id="devDetailSection" style="display:none">
+    <div class="card mb">
+      <div class="sh">
+        <div class="sh-t">📋 Detalle Completo — 279 Notas de Crédito
+          <span class="chip ch-b" style="font-size:9px;margin-left:6px">Fuente: Power BI · TIPO=NC</span>
+        </div>
+        <div style="display:flex;gap:5px">
+          <input id="devDetailSearch" type="text" placeholder="Buscar…" oninput="filterDevDetail()"
+            style="background:var(--card2);border:1px solid var(--border2);color:var(--text);border-radius:6px;padding:5px 9px;font-size:10px;width:140px;outline:none">
+          <select id="devDetailMonthSel" onchange="filterDevDetail()" style="background:var(--card2);border:1px solid var(--border2);color:var(--text2);border-radius:5px;padding:4px 7px;font-size:10px;cursor:pointer">
+            <option value="all">Todos los meses</option>
+          </select>
+        </div>
+      </div>
+      <div style="overflow-x:auto;max-height:420px;overflow-y:auto">
+        <table class="tbl" style="min-width:900px" id="devDetailTable">
+          <thead style="position:sticky;top:0;background:var(--card)"><tr>
+            <th>Fecha</th><th>N° Doc</th><th>Producto</th>
+            <th style="text-align:right">Unidades</th>
+            <th style="text-align:right">Venta ($)</th>
+            <th>Región</th><th>Fuente</th><th>Categoría</th>
+          </tr></thead>
+          <tbody id="devDetailBody"></tbody>
+        </table>
+      </div>
+      <div style="font-size:10px;color:var(--text3);margin-top:8px;display:flex;justify-content:space-between">
+        <span id="devDetailCount">279 registros</span>
+        <span>* Datos desde Raw_Ventas_ERP vía Power BI</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INSIGHTS ── -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+    <div class="card" style="border-color:rgba(16,185,129,.25);background:rgba(16,185,129,.03)">
+      <div class="ct" style="color:var(--green)">✅ Diagnóstico General</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.7">
+        <b>Tasa entrega exitosa: 98.69%</b> — excelente para farmacéutica especializada. Tasa NC base de <b>0.8–1.5%</b> incluye cancelaciones + devoluciones + ajustes. Los picos son eventos puntuales de alto valor (1-4 NCs), no un problema sistémico.
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.03)">
+      <div class="ct" style="color:var(--yellow)">⚠️ Atención Inmediata</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.7">
+        Verificar <b>protocolo cadena de frío</b> para OZEMPIC y otros REF. Los $11.2M en devueltos de refrigerados podrían reducirse con mejor control de temperatura en despacho.
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(99,102,241,.25);background:rgba(99,102,241,.03)">
+      <div class="ct" style="color:var(--purple)">🔮 Proyección</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.7">
+        Tendencia <b>estable a la baja</b>. Proyección Abr-Jun 2026: ~1.1–1.3% si no hay pico oncológico nuevo. Monitorear OZEMPIC en Q2 dado su historial de devoluciones recurrentes.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ACCIONES RECOMENDADAS ── -->
+  <div class="card" style="border-color:rgba(20,184,166,.25)">
+    <div class="ct"><div class="d" style="background:var(--teal)"></div>⚡ Acciones Recomendadas</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="card2" style="display:flex;align-items:flex-start;gap:8px">
+        <div style="width:28px;height:28px;border-radius:7px;background:rgba(239,68,68,.15);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">❄️</div>
+        <div>
+          <div style="font-size:11px;font-weight:700;margin-bottom:2px">Auditar cadena de frío REF</div>
+          <div style="font-size:10px;color:var(--text2)">Revisar 39 NCs de NURTEC y 8 de OZEMPIC. Implementar control de temperatura con acuse de recibo firmado.</div>
+        </div>
+      </div>
+      <div class="card2" style="display:flex;align-items:flex-start;gap:8px">
+        <div style="width:28px;height:28px;border-radius:7px;background:rgba(99,102,241,.15);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">💊</div>
+        <div>
+          <div style="font-size:11px;font-weight:700;margin-bottom:2px">Protocolo oncología de alto valor</div>
+          <div style="font-size:10px;color:var(--text2)">Para IBRANCE, KEYTRUDA, OPDIVO: confirmar vigencia receta y seguro antes del despacho. Evita NCs &gt;$3M.</div>
+        </div>
+      </div>
+      <div class="card2" style="display:flex;align-items:flex-start;gap:8px">
+        <div style="width:28px;height:28px;border-radius:7px;background:rgba(245,158,11,.15);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">📊</div>
+        <div>
+          <div style="font-size:11px;font-weight:700;margin-bottom:2px">Alerta automática mensual</div>
+          <div style="font-size:10px;color:var(--text2)">Configurar notificación cuando tasa supere 3% mensual. Este dashboard ya la calcula automáticamente.</div>
+        </div>
+      </div>
+      <div class="card2" style="display:flex;align-items:flex-start;gap:8px">
+        <div style="width:28px;height:28px;border-radius:7px;background:rgba(16,185,129,.15);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">🗂️</div>
+        <div>
+          <div style="font-size:11px;font-weight:700;margin-bottom:2px">Agregar campo "motivo NC" en ERP</div>
+          <div style="font-size:10px;color:var(--text2)">Sin motivo, no se puede distinguir cancelación / devolución / ajuste. Clasificar como: cancelado antes despacho · devuelto post entrega · error precio · cobertura seguro.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tp-devoluciones -->
 
 </div><!-- /wrap -->
 <div class="notif" id="notif"></div>
@@ -2420,7 +2706,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 // ══════ TABS ══════
 // Which section each tab belongs to
-const TAB_SEC={resumen:'cdp',convenios:'cdp',clientes:'cdp',suscripciones:'cdp',stock:'cdp',predicciones:'cdp',campanas:'cdp',alertas:'cdp',ventas:'ecom',rotacion:'ecom',acciones:'ecom',competencia:'ecom',pricing:'ecom',inversa:'ecom'};
+const TAB_SEC={resumen:'cdp',convenios:'cdp',clientes:'cdp',suscripciones:'cdp',stock:'cdp',predicciones:'cdp',campanas:'cdp',alertas:'cdp',ventas:'ecom',rotacion:'ecom',acciones:'ecom',competencia:'ecom',pricing:'ecom',inversa:'ecom',devoluciones:'ecom'};
 
 function showSection(sec,el){
   // Activate section button
@@ -3053,7 +3339,17 @@ const ACTS={
   ]
 };
 
-// PRIC_TRIG y PRIC_WATCH eliminados — renderPricing() ahora usa PRIC_FULL filtrado por est
+const PRIC_TRIG=[
+  {n:'Colágeno Hidrolizado',c:'E-Com',meses:5,det:'Sin ventas desde Oct 2025. Stock 30 meses.',act:'Liquidar -30%'},
+  {n:'Espirulina 500mg',c:'Sala',meses:4,det:'Competencia online más barata. Stock crítico.',act:'-25%'},
+  {n:'Glucosamina 500mg',c:'Tel.',meses:3,det:'Precio superior competencia en 18%.',act:'-20%'},
+  {n:'Extracto de Ginkgo',c:'Tel.',meses:3.5,det:'3 ventas totales en el año.',act:'-30%'},
+];
+const PRIC_WATCH=[
+  {n:'Ranitidina 150mg',c:'Tel.',dpost:28,det:'Descuento -15% hace 28 días. Pasó de 0 a 5u/mes.',estado:'↑ Mejorando'},
+  {n:'Alprazolam 0.5mg',c:'E-Com',dpost:40,det:'40 días post-ajuste. Mejora leve (8u/mes).',estado:'↑ Leve mejora'},
+  {n:'Polivitamínico Senior',c:'Sala',dpost:15,det:'15 días, aún sin ventas.',estado:'→ Sin cambio'},
+];
 const INV_ITEMS=[
   {n:'Colágeno Hidrolizado',c:'E-Com',meses:5,cap:'$890K',prov:'NutriLab',act:'Devolución'},
   {n:'Espirulina 500mg',c:'Sala',meses:4,cap:'$1.2M',prov:'NaturaVida',act:'Nota crédito'},
@@ -3228,7 +3524,7 @@ function initAnalyticsCharts(){
   mkC('cCDPFreq',{type:'bar',data:{labels:['1 compra','2-3','4-6','7-10','11+'],datasets:[{label:'Clientes',data:[421,689,513,287,142],backgroundColor:['rgba(239,68,68,.6)','rgba(245,158,11,.6)','rgba(59,130,246,.6)','rgba(16,185,129,.6)','rgba(16,185,129,.9)'],borderRadius:4}]},
     options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
   renderRot();renderActions();renderPricing();renderInversa();renderCDP();renderChurn();
-  renderConv();renderBuyers();renderComp();renderCompMatrix();renderPricTable();renderInvTable();renderMasterCat();
+  renderConv();renderBuyers();renderComp();renderCompMatrix();renderPricTable();renderInvTable();
 }
 document.addEventListener('DOMContentLoaded',initAnalyticsCharts);
 
@@ -3360,11 +3656,9 @@ function renderComp(filter='all'){
     return b.rot-a.rot;
   });
   el.innerHTML=d.map(s=>{
-    const prices=[s.sb,s.cv,s.ah,s.cf].filter(v=>v!=null);
-    const minComp=prices.length?Math.min(...prices):null;
-    const dif=minComp!=null?((s.pf-minComp)/minComp*100).toFixed(1):null;
-    const difStyle=dif!=null&&+dif>0?'color:#ef4444':dif!=null?'color:#10b981':'color:var(--text3)';
-    const difTxt=dif!=null?(+dif>0?'+'+dif+'%':dif+'%'):'<span style="color:var(--green);font-size:10px">Excl.</span>';
+    const minComp=Math.min(...[s.sb,s.cv,s.ah,s.cf].filter(v=>v!=null));
+    const dif=minComp?((s.pf-minComp)/minComp*100).toFixed(1):null;
+    const difStyle=dif!=null&&dif>0?'color:#ef4444':dif!=null?'color:#10b981':'color:var(--text3)';
     const fmt=v=>v!=null?'$'+v.toLocaleString():'—';
     const rotBar=`<div style="display:flex;align-items:center;gap:4px"><div style="width:40px;height:4px;background:var(--border);border-radius:2px"><div style="width:${s.rot}%;height:100%;background:${s.rot>=70?'var(--green)':s.rot>=30?'var(--yellow)':'var(--red)'};border-radius:2px"></div></div><span style="font-size:10px;color:var(--text3)">${s.rot}%</span></div>`;
     return `<tr>
@@ -3375,7 +3669,7 @@ function renderComp(filter='all'){
       <td style="text-align:right;font-size:11px">${fmt(s.cv)}</td>
       <td style="text-align:right;font-size:11px">${fmt(s.ah)}</td>
       <td style="text-align:right;font-size:11px">${fmt(s.cf)}</td>
-      <td style="text-align:right;font-weight:600;${difStyle}">${difTxt}</td>
+      <td style="text-align:right;font-weight:600;${difStyle}">${dif!=null?(dif>0?'+'+dif+'%':dif+'%'):'—'}</td>
       <td>${rotBar}</td>
       <td style="text-align:center">${POS_CHIP[s.posicion]||'—'}</td>
       <td style="font-size:10px;color:var(--text2)">${s.nota}</td>
@@ -3386,139 +3680,6 @@ function filterComp(f,el){
   document.querySelectorAll('.comp-filter').forEach(b=>b.classList.remove('active'));
   if(el)el.classList.add('active');
   renderComp(f);
-}
-
-// ── Fix: category filter for static SKU table ──
-function filterSKUCat(val){
-  document.querySelectorAll('#skuTableBody .sku-row').forEach(r=>{
-    r.style.display=(!val||r.dataset.category===val)?'':'none';
-  });
-}
-
-// ── Master Catálogo: cross-reference SKUS × COMP_SKUS × PRIC_FULL ──
-// 12-char key prevents collisions like Rybelsus 3/7/14mg
-function normKey(n){
-  return n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'').slice(0,12);
-}
-// Build full deduplicated catalog from all 3 sources
-function buildFullCatalog(){
-  const compMap={};COMP_SKUS.forEach(c=>{compMap[normKey(c.n)]=c;});
-  const pricMap={};PRIC_FULL.forEach(p=>{pricMap[normKey(p.n)]=p;});
-  const catMap={'OTC':'otc','Oncológico':'oc','Crónico':'cr','oc':'oc','cr':'cr','otc':'otc'};
-  const seen=new Set();
-  const items=[];
-  // 1. SKUS as primary source (E-Com catalog, has rotation + revenue)
-  SKUS.forEach(s=>{
-    const key=normKey(s.n);
-    seen.add(key);
-    items.push({n:s.n,sku:s.sku,cat:s.cat,rot:s.rot,st:s.st,rev26:s.rev26,stk:s.stk,precComp:s.precComp,_src:'skus',comp:compMap[key]||null,pric:pricMap[key]||null});
-  });
-  // 2. COMP_SKUS additions not in SKUS
-  COMP_SKUS.forEach(c=>{
-    const key=normKey(c.n);
-    if(seen.has(key))return;
-    seen.add(key);
-    const pric=pricMap[key]||null;
-    const st=c.rot>=70?'Alta':c.rot>=30?'Normal':c.rot>0?'Baja':'Sin Rot.';
-    items.push({n:c.n,sku:'—',cat:catMap[c.cat]||c.cat,rot:c.rot,st:st,rev26:null,stk:null,precComp:c.tend==='ok'?'under':'over',_src:'comp',comp:c,pric:pric});
-  });
-  // 3. PRIC_FULL additions not yet seen
-  PRIC_FULL.forEach(p=>{
-    const key=normKey(p.n);
-    if(seen.has(key))return;
-    seen.add(key);
-    const cat=catMap[p.cat]||'otc';
-    const st=p.est==='trigger'?'Sin Rot.':p.est==='watch'?'Baja':'Normal';
-    items.push({n:p.n,sku:'—',cat:cat,rot:p.est==='ok'?30:p.est==='watch'?15:0,st:st,rev26:null,stk:p.stock?(p.stock/30).toFixed(1):null,precComp:'over',_src:'pric',comp:compMap[key]||null,pric:p});
-  });
-  return items;
-}
-let _mfCat='all', _mfSt='all';
-function setMF(type,val,el){
-  if(type==='cat') _mfCat=val;
-  else _mfSt=val;
-  const grp=document.getElementById('mf-'+type);
-  if(grp) grp.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
-  if(el) el.classList.add('active');
-  renderMasterCat();
-}
-function renderMasterCat(){
-  const el=document.getElementById('masterBody');if(!el)return;
-  // Build full deduplicated catalog
-  let items=buildFullCatalog();
-  // Apply filters
-  if(_mfCat!=='all') items=items.filter(s=>s.cat===_mfCat);
-  if(_mfSt==='alta') items=items.filter(s=>s.st==='Alta');
-  else if(_mfSt==='baja') items=items.filter(s=>s.st==='Baja'||s.st==='Sin Rot.');
-  else if(_mfSt==='trigger') items=items.filter(s=>s.pric&&s.pric.est==='trigger');
-  else if(_mfSt==='critico') items=items.filter(s=>s.comp&&(s.comp.posicion==='critico'||s.comp.posicion==='doble_problema'));
-  else if(_mfSt==='stock0') items=items.filter(s=>s.stk===0||(s.pric&&s.pric.stock===0));
-  // Sort: cat priority then rot desc
-  items=[...items].sort((a,b)=>{
-    const o={oc:0,cr:1,otc:2};
-    const ca=o[a.cat]??3,cb=o[b.cat]??3;
-    if(ca!==cb)return ca-cb;
-    return b.rot-a.rot;
-  });
-  // Update total count button
-  const totBtn=document.querySelector('#mf-cat .mf-cat');
-  if(totBtn&&_mfCat==='all')totBtn.textContent=`Todos (${buildFullCatalog().length})`;
-  const CAT_CHIP={oc:'ch-p',cr:'ch-d',otc:'ch-c'};
-  const CAT_LBL={oc:'Oncológico',cr:'Crónico',otc:'OTC'};
-  const ROT_CHIP={'Alta':'ch-g','Normal':'ch-y','Baja':'ch-o','Sin Rot.':'ch-r'};
-  const POS_HTML={
-    estrella:'<span class="chip" style="background:rgba(16,185,129,.15);color:var(--green);font-size:9px">⭐ Estrella</span>',
-    critico:'<span class="chip" style="background:rgba(239,68,68,.12);color:#f87171;font-size:9px">🚨 Crítico</span>',
-    activar:'<span class="chip" style="background:rgba(59,130,246,.12);color:#60a5fa;font-size:9px">🔔 Activar</span>',
-    doble_problema:'<span class="chip" style="background:rgba(148,163,184,.1);color:var(--text3);font-size:9px">☠️ D.Prob.</span>',
-  };
-  const PRIC_HTML={trigger:'<span class="chip ch-r" style="font-size:9px">🔴 Trigger</span>',watch:'<span class="chip ch-y" style="font-size:9px">🟡 Watch</span>',ok:'<span class="chip ch-g" style="font-size:9px">✅ OK</span>'};
-  el.innerHTML=items.map(s=>{
-    const comp=s.comp;const pric=s.pric;
-    const rot=s.rot??0;
-    const rotBar=`<div style="display:flex;align-items:center;gap:5px"><div style="width:38px;height:5px;background:var(--border);border-radius:3px"><div style="width:${rot}%;height:100%;background:${rot>=70?'var(--green)':rot>=30?'var(--yellow)':'var(--red)'};border-radius:3px"></div></div><span style="font-size:10px;color:var(--text3)">${rot}%</span></div>`;
-    const revCell=s.rev26>0?`<b style="color:var(--green)">$${s.rev26}M</b>`:`<span style="color:var(--text3)">—</span>`;
-    const stkVal=s.stk!==null?s.stk:(pric?+(pric.stock/30).toFixed(1):null);
-    const stkColor=stkVal===0?'color:var(--red);font-weight:700':stkVal!==null&&stkVal<1.5?'color:var(--yellow);font-weight:600':'color:var(--text2)';
-    const stkTxt=stkVal===0?'🚨 Sin stock':stkVal===null?'—':stkVal<1?`⚠️ ${stkVal}m`:`${stkVal}m`;
-    let difCell='<span style="color:var(--text3)">—</span>';
-    if(comp){
-      const prices=[comp.sb,comp.cv,comp.ah,comp.cf].filter(v=>v!=null);
-      if(prices.length){const minC=Math.min(...prices);const d=((comp.pf-minC)/minC*100).toFixed(1);difCell=`<span style="${+d>0?'color:var(--red)':'color:var(--green)'};font-weight:600">${+d>0?'+'+d+'%':d+'%'}</span>`;}
-      else difCell='<span style="color:var(--green);font-size:10px">Exclusivo</span>';
-    }else if(s.precComp==='excl') difCell='<span style="color:var(--green);font-size:10px">Exclusivo</span>';
-    const posCell=comp?(POS_HTML[comp.posicion]||'—'):'<span style="color:var(--text3);font-size:10px">—</span>';
-    const pricCell=pric?(PRIC_HTML[pric.est]||'—'):'<span style="color:var(--text3);font-size:10px">—</span>';
-    const srcBadge=s._src!=='skus'?` <span style="font-size:8px;color:var(--text3);opacity:.6">${s._src==='comp'?'comp':'pric'}</span>`:'';
-    const actTxt=pric?pric.act:comp?comp.nota:'—';
-    return `<tr>
-      <td style="font-weight:500;font-size:11px">${s.n}${srcBadge}</td>
-      <td style="text-align:center"><span class="chip ${CAT_CHIP[s.cat]||'ch-c'}" style="font-size:9px">${CAT_LBL[s.cat]||s.cat}</span></td>
-      <td>${rotBar}</td>
-      <td style="text-align:center"><span class="chip ${ROT_CHIP[s.st]||'ch-c'}" style="font-size:9px">${s.st}</span></td>
-      <td style="text-align:right">${revCell}</td>
-      <td style="text-align:center;${stkColor};font-size:11px">${stkTxt}</td>
-      <td style="text-align:center">${posCell}</td>
-      <td style="text-align:right">${difCell}</td>
-      <td style="text-align:center">${pricCell}</td>
-      <td style="font-size:10px;color:var(--text2);max-width:190px">${actTxt}</td>
-    </tr>`;
-  }).join('');
-}
-function exportMasterCSV(){
-  const items=buildFullCatalog();
-  const rows=[['SKU','Nombre','Cat.','Rot%','Estado Rot.','Rev2026$M','Stock(meses)','Pos.Comp.','Dif%','EstPricing','Acción']];
-  items.forEach(s=>{
-    const comp=s.comp||{};
-    const pric=s.pric||{};
-    const prices=[comp.sb,comp.cv,comp.ah,comp.cf].filter(v=>v!=null);
-    const minC=prices.length?Math.min(...prices):null;
-    const dif=minC!=null?((comp.pf-minC)/minC*100).toFixed(1):'';
-    const stkVal=s.stk!==null&&s.stk!==undefined?s.stk:(pric.stock?(pric.stock/30).toFixed(1):'');
-    rows.push([s.sku||'—',s.n,s.cat,s.rot||0,s.st,s.rev26||'',stkVal,comp.posicion||'',dif,pric.est||'',pric.act||comp.nota||'']);
-  });
-  dlCSV(rows.map(r=>r.join(',')).join('\n'),'catalogo-maestro-'+new Date().toISOString().slice(0,10)+'.csv');
-  showNotif('✅ Exportado: catalogo-maestro.csv ('+items.length+' productos)');
 }
 function exportCompCSV(){
   const rows=[['SKU','Categoría','PROFAR','Salcobrand','Cruz Verde','Ahumada','Cofar','Dif.Mín.','Estado','Nota']];
@@ -3693,28 +3854,18 @@ function renderActions(){
 function renderPricing(){
   const trigsEl = document.getElementById('pricingTrigs');
   const watchEl = document.getElementById('pricingWatch');
-  const trigs = PRIC_FULL.filter(p=>p.est==='trigger');
-  const watch = PRIC_FULL.filter(p=>p.est==='watch');
-  if(trigsEl) trigsEl.innerHTML=trigs.map(p=>{
-    const meses=Math.round(p.dias/30);
-    const sn=p.n.replace(/'/g,'');
-    const actBtn=p.act.split('→')[0].split('+')[0].trim();
-    return `<div class="act-item sell"><div class="act-ico ico-r">⛔</div>
-      <div class="act-info"><div class="act-name">${p.n} <span class="chip ch-b">E-Com</span></div>
-      <div class="act-det">${meses} meses sin rotar · ${p.dias}d sin venta · Stock: ${p.stock}u · Cap.: $${Math.round(p.cap).toLocaleString('es-CL')}</div></div>
-      <button class="act-btn btn-r" onclick="showNotif('🏷️ Pricing: ${sn}')" style="flex-shrink:0">${actBtn}</button>
-    </div>`;
-  }).join('');
-  if(watchEl) watchEl.innerHTML=watch.map(p=>{
-    const estado=p.act.startsWith('↑')?p.act.split('→')[0].split('—')[0].trim():p.dp>0?'→ Observando':'→ Pendiente';
-    const stClr=estado.startsWith('↑')?'ch-g':'ch-y';
-    const dpTxt=p.dp!=null&&p.dp>0?p.dp+'d post-ajuste · ':'';
-    return `<div class="act-item watch"><div class="act-ico ico-y">⏱️</div>
-      <div class="act-info"><div class="act-name">${p.n} <span class="chip ch-b">E-Com</span></div>
-      <div class="act-det">${dpTxt}-${p.desc}% aplicado · ${p.act}</div></div>
-      <span class="chip ${stClr}">${estado}</span>
-    </div>`;
-  }).join('');
+  if(trigsEl) trigsEl.innerHTML=PRIC_TRIG.map(p=>`
+    <div class="act-item sell"><div class="act-ico ico-r">⛔</div>
+      <div class="act-info"><div class="act-name">${p.n} <span class="chip ${CH_COLOR[p.c]||'ch-r'}">${p.c}</span></div>
+      <div class="act-det">${p.meses} meses sin rotar · ${p.det}</div></div>
+      <button class="act-btn btn-r" onclick="showNotif('🏷️ Pricing: ${p.act} para ${p.n}')" style="flex-shrink:0">${p.act}</button>
+    </div>`).join('');
+  if(watchEl) watchEl.innerHTML=PRIC_WATCH.map(p=>`
+    <div class="act-item watch"><div class="act-ico ico-y">⏱️</div>
+      <div class="act-info"><div class="act-name">${p.n} <span class="chip ${CH_COLOR[p.c]||'ch-c'}">${p.c}</span></div>
+      <div class="act-det">${p.dpost} días post-ajuste · ${p.det}</div></div>
+      <span class="chip ${p.estado.includes('↑')?'ch-g':'ch-y'}">${p.estado}</span>
+    </div>`).join('');
 }
 function renderInversa(){
   const invEl = document.getElementById('inversaItems');
@@ -3970,7 +4121,7 @@ function applyGASData(data) {
           <div class="prog-lbl">${g.grupo}</div>
           <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${clr}"></div></div>
           <div class="prog-val" style="color:${clr}">${fmtCLP(g.rev)}</div>
-          <span class="prog-stat">${pct}% · ${fmtN(g.orders)} ord. · ${fmtCLP(tick)} ticket</span>
+          <span style="font-size:10px;color:var(--text3);margin-left:6px">${pct}% · ${fmtN(g.orders)} ord. · ${fmtCLP(tick)} ticket</span>
         </div>`;
       }).join('');
     }
@@ -4096,6 +4247,463 @@ function applyGASData(data) {
 
   console.log('✓ GAS applyGASData OK. Cache age:', data._cacheAge ? data._cacheAge + 's' : 'fresco');
 }
+
+// ══════════════════════════════════════════════════════════════
+//  MÓDULO DEVOLUCIONES — datos, charts, filtros, predicciones
+// ══════════════════════════════════════════════════════════════
+(function(){
+
+// ── Datos mensuales: [año, mes(1-12), nNC, valorDevM (millones CLP), totalBT, totalVentaM] ──
+const DEV_MONTHLY_RAW = [
+  [2024,1,  5,  0.52,  381, 2.9],
+  [2024,2,  4,  0.41,  342, 2.5],
+  [2024,3,  7,  0.79,  493, 5.1],
+  [2024,4,  6,  0.66,  441, 4.7],
+  [2024,5,  8,  1.02,  556, 6.3],
+  [2024,6,  9,  1.15,  624, 7.1],
+  [2024,7, 10,  1.31,  687, 8.2],
+  [2024,8, 11,  1.44,  721, 8.9],
+  [2024,9, 12,  1.58,  756, 9.4],
+  [2024,10,11,  1.42,  798, 9.8],
+  [2024,11,13,  1.87,  842,10.6],
+  [2024,12,10,  1.21,  723, 8.8],
+  [2025,1,  9,  1.09,  694, 8.1],
+  [2025,2,  7,  0.93,  621, 7.4],
+  [2025,3,  8,  1.12,  673, 8.0],
+  [2025,4, 14,  8.21,  236,138.5], // pico IBRANCE
+  [2025,5, 11,  1.54,  728, 9.1],
+  [2025,6, 10,  1.38,  692, 8.7],
+  [2025,7, 12,  1.61,  741, 9.6],
+  [2025,8, 13,  1.89,  803,10.4],
+  [2025,9, 14,  2.02,  822,11.1],
+  [2025,10,12,  1.72,  786,10.2],
+  [2025,11,11,  1.55,  751, 9.7],
+  [2025,12,16, 10.24,  238,152.4], // pico OZEMPIC
+  [2026,1, 10,  1.31,  692, 8.6],
+  [2026,2,  9,  1.18,  648, 7.9],
+  [2026,3,  7,  0.87,  512, 6.3],
+];
+
+// ── Top productos NC ──
+const DEV_TOP_PRODS = [
+  {nombre:'OZEMPIC 0.5mg',nNC:8, valorM:7.43, cat:'GLP-1',alert:'pico'},
+  {nombre:'NURTEC 75mg',  nNC:39,valorM:5.78, cat:'Neuro', alert:'frecuente'},
+  {nombre:'IBRANCE 125mg',nNC:1, valorM:4.09, cat:'Onco',  alert:'alto valor'},
+  {nombre:'KEYTRUDA 100mg',nNC:2,valorM:3.21, cat:'Onco',  alert:'alto valor'},
+  {nombre:'OZEMPIC 1mg',  nNC:5, valorM:2.87, cat:'GLP-1', alert:'pico'},
+  {nombre:'RYBELSUS 14mg',nNC:11,valorM:2.44, cat:'GLP-1', alert:'frecuente'},
+  {nombre:'XOLAIR 150mg', nNC:4, valorM:1.98, cat:'REF',   alert:'cadena frío'},
+  {nombre:'HUMIRA 40mg',  nNC:7, valorM:1.76, cat:'REF',   alert:'cadena frío'},
+  {nombre:'ENBREL 50mg',  nNC:5, valorM:1.54, cat:'REF',   alert:'cadena frío'},
+  {nombre:'SPRYCEL 100mg',nNC:3, valorM:1.38, cat:'Onco',  alert:'alto valor'},
+  {nombre:'JAKAVI 15mg',  nNC:6, valorM:1.24, cat:'Onco',  alert:''},
+  {nombre:'REVLIMID 25mg',nNC:4, valorM:1.12, cat:'Onco',  alert:''},
+  {nombre:'JARDIANCE 10mg',nNC:18,valorM:0.98,cat:'Diabetes',alert:'frecuente'},
+  {nombre:'ENTRESTO 97mg',nNC:12,valorM:0.87, cat:'Cardio',alert:''},
+  {nombre:'OTROS (226)',  nNC:154,valorM:15.1, cat:'Varios',alert:''},
+];
+
+// ── Regiones ──
+const DEV_REGIONS = [
+  {reg:'Región Metropolitana',nNC:255,valorM:47.4,pct:91.4,color:'#3b82f6'},
+  {reg:'Valparaíso',          nNC:10, valorM:1.8, pct:3.6, color:'#10b981'},
+  {reg:'Biobío',              nNC:7,  valorM:1.2, pct:2.5, color:'#8b5cf6'},
+  {reg:'La Araucanía',        nNC:4,  valorM:0.8, pct:1.4, color:'#f59e0b'},
+  {reg:'Coquimbo',            nNC:2,  valorM:0.5, pct:0.7, color:'#06b6d4'},
+  {reg:'Otras',               nNC:1,  valorM:0.2, pct:0.4, color:'#64748b'},
+];
+
+let devRange = 9999; // días
+let devCharts = {};
+
+// ── Inicialización ──
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(initDevModule, 600);
+});
+
+function initDevModule(){
+  renderDevTopTable();
+  renderDevDetail();
+  buildDevTrendChart();
+  buildDevTopChart();
+  buildDevRegionChart();
+  buildDevForecastChart();
+  updateDevKPIs();
+  checkDevAlerts();
+  renderRegionLegend();
+}
+
+// ── Helper: mes label ──
+function mLabel(y,m){
+  const names=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return names[m-1]+' '+String(y).slice(2);
+}
+
+// ── Filtrar por rango de días ──
+function getFilteredData(){
+  let data = DEV_MONTHLY_RAW.slice();
+  if(devRange < 9999){
+    const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-devRange);
+    data = data.filter(r=>{
+      const d = new Date(r[0],r[1]-1,1);
+      return d >= cutoff;
+    });
+  }
+  // filtro región y cat (futuro — por ahora actúa sobre totales)
+  return data;
+}
+
+// ── Update KPIs ──
+function updateDevKPIs(){
+  const data = getFilteredData();
+  const totalNC  = data.reduce((s,r)=>s+r[2],0);
+  const totalValM= data.reduce((s,r)=>s+r[3],0);
+  const totalBT  = data.reduce((s,r)=>s+r[4],0);
+  const totalTx  = totalNC+totalBT;
+  const tasa     = totalNC/totalTx*100;
+  const tasaEnt  = 100-tasa;
+  const ticket   = totalValM/Math.max(totalNC,1);
+
+  // Funnel actualizado con filtros
+  const setEl = (id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  setEl('devFunnelTotal',   totalTx.toLocaleString('es-CL'));
+  setEl('devFunnelBT',      totalBT.toLocaleString('es-CL'));
+  setEl('devFunnelEntrega', '~'+Math.round(totalBT*(tasaEnt/100)).toLocaleString('es-CL'));
+  setEl('devFunnelTasaEntrega', tasaEnt.toFixed(2)+'%');
+  const fEl = document.getElementById('devFunnelTasaEntrega');
+  if(fEl) fEl.style.color = tasaEnt>=98?'var(--green)':tasaEnt>=95?'var(--yellow)':'var(--red)';
+
+  document.getElementById('devKpiTasa').textContent = tasa.toFixed(2)+'%';
+  document.getElementById('devKpiTasaSub').textContent = totalNC+' NC / '+totalBT.toLocaleString('es-CL')+' BT';
+  document.getElementById('devKpiValor').textContent = '$'+totalValM.toFixed(1)+'M';
+  document.getElementById('devKpiNC').textContent = totalNC;
+  document.getElementById('devKpiTicket').textContent = '$'+(ticket*1000).toLocaleString('es-CL',{maximumFractionDigits:0})+'K';
+
+  // proyección simple: media móvil últimos 3 meses sin picos
+  const recent = data.slice(-3);
+  const avgTasa = recent.reduce((s,r)=>{
+    const t=r[2]/(r[2]+r[4])*100; return s+(t>4?1.2:t); // cap picos
+  },0)/Math.max(recent.length,1);
+  document.getElementById('devKpiProyeccion').textContent = '~'+avgTasa.toFixed(1)+'%';
+  const trending = data.length>=6 ? (() => {
+    const a=data.slice(-6,data.length-3), b=data.slice(-3);
+    const tA=a.reduce((s,r)=>s+r[2]/(r[2]+r[4])*100,0)/3;
+    const tB=b.reduce((s,r)=>s+r[2]/(r[2]+r[4])*100,0)/3;
+    return tB<tA?'📉 Tendencia bajista':'📈 Tendencia alcista';
+  })():'—';
+  document.getElementById('devKpiPryDelta').textContent = trending;
+
+  const threshold = parseFloat(document.getElementById('devThreshold').value)||3;
+  document.getElementById('devKpiTasaDelta').textContent = tasa > threshold ? '⚠️ Supera umbral '+threshold+'%' : '✓ Dentro del umbral '+threshold+'%';
+  document.getElementById('devKpiTasaDelta').className = 'kpi-delta '+(tasa>threshold?'warn-t':'up');
+
+  // period label
+  document.getElementById('devChartPeriodLabel').textContent = data.length+' meses';
+}
+
+// ── Trend chart ──
+function buildDevTrendChart(){
+  const data = getFilteredData();
+  const labels = data.map(r=>mLabel(r[0],r[1]));
+  const tasas = data.map(r=>parseFloat((r[2]/(r[2]+r[4])*100).toFixed(2)));
+  const valores = data.map(r=>parseFloat(r[3].toFixed(2)));
+  const threshold = parseFloat(document.getElementById('devThreshold').value)||3;
+
+  const ctx = document.getElementById('devTrendChart');
+  if(!ctx) return;
+  if(devCharts.trend) devCharts.trend.destroy();
+
+  devCharts.trend = new Chart(ctx, {
+    data:{
+      labels,
+      datasets:[
+        {type:'bar',  label:'Valor Dev ($M)', data:valores, backgroundColor:'rgba(239,68,68,.35)', borderColor:'rgba(239,68,68,.7)', borderWidth:1, yAxisID:'y1', borderRadius:3},
+        {type:'line', label:'Tasa %', data:tasas, borderColor:'#f97316', backgroundColor:'rgba(249,115,22,.08)', borderWidth:2, pointRadius:3, pointHoverRadius:5, tension:.35, yAxisID:'y2', fill:true},
+        {type:'line', label:'Umbral '+threshold+'%', data:Array(labels.length).fill(threshold), borderColor:'rgba(59,130,246,.45)', borderDash:[5,4], borderWidth:1.5, pointRadius:0, yAxisID:'y2'},
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{mode:'index',intersect:false,
+        callbacks:{label:c=>c.dataset.label+': '+(c.datasetIndex===0?'$'+c.parsed.y+'M':c.parsed.y+'%')}}},
+      scales:{
+        x:{ticks:{color:'#64748b',font:{size:9},maxRotation:45},grid:{color:'rgba(255,255,255,.03)'}},
+        y1:{position:'left',ticks:{color:'#94a3b8',font:{size:9},callback:v=>'$'+v+'M'},grid:{color:'rgba(255,255,255,.04)'},beginAtZero:true},
+        y2:{position:'right',ticks:{color:'#f97316',font:{size:9},callback:v=>v+'%'},grid:{display:false},beginAtZero:true,max:Math.max(...tasas)*1.5+0.5},
+      }
+    }
+  });
+}
+
+// ── Top products chart ──
+function buildDevTopChart(){
+  const top = DEV_TOP_PRODS.slice(0,10);
+  const ctx = document.getElementById('devTopChart');
+  if(!ctx) return;
+  if(devCharts.top) devCharts.top.destroy();
+  const colors=['#ef4444','#f97316','#f59e0b','#10b981','#3b82f6','#8b5cf6','#06b6d4','#ec4899','#14b8a6','#6366f1'];
+  devCharts.top = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:top.map(p=>p.nombre.length>18?p.nombre.substring(0,18)+'…':p.nombre),
+      datasets:[{
+        label:'Valor Devuelto ($M)',
+        data:top.map(p=>p.valorM),
+        backgroundColor:colors.map(c=>c+'88'),
+        borderColor:colors,
+        borderWidth:1.5,
+        borderRadius:4,
+      }]
+    },
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.parsed.x.toFixed(2)+'M — '+DEV_TOP_PRODS[c.dataIndex].nNC+' NCs'}}},
+      scales:{
+        x:{ticks:{color:'#64748b',font:{size:9},callback:v=>'$'+v+'M'},grid:{color:'rgba(255,255,255,.04)'}},
+        y:{ticks:{color:'#e2e8f0',font:{size:9}},grid:{display:false}},
+      }
+    }
+  });
+}
+
+// ── Region donut ──
+function buildDevRegionChart(){
+  const ctx = document.getElementById('devRegionChart');
+  if(!ctx) return;
+  if(devCharts.region) devCharts.region.destroy();
+  devCharts.region = new Chart(ctx,{
+    type:'doughnut',
+    data:{
+      labels:DEV_REGIONS.map(r=>r.reg.replace('Región ','').replace('Araucanía','Araucanía')),
+      datasets:[{data:DEV_REGIONS.map(r=>r.nNC),backgroundColor:DEV_REGIONS.map(r=>r.color+'cc'),borderColor:DEV_REGIONS.map(r=>r.color),borderWidth:1.5,hoverOffset:4}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.label+': '+c.raw+' NCs ('+DEV_REGIONS[c.dataIndex].pct+'%)'}}}},
+  });
+}
+
+function renderRegionLegend(){
+  const el = document.getElementById('devRegionLegend');
+  if(!el) return;
+  el.innerHTML = DEV_REGIONS.map(r=>`<div style="display:flex;align-items:center;gap:5px"><div style="width:9px;height:9px;border-radius:2px;background:${r.color};flex-shrink:0"></div><span style="font-size:9px;color:var(--text2)">${r.reg.replace('Región ','')}</span><b style="font-size:9px;margin-left:auto">${r.pct}%</b></div>`).join('');
+}
+
+// ── Forecast chart (próximos 3 meses) ──
+function buildDevForecastChart(){
+  const ctx = document.getElementById('devForecastChart');
+  if(!ctx) return;
+  if(devCharts.forecast) devCharts.forecast.destroy();
+
+  const hist = DEV_MONTHLY_RAW.slice(-6);
+  const histLabels = hist.map(r=>mLabel(r[0],r[1]));
+  const histTasas = hist.map(r=>parseFloat((r[2]/(r[2]+r[4])*100).toFixed(2)));
+
+  // Proyección: regresión lineal simple sobre los últimos 6 meses (excluyendo picos >4%)
+  const clean = hist.filter(r=>r[2]/(r[2]+r[4])*100 < 4);
+  const n = clean.length;
+  const xMean = (n-1)/2;
+  const tClean = clean.map(r=>r[2]/(r[2]+r[4])*100);
+  const yMean = tClean.reduce((s,v)=>s+v,0)/n;
+  const slope = tClean.reduce((s,v,i)=>s+(i-xMean)*(v-yMean),0)/tClean.reduce((s,_,i)=>s+(i-xMean)**2,0);
+  const intercept = yMean - slope*xMean;
+  const base = intercept + slope*(n-1);
+
+  const forecastLabels = ['Abr \'26','May \'26','Jun \'26'];
+  const forecastVals = [1,2,3].map(i=>Math.max(0.3,parseFloat((base+slope*i).toFixed(2))));
+
+  const threshold = parseFloat(document.getElementById('devThreshold').value)||3;
+  const allLabels = [...histLabels, ...forecastLabels];
+
+  devCharts.forecast = new Chart(ctx,{
+    data:{
+      labels:allLabels,
+      datasets:[
+        {type:'line',label:'Histórico',data:[...histTasas,...Array(3).fill(null)],borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.08)',borderWidth:2,pointRadius:3,fill:true,tension:.3},
+        {type:'line',label:'Proyección',data:[...Array(5).fill(null),histTasas[5],...forecastVals],borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.06)',borderDash:[5,4],borderWidth:2,pointRadius:4,pointStyle:'triangle',fill:true,tension:.3},
+        {type:'line',label:'Umbral',data:Array(allLabels.length).fill(threshold),borderColor:'rgba(239,68,68,.4)',borderDash:[3,3],borderWidth:1,pointRadius:0},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},
+      scales:{
+        x:{ticks:{color:'#64748b',font:{size:9},maxRotation:40},grid:{color:'rgba(255,255,255,.03)'}},
+        y:{ticks:{color:'#94a3b8',font:{size:9},callback:v=>v+'%'},grid:{color:'rgba(255,255,255,.04)'},beginAtZero:true},
+      }
+    }
+  });
+}
+
+// ── Render top table ──
+function renderDevTopTable(){
+  const tbody = document.getElementById('devTopBody');
+  if(!tbody) return;
+  const totalValM = DEV_TOP_PRODS.reduce((s,p)=>s+p.valorM,0);
+  const catColors = {Onco:'ch-r',Neuro:'ch-p','GLP-1':'ch-b',REF:'ch-c',Diabetes:'ch-y',Cardio:'ch-g',Varios:'nt'};
+  tbody.innerHTML = DEV_TOP_PRODS.map((p,i)=>{
+    const pct = (p.valorM/totalValM*100).toFixed(1);
+    const ticket = p.valorM/p.nNC;
+    const alertHtml = p.alert ? `<span class="chip ${p.alert==='alto valor'?'ch-r':p.alert==='frecuente'?'ch-y':p.alert==='cadena frío'?'ch-c':p.alert==='pico'?'ch-o':'ch-b'}" style="font-size:9px">${p.alert}</span>` : '<span style="color:var(--text3);font-size:9px">—</span>';
+    const catCls = catColors[p.cat]||'nt';
+    return `<tr>
+      <td style="color:var(--text3)">${i+1}</td>
+      <td style="font-weight:600">${p.nombre}</td>
+      <td style="text-align:right;font-weight:700;color:var(--orange)">${p.nNC}</td>
+      <td style="text-align:right;font-weight:700;color:var(--red)">$${p.valorM.toFixed(2)}M</td>
+      <td style="text-align:right">
+        <div style="display:flex;align-items:center;gap:5px;justify-content:flex-end">
+          <div style="width:40px;height:5px;border-radius:2px;background:var(--border);overflow:hidden"><div style="height:100%;border-radius:2px;background:var(--red);width:${Math.min(100,(p.valorM/DEV_TOP_PRODS[0].valorM)*100).toFixed(0)}%"></div></div>
+          ${pct}%
+        </div>
+      </td>
+      <td style="text-align:right;color:var(--teal)">$${(ticket*1000).toLocaleString('es-CL',{maximumFractionDigits:0})}K</td>
+      <td><span class="chip ${catCls}" style="font-size:9px">${p.cat}</span></td>
+      <td>${alertHtml}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Render detalle ──
+const DEV_DETAIL_DATA = [
+  // muestra representativa de los 279 NCs — ordenados por valor
+  {fecha:'2025-12-05',doc:'NC-29874',prod:'OZEMPIC 1mg Pen',sku:'OZE-1MG',uds:2,venta:2843200,reg:'RM',fuente:'E-Commerce',cat:'GLP-1'},
+  {fecha:'2025-12-12',doc:'NC-29981',prod:'OZEMPIC 0.5mg',sku:'OZE-05MG',uds:3,venta:2641800,reg:'RM',fuente:'E-Commerce',cat:'GLP-1'},
+  {fecha:'2025-12-18',doc:'NC-30104',prod:'OZEMPIC 1mg Pen',sku:'OZE-1MG',uds:2,venta:2551400,reg:'RM',fuente:'Sala de Venta',cat:'GLP-1'},
+  {fecha:'2025-12-22',doc:'NC-30201',prod:'OZEMPIC 0.5mg',sku:'OZE-05MG',uds:2,venta:2183600,reg:'RM',fuente:'E-Commerce',cat:'GLP-1'},
+  {fecha:'2025-04-14',doc:'NC-24531',prod:'IBRANCE 125mg',sku:'IBC-125MG',uds:1,venta:4089200,reg:'RM',fuente:'Sala de Venta',cat:'Onco'},
+  {fecha:'2025-09-08',doc:'NC-27341',prod:'KEYTRUDA 100mg',sku:'KEY-100MG',uds:1,venta:1891400,reg:'RM',fuente:'E-Commerce',cat:'Onco'},
+  {fecha:'2025-11-15',doc:'NC-29123',prod:'KEYTRUDA 100mg',sku:'KEY-100MG',uds:1,venta:1318700,reg:'RM',fuente:'E-Commerce',cat:'Onco'},
+  {fecha:'2025-08-03',doc:'NC-26714',prod:'NURTEC 75mg',sku:'NUR-75MG',uds:4,venta:312800,reg:'RM',fuente:'E-Commerce',cat:'Neuro'},
+  {fecha:'2025-07-19',doc:'NC-26201',prod:'NURTEC 75mg',sku:'NUR-75MG',uds:3,venta:234600,reg:'RM',fuente:'Sala de Venta',cat:'Neuro'},
+  {fecha:'2025-06-11',doc:'NC-25514',prod:'NURTEC 75mg',sku:'NUR-75MG',uds:3,venta:228900,reg:'V',fuente:'E-Commerce',cat:'Neuro'},
+  {fecha:'2025-05-22',doc:'NC-24981',prod:'XOLAIR 150mg',sku:'XOL-150MG',uds:2,venta:612400,reg:'RM',fuente:'E-Commerce',cat:'REF'},
+  {fecha:'2025-03-17',doc:'NC-23714',prod:'HUMIRA 40mg',sku:'HUM-40MG',uds:3,venta:389200,reg:'RM',fuente:'Sala de Venta',cat:'REF'},
+  {fecha:'2024-12-09',doc:'NC-20341',prod:'RYBELSUS 14mg',sku:'RYB-14MG',uds:5,venta:218400,reg:'RM',fuente:'E-Commerce',cat:'GLP-1'},
+  {fecha:'2024-11-14',doc:'NC-19812',prod:'JARDIANCE 10mg',sku:'JAR-10MG',uds:6,venta:98400,reg:'RM',fuente:'E-Commerce',cat:'Diabetes'},
+  {fecha:'2024-10-08',doc:'NC-19201',prod:'ENTRESTO 97mg',sku:'ENT-97MG',uds:4,venta:124800,reg:'VIII',fuente:'E-Commerce',cat:'Cardio'},
+  // ... resumen de otros meses
+  {fecha:'2025-10-21',doc:'NC-28341',prod:'SPRYCEL 100mg',sku:'SPR-100MG',uds:1,venta:698400,reg:'RM',fuente:'Sala de Venta',cat:'Onco'},
+  {fecha:'2025-02-14',doc:'NC-22814',prod:'ENBREL 50mg',sku:'ENB-50MG',uds:2,venta:438200,reg:'RM',fuente:'E-Commerce',cat:'REF'},
+  {fecha:'2024-09-19',doc:'NC-18234',prod:'JAKAVI 15mg',sku:'JAK-15MG',uds:1,venta:341800,reg:'RM',fuente:'E-Commerce',cat:'Onco'},
+  {fecha:'2024-08-07',doc:'NC-17621',prod:'REVLIMID 25mg',sku:'REV-25MG',uds:1,venta:412300,reg:'RM',fuente:'Sala de Venta',cat:'Onco'},
+  {fecha:'2026-01-15',doc:'NC-31021',prod:'OZEMPIC 0.5mg',sku:'OZE-05MG',uds:2,venta:982400,reg:'RM',fuente:'E-Commerce',cat:'GLP-1'},
+  {fecha:'2026-02-08',doc:'NC-31441',prod:'NURTEC 75mg',sku:'NUR-75MG',uds:3,venta:231600,reg:'V',fuente:'E-Commerce',cat:'Neuro'},
+  {fecha:'2026-03-03',doc:'NC-31812',prod:'JARDIANCE 10mg',sku:'JAR-10MG',uds:4,venta:65600,reg:'RM',fuente:'E-Commerce',cat:'Diabetes'},
+  {fecha:'2024-07-22',doc:'NC-16941',prod:'RYBELSUS 14mg',sku:'RYB-14MG',uds:4,venta:174800,reg:'RM',fuente:'E-Commerce',cat:'GLP-1'},
+  {fecha:'2024-06-11',doc:'NC-16214',prod:'HUMIRA 40mg',sku:'HUM-40MG',uds:2,venta:259500,reg:'IX',fuente:'Sala de Venta',cat:'REF'},
+  {fecha:'2024-05-28',doc:'NC-15731',prod:'ENTRESTO 97mg',sku:'ENT-97MG',uds:3,venta:93600,reg:'IV',fuente:'E-Commerce',cat:'Cardio'},
+];
+// Populate month select
+function populateMonthSelect(){
+  const sel = document.getElementById('devDetailMonthSel');
+  if(!sel) return;
+  const months = [...new Set(DEV_DETAIL_DATA.map(r=>r.fecha.substring(0,7)))].sort().reverse();
+  months.forEach(m=>{
+    const opt = document.createElement('option'); opt.value=m; opt.textContent=m; sel.appendChild(opt);
+  });
+}
+
+function renderDevDetail(){
+  populateMonthSelect();
+  filterDevDetail();
+}
+
+window.filterDevDetail = function(){
+  const search = (document.getElementById('devDetailSearch').value||'').toLowerCase();
+  const month = document.getElementById('devDetailMonthSel').value||'all';
+  let rows = DEV_DETAIL_DATA.filter(r=>{
+    const matchS = !search || r.prod.toLowerCase().includes(search) || r.doc.toLowerCase().includes(search) || r.reg.toLowerCase().includes(search);
+    const matchM = month==='all' || r.fecha.startsWith(month);
+    return matchS && matchM;
+  });
+  const tbody = document.getElementById('devDetailBody');
+  if(!tbody) return;
+  const catColors2 = {Onco:'ch-r',Neuro:'ch-p','GLP-1':'ch-b',REF:'ch-c',Diabetes:'ch-y',Cardio:'ch-g',Varios:'nt'};
+  tbody.innerHTML = rows.map(r=>`<tr>
+    <td style="color:var(--text3)">${r.fecha}</td>
+    <td style="font-family:monospace;font-size:10px;color:var(--teal)">${r.doc}</td>
+    <td style="font-weight:600">${r.prod}</td>
+    <td style="text-align:right">${r.uds}</td>
+    <td style="text-align:right;font-weight:700;color:var(--red)">$${r.venta.toLocaleString('es-CL')}</td>
+    <td>${r.reg}</td>
+    <td style="font-size:10px;color:var(--text3)">${r.fuente}</td>
+    <td><span class="chip ${catColors2[r.cat]||'nt'}" style="font-size:9px">${r.cat}</span></td>
+  </tr>`).join('');
+  const cnt = document.getElementById('devDetailCount');
+  if(cnt) cnt.textContent = rows.length+' registros '+(search||month!=='all'?'(filtrado de '+DEV_DETAIL_DATA.length+')':'— muestra representativa');
+};
+
+// ── Alerts ──
+function checkDevAlerts(){
+  const threshold = parseFloat(document.getElementById('devThreshold').value)||3;
+  const data = getFilteredData();
+  let critCount = 0;
+  data.forEach(r=>{
+    const t = r[2]/(r[2]+r[4])*100;
+    if(t>threshold) critCount++;
+  });
+  const badge = document.getElementById('devAlertCount');
+  if(badge) badge.textContent = (critCount+2)+' activas'; // +2 por REF y RM
+  // update badge in tab
+  const tabBadge = document.getElementById('devBadge');
+  if(tabBadge){ tabBadge.textContent = critCount>0 ? critCount+'!' : '✓'; tabBadge.style.background = critCount>0 ? 'var(--orange)' : 'var(--green)'; }
+}
+
+// ── Public API ──
+window.setDevRange = function(days, el){
+  devRange = days;
+  document.querySelectorAll('[id^="drf-"]').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  applyDevFilters();
+};
+
+window.applyDevFilters = function(){
+  updateDevKPIs();
+  buildDevTrendChart();
+  buildDevForecastChart();
+  checkDevAlerts();
+  const reg = document.getElementById('devRegSel').value;
+  const cat = document.getElementById('devCatSel').value;
+  const chip = document.getElementById('devFilterChip');
+  const active = reg!=='all'||cat!=='all'||devRange<9999;
+  if(chip){ chip.style.display = active?'inline-block':'none'; chip.textContent = (reg!=='all'?reg+' ':'')+(cat!=='all'?cat+' ':'')+(devRange<9999?devRange+'d':'').trim(); }
+};
+
+window.filterDevTable = function(){
+  const s = (document.getElementById('devProdSearch').value||'').toLowerCase();
+  document.querySelectorAll('#devTopBody tr').forEach(tr=>{
+    tr.style.display = !s || tr.textContent.toLowerCase().includes(s) ? '' : 'none';
+  });
+};
+
+let devSortCol=-1, devSortAsc=true;
+window.sortDevTable = function(col){
+  if(devSortCol===col) devSortAsc=!devSortAsc; else { devSortCol=col; devSortAsc=true; }
+  const keys = ['i','nombre','nNC','valorM','pct','ticket'];
+  const prods = DEV_TOP_PRODS.map((p,i)=>({...p,i,pct:p.valorM/DEV_TOP_PRODS.reduce((s,x)=>s+x.valorM,0)*100,ticket:p.valorM/p.nNC}));
+  const key = keys[col]||'valorM';
+  prods.sort((a,b)=> devSortAsc ? (a[key]>b[key]?1:-1) : (a[key]<b[key]?1:-1));
+  DEV_TOP_PRODS.length=0; prods.forEach(p=>{const {i,pct,ticket,...rest}=p; DEV_TOP_PRODS.push(rest);});
+  renderDevTopTable();
+};
+
+window.toggleDevDetail = function(){
+  const sec = document.getElementById('devDetailSection');
+  if(!sec) return;
+  const visible = sec.style.display!=='none';
+  sec.style.display = visible ? 'none' : 'block';
+};
+
+window.exportDevCSV = function(){
+  const headers = ['Fecha','N° Doc','Producto','Unidades','Venta ($)','Región','Fuente','Categoría'];
+  const rows = DEV_DETAIL_DATA.map(r=>[r.fecha,r.doc,r.prod,r.uds,r.venta,r.reg,r.fuente,r.cat]);
+  const csv = [headers,...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download = 'profar_devoluciones_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();
+};
+
+})(); // end IIFE
 
 // Auto-update badge e integración al cargar la página
 function initGASBadge() {
