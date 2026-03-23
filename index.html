@@ -179,6 +179,7 @@ tr:hover td{background:#1c2128;}
   <div class="tab" onclick="showTab('c-panorama',this,'cmk')">👤 Panorama</div>
   <div class="tab" onclick="showTab('c-rotacion',this,'cmk')">🔄 Rotación</div>
   <div class="tab" onclick="showTab('c-cartera',this,'cmk')">💼 Cartera</div>
+  <div class="tab" onclick="showTab('c-b2b',this,'cmk')">🛒 B2B Status</div>
 </div>
 
 <div class="content">
@@ -841,6 +842,50 @@ tr:hover td{background:#1c2128;}
   </div>
 </div>
 
+
+<!-- C: B2B STATUS -->
+<div class="tab-pane" id="tab-c-b2b">
+  <div class="info-box green">🛒 <strong>Control Publicación B2B · Ecommerce</strong> — Cruce catálogo activo CMK (Power BI) vs estado de publicación en portal WordPress B2B. Solo productos Estado CMK = Activo.</div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kpi-label">ACTIVOS CMK</div><div class="kpi-value">9,269</div><div class="kpi-sub">Total catálogo activo</div></div>
+    <div class="kpi-card"><div class="kpi-label" style="color:#3fb950">✅ PUBLICADOS</div><div class="kpi-value" style="color:#3fb950">9,192</div><div class="kpi-sub">99.2% del catálogo activo</div></div>
+    <div class="kpi-card kpi-alert"><div class="kpi-label">⚠️ PENDIENTES PUBLICAR</div><div class="kpi-value" style="color:#f85149">77</div><div class="kpi-sub">Sin publicar · acción requerida</div></div>
+    <div class="kpi-card"><div class="kpi-label">🔴 NO CREADOS EN B2B</div><div class="kpi-value" style="color:#f85149">29</div><div class="kpi-sub">Activos CMK sin ficha en WordPress</div></div>
+    <div class="kpi-card"><div class="kpi-label">📋 EN BORRADOR</div><div class="kpi-value" style="color:#d29922">44</div><div class="kpi-sub">Creados pero en estado draft</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card"><div class="chart-title">Estado B2B — Activos CMK <span class="chart-badge">distribución</span></div><div class="chart-wrap"><canvas id="chartB2bStatus"></canvas></div></div>
+    <div class="chart-card"><div class="chart-title">Pendientes por tipo de acción <span class="chart-badge">77 SKUs</span></div><div class="chart-wrap"><canvas id="chartB2bPendientes"></canvas></div></div>
+  </div>
+  <div class="section-label">📋 Detalle SKUs pendientes — Acción requerida &nbsp;<span id="b2bCount" style="background:rgba(88,166,255,.15);color:#58a6ff;border-radius:10px;padding:2px 9px;font-size:11px">77 SKUs</span></div>
+  <div style="display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap;align-items:center">
+    <span style="color:#8b949e;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Estado B2B:</span>
+    <button class="badge badge-teal" onclick="filterB2b('all','stock_all')">Todos (77)</button>
+    <button class="badge badge-yellow" onclick="filterB2b('No existe en B2B','stock_all')">🔴 No creado (29)</button>
+    <button class="badge badge-yellow" onclick="filterB2b('Borrador','stock_all')">📋 Borrador (44)</button>
+    <button class="badge badge-teal" onclick="filterB2b('Privado','stock_all')">🔒 Privado (4)</button>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center">
+    <span style="color:#8b949e;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Stock CMK:</span>
+    <button class="badge badge-teal" onclick="filterB2b('all','stock_all')">Todos</button>
+    <button class="badge" style="background:rgba(63,185,80,.15);color:#3fb950;border:1px solid rgba(63,185,80,.3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:11px" onclick="filterB2b('all','con_stock')">✅ Con Stock (41)</button>
+    <button class="badge" style="background:rgba(248,81,73,.15);color:#f85149;border:1px solid rgba(248,81,73,.3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:11px" onclick="filterB2b('all','sin_stock')">⚠️ Sin Stock (36)</button>
+  </div>
+  <div class="chart-card" style="padding:0;overflow:auto;max-height:420px">
+    <table style="width:100%;border-collapse:collapse;font-size:11px">
+      <thead style="position:sticky;top:0;background:#1c2128;z-index:2"><tr>
+        <th style="padding:8px 10px;text-align:left;color:#8b949e;font-weight:600;border-bottom:1px solid #30363d">SKU</th>
+        <th style="padding:8px 10px;text-align:left;color:#8b949e;font-weight:600;border-bottom:1px solid #30363d">Descripción</th>
+        <th style="padding:8px 10px;text-align:left;color:#8b949e;font-weight:600;border-bottom:1px solid #30363d">Laboratorio</th>
+        <th style="padding:8px 10px;text-align:left;color:#8b949e;font-weight:600;border-bottom:1px solid #30363d">Supply</th>
+        <th style="padding:8px 10px;text-align:right;color:#8b949e;font-weight:600;border-bottom:1px solid #30363d">Stock CMK</th>
+        <th style="padding:8px 10px;text-align:center;color:#8b949e;font-weight:600;border-bottom:1px solid #30363d">Estado B2B</th>
+        <th style="padding:8px 10px;text-align:center;color:#8b949e;font-weight:600;border-bottom:1px solid #30363d">Acción</th>
+      </tr></thead>
+      <tbody id="b2bTableBody"></tbody>
+    </table>
+  </div>
+</div>
 </div><!-- /world-cmk -->
 </div><!-- /content -->
 <script>
@@ -956,6 +1001,7 @@ function showTab(id,el,world){
       'c-panorama':()=>{ buildPanoramaRev();buildPanoramaMg();buildPanoramaRiesgo(); },
       'c-rotacion':()=>{ buildRotRetail();buildRotClinica();buildRotAlza();buildRotCaida(); },
       'c-cartera':()=>{ buildCartActivos();buildCartTier();buildCartPareto();buildCartRetencion(); },
+      'c-b2b':()=>{ buildB2bStatus();buildB2bPendientes();renderB2bTable('all','stock_all'); },
     };
     if(buildMap[id])buildMap[id]();
   },30);
@@ -1272,6 +1318,57 @@ function buildCartPareto(){
     ]
   },options:{...baseOpts(),plugins:{tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw}%`}}}}});
 }
+// ═══════════════════════════════════════════════════════
+//  CMK: B2B STATUS
+// ═══════════════════════════════════════════════════════
+const b2bKpis = {total:9269,pub:9192,borrador:44,privado:4,noexiste:29};
+const b2bPendientes = [{"sku": "106775", "desc": "CLARISCAN 0.5 MMOL / 10 ML X 10 UNID.", "lab": "GE HEALTHCARE INTERNAC", "grp": "MEDICAMENTO", "supp": "DIEGO OVALLE", "stock": 5, "estado": "Borrador"}, {"sku": "106776", "desc": "CLARISCAN 0.5 MMOL/15 ML X 10 FCO. AMP.", "lab": "GE HEALTHCARE INTERNAC", "grp": "MEDICAMENTO", "supp": "DIEGO OVALLE", "stock": 13, "estado": "Borrador"}, {"sku": "104036", "desc": "OMNIPAQUE 300 MG I / ML SOL. INY. X 10 UNID. 100 M", "lab": "GE HEALTHCARE INTERNAC", "grp": "MEDICAMENTO", "supp": "DIEGO OVALLE", "stock": 28, "estado": "Borrador"}, {"sku": "104037", "desc": "OMNIPAQUE 300 MG I / ML SOL. INY. X 10 UNID. 50 ML", "lab": "GE HEALTHCARE INTERNAC", "grp": "MEDICAMENTO", "supp": "DIEGO OVALLE", "stock": 10, "estado": "Borrador"}, {"sku": "104039", "desc": "OMNIPAQUE 350 MG I / ML SOL. INY. X 10 UNID. 50 ML", "lab": "GE HEALTHCARE INTERNAC", "grp": "MEDICAMENTO", "supp": "DIEGO OVALLE", "stock": 0, "estado": "Borrador"}, {"sku": "111879", "desc": "VET (MV) (RR) (REF) NOBIVAC PUPPY DP PLUS  X 5 DOS", "lab": "INTERVET VETERINARIA C", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 126, "estado": "Borrador"}, {"sku": "109371", "desc": "VET (MV) (RR) (REF) RECOMBITEK C3 CAJA 25 FRASCOS", "lab": "BOEHRINGER ING. VET", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 0, "estado": "Borrador"}, {"sku": "109369", "desc": "VET (MV) (RR) (REF) RECOMBITEK C6 CAJA 25 FRASCOS", "lab": "BOEHRINGER ING. VET", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 3, "estado": "Borrador"}, {"sku": "109370", "desc": "VET (MV) (RR) (REF) RECOMBITEK C6/CV CAJA 25 FRASC", "lab": "BOEHRINGER ING. VET", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 44, "estado": "Borrador"}, {"sku": "110841", "desc": "VET (MV) AMOXICILINA 15 % SUSP INY. X 100 ML.", "lab": "CENTRO VETERINARIO Y A", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 33, "estado": "Borrador"}, {"sku": "110220", "desc": "VET (RR) (REF) CONVENIA FCO. 4ML", "lab": "ZOETIS DE CHILE S.A.", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 3, "estado": "Borrador"}, {"sku": "112411", "desc": "VET (RR) BAYTRIL INYECTABLE 5% FRASCO DE 100ML", "lab": "SOCIEDAD IMPORTADORA Y", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 101, "estado": "Borrador"}, {"sku": "109550", "desc": "VET (RR) BAYTRIL SABORIZADO 150 MG BLISTER 10 COMP", "lab": "ELANCO CHILE SPA", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 71, "estado": "Borrador"}, {"sku": "109549", "desc": "VET (RR) BAYTRIL SABORIZADO 50 MG BLISTER 10 COMP.", "lab": "ELANCO CHILE SPA", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 43, "estado": "Borrador"}, {"sku": "109017", "desc": "VET (RR) CALMEDRAG ESTUCHE X 30 COMP..", "lab": "LABORATORIO DRAG PHARM", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 0, "estado": "Borrador"}, {"sku": "110461", "desc": "VET (RR) CIPROVET 5 ML SOL. OFT. X 1 FCO.", "lab": "VETERQUIMICA S.A.", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 77, "estado": "Borrador"}, {"sku": "111277", "desc": "VET (RR) DEXAFLOX SOL. OFT X 5 ML.", "lab": "CHEMIE S.A", "grp": "VETERINARIA", "supp": "DANIEL MOREAU", "stock": 0, "estado": "Borrador"}, {"sku": "110343", "desc": "VET (RR) DEXDOMITOR 0.5MG/ML SOL. INY. X 1 FCO. AM", "lab": "ZOETIS DE CHILE S.A.", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 20, "estado": "Borrador"}, {"sku": "109392", "desc": "VET (RR) EHLIFLOXACINO 50 MG ENVASE DE 10 COMP.", "lab": "CENTRO VETERINARIO Y A", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 50, "estado": "Borrador"}, {"sku": "109623", "desc": "VET (RR) ENROXINA 150 GR X CAJA 10 COMP.", "lab": "CHEMIE S.A", "grp": "VETERINARIA", "supp": "DANIEL MOREAU", "stock": 259, "estado": "Borrador"}, {"sku": "109622", "desc": "VET (RR) ENROXINA 50 GR X CAJA 10 COMP.", "lab": "CHEMIE S.A", "grp": "VETERINARIA", "supp": "DANIEL MOREAU", "stock": 141, "estado": "Borrador"}, {"sku": "109626", "desc": "VET (RR) GEL OTICO PLUS JERINGA DE 10 GRS.", "lab": "CHEMIE S.A", "grp": "VETERINARIA", "supp": "DANIEL MOREAU", "stock": 255, "estado": "Borrador"}, {"sku": "109631", "desc": "VET (RR) OCUFLOX FRASCO 5 ML.", "lab": "CHEMIE S.A", "grp": "VETERINARIA", "supp": "DANIEL MOREAU", "stock": 0, "estado": "Borrador"}, {"sku": "109096", "desc": "VET (RR) OFTAVET GOTAS 5 ML X 1 FCO.", "lab": "LABORATORIO DRAG PHARM", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 248, "estado": "Borrador"}, {"sku": "110458", "desc": "VET (RR) OPET 30 ML SOL. INY. X 1 FCO AMP.", "lab": "AGROVET SPA", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 83, "estado": "Borrador"}, {"sku": "109097", "desc": "VET (RR) OTIBACT GEL OTICO 5 GR X 1 JERINGA", "lab": "LABORATORIO DRAG PHARM", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 11, "estado": "Borrador"}, {"sku": "110840", "desc": "VET (RR) PEDEROL AEROSOL TOP. X 250 ML.", "lab": "CENTRO VETERINARIO Y A", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 89, "estado": "Borrador"}, {"sku": "110692", "desc": "VET (RR) POSATEX  8.8 ML X 1 FCO.", "lab": "INTERVET VETERINARIA C", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 31, "estado": "Borrador"}, {"sku": "110623", "desc": "VET (RR) ROSTRUM 10% SOL. INY. X 100 ML", "lab": "LABORATORIO DRAG PHARM", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 6, "estado": "Borrador"}, {"sku": "109115", "desc": "VET (RR) ROSTRUM 150 MG ESTUCHE X 10 COMP.", "lab": "LABORATORIO DRAG PHARM", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 115, "estado": "Borrador"}, {"sku": "109116", "desc": "VET (RR) ROSTRUM 2.5% SUSP. ORAL FCO. X 20 ML", "lab": "LABORATORIO DRAG PHARM", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 325, "estado": "Borrador"}, {"sku": "109117", "desc": "VET (RR) ROSTRUM 50 MG ESTUCHE X 10 COMP.", "lab": "LABORATORIO DRAG PHARM", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 31, "estado": "Borrador"}, {"sku": "109118", "desc": "VET (RR) ROSTRUM PLUS OTICO GOTAS FCO. X 15 ML", "lab": "LABORATORIO DRAG PHARM", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 46, "estado": "Borrador"}, {"sku": "109646", "desc": "VET (RR) TIOPENTAL SODICO FRASCO 1 GR.", "lab": "CHEMIE S.A", "grp": "VETERINARIA", "supp": "DANIEL MOREAU", "stock": 364, "estado": "Borrador"}, {"sku": "110624", "desc": "VET (RR) TRIAMCOL 5% SOL. INY. X 50 ML", "lab": "LABORATORIO DRAG PHARM", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 35, "estado": "Borrador"}, {"sku": "109569", "desc": "VET (RR) VERAFLOX 15 MG BLISTER CON 7 COMP.", "lab": "ELANCO CHILE SPA", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 50, "estado": "Borrador"}, {"sku": "109570", "desc": "VET (RR) VERAFLOX 60 MG BLISTER CON 7 COMP.", "lab": "ELANCO CHILE SPA", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 30, "estado": "Borrador"}, {"sku": "109571", "desc": "VET (RR) VERAFLOX SUSPENSION GATO  FRASCO 15 ML", "lab": "ELANCO CHILE SPA", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 129, "estado": "Borrador"}, {"sku": "109420", "desc": "VET (RR) XILAZINA 2% VIAL 50 ML", "lab": "CENTRO VETERINARIO Y A", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 0, "estado": "Borrador"}, {"sku": "109454", "desc": "VET (RR) ZOLETIL 50 X 10 ML CAJA CON 1 FRASCO DE L", "lab": "CENTRO VETERINARIO Y A", "grp": "VETERINARIA", "supp": "MAUREEN MUÑOZ", "stock": 0, "estado": "Borrador"}, {"sku": "105746", "desc": "VISIPAQUE 270 MG I / ML SOL. INY. X 10 UNID. 100 M", "lab": "GE HEALTHCARE INTERNAC", "grp": "MEDICAMENTO", "supp": "DIEGO OVALLE", "stock": 12, "estado": "Borrador"}, {"sku": "105747", "desc": "VISIPAQUE 270 MG I / ML SOL. INY. X 10 UNID. 50 ML", "lab": "GE HEALTHCARE INTERNAC", "grp": "MEDICAMENTO", "supp": "DIEGO OVALLE", "stock": 18, "estado": "Borrador"}, {"sku": "105748", "desc": "VISIPAQUE 320 MG I / ML SOL. INY. X 10 UNID. 100 M", "lab": "GE HEALTHCARE INTERNAC", "grp": "MEDICAMENTO", "supp": "DIEGO OVALLE", "stock": 24, "estado": "Borrador"}, {"sku": "105749", "desc": "VISIPAQUE 320 MG I / ML SOL. INY. X 10 UNID. 50 ML", "lab": "GE HEALTHCARE INTERNAC", "grp": "MEDICAMENTO", "supp": "DIEGO OVALLE", "stock": 119, "estado": "Borrador"}, {"sku": "SVENTAS", "desc": "AGREGAR", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "SB9", "desc": "ARRIENDO DROGUERIA", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "SB10", "desc": "ARRIENDO MC MARATHON", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "SB7", "desc": "ARRIENDO PISO 12", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "SB8", "desc": "ARRIENDO PISO 5", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "ART_DIF", "desc": "ARTICULO CON DIFERENCIA A DTE", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "BONO", "desc": "BONO", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "GB2", "desc": "COMISIONES BANCARIAS", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "GB6", "desc": "COMISIONES POR CONFIRMING", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "GB4", "desc": "COMISIONES POR FACTORING", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "SB1", "desc": "CONSUMO AGUA POTABLE", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "DTE_ANUL", "desc": "DTE ANULADO", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "SB2", "desc": "ELECTRICIDAD MARATHON", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "GB1", "desc": "GASTOS BANCARIOS", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "GB3", "desc": "GASTOS POR FACTORING", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "GB7", "desc": "INTERESES POR CONFIRMING", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "GB5", "desc": "INTERESES POR FACTORING", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "SB5", "desc": "INTERNET Y DATOS ANTONIO BELLET (5-12)", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "GO1", "desc": "MATERIALES DE EMBALAJE", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "GB8", "desc": "OBLIG. EN LEASING", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "GO2", "desc": "PAPELERIA", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "SB6", "desc": "RENTA MENSUAL DATOS MPL", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "SERV_IMP", "desc": "SERVICIOS DE IMPORTACION", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "114098", "desc": "SUEROX POLVO ARANDANO-POMELO BEBIDA OGR UN 20 GR X", "lab": "GENOMMA LAB CHILE S.A", "grp": "OTRO", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "SB3", "desc": "TELEFONIA FIJA PEREZ VALENZUELA- BD MARATHON", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "SB4", "desc": "TELEFONIA MOVIL", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "GO3", "desc": "TRANSPORTE", "lab": "- Ningún fabricante -", "grp": "GASTOS", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "114096", "desc": "VET APOQUEL CHEW 5,4MG X 20 COMP. MAST.", "lab": "ZOETIS DE CHILE S.A.", "grp": "VETERINARIA", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "114097", "desc": "XRAY POLVO % 10.2 GR X 30 POLV.", "lab": "GENOMMA LAB CHILE S.A", "grp": "SUPLEMENTO", "supp": "sin asignación", "stock": 0, "estado": "No existe en B2B"}, {"sku": "102148", "desc": "ENDOXAN 1 G SOL. INY. X 50 ML", "lab": "INDUSTRIAL Y COMERCIAL", "grp": "MEDICAMENTO", "supp": "ARANTZA BERNSTEIN", "stock": 590, "estado": "Privado"}, {"sku": "102149", "desc": "ENDOXAN 200 MG X 1 FCO AMP", "lab": "INDUSTRIAL Y COMERCIAL", "grp": "MEDICAMENTO", "supp": "ARANTZA BERNSTEIN", "stock": 93, "estado": "Privado"}, {"sku": "102151", "desc": "ENDOXAN 50 MG X 50 GRAGEAS", "lab": "INDUSTRIAL Y COMERCIAL", "grp": "MEDICAMENTO", "supp": "ARANTZA BERNSTEIN", "stock": 26, "estado": "Privado"}, {"sku": "102152", "desc": "ENDOXAN 500 MG SOL. INY. X 1 VIAL", "lab": "INDUSTRIAL Y COMERCIAL", "grp": "MEDICAMENTO", "supp": "ARANTZA BERNSTEIN", "stock": 159, "estado": "Privado"}];
+
+function buildB2bStatus(){
+  mkChart('chartB2bStatus',{type:'doughnut',data:{
+    labels:['Publicado','Borrador','Privado','No creado en B2B'],
+    datasets:[{data:[b2bKpis.pub,b2bKpis.borrador,b2bKpis.privado,b2bKpis.noexiste],
+      backgroundColor:['#3fb950','#d29922','#8b949e','#f85149'],
+      borderWidth:2,borderColor:'#161b22'}]
+  },options:{...donutOpts(),plugins:{...donutOpts().plugins,legend:{display:true,position:'bottom',labels:{color:'#8b949e',font:{size:10}}}}}});
+}
+function buildB2bPendientes(){
+  mkChart('chartB2bPendientes',{type:'bar',data:{
+    labels:['No creado en B2B','Borrador (draft)','Privado'],
+    datasets:[{label:'SKUs',data:[b2bKpis.noexiste,b2bKpis.borrador,b2bKpis.privado],
+      backgroundColor:['#f85149','#d29922','#8b949e'],borderRadius:4}]
+  },options:{...hbarOpts(),indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+' SKUs'}}}}});
+}
+function renderB2bTable(estado, stock){
+  estado = estado||'all'; stock = stock||'stock_all';
+  let rows = estado==='all' ? b2bPendientes : b2bPendientes.filter(r=>r.estado===estado);
+  if(stock==='con_stock') rows = rows.filter(r=>r.stock>0);
+  else if(stock==='sin_stock') rows = rows.filter(r=>r.stock===0);
+  const cmap = {'No existe en B2B':'#f85149','Borrador':'#d29922','Privado':'#8b949e'};
+  const amap = {'No existe en B2B':'Crear en WordPress B2B','Borrador':'Publicar (Publish)','Privado':'Publicar (Publish)'};
+  document.getElementById('b2bTableBody').innerHTML = rows.length===0
+    ? '<tr><td colspan="7" style="padding:20px;text-align:center;color:#8b949e">Sin resultados para este filtro</td></tr>'
+    : rows.map(r=>{
+    const col=cmap[r.estado]||'#ccc', acc=amap[r.estado]||r.estado;
+    const scol = r.stock>0 ? '#3fb950' : '#f85149';
+    const sind = r.stock>0 ? '\u25b2' : '\u2014';
+    return '<tr style="border-bottom:1px solid #21262d">'
+      +'<td style="padding:6px 10px;color:#58a6ff;font-family:monospace">'+r.sku+'</td>'
+      +'<td style="padding:6px 10px;color:#e6edf3">'+r.desc+'</td>'
+      +'<td style="padding:6px 10px;color:#8b949e">'+r.lab+'</td>'
+      +'<td style="padding:6px 10px;color:#8b949e">'+r.supp+'</td>'
+      +'<td style="padding:6px 10px;text-align:right;color:'+scol+';font-weight:600">'+sind+' '+r.stock+'</td>'
+      +'<td style="padding:6px 10px;text-align:center"><span style="background:'+col+'22;color:'+col+';padding:2px 8px;border-radius:10px;font-size:10px">'+r.estado+'</span></td>'
+      +'<td style="padding:6px 10px;text-align:center;color:#f0883e;font-size:10px">'+acc+'</td>'
+      +'</tr>';
+  }).join('');
+  const lbl = document.getElementById('b2bCount');
+  if(lbl) lbl.textContent = rows.length+' SKUs';
+}
+function filterB2b(estado, stock){
+  renderB2bTable(estado, stock);
+}
+
 function buildCartRetencion(){
   mkChart('chartCartRetencion',{type:'bar',data:{
     labels:['Ene→Feb','Feb→Mar'],
