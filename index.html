@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Operator Dashboard v4.3 — Canales Digitales</title>
+<title>AI Operator Dashboard v4.1 — ClinicalMarket</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 :root {
@@ -139,7 +139,7 @@ tr:hover td{background:#1c2128;}
   <button class="co-btn co-cmk active" onclick="setCompany('cmk')" id="co-btn-cmk">
     <span class="co-dot"></span>Clinical Market <span class="co-badge cmk">B2B · Farma + Retail</span>
   </button>
-  <span class="co-meta" id="co-meta-bar">📊 v4.3 · Datos al 23-Mar-2026 · Motor reglas activo</span>
+  <span class="co-meta" id="co-meta-bar">📊 v4.1 · Datos al 19-Mar-2026 · Motor reglas activo</span>
 </div>
 
 <!-- FILTER BAR -->
@@ -741,7 +741,7 @@ tr:hover td{background:#1c2128;}
     <div class="kpi kpi-cmk"><div class="kpi-label">SKUs en alza</div><div class="kpi-value" style="color:var(--green)">172</div><div class="kpi-delta up">Crecimiento sostenido 2+ meses</div></div>
     <div class="kpi kpi-cmk"><div class="kpi-label">SKUs en caída</div><div class="kpi-value" style="color:var(--red)">528</div><div class="kpi-delta down">Caída sostenida detectada</div></div>
     <div class="kpi kpi-cmk"><div class="kpi-label">SKUs nuevos Q1</div><div class="kpi-value" style="color:var(--accent)">2.686</div><div class="kpi-delta up">Primera factura en Q1-2026</div></div>
-    <div class="kpi kpi-cmk"><div class="kpi-label">SKUs desaparecidos</div><td class="kpi-value" style="color:var(--orange)">921</div><div class="kpi-delta down">Sin factura en Q1-2026</div></div>
+    <div class="kpi kpi-cmk"><div class="kpi-label">SKUs desaparecidos</div><div class="kpi-value" style="color:var(--orange)">921</div><div class="kpi-delta down">Sin factura en Q1-2026</div></div>
     <div class="kpi kpi-cmk"><div class="kpi-label">Revenue SKUs críticos</div><div class="kpi-value" style="color:var(--red)">$1.216B</div><div class="kpi-delta down">Caída sostenida en productos clave</div></div>
   </div>
   <div class="chart-row">
@@ -853,10 +853,6 @@ tr:hover td{background:#1c2128;}
     <div class="kpi-card"><div class="kpi-label">🔴 NO CREADOS EN B2B</div><div class="kpi-value" style="color:#f85149">29</div><div class="kpi-sub">Activos CMK sin ficha en WordPress</div></div>
     <div class="kpi-card"><div class="kpi-label">📋 EN BORRADOR</div><div class="kpi-value" style="color:#d29922">44</div><div class="kpi-sub">Creados pero en estado draft</div></div>
   </div>
-  <div class="chart-row">
-    <div class="chart-card"><div class="chart-title">Estado B2B — Activos CMK <span class="chart-badge">distribución</span></div><div class="chart-wrap"><canvas id="chartB2bStatus"></canvas></div></div>
-    <div class="chart-card"><div class="chart-title">Pendientes por tipo de acción <span class="chart-badge">77 SKUs</span></div><div class="chart-wrap"><canvas id="chartB2bPendientes"></canvas></div></div>
-  </div>
   <div class="section-label">📋 Detalle SKUs pendientes — Acción requerida &nbsp;<span id="b2bCount" style="background:rgba(88,166,255,.15);color:#58a6ff;border-radius:10px;padding:2px 9px;font-size:11px">77 SKUs</span></div>
   <div style="display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap;align-items:center">
     <span style="color:#8b949e;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Estado B2B:</span>
@@ -871,6 +867,9 @@ tr:hover td{background:#1c2128;}
     <button class="badge" style="background:rgba(63,185,80,.15);color:#3fb950;border:1px solid rgba(63,185,80,.3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:11px" onclick="filterB2b('all','con_stock')">✅ Con Stock (41)</button>
     <button class="badge" style="background:rgba(248,81,73,.15);color:#f85149;border:1px solid rgba(248,81,73,.3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:11px" onclick="filterB2b('all','sin_stock')">⚠️ Sin Stock (36)</button>
   </div>
+  <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+    <button onclick="exportB2bCSV()" style="background:rgba(63,185,80,.15);color:#3fb950;border:1px solid rgba(63,185,80,.4);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600">⬇️ Exportar CSV — No publicados</button>
+  </div>
   <div class="chart-card" style="padding:0;overflow:auto;max-height:420px">
     <table style="width:100%;border-collapse:collapse;font-size:11px">
       <thead style="position:sticky;top:0;background:#1c2128;z-index:2"><tr>
@@ -884,6 +883,11 @@ tr:hover td{background:#1c2128;}
       </tr></thead>
       <tbody id="b2bTableBody"></tbody>
     </table>
+  </div>
+  <div class="section-label" style="margin-top:20px">📊 Distribución visual — Estado B2B</div>
+  <div class="chart-row">
+    <div class="chart-card"><div class="chart-title">Estado B2B — Activos CMK <span class="chart-badge">distribución</span></div><div class="chart-wrap"><canvas id="chartB2bStatus"></canvas></div></div>
+    <div class="chart-card"><div class="chart-title">Pendientes por tipo de acción <span class="chart-badge">77 SKUs</span></div><div class="chart-wrap"><canvas id="chartB2bPendientes"></canvas></div></div>
   </div>
 </div>
 </div><!-- /world-cmk -->
@@ -910,8 +914,8 @@ const pEcomV=[80.4,162.5,132.8];
 
 // CMK monthly full year 2025 (histórico fijo)
 const vm25=[10478,8970,10692,11106,12245,10126,11439,11598,11233,11828,11377,11701];
-// CMK Q1 2026 mensual — fuente: Power BI export 23-Mar-2026
-const vm26=[7123.6,8403.8,8657.4];
+// CMK Q1 2026 mensual (generado desde pkl)
+const vm26=[13619.4,11772.3,8191.2];
 const canalN=['CLÍNICAS','RETAIL','CENABAST','G.CONVENIOS','EST.CLÍN.','CÓD.11','MERC.PÚB.'];
 const canalRevQ1=[10680.7,4802.0,2272.5,1838.7,575.2,331.4,176.5];
 const canalMgQ1=[15.4,12.4,24.6,30.6,20.0,19.3,40.5];
@@ -1004,7 +1008,7 @@ function showTab(id,el,world){
       'c-b2b':()=>{ buildB2bStatus();buildB2bPendientes();renderB2bTable('all','stock_all'); },
     };
     if(buildMap[id])buildMap[id]();
-  },30);
+  },100);
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1364,6 +1368,27 @@ function renderB2bTable(estado, stock){
   }).join('');
   const lbl = document.getElementById('b2bCount');
   if(lbl) lbl.textContent = rows.length+' SKUs';
+
+
+function exportB2bCSV(){
+  const rows = b2bPendientes;
+  const header = ['SKU','Descripcion','Laboratorio','Grupo','Supply','Stock_CMK','Estado_B2B','Accion'];
+  const amap = {'No existe en B2B':'Crear en WordPress B2B','Borrador':'Publicar (Publish)','Privado':'Publicar (Publish)'};
+  const csv = [header.join(','), ...rows.map(r => [
+    r.sku,
+    '"'+r.desc.replace(/"/g,'""')+'"',
+    '"'+r.lab.replace(/"/g,'""')+'"',
+    r.grp, 
+    '"'+( r.supp||''). replace(/"/g,'""')+'"',
+    r.stock,
+    r.estado,
+    '"'+( amap[r.estado]||r.estado)+'"'
+  ].join(','))].join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='CMK_B2B_No_Publicados_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+}
 }
 function filterB2b(estado, stock){
   renderB2bTable(estado, stock);
