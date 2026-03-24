@@ -1412,7 +1412,8 @@ function renderB2bTable(estado, stock){
     const col=cmap[r.estado]||'#ccc', acc=amap[r.estado]||r.estado;
     const scol = r.stock>0 ? '#3fb950' : '#f85149';
     const sind = r.stock>0 ? '\u25b2' : '\u2014';
-    return '<tr style="border-bottom:1px solid #21262d">'
+    const rowBg = r.stock===0 ? 'background:rgba(248,81,73,.07);' : '';
+      return '<tr style="border-bottom:1px solid #21262d;"+rowBg+">'
       +'<td style="padding:6px 10px;color:#58a6ff;font-family:monospace">'+r.sku+'</td>'
       +'<td style="padding:6px 10px;color:#e6edf3">'+r.desc+'</td>'
       +'<td style="padding:6px 10px;color:#8b949e">'+r.lab+'</td>'
