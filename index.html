@@ -1368,7 +1368,7 @@ function renderB2bTable(estado, stock){
   }).join('');
   const lbl = document.getElementById('b2bCount');
   if(lbl) lbl.textContent = rows.length+' SKUs';
-
+}
 
 function exportB2bCSV(){
   const rows = b2bPendientes;
@@ -1388,7 +1388,6 @@ function exportB2bCSV(){
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href=url; a.download='CMK_B2B_No_Publicados_'+new Date().toISOString().slice(0,10)+'.csv';
   document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-}
 }
 function filterB2b(estado, stock){
   renderB2bTable(estado, stock);
