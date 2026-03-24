@@ -2201,6 +2201,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="sh-t" style="font-size:14px">↩️ Notas de Crédito — Devoluciones &amp; Cancelaciones
       <span class="chip ch-o" style="font-size:10px;margin-left:6px">ERP Power BI · TIPO=NC</span>
       <span id="devLastUpdate" style="font-size:9px;color:var(--text3);margin-left:8px">● Datos: 22 Mar 2026</span>
+      <span id="devDataBadge" style="font-size:9px;color:var(--yellow);margin-left:8px">⌛ Cargando datos reales…</span>
     </div>
     <div style="display:flex;gap:6px;align-items:center">
       <button class="btn-xs" onclick="exportDevCSV()">📥 CSV</button>
@@ -4254,7 +4255,8 @@ function applyGASData(data) {
 (function(){
 
 // ── Datos mensuales: [año, mes(1-12), nNC, valorDevM (millones CLP), totalBT, totalVentaM] ──
-const DEV_MONTHLY_RAW = [
+// (se sobrescribe con datos reales vía GAS; datos demo como fallback)
+let DEV_MONTHLY_RAW = [
   [2024,1,  5,  0.52,  381, 2.9],
   [2024,2,  4,  0.41,  342, 2.5],
   [2024,3,  7,  0.79,  493, 5.1],
@@ -4285,7 +4287,7 @@ const DEV_MONTHLY_RAW = [
 ];
 
 // ── Top productos NC ──
-const DEV_TOP_PRODS = [
+let DEV_TOP_PRODS = [
   {nombre:'OZEMPIC 0.5mg',nNC:8, valorM:7.43, cat:'GLP-1',alert:'pico'},
   {nombre:'NURTEC 75mg',  nNC:39,valorM:5.78, cat:'Neuro', alert:'frecuente'},
   {nombre:'IBRANCE 125mg',nNC:1, valorM:4.09, cat:'Onco',  alert:'alto valor'},
@@ -4304,7 +4306,7 @@ const DEV_TOP_PRODS = [
 ];
 
 // ── Regiones ──
-const DEV_REGIONS = [
+let DEV_REGIONS = [
   {reg:'Región Metropolitana',nNC:255,valorM:47.4,pct:91.4,color:'#3b82f6'},
   {reg:'Valparaíso',          nNC:10, valorM:1.8, pct:3.6, color:'#10b981'},
   {reg:'Biobío',              nNC:7,  valorM:1.2, pct:2.5, color:'#8b5cf6'},
@@ -4318,8 +4320,24 @@ let devCharts = {};
 
 // ── Inicialización ──
 window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(initDevModule, 600);
+  setTimeout(loadDevDataFromGAS, 600);
 });
+
+async function loadDevDataFromGAS(){
+  const setEl=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  ['devKpiTasa','devKpiValor','devKpiNC','devKpiTicket','devKpiProyeccion'].forEach(id=>setEl(id,'⌛'));
+  setEl('devFunnelTasaEntrega','cargando…');
+  try {
+    const r=await fetch(GAS_ENDPOINT+'?action=getDevoluciones');
+    const j=await r.json();
+    if(!j.ok) throw new Error(j.error||'GAS error');
+    if(j.monthly&&j.monthly.length){DEV_MONTHLY_RAW=j.monthly.map(m=>{const[yr,mo]=m.mes.split('-').map(Number);return[yr,mo,m.countNC,+(m.valorNC/1e6).toFixed(3),m.countBT,+(m.valorBT/1e6).toFixed(2)];});}
+    if(j.topProducts&&j.topProducts.length){const RC={OZEMPIC:'GLP-1',RYBELSUS:'GLP-1',JARDIANCE:'Diabetes',XOLAIR:'REF',HUMIRA:'REF',ENBREL:'REF',KEYTRUDA:'Onco',IBRANCE:'Onco',SPRYCEL:'Onco',ENTRESTO:'Cardio',NURTEC:'Neuro'};DEV_TOP_PRODS=j.topProducts.map(p=>{const n=(p.nombre||p.sku||'').toUpperCase();const cat=Object.keys(RC).find(k=>n.includes(k))?RC[Object.keys(RC).find(k=>n.includes(k))]:'';return{nombre:p.nombre||p.sku,nNC:p.count,valorM:+(p.valor/1e6).toFixed(3),cat,alert:p.count>20?'frecuente':p.valor>3e6?'alto valor':''};});}
+    if(j.regions&&j.regions.length){const RC=['#3b82f6','#10b981','#8b5cf6','#f59e0b','#06b6d4','#ef4444','#64748b'];const tv=j.regions.reduce((s,r)=>s+r.valor,0);DEV_REGIONS=j.regions.map((r,i)=>({reg:r.region,nNC:r.count,valorM:+(r.valor/1e6).toFixed(3),pct:tv>0?+((r.valor/tv)*100).toFixed(1):0,color:RC[i%RC.length]}));}
+    const b=document.getElementById('devDataBadge');if(b){const u=j.updated?new Date(j.updated).toLocaleDateString('es-CL'):'hoy';b.textContent='✓ Datos reales — '+u;b.style.color='var(--green)';}
+  }catch(err){console.warn('[Dev]',err.message);const b=document.getElementById('devDataBadge');if(b){b.textContent='⚠️ Modo demo';b.style.color='var(--yellow)';}}
+  initDevModule();
+}
 
 function initDevModule(){
   renderDevTopTable();
