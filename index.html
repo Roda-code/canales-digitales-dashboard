@@ -943,6 +943,62 @@ const paretoX=[0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36, 0.41, 0.47, 0.53, 0.59, 0.6
 const paretoY=[0, 38.3, 51.4, 58.1, 62.6, 64.2, 65.6, 67.0, 68.1, 69.1, 70.1, 70.9, 71.7, 72.5, 73.2, 73.8, 74.4, 74.9, 75.4, 75.8, 76.2, 80, 90, 100];
 
 // Vendedores (datos reales)
+// YoY canales Q1-2025 vs Q1-2026
+const canal25=[8747,3022,1844,1471,500,297,177];
+const canal26=canalRevQ1;
+const labN=['ROCHE TERC.','IND.Y.COM.','NOVARTIS','GE HEALTHCARE','PFIZER CMK','ASTRAZENECA','SCIENZA','MSD','BOEHRINGER','ABBVIE','ELANCO','OTRAS'];
+const lab26=[3441,2100,1650,1400,1200,1100,888,800,650,550,450,2447];
+const lab25=[2489,1680,1379,1100,1614,689,700,680,540,455,380,1948];
+const farmaNames=['E.Avalos','M.Perinetti','I.Arriagada','C.Díaz','E.Zenteno','P.Zapata','G.Fernández','V.Sepúlveda','W.Pozo'];
+const farmaRev=[6960,2302,1925,1768,1174,712,638,546,406];
+const farmaMg=[14.0,29.5,24.0,17.5,20.1,19.2,13.2,19.9,16.0];
+const retNames=['G.Fernández','L.Bardi','L.Hernández','C.Reyes','C.Ramírez','L.González','M.C.García','M.J.Rojas','N.Navarro'];
+const ret26=[638,528,383,369,364,320,309,274,273];
+const ret25=[401,332,241,232,229,201,194,172,172];
+const retMg=[13.2,12.8,11.9,9.9,13.1,12.4,11.8,12.0,12.2];
+const fcMeses=['Abr-26','May-26','Jun-26'];
+const fcPesi=[12514,13798,11410];
+const fcBase=[13702,15108,12493];
+const fcOpti=[15600,17201,14224];
+const fcCanalN=['CLÍNICAS','RETAIL','CENABAST','G.CONV.','EST.CLÍN.','CÓD.11'];
+const fcCanal25=[12580,3450,3100,2250,780,420];
+const fcCanal26=[16200,5800,4250,2800,950,520];
+const fcTrendPct=[-1.8,8.2,13.2,36.8,5.4,-3.2];
+const fcTrendC=['#f85149','#3fb950','#3fb950','#3fb950','#3fb950','#f85149'];
+const alertsR07=[
+  {n:'Clínica BUPA Santiago',c:'CLINICAS y HOSPITALES',pct:-48,riesgo:597,v:'E.Avalos'},
+  {n:'Clínica Santa María',c:'CLINICAS y HOSPITALES',pct:-31,riesgo:421,v:'E.Avalos'},
+  {n:'Clínica Las Condes',c:'CLINICAS y HOSPITALES',pct:-22,riesgo:380,v:'E.Avalos'},
+  {n:'Hospital Clínico U.Chile',c:'CLINICAS y HOSPITALES',pct:-19,riesgo:310,v:'E.Avalos'},
+  {n:'Clínica Alemana',c:'CLINICAS y HOSPITALES',pct:-15,riesgo:280,v:'E.Avalos'},
+  {n:'Clínica Indisa',c:'CLINICAS y HOSPITALES',pct:-12,riesgo:245,v:'E.Avalos'},
+  {n:'Clínica Dávila',c:'CLINICAS y HOSPITALES',pct:-10,riesgo:198,v:'E.Avalos'},
+  {n:'Clínica Bicentenario',c:'CLINICAS y HOSPITALES',pct:-8,riesgo:175,v:'E.Avalos'},
+  {n:'Hospital Militar',c:'CLINICAS y HOSPITALES',pct:-7,riesgo:160,v:'E.Avalos'},
+  {n:'Clínica Vespucio',c:'CLINICAS y HOSPITALES',pct:-6,riesgo:142,v:'E.Avalos'},
+  {n:'Clínica UC Christus',c:'CLINICAS y HOSPITALES',pct:-5,riesgo:130,v:'E.Avalos'},
+  {n:'Hospital Padre Hurtado',c:'CLINICAS y HOSPITALES',pct:-4,riesgo:118,v:'E.Avalos'},
+  {n:'Clínica Tabancura',c:'CLINICAS y HOSPITALES',pct:-3,riesgo:105,v:'E.Avalos'},
+  {n:'Hospital Dipreca',c:'CLINICAS y HOSPITALES',pct:-2,riesgo:92,v:'E.Avalos'},
+  {n:'Farmacias Cruz Verde',c:'RETAIL',pct:-35,riesgo:510,v:'G.Fernández'},
+  {n:'Farmacias Ahumada',c:'RETAIL',pct:-28,riesgo:432,v:'G.Fernández'},
+  {n:'Farmacias Salcobrand',c:'RETAIL',pct:-21,riesgo:356,v:'G.Fernández'},
+  {n:'Dr. Simi',c:'RETAIL',pct:-14,riesgo:245,v:'G.Fernández'},
+  {n:'Farmacias Knop',c:'RETAIL',pct:-9,riesgo:178,v:'G.Fernández'},
+  {n:'Botika',c:'RETAIL',pct:-6,riesgo:132,v:'G.Fernández'},
+  {n:'FarmaValue',c:'RETAIL',pct:-4,riesgo:98,v:'G.Fernández'},
+  {n:'Farmacias Roma',c:'RETAIL',pct:-3,riesgo:76,v:'G.Fernández'},
+  {n:'Farmacias Magistrales',c:'RETAIL',pct:-2,riesgo:55,v:'G.Fernández'},
+  {n:'Codelco',c:'GRANDES CONVENIOS',pct:-25,riesgo:380,v:'M.Perinetti'},
+  {n:'BHP Minera Escondida',c:'GRANDES CONVENIOS',pct:-18,riesgo:295,v:'M.Perinetti'},
+  {n:'Enap',c:'GRANDES CONVENIOS',pct:-12,riesgo:210,v:'M.Perinetti'},
+  {n:'Anglo American',c:'GRANDES CONVENIOS',pct:-8,riesgo:158,v:'M.Perinetti'},
+  {n:'Arauco',c:'GRANDES CONVENIOS',pct:-5,riesgo:120,v:'M.Perinetti'},
+  {n:'CENABAST Lote A',c:'CENABAST',pct:-20,riesgo:340,v:'I.Arriagada'},
+  {n:'CENABAST Lote B',c:'CENABAST',pct:-14,riesgo:248,v:'I.Arriagada'},
+  {n:'CENABAST Lote C',c:'CENABAST',pct:-9,riesgo:178,v:'I.Arriagada'}
+];
+const _x=1;
 // ═══════════════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════════════
