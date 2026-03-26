@@ -885,6 +885,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <button class="btn-xs conv-filter" onclick="filterConv('inst',this)">Instituciones</button>
       <button class="btn-xs conv-filter" onclick="filterConv('empresa',this)">Empresas</button>
       <button class="btn-xs conv-filter" onclick="filterConv('inactivo',this)" style="border-color:rgba(239,68,68,.4);color:var(--red)">⚠️ Sin actividad</button>
+      <label style="display:inline-flex;align-items:center;gap:4px;margin-left:12px;font-size:11px;color:var(--muted);cursor:pointer"><input type="checkbox" id="convHideZero" onchange="toggleConvZero()" style="cursor:pointer"> Ocultar $0</label>
       <button class="btn-xs" onclick="exportConvCSV()" style="border-color:rgba(52,211,153,.4);color:var(--teal);margin-left:8px">📥 Exportar CSV</button>
     </div>
   </div>
@@ -933,7 +934,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="card mb">
     <table class="tbl">
       <thead><tr><th>Convenio / Grupo</th><th>Tipo</th><th>Clientes Reg.</th><th>Compradores</th><th>Órdenes</th><th>Revenue 60d</th><th>Rev/Cliente Reg.</th><th>% Revenue Conv.</th><th>Estado</th></tr></thead>
-      <tbody>
+      <tbody id="capitaBody">
         <tr style="background:rgba(16,185,129,.05)"><td><b>Mutual</b></td><td>B2B Corporativo</td><td>142.874</td><td>11</td><td>13</td><td style="color:#34d399;font-weight:700">$1.820M</td><td style="color:#34d399">$13/reg</td><td style="color:#34d399;font-weight:700">92.4%</td><td><span class="chip cg">Activo</span></td></tr>
         <tr style="background:rgba(245,158,11,.04)"><td><b>Empleados PROFAR</b></td><td>Interno</td><td>826</td><td>4</td><td>5</td><td style="color:var(--yellow)">$0.150M</td><td style="color:var(--text3)">$182/reg</td><td>7.6%</td><td><span class="chip cy">Bajo uso</span></td></tr>
         <tr><td>Club de Polo</td><td>Empresa</td><td>219</td><td>0</td><td>0</td><td style="color:var(--text3)">$0</td><td style="color:var(--text3)">—</td><td style="color:var(--red)">0%</td><td><span class="chip cr">⚠️ Inactivo</span></td></tr>
@@ -9565,11 +9566,25 @@ document.addEventListener('DOMContentLoaded',initAnalyticsCharts);
 // ── Analytics Render Functions ──
 // ── Sábana Render: Convenios ──
 function fmtCLP(n){if(!n||n===0)return '$0';return '$'+Math.round(n).toLocaleString('es-CL');}
-function renderConv(filter='all'){
+var _convFilter='all',_convHideZero=false;
+function toggleConvZero(){
+  _convHideZero=document.getElementById('convHideZero').checked;
+  renderConv(_convFilter);
+  // Also toggle static Revenue por Cápita rows
+  document.querySelectorAll('#capitaBody tr').forEach(tr=>{
+    const rev=tr.querySelector('td:nth-child(6)');
+    if(rev&&(rev.textContent.trim()==='$0'||rev.textContent.trim()==='—')){
+      tr.style.display=_convHideZero?'none':'';
+    }
+  });
+}
+function renderConv(filter){
+  if(filter!==undefined)_convFilter=filter;
   const el=document.getElementById('convBody');if(!el)return;
   let d=CONV_DATA;
-  if(filter==='inactivo') d=CONV_DATA.filter(r=>r.ord===0||r.ord===null);
-  else if(filter!=='all') d=CONV_DATA.filter(r=>r.tipo===filter);
+  if(_convFilter==='inactivo') d=CONV_DATA.filter(r=>r.ord===0||r.ord===null);
+  else if(_convFilter!=='all') d=CONV_DATA.filter(r=>r.tipo===_convFilter);
+  if(_convHideZero) d=d.filter(r=>r.rev&&r.rev>0);
   const totalRev=CONV_DATA.reduce((s,r)=>s+(r.rev||0),0);
   el.innerHTML=d.map(r=>{
     const pct=totalRev>0&&r.rev?(r.rev/totalRev*100).toFixed(1):'—';
@@ -10317,6 +10332,30 @@ function applyGASData(data) {
       el.style.color = sinStock > 0 ? '#ef4444' : '#22c55e';
     }
   }
+  // ── 10. Per-SKU stock update — if GAS returns stock.items[] ──
+  if (data.stock && data.stock.items && Array.isArray(data.stock.items)) {
+    const skuMap = {};
+    data.stock.items.forEach(s => { skuMap[String(s.sku)] = s.qty || 0; });
+    let updated = 0;
+    PRIC_FULL.forEach(r => {
+      if (skuMap[r.sku] !== undefined) {
+        r.stock = skuMap[r.sku];
+        r.cap = r.stock * r.pA; // capital inmovilizado = stock × precio
+        updated++;
+      }
+    });
+    INV_FULL.forEach(r => {
+      if (skuMap[r.sku] !== undefined) {
+        r.stock = skuMap[r.sku];
+        r.cap = r.stock * r.pc;
+      }
+    });
+    if (updated > 0) {
+      console.log('✓ Stock actualizado para ' + updated + ' SKUs desde GAS');
+      renderPricTable(); renderInvTable(); // re-render tables with new stock
+    }
+  }
+
   // Status badge
   if (data._updatedAt) {
     const d = new Date(data._updatedAt);
