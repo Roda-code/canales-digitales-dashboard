@@ -3481,9 +3481,6 @@ const ACTS={
   ]
 };
 
-const PRIC_TRIG=PRIC_FULL.filter(r=>r.est==='trigger').slice(0,7);
-const PRIC_WATCH=PRIC_FULL.filter(r=>r.est==='watch').slice(0,7);
-const INV_ITEMS=INV_FULL.filter(r=>r.etapa==='devolucion'||r.etapa==='nota').slice(0,5).map(r=>({n:r.n+' (SKU '+r.sku+')',c:r.c,meses:Math.round(r.dias/30),cap:'$'+Math.round(r.vH/1000)+'K hist',prov:'Ver Magento',act:r.act}));
 const CH_COLOR={'E-Com':'ch-b','Sala':'ch-g','Tel.':'ch-p','Todos':'ch-c'};
 // ══ CONVENIOS DATA ══
 // CONV_DATA — Grupos de cliente Magento REALES
@@ -9513,6 +9510,10 @@ const INV_FULL=[
 {sku:'102599',n:'(DM) GELCLAIR BARR. BIOADH. X 3 SOBRES',cat:'OTC',c:'E-Com',prov:'Ver Magento',rut:'—',stock:0,dias:0,cap:0,pc:14309,desc:16,etapa:'activo',act:'Monitoreo regular',plazo:'Mensual',last:'26/03/26',uH:177,vH:2532779},
 {sku:'112882',n:'FEDONAX 267 MG X 30 COMP.',cat:'RX',c:'E-Com',prov:'Ver Magento',rut:'—',stock:0,dias:0,cap:0,pc:20566,desc:34,etapa:'activo',act:'Monitoreo regular',plazo:'Mensual',last:'26/03/26',uH:30,vH:616984}
 ];
+
+const PRIC_TRIG=PRIC_FULL.filter(r=>r.est==='trigger').slice(0,7);
+const PRIC_WATCH=PRIC_FULL.filter(r=>r.est==='watch').slice(0,7);
+const INV_ITEMS=INV_FULL.filter(r=>r.etapa==='devolucion'||r.etapa==='nota').slice(0,5).map(r=>({n:r.n+' (SKU '+r.sku+')',c:r.c,meses:Math.round(r.dias/30),cap:'$'+Math.round(r.vH/1000)+'K hist',prov:'Ver Magento',act:r.act}));
 
 
 // ── Analytics Charts Init ──
