@@ -10352,7 +10352,41 @@ function applyGASData(data) {
     });
     if (updated > 0) {
       console.log('✓ Stock actualizado para ' + updated + ' SKUs desde GAS');
-      renderPricTable(); renderInvTable(); // re-render tables with new stock
+    }
+  }
+
+  // ── 11. TopProductos → enrich PRIC_FULL/INV_FULL with recent Magento sales ──
+  if (data.topProductos && data.topProductos.length > 0) {
+    const topMap = {};
+    data.topProductos.forEach(p => { topMap[String(p.sku)] = { qty: p.qty, rev: p.rev, nombre: p.nombre || '' }; });
+    let enriched = 0;
+    PRIC_FULL.forEach(r => {
+      const tp = topMap[r.sku];
+      if (tp) {
+        // This SKU has recent Magento sales — upgrade status if it was trigger/sin_venta
+        if (r.est === 'sin_venta' || r.est === 'trigger') {
+          r.est = 'ok';
+          r.act = 'Venta activa Magento (' + tp.qty + ' uds 60d)';
+        }
+        r.dias = 0; // recent sale
+        r.last = 'Magento live';
+        enriched++;
+      }
+    });
+    INV_FULL.forEach(r => {
+      const tp = topMap[r.sku];
+      if (tp) {
+        if (r.etapa === 'sin_venta' || r.etapa === 'devolucion' || r.etapa === 'alerta') {
+          r.etapa = 'activo';
+          r.act = 'Venta activa Magento (' + tp.qty + ' uds 60d)';
+        }
+        r.dias = 0;
+        r.last = 'Magento live';
+      }
+    });
+    if (enriched > 0) {
+      console.log('✓ ' + enriched + ' SKUs enriquecidos desde topProductos GAS');
+      renderPricTable(); renderInvTable();
     }
   }
 
