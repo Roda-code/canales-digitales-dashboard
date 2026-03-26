@@ -139,7 +139,7 @@ tr:hover td{background:#1c2128;}
   <button class="co-btn co-cmk active" onclick="setCompany('cmk')" id="co-btn-cmk">
     <span class="co-dot"></span>Clinical Market <span class="co-badge cmk">B2B · Farma + Retail</span>
   </button>
-  <span class="co-meta" id="co-meta-bar">📊 v4.1 · Datos al 19-Mar-2026 · Motor reglas activo</span>
+  <span class="co-meta" id="co-meta-bar">📊 v4.1 · Datos al 26-Mar-2026 · Motor reglas activo</span>
 </div>
 
 <!-- FILTER BAR -->
@@ -193,11 +193,11 @@ tr:hover td{background:#1c2128;}
 <div class="tab-pane active" id="tab-p-resumen">
   <div class="info-box teal">🏥 <strong>PROFAR — Farmacia Acceso S.A.</strong> · Canal mayorista cautivo B2C · Gestión: Anne Mery Astorga · 1 cliente · Sell-through hacia farmacias retail y pacientes</div>
   <div class="kpi-row">
-    <div class="kpi kpi-profar"><div class="kpi-label">Venta Q1-2026</div><div class="kpi-value" style="color:var(--teal)">$11.267B</div><div class="kpi-delta up">▲ +2.1% vs Q1-2025</div><div class="kpi-sub">$12.906B sell-in acumulado</div></div>
-    <div class="kpi kpi-profar"><div class="kpi-label">Margen Q1-2026</div><div class="kpi-value">17.0%</div><div class="kpi-delta down">▼ -0.9pp vs Q1-2025</div><div class="kpi-sub">$1.912B margen bruto</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Venta Q1-2026</div><div class="kpi-value" style="color:var(--teal)"><div class="kpi kpi-profar"><div class="kpi-label">Venta Q1-2026</div>3.562B</div><div class="kpi-delta up">▲ +2.1% vs Q1-2025</div><div class="kpi-sub"><div class="kpi kpi-profar"><div class="kpi-label">Venta Q1-2026</div>3.562B sell-in acumulado</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Margen Q1-2026</div><div class="kpi-value">16.8%</div><div class="kpi-delta down">▼ -0.9pp vs Q1-2025</div><div class="kpi-sub"></div></div>.274B margen bruto</div></div>
     <div class="kpi kpi-profar"><div class="kpi-label">SKUs Activos</div><div class="kpi-value">1.118</div><div class="kpi-delta up">▲ +43 vs Q4-2025</div><div class="kpi-sub">Q1-2026 únicos facturados</div></div>
     <div class="kpi kpi-profar"><div class="kpi-label">Laboratorios</div><div class="kpi-value">117</div><div class="kpi-delta up">▲ +3 activos vs Feb</div><div class="kpi-sub">Labs con factura en Mar-26</div></div>
-    <div class="kpi kpi-profar"><div class="kpi-label">Mejor Mes</div><div class="kpi-value">Ene-26</div><div class="kpi-delta up">$3.841B · margen 16.4%</div><div class="kpi-sub">Mar parcial (25 días)</div></div>
+    <div class="kpi kpi-profar"><div class="kpi-label">Mejor Mes</div><div class="kpi-value">Ene-26</div><div class="kpi-delta up">$5.326B · margen 15.9%</div><div class="kpi-sub">Mar parcial (26 días)</div></div>
   </div>
   <div class="chart-row">
     <div class="chart-card chart-full">
@@ -897,19 +897,19 @@ tr:hover td{background:#1c2128;}
 //  DATA
 // ═══════════════════════════════════════════════════════
 // PROFAR monthly
-const pVenta=[3841.2,3706.9,3718.8];
-const pMg=[16.38,16.40,18.16];
-const pDiario=[123.9,132.4,148.8]; // $M/día
+const pVenta=[5325.8,4274.0,3962.6];
+const pMg=[15.9,16.59,18.13];
+const pDiario=[171.8,152.6,152.4]; // $M/día
 const pEstL=['ISAPRES','QUIMIOTERAPIAS','VENTA TEL.','PARTICULAR','E-COMMERCE','EC SANOFI','FUNCIONARIO'];
-const pEstV=[5740.5,3589.2,988.9,495.0,243.7,192.5,17.1];
-const pEstM=[11.64,26.27,13.47,17.72,14.06,22.82,10.58];
+const pEstV=[7042.5,4262.3,1143.4,573.7,287.8,234.2,18.6];
+const pEstM=[11.30,26.42,13.37,17.68,14.12,23.26,10.33];
 const pLabN=['PFIZER','ASTRAZENECA','SCIENZA','ROCHE','MERCK S.A.','SANDOZ','GLAXOSMITHKLINE','GALENICUM'];
 const pLabV=[1297.0,935.0,888.0,723.0,71.0,68.0,55.0,55.0];
 const pZonaL=['CENTRO','SUR','NORTE'];
 const pZonaV=[7953.0,801.0,190.0];
 const pSkuN=['TRIKAFTA-S 10.','GENOTR...','KEYTRUD...','VYONDYS...','VERZENIO 100..','NERLYNX 40 M..','BRUKINSA 80 M.','TREMEVA...','OTROS'];
 const pSkuV=[719.7,696.6,497.4,341.9,96.7,89.4,88.2,85.9,6328.0];
-const pEcomM=['Ene-26','Feb-26','Mar-26(19d)'];
+const pEcomM=['Ene-26','Feb-26','Mar-26(26d)'];
 const pEcomV=[80.4,162.5,132.8];
 
 // CMK monthly full year 2025 (histórico fijo)
