@@ -10356,6 +10356,48 @@ function applyGASData(data) {
     }
   }
 
+  // ── 10b. Convenio pricing from Profar PowerBI API ──
+  if (data.stock && data.stock.items && Array.isArray(data.stock.items)) {
+    const priceMap = {};
+    data.stock.items.forEach(s => {
+      if (s.price || s.pGeneral || s.pEmpleados || s.pMutual) {
+        priceMap[String(s.sku)] = {
+          price: s.price || 0,
+          pGeneral: s.pGeneral || 0,
+          pEmpleados: s.pEmpleados || 0,
+          pMutual: s.pMutual || 0,
+          salable: s.salable || s.qty || 0
+        };
+      }
+    });
+    let pricingUpdated = 0;
+    PRIC_FULL.forEach(r => {
+      const p = priceMap[r.sku];
+      if (p) {
+        r.pMagento = p.price;
+        r.pGeneral = p.pGeneral;
+        r.pEmpleados = p.pEmpleados;
+        r.pMutual = p.pMutual;
+        if (p.salable > 0 && r.stock === 0) r.stock = p.salable;
+        if (p.price > 0 && (!r.pA || r.pA === 0)) r.pA = p.price;
+        r.cap = r.stock * (r.pA || p.price);
+        pricingUpdated++;
+      }
+    });
+    INV_FULL.forEach(r => {
+      const p = priceMap[r.sku];
+      if (p) {
+        r.pMagento = p.price;
+        if (p.salable > 0 && r.stock === 0) r.stock = p.salable;
+        if (p.price > 0 && (!r.pc || r.pc === 0)) r.pc = p.price;
+        r.cap = r.stock * (r.pc || p.price);
+      }
+    });
+    if (pricingUpdated > 0) {
+      console.log('✓ Precios Magento actualizados para ' + pricingUpdated + ' SKUs (General/Empleados/Mutual)');
+    }
+  }
+
   // ── 11. TopProductos → enrich PRIC_FULL/INV_FULL with recent Magento sales ──
   if (data.topProductos && data.topProductos.length > 0) {
     const topMap = {};
