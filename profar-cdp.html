@@ -2966,16 +2966,16 @@ function initCharts(){
   mk('cColeccion',{type:'bar',data:{labels:COLECCION_LABELS,datasets:[{label:'Revenue $M',data:COLECCION_REV.map(v=>Math.round(v/1000000)),backgroundColor:['rgba(59,130,246,.8)','rgba(16,185,129,.75)','rgba(139,92,246,.7)','rgba(245,158,11,.7)','rgba(6,182,212,.7)','rgba(249,115,22,.7)','rgba(236,72,153,.7)','rgba(100,116,139,.5)'],borderRadius:4}]},options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
 
   // Base clientes donut - Clientes Directos
-  mk('cBaseDirectos',{type:'doughnut',data:{labels:['General (47.0%)','NOT LOGGED IN (48.6%)','Club Beneficios (2.7%)','Empleados PROFAR (1.7%)'],datasets:[{data:[10061,10412,579,365],backgroundColor:['#3b82f6','#10b981','#14b8a6','#f59e0b'],borderWidth:0}]},options:dO()});
+  mk('cBaseDirectos',{type:'doughnut',data:{labels:['General (84.6%)','Empleados (6.9%)','Club Beneficios (5.1%)','Club Polo (1.8%)','Otros (1.6%)'],datasets:[{data:[10124,826,606,219,192],backgroundColor:['#3b82f6','#f59e0b','#14b8a6','#a78bfa','#64748b'],borderWidth:0}]},options:dO()});
 
-  // Base clientes donut - Convenios
-  mk('cBaseConvenios',{type:'doughnut',data:{labels:['Mutual (97.8%)','Otros (2.2%)'],datasets:[{data:[142874,3270],backgroundColor:['#10b981','#8b5cf6'],borderWidth:0}]},options:dO()});
+  // Base clientes donut - Convenios (Mutual 142,872 de 154,839 total)
+  mk('cBaseConvenios',{type:'doughnut',data:{labels:['Mutual (92.3%)','General (6.5%)','Empleados (0.5%)','Club+Otros (0.7%)'],datasets:[{data:[142872,10124,826,1017],backgroundColor:['#10b981','#3b82f6','#f59e0b','#8b5cf6'],borderWidth:0}]},options:dO()});
 
   // Registros 2026
-  mk('cReg2026',{type:'line',data:{labels:['Ene-26','Feb-26','Mar-26'],datasets:[{label:'Nuevos registros',data:[9514,2110,2094],borderColor:'#14b8a6',backgroundColor:'rgba(20,184,166,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2}]},options:bO()});
+  mk('cReg2026',{type:'line',data:{labels:['Ene-26','Feb-26','Mar-26'],datasets:[{label:'Nuevos registros',data:[9514,2110,2287],borderColor:'#14b8a6',backgroundColor:'rgba(20,184,166,.15)',fill:true,tension:.4,pointRadius:5,borderWidth:2}]},options:bO()});
 
   // Sub status
-  mk('cSubStatus',{type:'doughnut',data:{labels:['Activas (74.2%)','Pausadas (21.8%)','Canceladas (4%)'],datasets:[{data:[279,82,15],backgroundColor:['#14b8a6','#f59e0b','#ef4444'],borderWidth:0}]},options:dO()});
+  mk('cSubStatus',{type:'doughnut',data:{labels:['Activas (73.2%)','Pausadas (23.0%)','Canceladas (3.8%)'],datasets:[{data:[287,90,15],backgroundColor:['#14b8a6','#f59e0b','#ef4444'],borderWidth:0}]},options:dO()});
 
   // Sub frecuencia
   mk('cSubFreq',{type:'bar',data:{labels:['30 días','60 días','90 días','28 días','14 días','21 días','35 días'],datasets:[{label:'Suscripciones',data:[180,54,52,35,25,16,12],backgroundColor:'rgba(20,184,166,.7)',borderRadius:3}]},options:{...bO(),plugins:{...bO().plugins,legend:{display:false}}}});
@@ -3072,7 +3072,7 @@ function exportSuscripciones(){
 }
 
 function exportMercadoNatural(){
-  const csv='Segmento,Tipo,Base Registrada,Ordenes 60d,Revenue 60d CLP,Rev por Cliente CLP,% Revenue\nGeneral,Orgánico,10061,786,151296916,15040,59.8%\nNOT LOGGED IN,Guest,0,562,74976089,0,29.7%\nClub Beneficios,Fidelización,579,12,1799717,3108,0.7%\nEmpleados,Interno,826,6,163832,198,0.06%\nMutual,B2B Convenio,142874,130,24065294,169,9.5%\n';
+  const csv='Segmento,Tipo,Base Registrada,Ordenes 60d,Revenue 60d CLP,Rev por Cliente CLP,% Revenue\nGeneral,Orgánico,10124,586,$76.5M,$130K,29.3%\nNOT LOGGED IN,Guest,0,795,$157.4M,$0,60.3%\nClub Beneficios,Fidelización,606,0,$0,$0,0%\nEmpleados,Interno,826,5,$0.1M,$25K,0.05%\nMutual,B2B Convenio,142872,131,$24.7M,$189,9.5%\nGrupo 5,Convenio,0,14,$2.1M,$150K,0.8%\n';
   dlCSV(csv,'mercado-natural-ecommerce-20mar2026.csv');showNotif('✅ Exportado: mercado-natural.csv');
 }
 
