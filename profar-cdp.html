@@ -612,6 +612,43 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
   </div>
 
+  <!-- Magento Live (se llena via GAS) -->
+  <div style="background:var(--card);border-radius:10px;padding:14px 16px;margin-bottom:18px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <h3 style="margin:0;font-size:.9rem;color:var(--fg)">🛒 Magento Live — Últimos 60 días</h3>
+      <span id="ve-gas-status" style="font-size:.7rem;color:var(--muted)">⏳ Conectando GAS…</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+      <div style="padding:10px;background:rgba(59,130,246,.08);border-radius:8px">
+        <div style="font-size:.7rem;color:var(--muted)">Revenue con IVA</div>
+        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)" id="ve-mg-revenue">—</div>
+      </div>
+      <div style="padding:10px;background:rgba(59,130,246,.08);border-radius:8px">
+        <div style="font-size:.7rem;color:var(--muted)">Órdenes 60d</div>
+        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)" id="ve-mg-orders">—</div>
+      </div>
+      <div style="padding:10px;background:rgba(59,130,246,.08);border-radius:8px">
+        <div style="font-size:.7rem;color:var(--muted)">Clientes únicos</div>
+        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)" id="ve-mg-clients">—</div>
+      </div>
+      <div style="padding:10px;background:rgba(59,130,246,.08);border-radius:8px">
+        <div style="font-size:.7rem;color:var(--muted)">Ticket Magento</div>
+        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)" id="ve-mg-ticket">—</div>
+      </div>
+      <div style="padding:10px;background:rgba(59,130,246,.08);border-radius:8px">
+        <div style="font-size:.7rem;color:var(--muted)">Top SKU</div>
+        <div style="font-size:.85rem;font-weight:600;color:var(--fg)" id="ve-mg-topsku">—</div>
+      </div>
+      <div style="padding:10px;background:rgba(59,130,246,.08);border-radius:8px">
+        <div style="font-size:.7rem;color:var(--muted)">Stock Crítico</div>
+        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)" id="ve-mg-stockalert">—</div>
+      </div>
+    </div>
+    <div style="margin-top:8px;font-size:.7rem;color:var(--muted)">
+      PBI sin IVA: $93.2M Mar · Magento con IVA: <span id="ve-mg-compare">cargando…</span> · Factor ≈ 1.19×
+    </div>
+  </div>
+
   <!-- Alertas ejecutivas -->
   <div style="background:var(--card);border-radius:10px;padding:16px;margin-bottom:18px">
     <h3 style="margin:0 0 12px;font-size:.95rem;color:var(--fg)">🚨 Alertas Activas</h3>
@@ -4345,6 +4382,36 @@ function applyGASData(data) {
       set('rot-ks-top', topP.qty.toLocaleString('es-CL') + ' uds · $' + Math.round(topP.rev).toLocaleString('es-CL'));
     }
     console.log('GAS top prods 60d:', prods.slice(0,5).map(p => p.nombre + ' ×' + p.qty));
+  }
+
+  // ── 9. Vista Ejecutiva — Magento live cards ───────────────────
+  if (data.resumen && data.resumen.last60d) {
+    const r = data.resumen.last60d;
+    set('ve-mg-revenue', fmt(r.revenueConIVA || r.revenue));
+    set('ve-mg-orders', fmtN(r.orders));
+    set('ve-mg-clients', fmtN(r.clientes));
+    set('ve-mg-ticket', fmt(r.ticketProm));
+    set('ve-mg-compare', fmt(r.revenueConIVA || r.revenue) + ' (60d)');
+  }
+  if (data.topProductos && data.topProductos.length > 0) {
+    const top = data.topProductos[0];
+    set('ve-mg-topsku', (top.nombre || top.sku || '—').substring(0, 35));
+  }
+  if (data.stock) {
+    const sinStock = data.stock.sinStock || 0;
+    const el = document.getElementById('ve-mg-stockalert');
+    if (el) {
+      el.textContent = sinStock + ' sin stock';
+      el.style.color = sinStock > 0 ? '#ef4444' : '#22c55e';
+    }
+  }
+  // Status badge
+  if (data._updatedAt) {
+    const d = new Date(data._updatedAt);
+    const f = d.toLocaleString('es-CL', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    set('ve-gas-status', '● Live · ' + f + (data._fromCache ? ' (cache)' : ' ✓'));
+    const st = document.getElementById('ve-gas-status');
+    if (st) st.style.color = '#22c55e';
   }
 
   console.log('✓ GAS applyGASData OK. Cache age:', data._cacheAge ? data._cacheAge + 's' : 'fresco');
