@@ -573,42 +573,81 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <button onclick="exportarEmailHTML()" style="padding:6px 14px;background:var(--teal);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.85rem">📧 Exportar Email</button>
   </div>
 
-  <!-- Semáforo KPIs -->
+  <!-- Semáforo KPIs con fuente de datos -->
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px">
     <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #22c55e">
-      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟢 Ventas Mar 2026</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟢 Ventas Mar 2026 <span style="font-size:.6rem;background:#1e3a5f;color:#60a5fa;padding:1px 5px;border-radius:3px">PBI</span></div>
       <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">$93.2M</div>
       <div style="font-size:.8rem;color:#22c55e">↑ +1% vs Feb $92.4M</div>
     </div>
     <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #ef4444">
-      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🔴 Pedidos</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🔴 Pedidos <span style="font-size:.6rem;background:#1e3a5f;color:#60a5fa;padding:1px 5px;border-radius:3px">PBI</span></div>
       <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">652</div>
       <div style="font-size:.8rem;color:#ef4444">↓ -10% vs Feb 726</div>
     </div>
     <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #f59e0b">
-      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟡 Conversión</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟡 Conversión <span style="font-size:.6rem;background:#3b2f1e;color:#f59e0b;padding:1px 5px;border-radius:3px">GA4</span></div>
       <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">2.8%</div>
       <div style="font-size:.8rem;color:#f59e0b">→ Meta 3.2%</div>
     </div>
     <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #22c55e">
-      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟢 Ticket Prom.</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟢 Ticket Prom. <span style="font-size:.6rem;background:#1e3a5f;color:#60a5fa;padding:1px 5px;border-radius:3px">PBI</span></div>
       <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">$143K</div>
       <div style="font-size:.8rem;color:#22c55e">↑ +12% vs Feb $127K</div>
     </div>
     <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #ef4444">
-      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🔴 Abandono Carrito</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🔴 Abandono Carrito <span style="font-size:.6rem;background:#3b2f1e;color:#f59e0b;padding:1px 5px;border-radius:3px">GA4</span></div>
       <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">68%</div>
       <div style="font-size:.8rem;color:#ef4444">↑ Meta &lt;60%</div>
     </div>
     <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #22c55e">
-      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟢 Margen CR</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟢 Margen CR <span style="font-size:.6rem;background:#1e3a5f;color:#60a5fa;padding:1px 5px;border-radius:3px">PBI</span></div>
       <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">15.6%</div>
       <div style="font-size:.8rem;color:#22c55e">↑ vs Feb 13.4%</div>
     </div>
     <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #8b5cf6">
-      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟣 Ticket VET</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟣 Ticket VET <span style="font-size:.6rem;background:#2d1f4e;color:#a78bfa;padding:1px 5px;border-radius:3px">PBI VET</span></div>
       <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">$19.6K</div>
       <div style="font-size:.8rem;color:#8b5cf6">31 docs · $607K venta</div>
+    </div>
+  </div>
+
+  <!-- Stock Real + Cross-Channel desde Magento Dataexport -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px">
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #22c55e">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">Stock Disponible <span style="font-size:.6rem;background:#14332a;color:#22c55e;padding:1px 5px;border-radius:3px">MAGENTO</span></div>
+      <div style="font-size:1.5rem;font-weight:700;color:#22c55e">915</div>
+      <div style="font-size:.8rem;color:var(--muted)">de 1,915 SKUs activos (47.8%)</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #ef4444">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">Capital Inmovilizado <span style="font-size:.6rem;background:#14332a;color:#22c55e;padding:1px 5px;border-radius:3px">MAGENTO</span></div>
+      <div style="font-size:1.5rem;font-weight:700;color:#ef4444">$1,881M</div>
+      <div style="font-size:.8rem;color:var(--muted)">stock × precio Magento real</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #f59e0b">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">Sin Venta + Stock <span style="font-size:.6rem;background:#3b1e1e;color:#ef4444;padding:1px 5px;border-radius:3px">ALERTA</span></div>
+      <div style="font-size:1.5rem;font-weight:700;color:#f59e0b">280 SKUs</div>
+      <div style="font-size:.8rem;color:#ef4444">$1,409M en capital muerto</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #a78bfa">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">Solo PBI + Stock <span style="font-size:.6rem;background:#2d1f4e;color:#a78bfa;padding:1px 5px;border-radius:3px">CROSS</span></div>
+      <div style="font-size:1.5rem;font-weight:700;color:#a78bfa">373 SKUs</div>
+      <div style="font-size:.8rem;color:var(--muted)">$188M — vende offline, no online</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #22c55e">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">Ambos Canales <span style="font-size:.6rem;background:#14332a;color:#22c55e;padding:1px 5px;border-radius:3px">CROSS</span></div>
+      <div style="font-size:1.5rem;font-weight:700;color:#22c55e">255</div>
+      <div style="font-size:.8rem;color:var(--muted)">venden en PBI y Magento</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #60a5fa">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">Solo Magento <span style="font-size:.6rem;background:#14332a;color:#22c55e;padding:1px 5px;border-radius:3px">CROSS</span></div>
+      <div style="font-size:1.5rem;font-weight:700;color:#60a5fa">15</div>
+      <div style="font-size:.8rem;color:var(--muted)">SKUs nuevos sin historial PBI</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #60a5fa">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">SKUs Activos Magento <span style="font-size:.6rem;background:#14332a;color:#22c55e;padding:1px 5px;border-radius:3px">MAGENTO</span></div>
+      <div style="font-size:1.5rem;font-weight:700;color:#60a5fa">270</div>
+      <div style="font-size:.8rem;color:var(--muted)">con venta últimos 60 días</div>
     </div>
   </div>
 
@@ -655,15 +694,23 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div style="display:flex;flex-direction:column;gap:8px">
       <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(239,68,68,.1);border-radius:8px;border-left:3px solid #ef4444">
         <span style="font-size:1.1rem">🔴</span>
-        <div><strong style="font-size:.85rem">Abandono de Carrito Crítico</strong><br><span style="font-size:.8rem;color:var(--muted)">68% abandono — 8pp sobre meta. Revisar checkout y costos de envío.</span></div>
+        <div><strong style="font-size:.85rem">$1,409M capital muerto — 280 SKUs sin venta en ningún canal</strong> <span style="font-size:.6rem;background:#14332a;color:#22c55e;padding:1px 5px;border-radius:3px">MAGENTO + PBI</span><br><span style="font-size:.8rem;color:var(--muted)">Top: TAGRISSO $155M, LYNPARZA $116M, OPDIVO $101M — mayormente oncológicos. Evaluar devolución a laboratorio.</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(239,68,68,.1);border-radius:8px;border-left:3px solid #ef4444">
+        <span style="font-size:1.1rem">🔴</span>
+        <div><strong style="font-size:.85rem">Abandono de Carrito Crítico</strong> <span style="font-size:.6rem;background:#3b2f1e;color:#f59e0b;padding:1px 5px;border-radius:3px">GA4</span><br><span style="font-size:.8rem;color:var(--muted)">68% abandono — 8pp sobre meta. Revisar checkout y costos de envío.</span></div>
       </div>
       <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(245,158,11,.1);border-radius:8px;border-left:3px solid #f59e0b">
         <span style="font-size:1.1rem">🟡</span>
-        <div><strong style="font-size:.85rem">Conversión bajo meta</strong><br><span style="font-size:.8rem;color:var(--muted)">2.8% vs meta 3.2%. Optimizar páginas de producto y CTAs.</span></div>
+        <div><strong style="font-size:.85rem">373 SKUs venden offline pero NO online — $188M stock</strong> <span style="font-size:.6rem;background:#2d1f4e;color:#a78bfa;padding:1px 5px;border-radius:3px">CROSS</span><br><span style="font-size:.8rem;color:var(--muted)">Productos con ventas PBI (sala/teléfono) que no se mueven por Magento. Oportunidad de activación digital.</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(245,158,11,.1);border-radius:8px;border-left:3px solid #f59e0b">
+        <span style="font-size:1.1rem">🟡</span>
+        <div><strong style="font-size:.85rem">Conversión bajo meta</strong> <span style="font-size:.6rem;background:#3b2f1e;color:#f59e0b;padding:1px 5px;border-radius:3px">GA4</span><br><span style="font-size:.8rem;color:var(--muted)">2.8% vs meta 3.2%. Solo 270 de 1,915 SKUs vendieron online últimos 60d (14%). Optimizar catálogo activo.</span></div>
       </div>
       <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(34,197,94,.1);border-radius:8px;border-left:3px solid #22c55e">
         <span style="font-size:1.1rem">🟢</span>
-        <div><strong style="font-size:.85rem">Ticket promedio alto</strong><br><span style="font-size:.8rem;color:var(--muted)">$143K (+12% vs Feb $127K). Pero pedidos cayeron -10% (726→652). VET -70% docs.</span></div>
+        <div><strong style="font-size:.85rem">Ticket promedio alto</strong> <span style="font-size:.6rem;background:#1e3a5f;color:#60a5fa;padding:1px 5px;border-radius:3px">PBI</span><br><span style="font-size:.8rem;color:var(--muted)">$143K (+12% vs Feb $127K). Pero pedidos cayeron -10% (726→652). VET -70% docs.</span></div>
       </div>
     </div>
   </div>
