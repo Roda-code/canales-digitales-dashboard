@@ -543,7 +543,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 
 <!-- CDP sub-tabs -->
 <div class="sub-tnav" id="sub-cdp">
-  <button class="tb active" id="tb-resumen" onclick="showTab('resumen',this)">📊 Resumen</button>
+  <button class="tb active" id="tb-ejecutiva" onclick="showTab('ejecutiva',this)">⚡ Vista Rápida</button>
+  <button class="tb" id="tb-resumen" onclick="showTab('resumen',this)">📊 Resumen</button>
   <button class="tb" id="tb-convenios" onclick="showTab('convenios',this)">🤝 Convenios</button>
   <button class="tb" id="tb-clientes" onclick="showTab('clientes',this)">👤 Clientes</button>
   <button class="tb" id="tb-suscripciones" onclick="showTab('suscripciones',this)">🔄 Suscripciones</button>
@@ -565,7 +566,99 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 </div>
 
 <!-- ══════ RESUMEN ══════ -->
-<div class="tp active" id="tp-resumen">
+<div class="tp active" id="tp-ejecutiva">
+  <div style="padding:18px 0 8px;display:flex;align-items:center;gap:10px">
+    <h2 style="margin:0;font-size:1.25rem;color:var(--fg)">⚡ Vista Ejecutiva — <span id="ve-date">26 Mar 2026</span></h2>
+    <button onclick="window.print()" style="margin-left:auto;padding:6px 14px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.85rem">🖨️ Imprimir</button>
+    <button onclick="exportarEmailHTML()" style="padding:6px 14px;background:var(--teal);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.85rem">📧 Exportar Email</button>
+  </div>
+
+  <!-- Semáforo KPIs -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px">
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #22c55e">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟢 Ventas Mar 2026</div>
+      <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">$4.8M</div>
+      <div style="font-size:.8rem;color:#22c55e">↑ +12% vs Feb</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #22c55e">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟢 Pedidos</div>
+      <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">3,354</div>
+      <div style="font-size:.8rem;color:#22c55e">↑ +8% vs Feb</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #f59e0b">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟡 Conversión</div>
+      <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">2.8%</div>
+      <div style="font-size:.8rem;color:#f59e0b">→ Meta 3.2%</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #22c55e">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟢 Ticket Prom.</div>
+      <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">$143K</div>
+      <div style="font-size:.8rem;color:#22c55e">↑ +17% vs Feb</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #ef4444">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🔴 Abandono Carrito</div>
+      <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">68%</div>
+      <div style="font-size:.8rem;color:#ef4444">↑ Meta &lt;60%</div>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:14px 16px;border-left:4px solid #f59e0b">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">🟡 Sesiones</div>
+      <div style="font-size:1.5rem;font-weight:700;color:var(--fg)">47.2K</div>
+      <div style="font-size:.8rem;color:#f59e0b">→ +2% vs Feb</div>
+    </div>
+  </div>
+
+  <!-- Alertas ejecutivas -->
+  <div style="background:var(--card);border-radius:10px;padding:16px;margin-bottom:18px">
+    <h3 style="margin:0 0 12px;font-size:.95rem;color:var(--fg)">🚨 Alertas Activas</h3>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(239,68,68,.1);border-radius:8px;border-left:3px solid #ef4444">
+        <span style="font-size:1.1rem">🔴</span>
+        <div><strong style="font-size:.85rem">Abandono de Carrito Crítico</strong><br><span style="font-size:.8rem;color:var(--muted)">68% abandono — 8pp sobre meta. Revisar checkout y costos de envío.</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(245,158,11,.1);border-radius:8px;border-left:3px solid #f59e0b">
+        <span style="font-size:1.1rem">🟡</span>
+        <div><strong style="font-size:.85rem">Conversión bajo meta</strong><br><span style="font-size:.8rem;color:var(--muted)">2.8% vs meta 3.2%. Optimizar páginas de producto y CTAs.</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;background:rgba(34,197,94,.1);border-radius:8px;border-left:3px solid #22c55e">
+        <span style="font-size:1.1rem">🟢</span>
+        <div><strong style="font-size:.85rem">Ticket promedio récord</strong><br><span style="font-size:.8rem;color:var(--muted)">$143K — máximo histórico, +17% vs febrero. Estrategia upsell funcionando.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plan de acción -->
+  <div style="background:var(--card);border-radius:10px;padding:16px">
+    <h3 style="margin:0 0 12px;font-size:.95rem;color:var(--fg)">📋 Plan de Acción Inmediata</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px">
+      <div style="padding:10px;background:rgba(239,68,68,.07);border-radius:8px">
+        <div style="font-size:.75rem;color:#ef4444;font-weight:600;margin-bottom:4px">URGENTE — Esta semana</div>
+        <ul style="margin:0;padding-left:16px;font-size:.82rem;color:var(--fg);line-height:1.6">
+          <li>Auditar flujo de checkout Magento</li>
+          <li>Revisar costos de despacho</li>
+          <li>A/B test botón "Comprar"</li>
+        </ul>
+      </div>
+      <div style="padding:10px;background:rgba(245,158,11,.07);border-radius:8px">
+        <div style="font-size:.75rem;color:#f59e0b;font-weight:600;margin-bottom:4px">IMPORTANTE — Este mes</div>
+        <ul style="margin:0;padding-left:16px;font-size:.82rem;color:var(--fg);line-height:1.6">
+          <li>Optimizar páginas de producto</li>
+          <li>Activar recuperación de carrito email</li>
+          <li>Mejorar velocidad mobile</li>
+        </ul>
+      </div>
+      <div style="padding:10px;background:rgba(34,197,94,.07);border-radius:8px">
+        <div style="font-size:.75rem;color:#22c55e;font-weight:600;margin-bottom:4px">CONTINUAR — Mantener</div>
+        <ul style="margin:0;padding-left:16px;font-size:.82rem;color:var(--fg);line-height:1.6">
+          <li>Estrategia de upsell activa</li>
+          <li>Campañas de ticket alto</li>
+          <li>Monitoreo diario de ventas</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tp" id="tp-resumen">
 
   <!-- SNAPSHOT HISTÓRICO -->
   <div class="snap-bar">
@@ -622,6 +715,8 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="kpi bl"><div class="kl">Órdenes YTD 2026</div><div class="kv" style="color:#60a5fa">2.081</div><div class="ks">752+726+603 docs PBI</div><div class="kd dn">-15% vs 2025 Q1</div></div>
     <div class="kpi gr"><div class="kl">Revenue YTD sin IVA</div><div class="kv" style="color:#34d399;font-size:17px">$281.8M</div><div class="ks">≈$335.3M con IVA (×1.19)</div><div class="kd dn">-19.7% vs 2025 Q1 $335.1M</div></div>
     <div class="kpi tl"><div class="kl">Ticket Prom. Mar 2026</div><div class="kv" style="color:var(--teal)">$143K</div><div class="ks">sin IVA · ≈$170K con IVA</div><div class="kd up">↑ +17% vs Feb $127K</div></div>
+    <div class="kpi tl"><div class="kl">Ticket sin IVA Mar 2026</div><div class="kv" style="color:var(--teal)">$143K</div><div class="ks">neto · sin impuesto</div><div class="kd up">↑ +13% vs Feb $127K</div></div>
+    <div class="kpi tl"><div class="kl">Ticket Veterinaria</div><div class="kv" style="color:var(--blue)">N/D</div><div class="ks">seg. ESTRATIFICACION</div><div class="kd neutral">— pendiente datos VET</div></div>
     <div class="kpi pu"><div class="kl">Clientes Mar 2026</div><div class="kv" style="color:#a78bfa">340</div><div class="ks">Feb: 409 · Ene: 653</div><div class="kd dn">-29.8% vs Feb · caída Q1</div></div>
     <div class="kpi yw"><div class="kl">Margen CR Mar 2026</div><div class="kv" style="color:var(--yellow);font-size:18px">15.4%</div><div class="ks">Mejor mes Q1 · vs 13.5% Ene</div><div class="kd up">↑ +1.5pp vs Mar 2025</div></div>
   </div>
@@ -1626,7 +1721,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 <!-- ══════ ALERTAS ══════ -->
 <div class="tp" id="tp-alertas">
   <div class="sh">
-    <div class="sh-t">⚠️ Centro de Alertas CDP <span class="sh-b3">E-Commerce · Magento Real · Hoy 20 Mar 2026</span></div>
+    <div class="sh-t">⚠️ Centro de Alertas CDP <span class="sh-b3">E-Commerce · Magento Real · <span id="alerta-live-date">26 Mar 2026</span></span></div>
     <button class="exp-btn" onclick="exportAlertas()">⬇️ Exportar alertas</button>
   </div>
 
@@ -4753,6 +4848,37 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(initGASBadge, 1800);
 });
 
+</script>
+<style id="print-css">
+@media print {
+  body * { visibility: hidden !important; }
+  #tp-ejecutiva, #tp-ejecutiva * { visibility: visible !important; }
+  #tp-ejecutiva { position: fixed; top: 0; left: 0; width: 100%; background: #fff !important; }
+  .tb, nav, .sidebar, header { display: none !important; }
+}
+</style>
+<script>
+(function(){
+  var months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  var d = new Date();
+  var str = d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+  var el1 = document.getElementById('alerta-live-date');
+  var el2 = document.getElementById('ve-date');
+  if(el1) el1.textContent = str;
+  if(el2) el2.textContent = str;
+})();
+
+function exportarEmailHTML() {
+  var panel = document.getElementById('tp-ejecutiva');
+  if (!panel) return;
+  var content = panel.innerHTML;
+  var blob = new Blob(['<!DOCTYPE html><html><head><meta charset="utf-8"><title>Vista Ejecutiva PROFAR CDP</title></head><body style="font-family:sans-serif;max-width:700px;margin:0 auto;padding:20px">' + content + '</body></html>'], {type:'text/html'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'profar-ejecutiva-' + new Date().toISOString().slice(0,10) + '.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 </script>
 </body>
 </html>
