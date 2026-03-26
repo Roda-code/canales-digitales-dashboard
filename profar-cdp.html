@@ -3425,14 +3425,14 @@ const SKUS=[
   {n:'OMEPRAZOL 20MG X 14',             sku:'OMEP20',  c:'E-Com',upm:12, rot:24,stk:6.0,st:'Baja',    rev25:5.2,  rev26:0.8,  precComp:'over',cat:'otc'},
   {n:'ATORVASTATINA 40MG X 30',         sku:'ATOR40',  c:'E-Com',upm:8,  rot:21,stk:6.5,st:'Baja',    rev25:4.8,  rev26:0.6,  precComp:'over',cat:'cr'},
   {n:'METFORMINA 850MG X 30',           sku:'METF850', c:'E-Com',upm:6,  rot:19,stk:7.0,st:'Baja',    rev25:3.9,  rev26:0.5,  precComp:'over',cat:'cr'},
-  // ─── Sin Rotación (+90 días → Trigger Pricing/Logística Inversa) ──
-  {n:'COLÁGENO HIDROLIZADO 500G',       sku:'COLA',    c:'E-Com',upm:0,  rot:0, stk:30, st:'Sin Rot.',rev25:4.1,  rev26:0,    precComp:'over',cat:'otc'},
-  {n:'ESPIRULINA 500MG X 60',           sku:'ESPI',    c:'E-Com',upm:0,  rot:0, stk:28, st:'Sin Rot.',rev25:3.2,  rev26:0,    precComp:'over',cat:'otc'},
-  {n:'GLUCOSAMINA 500MG X 60',          sku:'GLUC',    c:'E-Com',upm:0,  rot:0, stk:22, st:'Sin Rot.',rev25:2.1,  rev26:0,    precComp:'over',cat:'otc'},
-  {n:'COMPLEJO B X 30',                 sku:'COMP_B',  c:'E-Com',upm:0,  rot:0, stk:25, st:'Sin Rot.',rev25:1.8,  rev26:0,    precComp:'over',cat:'otc'},
-  {n:'VALERIANA 300MG X 30',            sku:'VALE',    c:'E-Com',upm:0,  rot:0, stk:24, st:'Sin Rot.',rev25:1.2,  rev26:0,    precComp:'over',cat:'otc'},
-  {n:'EXTRACTO DE GINKGO X 30',         sku:'GINK',    c:'E-Com',upm:0,  rot:0, stk:22, st:'Sin Rot.',rev25:1.0,  rev26:0,    precComp:'over',cat:'otc'},
-  {n:'POLIVITAMÍNICO SENIOR X 30',      sku:'POLI',    c:'E-Com',upm:0,  rot:0, stk:20, st:'Sin Rot.',rev25:0.9,  rev26:0,    precComp:'over',cat:'otc'},
+  // ─── Sin Rotación (+90 días → Trigger Pricing/Logística Inversa) ── datos reales PBI×Magento
+  {n:'HIDROXICARBAMIDA 500MG X 100',    sku:'106071',  c:'E-Com',upm:0,  rot:0, stk:0,  st:'Sin Rot.',rev25:0,    rev26:0,    precComp:'over',cat:'cr'},
+  {n:'BROADLINE X 1 JERINGA 0.9ML',     sku:'109363',  c:'E-Com',upm:0,  rot:0, stk:0,  st:'Sin Rot.',rev25:0.2,  rev26:0,    precComp:'over',cat:'vet'},
+  {n:'BENZAC AC WASH 5% 100G',          sku:'107782',  c:'E-Com',upm:0,  rot:0, stk:0,  st:'Sin Rot.',rev25:0,    rev26:0,    precComp:'over',cat:'otc'},
+  {n:'NASONEX 50MCG SUSP NAS 280D',     sku:'103826',  c:'E-Com',upm:0,  rot:0, stk:0,  st:'Sin Rot.',rev25:0,    rev26:0,    precComp:'over',cat:'cr'},
+  {n:'NEXGARD X1 TAB 68MG 10-25KG',     sku:'109347',  c:'E-Com',upm:0,  rot:0, stk:0,  st:'Sin Rot.',rev25:0,    rev26:0,    precComp:'over',cat:'vet'},
+  {n:'PIELARMINA CREMA MANOS 80G',      sku:'107398',  c:'E-Com',upm:0,  rot:0, stk:0,  st:'Sin Rot.',rev25:0,    rev26:0,    precComp:'over',cat:'otc'},
+  {n:'CAPITAL SOLEIL MATIFI 3EN1',       sku:'107146',  c:'E-Com',upm:0,  rot:0, stk:0,  st:'Sin Rot.',rev25:0,    rev26:0,    precComp:'over',cat:'otc'},
 ];
 const ST_CHIP={'Alta':'<span class="chip ch-g">Alta</span>','Normal':'<span class="chip ch-b">Normal</span>','Baja':'<span class="chip ch-y">Baja</span>','Sin Rot.':'<span class="chip ch-r">Sin Rotación</span>'};
 const ST_ACT={'Alta':'<span class="chip ch-g">Mantener</span>','Normal':'<span class="chip ch-b">Monitorear</span>','Baja':'<span class="chip ch-y">Revisar</span>','Sin Rot.':'<button class="act-btn btn-r" onclick="botAlert(this)">▶ Iniciar Pricing</button>'};
