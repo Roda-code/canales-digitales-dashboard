@@ -456,28 +456,41 @@ function getTopProducts(sh) {
 
 // ── processStock ──────────────────────────────────────────────────
 function processStock(sh) {
-  if (!sh || sh.getLastRow() < 2) return { conStock:0, sinStock:0, total:0, pctDisponible:0 };
+  if (!sh || sh.getLastRow() < 2) return { conStock:0, sinStock:0, total:0, pctDisponible:0, items:[] };
 
   var data    = sh.getDataRange().getValues();
   var headers = data[0].map(String);
+  var skuC    = headers.indexOf('sku');
   var stockC  = headers.indexOf('stock_qty');
+  var priceC  = headers.indexOf('price');
+  var spC     = headers.indexOf('special_price');
   var statusC = headers.indexOf('status');
   var conStock = 0, sinStock = 0, total = 0;
+  var items = [];
 
   for (var i = 1; i < data.length; i++) {
     var row = data[i];
-    // En Magento: status=2 o 'disabled' = desactivado. Todo lo demás se incluye.
     var st  = String(row[statusC]||'1').toLowerCase();
-    if (st === '2' || st === 'disabled') continue;
+    if (st === '2' || st === 'disabled' || st === 'deshabilitado') continue;
     total++;
-    if ((parseFloat(row[stockC])||0) > 0) conStock++; else sinStock++;
+    var qty   = parseFloat(row[stockC]) || 0;
+    var price = parseFloat(row[priceC]) || 0;
+    var sp    = spC >= 0 ? (parseFloat(row[spC]) || 0) : 0;
+    if (qty > 0) conStock++; else sinStock++;
+    items.push({
+      sku:     String(row[skuC]||''),
+      qty:     qty,
+      price:   sp > 0 ? sp : price,
+      inStock: qty > 0 ? 1 : 0
+    });
   }
 
   return {
-    conStock:  conStock,
-    sinStock:  sinStock,
-    total:     total,
-    pctDisponible: total > 0 ? parseFloat((conStock/total*100).toFixed(1)) : 0
+    conStock:      conStock,
+    sinStock:      sinStock,
+    total:         total,
+    pctDisponible: total > 0 ? parseFloat((conStock/total*100).toFixed(1)) : 0,
+    items:         items
   };
 }
 
