@@ -874,12 +874,12 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 
   <!-- KPIs en tiempo real — GAS · Magento · Últimos 60 días -->
-  <div class="sh"><div class="sh-t">⚡ KPIs en Tiempo Real · Magento <span class="sh-b2">Últimos 60 días · con IVA · <span id="gasLiveLabel" style="color:var(--text3)">cargando…</span></span></div></div>
+  <div class="sh"><div class="sh-t">⚡ KPIs Magento 60d <span class="sh-b2">con IVA · <span style="color:#22c55e">CSV REAL · 26/Mar</span></span></div></div>
   <div class="kg4 mb">
-    <div class="kpi bl"><div class="kl">Órdenes (60d)</div><div class="kv" id="gas-kv-orders" style="color:#60a5fa">—</div><div class="ks" id="gas-ks-orders">Magento real</div></div>
-    <div class="kpi gr"><div class="kl">Revenue con IVA (60d)</div><div class="kv" id="gas-kv-revenue" style="color:#34d399;font-size:15px">—</div><div class="ks" id="gas-ks-revenue">Últimos 60 días</div></div>
-    <div class="kpi tl"><div class="kl">Clientes únicos (60d)</div><div class="kv" id="gas-kv-clients" style="color:var(--teal)">—</div><div class="ks" id="gas-ks-clients">Compradores activos</div></div>
-    <div class="kpi pu"><div class="kl">Ticket Promedio (60d)</div><div class="kv" id="gas-kv-ticket" style="color:#a78bfa;font-size:16px">—</div><div class="ks" id="gas-ks-ticket">con IVA · promedio</div></div>
+    <div class="kpi bl"><div class="kl">Órdenes (60d)</div><div class="kv" style="color:#60a5fa">1,516</div><div class="ks">no canceladas · Magento real</div></div>
+    <div class="kpi gr"><div class="kl">Revenue con IVA (60d)</div><div class="kv" style="color:#34d399;font-size:15px">$259.3M</div><div class="ks">sin IVA: $217.9M</div></div>
+    <div class="kpi tl"><div class="kl">Clientes únicos (60d)</div><div class="kv" style="color:var(--teal)">1,257</div><div class="ks">compradores activos</div></div>
+    <div class="kpi pu"><div class="kl">Ticket Promedio (60d)</div><div class="kv" style="color:#a78bfa;font-size:16px">$171K</div><div class="ks">con IVA · promedio</div></div>
   </div>
 
   <!-- KPIs — Fuente: Power BI PROFAR sin IVA (últimos 3 meses disponibles 2026) -->
@@ -1474,7 +1474,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <!-- Comunas view (hidden by default) -->
   <div id="geoComuna" style="display:none">
     <div class="card mb">
-      <div class="ct"><div class="d" style="background:var(--orange)"></div>Top Comunas por Revenue <span class="src-badge src-mg">Real Magento · 60d</span></div>
+      <div class="ct"><div class="d" style="background:var(--orange)"></div>Top Comunas por Revenue <span class="src-badge src-mg">Real Magento · 60d</span> <em style="font-size:12px;color:var(--text3)">(same data as Resumen tab)</em></div>
       <div class="ch-wrap-lg"><canvas id="cComunasExt"></canvas></div>
     </div>
     <div class="card mb">
@@ -2864,61 +2864,7 @@ const HORA_L=['00h','01h','02h','03h','04h','05h','06h','07h','08h','09h','10h',
 const HORA_V=[10,3,2,1,1,8,22,36,45,57,45,46,38,38,37,42,43,50,41,28,27,26,43,34];
 
 // ── E-COMMERCE SPECIFIC ANALYTICS ──
-// Buyer Segmentation
-const BUYER_SEGMENT_L=['Suscriptores','Compra Única','Recurrentes','Gift/Referral'];
-const BUYER_SEGMENT_V=[2840,1245,3127,678];
-const BUYER_SEGMENT_COLOR=['#4CAF50','#2196F3','#FF9800','#9C27B0'];
-const BUYER_SEGMENT_REV=[892340,156780,1847920,245680];
-
-// Top Products E-Commerce — 2026 YTD (Detalle de Documentos Power BI, sin IVA)
-const TOP_PRODUCTS_L=['NURTEC 75MG x8','PASURTA 140MG','RYBELSUS 3MG x30','GENOTROPIN 36UI','RYBELSUS 14MG x30','DUPIXENT 300MG','CLEXANE 40MG x10','SOTYKTU 6MG x30'];
-const TOP_PRODUCTS_V=[1032,120,147,126,126,6,204,36]; // upm×3 meses aprox
-const TOP_PRODUCTS_REV=[63800000,25300000,22100000,21900000,16700000,7600000,6300000,5700000];
-
-// Device Conversion Analysis
-const DEVICE_L=['Desktop','Mobile','Tablet'];
-const DEVICE_V=[2840,5120,945];
-const DEVICE_COLOR=['#3498db','#e74c3c','#f39c12'];
-const DEVICE_CONVERSION=[4.2,3.1,2.8];
-const DEVICE_AOV=[145.30,98.50,112.75];
-
-// Cart Abandonment Analysis
-const CART_ABANDON_CAUSE=['Precio muy alto','Tiempo de envío','Impuestos/Recargos','Falta de métodos pago','Problemas técnicos','Cambio de opinión','Información incompleta'];
-const CART_ABANDON_COUNT=[1245,890,756,534,423,612,489];
-const CART_ABANDON_VALUE=[186750,133500,113400,80100,63450,91800,73350];
-
-// Customer Retention Cohorts (Monthly)
-const RETENTION_COHORT_L=['Ene-25','Feb-25','Mar-25','Abr-25','May-25','Jun-25'];
-const RETENTION_MONTH1=[100,100,100,100,100,100];
-const RETENTION_MONTH2=[68,71,69,72,70,0];
-const RETENTION_MONTH3=[42,45,43,0,0,0];
-const RETENTION_MONTH4=[28,31,0,0,0,0];
-const RETENTION_MONTH5=[18,0,0,0,0,0];
-
-// Shipping Methods Distribution
-const SHIPPING_L=['Estándar (3-5d)','Express (1-2d)','Mismo día','Retirar Farmacia'];
-const SHIPPING_V=[3450,1890,567,234];
-const SHIPPING_COLOR=['#3498db','#2ecc71','#e74c3c','#f39c12'];
-const SHIPPING_REV=[448500,283500,85050,23400];
-
-// Demographic Analysis
-const DEMOGRAPHIC_AGE=['18-25','26-35','36-45','46-55','56-65','65+'];
-const DEMOGRAPHIC_VOLUME=[1245,2890,3120,2450,1680,890];
-const DEMOGRAPHIC_REPEAT=[28,42,55,62,58,45];
-const DEMOGRAPHIC_AOV=[85.30,112.45,145.80,156.20,148.90,125.60];
-
-// Returns Analysis
-const RETURNS_REASON=['Defecto Producto','Envío Dañado','Incorrecto recibido','No funciona','Cambio de opinión','Vencimiento próximo'];
-const RETURNS_COUNT=[145,234,89,156,278,42];
-const RETURNS_VALUE=[21750,35100,13350,23400,41700,6300];
-const RETURNS_PERCENT=[2.1,3.4,1.3,2.2,4.0,0.8];
-
-// Search Keyword Performance
-const SEARCH_KEYWORDS=['Amoxicilina comprar','Ibuprofeno 400','Vitaminas online','Presión arterial','Antibióticos sin receta','Medicinas naturales','Suplementos deportivos','Protectores gástricos'];
-const SEARCH_VOLUME=[2340,1890,1670,1450,1280,890,756,645];
-const SEARCH_CLICKS=[4560,3210,2890,2340,1980,1340,1120,890];
-const SEARCH_CONVERSIONS=[245,168,145,98,76,52,34,28];
-const SEARCH_CPC=[0.45,0.38,0.52,0.61,0.48,0.35,0.42,0.39];
+// Data arrays removed - see CSV real data integration
 
 // E-Commerce Monthly Details — Power BI sin IVA (Resumen Mensual + Detalle de Documentos)
 const MONTHLY_MONTH=['Enero','Febrero','Marzo'];
@@ -3107,10 +3053,7 @@ function initCharts(){
   // ── RENDER FUNCTIONS ──
   renderMonthly();
   renderMargins();
-  renderRetention();
-  renderShippingMethods();
-  renderDemographics();
-  renderReturns();
+  // Dead render calls removed
 }
 
 // ══════ STOCK TABLE ══════
@@ -10112,107 +10055,9 @@ function renderChurn(){
 }
 
 // ── E-COMMERCE RENDER FUNCTIONS ──
-function renderBuyerSegments(){
-  const el=document.getElementById('ecomSegmentBody');if(!el)return;
-  el.innerHTML=BUYER_SEGMENT_L.map((seg,i)=>`
-    <tr>
-      <td style="font-weight:500"><span class="color-dot" style="background:${BUYER_SEGMENT_COLOR[i]}"></span>${seg}</td>
-      <td style="text-align:right">${BUYER_SEGMENT_V[i].toLocaleString()}</td>
-      <td style="text-align:right">$${(BUYER_SEGMENT_REV[i]/1000000).toFixed(2)}M</td>
-      <td style="text-align:right">${(BUYER_SEGMENT_REV[i]/BUYER_SEGMENT_V[i]).toFixed(0)}</td>
-    </tr>`).join('');
-}
+// Dead render functions removed - see CSV integration
 
-function renderTopProducts(){
-  const el=document.getElementById('ecomProductsBody');if(!el)return;
-  el.innerHTML=TOP_PRODUCTS_L.map((prod,i)=>`
-    <tr>
-      <td style="font-weight:500">${prod}</td>
-      <td style="text-align:right">${TOP_PRODUCTS_V[i].toLocaleString()}</td>
-      <td style="text-align:right">$${(TOP_PRODUCTS_REV[i]/1000000).toFixed(2)}M</td>
-      <td style="text-align:right">${(TOP_PRODUCTS_REV[i]/TOP_PRODUCTS_V[i]).toFixed(0)}</td>
-    </tr>`).join('');
-}
-
-function renderDeviceMetrics(){
-  const el=document.getElementById('ecomDeviceBody');if(!el)return;
-  el.innerHTML=DEVICE_L.map((dev,i)=>`
-    <tr>
-      <td><span class="color-dot" style="background:${DEVICE_COLOR[i]}"></span>${dev}</td>
-      <td style="text-align:right">${DEVICE_V[i].toLocaleString()}</td>
-      <td style="text-align:right">${DEVICE_CONVERSION[i].toFixed(2)}%</td>
-      <td style="text-align:right">$${DEVICE_AOV[i].toFixed(2)}</td>
-    </tr>`).join('');
-}
-
-function renderCartAbandonment(){
-  const el=document.getElementById('ecomCartBody');if(!el)return;
-  el.innerHTML=CART_ABANDON_CAUSE.map((cause,i)=>`
-    <tr>
-      <td>${cause}</td>
-      <td style="text-align:right">${CART_ABANDON_COUNT[i].toLocaleString()}</td>
-      <td style="text-align:right">$${(CART_ABANDON_VALUE[i]/1000).toFixed(1)}K</td>
-    </tr>`).join('');
-}
-
-function renderRetention(){
-  const el=document.getElementById('ecomRetentionBody');if(!el)return;
-  el.innerHTML=RETENTION_COHORT_L.map((cohort,i)=>`
-    <tr>
-      <td style="font-weight:500">${cohort}</td>
-      <td>${RETENTION_MONTH1[i]}%</td>
-      <td>${RETENTION_MONTH2[i]||'-'}%</td>
-      <td>${RETENTION_MONTH3[i]||'-'}%</td>
-      <td>${RETENTION_MONTH4[i]||'-'}%</td>
-      <td>${RETENTION_MONTH5[i]||'-'}%</td>
-    </tr>`).join('');
-}
-
-function renderShippingMethods(){
-  const el=document.getElementById('ecomShippingBody');if(!el)return;
-  el.innerHTML=SHIPPING_L.map((method,i)=>`
-    <tr>
-      <td><span class="color-dot" style="background:${SHIPPING_COLOR[i]}"></span>${method}</td>
-      <td style="text-align:right">${SHIPPING_V[i].toLocaleString()}</td>
-      <td style="text-align:right">${((SHIPPING_V[i]/8141)*100).toFixed(1)}%</td>
-      <td style="text-align:right">$${(SHIPPING_REV[i]/1000).toFixed(0)}K</td>
-    </tr>`).join('');
-}
-
-function renderDemographics(){
-  const el=document.getElementById('ecomDemographicsBody');if(!el)return;
-  el.innerHTML=DEMOGRAPHIC_AGE.map((age,i)=>`
-    <tr>
-      <td style="font-weight:500">${age} años</td>
-      <td style="text-align:right">${DEMOGRAPHIC_VOLUME[i].toLocaleString()}</td>
-      <td style="text-align:right">${DEMOGRAPHIC_REPEAT[i]}%</td>
-      <td style="text-align:right">$${DEMOGRAPHIC_AOV[i].toFixed(2)}</td>
-    </tr>`).join('');
-}
-
-function renderReturns(){
-  const el=document.getElementById('ecomReturnsBody');if(!el)return;
-  el.innerHTML=RETURNS_REASON.map((reason,i)=>`
-    <tr>
-      <td>${reason}</td>
-      <td style="text-align:right">${RETURNS_COUNT[i].toLocaleString()}</td>
-      <td style="text-align:right">${RETURNS_PERCENT[i]}%</td>
-      <td style="text-align:right">$${(RETURNS_VALUE[i]/1000).toFixed(1)}K</td>
-    </tr>`).join('');
-}
-
-function renderSearchPerformance(){
-  const el=document.getElementById('ecomSearchBody');if(!el)return;
-  el.innerHTML=SEARCH_KEYWORDS.map((kw,i)=>`
-    <tr>
-      <td style="font-weight:500">${kw}</td>
-      <td style="text-align:right">${SEARCH_VOLUME[i].toLocaleString()}</td>
-      <td style="text-align:right">${SEARCH_CLICKS[i].toLocaleString()}</td>
-      <td style="text-align:right">${SEARCH_CONVERSIONS[i]}</td>
-      <td style="text-align:right">${((SEARCH_CONVERSIONS[i]/SEARCH_CLICKS[i])*100).toFixed(2)}%</td>
-      <td style="text-align:right">$${SEARCH_CPC[i].toFixed(2)}</td>
-    </tr>`).join('');
-}
+// renderSearchPerformance eliminado — usaba data inventada (SEARCH_KEYWORDS)
 
 function renderMonthly(){
   const el=document.getElementById('ecomMonthlyBody');if(!el)return;
