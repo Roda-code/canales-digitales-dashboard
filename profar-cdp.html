@@ -661,40 +661,43 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     </div>
   </div>
 
-  <!-- Magento Live (se llena via GAS) -->
+  <!-- Magento Real 60d (desde CSV dataexport 26/Mar) -->
   <div style="background:var(--card);border-radius:10px;padding:14px 16px;margin-bottom:18px">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <h3 style="margin:0;font-size:.9rem;color:var(--fg)">🛒 Magento Live — Últimos 60 días</h3>
-      <span id="ve-gas-status" style="font-size:.7rem;color:var(--muted)">⏳ Conectando GAS…</span>
+      <h3 style="margin:0;font-size:.9rem;color:var(--fg)">🛒 Magento — Últimos 60 días</h3>
+      <span style="font-size:.6rem;background:#14332a;color:#22c55e;padding:2px 6px;border-radius:3px">CSV REAL · 26/Mar</span>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
       <div style="padding:10px;background:rgba(59,130,246,.08);border-radius:8px">
         <div style="font-size:.7rem;color:var(--muted)">Revenue con IVA</div>
-        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)" id="ve-mg-revenue">—</div>
+        <div style="font-size:1.2rem;font-weight:700;color:#22c55e">$259.3M</div>
+        <div style="font-size:.65rem;color:var(--muted)">sin IVA: $217.9M</div>
       </div>
       <div style="padding:10px;background:rgba(59,130,246,.08);border-radius:8px">
         <div style="font-size:.7rem;color:var(--muted)">Órdenes 60d</div>
-        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)" id="ve-mg-orders">—</div>
+        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)">1,516</div>
+        <div style="font-size:.65rem;color:var(--muted)">1,498 completadas</div>
       </div>
       <div style="padding:10px;background:rgba(59,130,246,.08);border-radius:8px">
         <div style="font-size:.7rem;color:var(--muted)">Clientes únicos</div>
-        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)" id="ve-mg-clients">—</div>
+        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)">1,257</div>
       </div>
       <div style="padding:10px;background:rgba(59,130,246,.08);border-radius:8px">
         <div style="font-size:.7rem;color:var(--muted)">Ticket Magento</div>
-        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)" id="ve-mg-ticket">—</div>
+        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)">$171K</div>
       </div>
       <div style="padding:10px;background:rgba(59,130,246,.08);border-radius:8px">
         <div style="font-size:.7rem;color:var(--muted)">Top SKU</div>
-        <div style="font-size:.85rem;font-weight:600;color:var(--fg)" id="ve-mg-topsku">—</div>
+        <div style="font-size:.85rem;font-weight:600;color:#f59e0b">110816 NURTEC</div>
       </div>
-      <div style="padding:10px;background:rgba(59,130,246,.08);border-radius:8px">
-        <div style="font-size:.7rem;color:var(--muted)">Stock Crítico</div>
-        <div style="font-size:1.2rem;font-weight:700;color:var(--fg)" id="ve-mg-stockalert">—</div>
+      <div style="padding:10px;background:rgba(239,68,68,.08);border-radius:8px">
+        <div style="font-size:.7rem;color:var(--muted)">Sin Stock (activos)</div>
+        <div style="font-size:1.2rem;font-weight:700;color:#ef4444">1,001 SKUs</div>
+        <div style="font-size:.65rem;color:var(--muted)">de 1,915 habilitados</div>
       </div>
     </div>
     <div style="margin-top:8px;font-size:.7rem;color:var(--muted)">
-      PBI sin IVA: $93.2M Mar · Magento con IVA: <span id="ve-mg-compare">cargando…</span> · Factor ≈ 1.19×
+      PBI sin IVA: $93.2M Mar · Magento 60d con IVA: $259.3M (~$129.6M/mes) · Factor ≈ 1.19×
     </div>
   </div>
 
@@ -924,10 +927,11 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   <div class="card mb">
     <div class="ct"><div class="d" style="background:var(--green)"></div>Participación por Grupo Cliente <span class="src-badge src-mg">Magento Real 60d</span></div>
     <div id="gas-prog-grupos">
-      <div class="prog-row"><div class="prog-lbl">General</div><div class="prog-bar"><div class="prog-fill" style="width:60%;background:#3b82f6"></div></div><div class="prog-val" style="color:#3b82f6">$151.321.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">60.0% · 786 ord. · $192.000 ticket</span></div>
-      <div class="prog-row"><div class="prog-lbl">NOT LOGGED IN</div><div class="prog-bar"><div class="prog-fill" style="width:29.7%;background:#8b5cf6"></div></div><div class="prog-val" style="color:#8b5cf6">$75.038.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">29.7% · 562 ord. · $133.000 ticket</span></div>
-      <div class="prog-row"><div class="prog-lbl">Mutual</div><div class="prog-bar"><div class="prog-fill" style="width:9.5%;background:#10b981"></div></div><div class="prog-val" style="color:#10b981">$24.073.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">9.5% · 130 ord. · $185.000 ticket</span></div>
-      <div class="prog-row"><div class="prog-lbl">Club de Beneficios</div><div class="prog-bar"><div class="prog-fill" style="width:0.7%;background:#f59e0b"></div></div><div class="prog-val" style="color:var(--text3)">$1.823.000</div><span style="font-size:10px;color:var(--text3);margin-left:6px">0.7% · 12 ord. · $150.000 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">General</div><div class="prog-bar"><div class="prog-fill" style="width:60%;background:#3b82f6"></div></div><div class="prog-val" style="color:#3b82f6;min-width:90px;text-align:right">$152.3M</div><span style="font-size:10px;color:var(--text3);margin-left:6px;white-space:nowrap">60.4% · 16.519 ord. · $197.801 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">NOT LOGGED IN</div><div class="prog-bar"><div class="prog-fill" style="width:29.2%;background:#8b5cf6"></div></div><div class="prog-val" style="color:#8b5cf6;min-width:90px;text-align:right">$75.8M</div><span style="font-size:10px;color:var(--text3);margin-left:6px;white-space:nowrap">29.2% · 12.127 ord. · $130.348 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">Mutual</div><div class="prog-bar"><div class="prog-fill" style="width:9.6%;background:#10b981"></div></div><div class="prog-val" style="color:#10b981;min-width:90px;text-align:right">$23.9M</div><span style="font-size:10px;color:var(--text3);margin-left:6px;white-space:nowrap">9.6% · 2.669 ord. · $193.622 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">Club de Beneficios</div><div class="prog-bar"><div class="prog-fill" style="width:0.8%;background:#f59e0b"></div></div><div class="prog-val" style="color:var(--text3);min-width:90px;text-align:right">$2.1M</div><span style="font-size:10px;color:var(--text3);margin-left:6px;white-space:nowrap">0.8% · 289 ord. · $144.889 ticket</span></div>
+      <div class="prog-row"><div class="prog-lbl">Empleados PROFAR</div><div class="prog-bar"><div class="prog-fill" style="width:0.1%;background:#06b6d4"></div></div><div class="prog-val" style="color:var(--text3);min-width:90px;text-align:right">$0.1M</div><span style="font-size:10px;color:var(--text3);margin-left:6px;white-space:nowrap">0.1% · 110 ord. · $28.813 ticket</span></div>
     </div>
   </div>
 
@@ -2161,7 +2165,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
     <div class="kpi yw"><div class="kl">💰 Revenue en riesgo</div><div class="kv" style="color:var(--yellow);font-size:18px">$18M</div><div class="ks">SKUs con precio inferior</div><div class="kd wa">Estimado 60d</div></div>
   </div>
   <div class="card mb">
-    <div class="ct"><div class="d" style="background:var(--accent)"></div>Comparativo de Precios por SKU — PROFAR vs Competencia</div>
+    <div class="ct"><div class="d" style="background:var(--accent)"></div>Comparativo de Precios por SKU — PROFAR vs Competencia <span style="font-size:.6rem;background:#3b1e1e;color:#ef4444;padding:1px 5px;border-radius:3px">ESTIMADO</span> <span style="font-size:.6rem;color:var(--text3)">(precios referencia, no actualizados en tiempo real)</span></div>
     <div class="ch-wrap-lg"><canvas id="cComp"></canvas></div>
   </div>
   <div class="card mb">
@@ -10242,7 +10246,11 @@ function renderMargins(){
 // ══════════════════════════════════════════════════════════════════
 // ── GAS Live Data Integration ────────────────────────────────────
 // Guía: apps-script/Code.gs en este repositorio
-const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyjST2fT-X_WW2tlSa5KdpxhEITtbdz2GVpEOx6fq1OcX2XdYgV1j_ZhFlP-57ysAO-/exec';
+// GAS ENDPOINT DESACTIVADO — datos incorrectos ($6.4B en vez de $259M).
+// Los datos reales vienen del CSV dataexport (actualizado 26/Mar).
+// Para reactivar: descomentar la línea siguiente y corregir el filtro de fecha en Code.gs
+// const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyjST2fT-X_WW2tlSa5KdpxhEITtbdz2GVpEOx6fq1OcX2XdYgV1j_ZhFlP-57ysAO-/exec';
+const GAS_ENDPOINT = null;
 
 // Fetch datos desde el endpoint GAS
 async function fetchGASData() {
