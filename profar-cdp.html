@@ -2073,7 +2073,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
       <tbody id="ecomMonthlyBody">
       </tbody>
     </table>
-    <div style="font-size:10px;color:var(--text3);margin-top:8px">* Marzo con 20 días de datos al 20/03/2026</div>
+    <div style="font-size:10px;color:var(--text3);margin-top:8px">* Marzo con 20 días de datos al 01/04/2026</div>
   </div>
 
   <div class="sh"><div class="sh-title">💰 Evolución Márgenes E-Commerce</div></div>
@@ -2907,12 +2907,12 @@ const HORA_V=[10,3,2,1,1,8,22,36,45,57,45,46,38,38,37,42,43,50,41,28,27,26,43,34
 
 // E-Commerce Monthly Details — Power BI sin IVA (Resumen Mensual + Detalle de Documentos)
 const MONTHLY_MONTH=['Enero','Febrero','Marzo'];
-const MONTHLY_REVENUE=[103100000,92400000,82000000]; // PBI sin IVA · Mar: 82.0M (era 73.6M)
-const MONTHLY_ORDERS=[752,728,494]; // documentos reales (ticket prom $137K/$127K/$143K)
-const MONTHLY_AOV=[137100,127000,149000]; // D.ecom.t26 × 1000 CLP
-const MONTHLY_CONVERSION=[3.92,3.78,3.81]; // estimado web analytics
-const MONTHLY_MOM=[null,-10.4,-20.3]; // (73.6-92.4)/92.4 = -20.3% (era -23.5%)
-const MONTHLY_YOY=[-12.0,8.6,-31.1]; // vs 2025: 103.1/117.2, 92.4/85.1, 82.0/106.9
+const MONTHLY_REVENUE=[103100000,92400000,110498117]; // PBI sin IVA · Mar: 82.0M (era 73.6M)
+const MONTHLY_ORDERS=[752,728,835]; // documentos reales (ticket prom $137K/$127K/$143K)
+const MONTHLY_AOV=[137100,127000,132300]; // D.ecom.t26 × 1000 CLP
+const MONTHLY_CONVERSION=[3.92,3.78,3.85]; // estimado web analytics
+const MONTHLY_MOM=[null,-10.4,19.6]; // (73.6-92.4)/92.4 = -20.3% (era -23.5%)
+const MONTHLY_YOY=[-12.0,8.6,3.4]; // vs 2025: 103.1/117.2, 92.4/85.1, 82.0/106.9
 
 // E-Commerce Margins Evolution — Power BI Margen CR sin IVA
 const MARGINS_MONTH=['Enero','Febrero','Marzo'];
@@ -3211,11 +3211,11 @@ const HIST_SNAPS=[
   {date:'31/12/25',ts:1767139200000,rev30:121.2,rev60:207.8,orders30:911, orders60:1525,subs:724, mrr:18.1,clientes60:1190,clientes30:724,ticket:133,paused:59,cancel_pct:19.8},
   {date:'31/01/26',ts:1769817600000,rev30:103.1,rev60:224.3,orders30:752, orders60:1663,subs:653, mrr:13.9,clientes60:1377,clientes30:653,ticket:137,paused:53,cancel_pct:19.8},
   {date:'28/02/26',ts:1772236800000,rev30:92.4, rev60:195.5,orders30:728, orders60:1480,subs:409, mrr:12.4,clientes60:1062,clientes30:409,ticket:127,paused:33,cancel_pct:19.5},
-  {date:'26/03/26',ts:1774483200000,rev30:93.2, rev60:185.6,orders30:652, orders60:1378,subs:369, mrr:14.5,clientes60:778, clientes30:369,ticket:143,paused:30,cancel_pct:19.6}
+  {date:'31/03/26',ts:1743379200000,rev30:110.5, rev60:202.9,orders30:835, orders60:1563,subs:580, mrr:16.8,clientes60:989, clientes30:580,ticket:132,paused:28,cancel_pct:18.5}
 ];
 
 function saveSnapshot(){
-  // Último mes disponible: Mar 2026 (20/03/26) · Power BI sin IVA
+  // Último mes disponible: Mar 2026 (31/03/26) · Power BI sin IVA
   const last=HIST_SNAPS[HIST_SNAPS.length-1];
   const snap={
     date:new Date().toLocaleDateString('es-CL',{day:'2-digit',month:'2-digit',year:'2-digit'}),
@@ -3486,7 +3486,7 @@ const D={
     // 12 meses completos (sin IVA, $M)
     v24:[77.9,67.6,77.8,86.0,84.8,86.1,94.1,92.6,88.0,107.2,100.5,103.9],
     v25:[117.2,85.1,106.9,114.5,105.2,140.1,168.3,121.2,92.3,76.8,86.6,121.2],
-    v26:[103.1,92.4,82.0,null,null,null,null,null,null,null,null,null],
+    v26:[103.1,92.4,110.5,null,null,null,null,null,null,null,null,null],
     // Margen CR % real
     mg24:[15.6,15.9,16.3,16.3,15.6,14.4,15.7,15.4,15.2,12.2,12.8,15.2],
     mg25:[14.6,13.6,13.8,14.3,13.6,13.9,14.2,17.8,18.3,16.3,14.4,14.9],
@@ -3494,7 +3494,7 @@ const D={
     // Clientes únicos/mes
     cli24:[458,417,508,515,511,531,605,563,564,616,536,581],
     cli25:[553,404,624,671,539,505,797,612,402,292,466,724],
-    cli26:[653,409,287,null,null,null,null,null,null,null,null,null],
+    cli26:[653,409,580,null,null,null,null,null,null,null,null,null],
     // Ticket promedio (K CLP sin IVA)
     t24:[133,120,119,127,124,134,127,133,129,132,152,138],
     t25:[141,140,128,134,139,149,161,152,157,136,141,133],
